@@ -8,455 +8,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* লগইন পেজ */
-        .login-container {
-            max-width: 450px;
-            margin: 50px auto;
-        }
-
-        .login-box {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .logo {
-            margin-bottom: 30px;
-        }
-
-        .logo i {
-            font-size: 60px;
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-
-        .logo h2 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        .logo p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 15px;
-            background: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.3s;
-            margin-top: 20px;
-        }
-
-        .login-btn:hover {
-            background: #3367d6;
-            transform: translateY(-2px);
-        }
-
-        .warning-box {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 25px;
-            text-align: left;
-        }
-
-        .warning-box i {
-            color: #f39c12;
-            margin-right: 10px;
-        }
-
-        .status-message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: center;
-            display: none;
-            font-weight: 500;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
-        }
-
-        /* অ্যাডমিন ড্যাশবোর্ড */
-        .admin-dashboard {
-            background: white;
-            min-height: 95vh;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            display: none;
-        }
-
-        /* হেডার */
-        .admin-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        .header-left h1 {
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255,255,255,0.1);
-            padding: 10px 20px;
-            border-radius: 50px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            color: #667eea;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .logout-btn {
-            padding: 8px 20px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        /* ড্যাশবোর্ড কন্টেন্ট */
-        .dashboard-content {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            min-height: calc(95vh - 80px);
-        }
-
-        /* সাইডবার */
-        .sidebar {
-            background: #f8fafc;
-            padding: 30px 20px;
-            border-right: 1px solid #eef2f7;
-        }
-
-        .menu-title {
-            color: #667eea;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            padding-left: 15px;
-            font-weight: 600;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .menu-item {
-            padding: 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .menu-item:hover {
-            background: #eef2ff;
-            color: #667eea;
-            transform: translateX(5px);
-        }
-
-        .menu-item.active {
-            background: #667eea;
-            color: white;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        /* মেইন কন্টেন্ট */
-        .main-content {
-            padding: 40px;
-            background: white;
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .section-active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-header {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .section-header h2 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .section-header p {
-            color: #666;
-            font-size: 16px;
-            max-width: 800px;
-            line-height: 1.6;
-        }
-
-        /* অ্যাডমিন ম্যানেজমেন্ট */
-        .admin-management {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            border: 1px solid #eef2f7;
-        }
-
-        .master-admin-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .master-admin-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        /* অ্যাডমিন ফর্ম */
-        .add-admin-form {
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus {
-            border-color: #667eea;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn-primary {
-            padding: 12px 30px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-danger {
-            padding: 8px 16px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-        }
-
-        /* অ্যাডমিন লিস্ট */
-        .admins-list {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-        }
-
-        .table-header {
-            display: grid;
-            grid-template-columns: 50px 2fr 1fr 100px;
-            background: #f8fafc;
-            padding: 18px 20px;
-            font-weight: 600;
-            color: #555;
-            border-bottom: 1px solid #eee;
-        }
-
-        .admin-row {
-            display: grid;
-            grid-template-columns: 50px 2fr 1fr 100px;
-            padding: 18px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            align-items: center;
-        }
-
-        .admin-row:hover {
-            background: #f8fafc;
-        }
-
-        .master-badge {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        /* অন্যান্য সেকশন */
-        .coming-soon {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .coming-soon i {
-            font-size: 60px;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
-
-        .coming-soon h3 {
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        /* রেসপনসিভ */
-        @media (max-width: 1024px) {
-            .dashboard-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                display: none;
-            }
-            
-            .table-header,
-            .admin-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            .admin-header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .user-info {
-                flex-direction: column;
-                width: 100%;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        
+        .login-container { max-width: 450px; margin: 50px auto; }
+        .login-box { background: white; border-radius: 15px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center; }
+        .logo { margin-bottom: 30px; }
+        .logo i { font-size: 60px; color: #667eea; margin-bottom: 15px; }
+        .logo h2 { color: #333; margin-bottom: 10px; }
+        .logo p { color: #666; font-size: 14px; }
+        
+        .login-btn { width: 100%; padding: 15px; background: #4285f4; color: white; border: none; border-radius: 8px; 
+            font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; 
+            margin-top: 20px; transition: all 0.3s; }
+        .login-btn:hover { background: #3367d6; transform: translateY(-2px); }
+        
+        .status-message { padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; display: none; }
+        .success { background: #d4edda; color: #155724; display: block; }
+        .error { background: #f8d7da; color: #721c24; display: block; }
+        
+        /* Admin Dashboard */
+        .admin-dashboard { background: white; min-height: 95vh; border-radius: 15px; overflow: hidden; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); display: none; }
+        
+        .admin-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px 40px; 
+            display: flex; justify-content: space-between; align-items: center; color: white; }
+        
+        .user-info { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.1); 
+            padding: 10px 20px; border-radius: 50px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: white; color: #667eea; 
+            display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .logout-btn { padding: 8px 20px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); 
+            border-radius: 6px; cursor: pointer; }
+        
+        .dashboard-content { display: grid; grid-template-columns: 280px 1fr; min-height: calc(95vh - 80px); }
+        .sidebar { background: #f8fafc; padding: 30px 20px; border-right: 1px solid #eef2f7; }
+        
+        .sidebar-menu { list-style: none; }
+        .menu-item { padding: 15px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; display: flex; 
+            align-items: center; gap: 15px; color: #555; transition: all 0.3s; }
+        .menu-item:hover { background: #eef2ff; color: #667eea; }
+        .menu-item.active { background: #667eea; color: white; }
+        
+        .main-content { padding: 40px; }
+        .content-section { display: none; }
+        .section-active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .section-header { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0; }
+        .section-header h2 { color: #333; font-size: 28px; margin-bottom: 10px; }
+        
+        .admin-management { background: white; border-radius: 12px; padding: 30px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid #eef2f7; }
+        
+        .add-admin-form { background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group input { width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
+        
+        .btn-primary { padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 8px; 
+            font-size: 16px; cursor: pointer; }
+        .btn-danger { padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        
+        .admins-list { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.05); }
+        .table-header, .admin-row { display: grid; grid-template-columns: 50px 2fr 1fr 100px; padding: 18px 20px; 
+            border-bottom: 1px solid #eee; align-items: center; }
+        .table-header { background: #f8fafc; font-weight: 600; color: #555; }
+        
+        .master-badge { background: #667eea; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -466,7 +84,7 @@
     <div class="login-box">
         <div class="logo">
             <i class="fas fa-user-shield"></i>
-            <h2>eProstutibd Admin Panel</h2>
+            <h2>eProstutibd Admin</h2>
             <p>শুধুমাত্র অনুমোদিত অ্যাডমিনগণ Google জিমেইল দিয়ে লগইন করতে পারবেন</p>
         </div>
         
@@ -474,17 +92,16 @@
             <i class="fab fa-google"></i> Google দিয়ে লগইন
         </button>
         
-        <div class="warning-box">
-            <p><i class="fas fa-exclamation-triangle"></i> <strong>মনে রাখবেন:</strong> শুধুমাত্র যেসব জিমেইল অ্যাডমিন হিসেবে রেজিস্টার্ড আছে, শুধুমাত্র সেগুলো দিয়ে লগইন সম্ভব। কোনো পাসওয়ার্ডের প্রয়োজন নেই।</p>
-        </div>
-        
         <div id="loginStatus" class="status-message"></div>
+        
+        <div style="margin-top: 20px; font-size: 12px; color: #666;">
+            <p><strong>লোকাল টেস্টিং:</strong> যদি localhost-এ error দেখায়, তাহলে Firebase Console-এ localhost ডোমেইন যোগ করুন</p>
+        </div>
     </div>
 </div>
 
 <!-- অ্যাডমিন ড্যাশবোর্ড -->
 <div class="admin-dashboard" id="adminDashboard">
-    <!-- হেডার -->
     <header class="admin-header">
         <div class="header-left">
             <h1><i class="fas fa-user-shield"></i> eProstutibd Admin Dashboard</h1>
@@ -501,11 +118,8 @@
         </div>
     </header>
 
-    <!-- ড্যাশবোর্ড কন্টেন্ট -->
     <div class="dashboard-content">
-        <!-- সাইডবার -->
         <nav class="sidebar">
-            <div class="menu-title">মেইন মেনু</div>
             <ul class="sidebar-menu">
                 <li class="menu-item active" data-section="dashboard">
                     <i class="fas fa-tachometer-alt"></i>
@@ -533,11 +147,11 @@
                 </li>
                 <li class="menu-item" data-section="career">
                     <i class="fas fa-chart-line"></i>
-                    <span>ক্যারিয়ার গাইড</span>
+                    <span>ক্যারিয়ার</span>
                 </li>
                 <li class="menu-item" data-section="notice">
                     <i class="fas fa-bullhorn"></i>
-                    <span>নোটিশ বোর্ড</span>
+                    <span>নোটিশ</span>
                 </li>
                 <li class="menu-item" id="adminManagementTab" data-section="admin-management" style="display:none;">
                     <i class="fas fa-users-cog"></i>
@@ -546,147 +160,55 @@
             </ul>
         </nav>
 
-        <!-- মেইন কন্টেন্ট -->
         <main class="main-content">
             <!-- ড্যাশবোর্ড -->
             <div id="dashboardSection" class="content-section section-active">
                 <div class="section-header">
                     <h2><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড ওভারভিউ</h2>
-                    <p>আপনার অ্যাডমিন ড্যাশবোর্ডে স্বাগতম। বাম পাশের মেনু থেকে কাঙ্ক্ষিত সেকশন সিলেক্ট করুন।</p>
-                </div>
-                
-                <div class="admin-management">
-                    <h3>সিস্টেম স্ট্যাটাস</h3>
-                    <p>মোট অ্যাডমিন: <span id="totalAdmins">1</span></p>
-                    <p>আপনার অ্যাক্সেস লেভেল: <span id="accessLevel">সাধারণ অ্যাডমিন</span></p>
+                    <p>আপনার অ্যাডমিন ড্যাশবোর্ডে স্বাগতম</p>
                 </div>
             </div>
 
-            <!-- একাডেমী -->
-            <div id="academySection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-graduation-cap"></i> একাডেমী ম্যানেজমেন্ট</h2>
-                    <p>একাডেমী সেকশনের কন্টেন্ট ম্যানেজ করুন। লিংক, নোটস, ভিডিও ইত্যাদি যোগ করতে এই সেকশন ব্যবহার করুন।</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                    <p>এই সেকশনটি দ্রুতই চালু করা হবে</p>
-                </div>
-            </div>
+            <!-- অন্যান্য সেকশন -->
+            <div id="academySection" class="content-section">একাডেমী সেকশন</div>
+            <div id="admissionSection" class="content-section">এডমিশন অ্যাসিস্ট্যান্ট</div>
+            <div id="jobSection" class="content-section">জব অ্যাসিস্ট্যান্ট</div>
+            <div id="modelTestSection" class="content-section">মডেল টেস্ট</div>
+            <div id="currentAffairsSection" class="content-section">কারেন্ট এফেয়ার্স</div>
+            <div id="careerSection" class="content-section">ক্যারিয়ার</div>
+            <div id="noticeSection" class="content-section">নোটিশ</div>
 
-            <!-- এডমিশন অ্যাসিস্ট্যান্ট -->
-            <div id="admissionSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-university"></i> এডমিশন অ্যাসিস্ট্যান্ট</h2>
-                    <p>বিশ্ববিদ্যালয় ও কলেজ এডমিশন সম্পর্কিত তথ্য ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- জব অ্যাসিস্ট্যান্ট -->
-            <div id="jobSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-briefcase"></i> জব অ্যাসিস্ট্যান্ট</h2>
-                    <p>চাকরি সংক্রান্ত লিংক ও তথ্য ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- মডেল টেস্ট -->
-            <div id="modelTestSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-file-alt"></i> মডেল টেস্ট</h2>
-                    <p>পরীক্ষার প্রস্তুতির মডেল টেস্ট ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- কারেন্ট এফেয়ার্স -->
-            <div id="currentAffairsSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-newspaper"></i> কারেন্ট এফেয়ার্স</h2>
-                    <p>বর্তমান ঘটনাবলী আপডেট ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- ক্যারিয়ার -->
-            <div id="careerSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-chart-line"></i> ক্যারিয়ার গাইড</h2>
-                    <p>ক্যারিয়ার পরামর্শ ও গাইডলাইন ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- নোটিশ -->
-            <div id="noticeSection" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h2>
-                    <p>গুরুত্বপূর্ণ নোটিশ ও ঘোষণা ম্যানেজ করুন</p>
-                </div>
-                <div class="coming-soon">
-                    <i class="fas fa-tools"></i>
-                    <h3>শীঘ্রই আসছে</h3>
-                </div>
-            </div>
-
-            <!-- অ্যাডমিন ম্যানেজমেন্ট (শুধু মাস্টার অ্যাডমিনের জন্য) -->
+            <!-- অ্যাডমিন ম্যানেজমেন্ট -->
             <div id="adminManagementSection" class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-users-cog"></i> অ্যাডমিন ম্যানেজমেন্ট</h2>
-                    <p>অ্যাডমিন একাউন্ট যোগ, দেখা এবং ডিলিট করুন। শুধুমাত্র মাস্টার অ্যাডমিন এই সেকশন দেখতে পাবেন।</p>
+                    <p>শুধুমাত্র মাস্টার অ্যাডমিন এই সেকশন দেখতে পাবেন</p>
                 </div>
                 
                 <div class="admin-management">
-                    <!-- মাস্টার অ্যাডমিন কার্ড -->
-                    <div class="master-admin-card">
-                        <h3><i class="fas fa-crown"></i> মাস্টার অ্যাডমিন</h3>
-                        <p><strong>জিমেইল:</strong> eprostutibdbd@gmail.com</p>
-                        <p><strong>স্ট্যাটাস:</strong> পারম্যানেন্ট অ্যাডমিন (ডিলিট করা যাবে না)</p>
+                    <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3><i class="fas fa-crown"></i> মাস্টার অ্যাডমিন: eprostutibdbd@gmail.com</h3>
                     </div>
                     
-                    <!-- নতুন অ্যাডমিন যোগ করার ফর্ম -->
                     <div class="add-admin-form">
                         <h3><i class="fas fa-user-plus"></i> নতুন অ্যাডমিন যোগ করুন</h3>
-                        <p>নতুন জিমেইল অ্যাড করুন যারা অ্যাডমিন হিসেবে লগইন করতে পারবে।</p>
-                        
                         <div class="form-group">
-                            <label for="newAdminEmail">জিমেইল এড্রেস</label>
-                            <input type="email" id="newAdminEmail" placeholder="example@gmail.com">
+                            <input type="email" id="newAdminEmail" placeholder="নতুন অ্যাডমিনের জিমেইল">
                         </div>
-                        
                         <button class="btn-primary" id="addAdminBtn">
                             <i class="fas fa-plus"></i> অ্যাডমিন যোগ করুন
                         </button>
                     </div>
                     
-                    <!-- অ্যাডমিন লিস্ট -->
                     <div class="admins-list">
                         <div class="table-header">
                             <div>#</div>
-                            <div>জিমেইল এড্রেস</div>
+                            <div>জিমেইল</div>
                             <div>স্ট্যাটাস</div>
                             <div>অ্যাকশন</div>
                         </div>
                         <div id="adminEmailsList">
-                            <!-- অ্যাডমিন লিস্ট এখানে লোড হবে -->
+                            <!-- লিস্ট এখানে লোড হবে -->
                         </div>
                     </div>
                 </div>
@@ -719,9 +241,9 @@
 
     // মাস্টার অ্যাডমিন জিমেইল
     const MASTER_ADMIN_EMAIL = 'eprostutibdbd@gmail.com';
-    
-    // Allowed Admin Emails (Firestore থেকে লোড হবে)
     let allowedAdminEmails = [MASTER_ADMIN_EMAIL];
+    let currentUser = null;
+    let isMasterAdmin = false;
 
     // DOM Elements
     const loginPage = document.getElementById('loginPage');
@@ -733,36 +255,26 @@
     const userInitial = document.getElementById('userInitial');
     const userRole = document.getElementById('userRole');
     const adminManagementTab = document.getElementById('adminManagementTab');
-    const totalAdmins = document.getElementById('totalAdmins');
-    const accessLevel = document.getElementById('accessLevel');
     const newAdminEmailInput = document.getElementById('newAdminEmail');
     const addAdminBtn = document.getElementById('addAdminBtn');
     const adminEmailsList = document.getElementById('adminEmailsList');
-    
-    let currentUser = null;
-    let isMasterAdmin = false;
 
     // Show Message
     function showMessage(message, type) {
         loginStatus.textContent = message;
         loginStatus.className = `status-message ${type}`;
         loginStatus.style.display = 'block';
-        
-        setTimeout(() => {
-            loginStatus.style.display = 'none';
-        }, 5000);
+        setTimeout(() => { loginStatus.style.display = 'none'; }, 5000);
     }
 
-    // Load allowed admin emails from Firestore
+    // Load Admin Emails
     async function loadAdminEmails() {
         try {
             const doc = await db.collection('adminConfig').doc('allowedEmails').get();
             if (doc.exists) {
                 allowedAdminEmails = doc.data().emails || [MASTER_ADMIN_EMAIL];
                 updateAdminList();
-                totalAdmins.textContent = allowedAdminEmails.length;
             } else {
-                // প্রথমবারের মতো ডকুমেন্ট তৈরি করুন
                 await db.collection('adminConfig').doc('allowedEmails').set({
                     emails: [MASTER_ADMIN_EMAIL],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -772,54 +284,38 @@
             }
         } catch (error) {
             console.error("Error loading admin emails:", error);
-            showMessage('ডাটা লোড করতে সমস্যা হয়েছে', 'error');
         }
     }
 
-    // Update admin list display
+    // Update Admin List
     function updateAdminList() {
         adminEmailsList.innerHTML = '';
-        
         allowedAdminEmails.forEach((email, index) => {
             const isMaster = email.toLowerCase() === MASTER_ADMIN_EMAIL;
-            const adminRow = document.createElement('div');
-            adminRow.className = 'admin-row';
-            adminRow.innerHTML = `
-                <div>${index + 1}</div>
-                <div>${email}</div>
-                <div>
-                    ${isMaster ? 
-                        '<span class="master-badge"><i class="fas fa-crown"></i> মাস্টার</span>' : 
-                        '<span style="color:#666;">সাধারণ</span>'
-                    }
-                </div>
-                <div>
-                    ${!isMaster ? 
-                        `<button class="btn-danger" onclick="removeAdmin('${email}')">
-                            <i class="fas fa-trash"></i> ডিলিট
-                        </button>` : 
-                        '<span style="color:#999;">ডিলিট করা যাবে না</span>'
-                    }
+            adminEmailsList.innerHTML += `
+                <div class="admin-row">
+                    <div>${index + 1}</div>
+                    <div>${email}</div>
+                    <div>${isMaster ? '<span class="master-badge">মাস্টার</span>' : 'সাধারণ'}</div>
+                    <div>${!isMaster ? 
+                        `<button class="btn-danger" onclick="removeAdmin('${email}')">ডিলিট</button>` : 
+                        'ডিলিট করা যাবে না'}</div>
                 </div>
             `;
-            adminEmailsList.appendChild(adminRow);
         });
     }
 
-    // Add new admin email
+    // Add Admin
     async function addAdminEmail(email) {
-        if (!email || !email.includes('@')) {
-            showMessage('অবশ্যই একটি বৈধ জিমেইল দিন', 'error');
+        if (!email.includes('@')) {
+            showMessage('বৈধ জিমেইল দিন', 'error');
             return;
         }
-
         const emailLower = email.toLowerCase();
-        
         if (allowedAdminEmails.includes(emailLower)) {
             showMessage('এই জিমেইলটি ইতিমধ্যেই আছে', 'error');
             return;
         }
-
         try {
             allowedAdminEmails.push(emailLower);
             await db.collection('adminConfig').doc('allowedEmails').update({
@@ -827,28 +323,21 @@
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedBy: currentUser.email
             });
-            
             updateAdminList();
             newAdminEmailInput.value = '';
-            totalAdmins.textContent = allowedAdminEmails.length;
-            showMessage('নতুন অ্যাডমিন সফলভাবে যোগ করা হয়েছে!', 'success');
+            showMessage('নতুন অ্যাডমিন যোগ করা হয়েছে!', 'success');
         } catch (error) {
-            console.error("Error adding admin email:", error);
-            showMessage('ত্রুটি হয়েছে, আবার চেষ্টা করুন', 'error');
+            showMessage('ত্রুটি হয়েছে', 'error');
         }
     }
 
-    // Remove admin email
-    async function removeAdmin(email) {
+    // Remove Admin
+    window.removeAdmin = async function(email) {
         if (email.toLowerCase() === MASTER_ADMIN_EMAIL) {
             showMessage('মাস্টার অ্যাডমিন ডিলিট করা যাবে না', 'error');
             return;
         }
-
-        if (!confirm(`আপনি কি নিশ্চিত "${email}" কে অ্যাডমিন লিস্ট থেকে ডিলিট করতে চান?`)) {
-            return;
-        }
-
+        if (!confirm(`"${email}" ডিলিট করতে চান?`)) return;
         try {
             allowedAdminEmails = allowedAdminEmails.filter(e => e.toLowerCase() !== email.toLowerCase());
             await db.collection('adminConfig').doc('allowedEmails').update({
@@ -856,20 +345,14 @@
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedBy: currentUser.email
             });
-            
             updateAdminList();
-            totalAdmins.textContent = allowedAdminEmails.length;
-            showMessage('অ্যাডমিন সফলভাবে ডিলিট করা হয়েছে!', 'success');
+            showMessage('অ্যাডমিন ডিলিট করা হয়েছে!', 'success');
         } catch (error) {
-            console.error("Error removing admin email:", error);
             showMessage('ত্রুটি হয়েছে', 'error');
         }
-    }
+    };
 
-    // Make removeAdmin function globally accessible
-    window.removeAdmin = removeAdmin;
-
-    // Check if email is allowed for admin access
+    // Check Email
     function isEmailAllowed(email) {
         return allowedAdminEmails.includes(email.toLowerCase());
     }
@@ -878,10 +361,6 @@
     googleLoginBtn.addEventListener('click', async () => {
         try {
             const provider = new firebase.auth.GoogleAuthProvider();
-            provider.setCustomParameters({
-                prompt: 'select_account'
-            });
-            
             const result = await auth.signInWithPopup(provider);
             const user = result.user;
             
@@ -894,29 +373,22 @@
                 
                 if (isMasterAdmin) {
                     userRole.textContent = 'মাস্টার অ্যাডমিন';
-                    accessLevel.textContent = 'মাস্টার অ্যাডমিন';
                     adminManagementTab.style.display = 'block';
+                    await loadAdminEmails();
                 } else {
                     userRole.textContent = 'সাধারণ অ্যাডমিন';
-                    accessLevel.textContent = 'সাধারণ অ্যাডমিন';
                 }
                 
                 loginPage.style.display = 'none';
                 adminDashboard.style.display = 'block';
-                
-                // Load admin emails if master admin
-                if (isMasterAdmin) {
-                    await loadAdminEmails();
-                }
-                
-                showMessage(`স্বাগতম! সফলভাবে লগইন হয়েছে`, 'success');
+                showMessage('সফলভাবে লগইন হয়েছে!', 'success');
             } else {
                 await auth.signOut();
-                showMessage('দুঃখিত! আপনার জিমেইলে অ্যাডমিন এক্সেস নেই।', 'error');
+                showMessage('আপনার জিমেইলে অ্যাডমিন এক্সেস নেই!', 'error');
             }
         } catch (error) {
             console.error("Login error:", error);
-            showMessage('লগইন ত্রুটি: ' + error.message, 'error');
+            showMessage('ত্রুটি: ' + error.message, 'error');
         }
     });
 
@@ -926,47 +398,30 @@
             await auth.signOut();
             adminDashboard.style.display = 'none';
             loginPage.style.display = 'block';
-            currentUser = null;
-            isMasterAdmin = false;
-            showMessage('সফলভাবে লগ আউট হয়েছে!', 'success');
+            showMessage('লগ আউট হয়েছে!', 'success');
         } catch (error) {
-            showMessage('লগ আউট ত্রুটি: ' + error.message, 'error');
+            showMessage('ত্রুটি: ' + error.message, 'error');
         }
     });
 
     // Add Admin Button
     addAdminBtn.addEventListener('click', () => {
         const email = newAdminEmailInput.value.trim();
-        if (email) {
-            addAdminEmail(email);
-        } else {
-            showMessage('দয়া করে একটি জিমেইল লিখুন', 'error');
-        }
+        if (email) addAdminEmail(email);
     });
 
     // Menu Navigation
     document.querySelectorAll('.menu-item').forEach(item => {
         item.addEventListener('click', function() {
-            // Remove active class from all
-            document.querySelectorAll('.menu-item').forEach(i => {
-                i.classList.remove('active');
-            });
-            
-            // Add active class to clicked
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('section-active'));
             this.classList.add('active');
-            
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('section-active');
-            });
-            
-            // Show selected section
             const sectionId = this.getAttribute('data-section') + 'Section';
             document.getElementById(sectionId).classList.add('section-active');
         });
     });
 
-    // Auto-check if user is already logged in
+    // Auto Login Check
     auth.onAuthStateChanged(async (user) => {
         if (user && isEmailAllowed(user.email)) {
             currentUser = user;
@@ -974,15 +429,12 @@
             userInitial.textContent = user.email.charAt(0).toUpperCase();
             
             isMasterAdmin = user.email.toLowerCase() === MASTER_ADMIN_EMAIL;
-            
             if (isMasterAdmin) {
                 userRole.textContent = 'মাস্টার অ্যাডমিন';
-                accessLevel.textContent = 'মাস্টার অ্যাডমিন';
                 adminManagementTab.style.display = 'block';
                 await loadAdminEmails();
             } else {
                 userRole.textContent = 'সাধারণ অ্যাডমিন';
-                accessLevel.textContent = 'সাধারণ অ্যাডমিন';
             }
             
             loginPage.style.display = 'none';
