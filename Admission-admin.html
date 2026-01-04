@@ -672,12 +672,68 @@
                                 </form>
                             </div>
                         </div>
+
+                        <!-- প্রশ্নব্যাংক এর জন্য প্রশ্ন যোগ করার ফর্ম -->
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-question-circle"></i> প্রশ্নব্যাংকে প্রশ্ন যোগ করুন
+                            </div>
+                            <div class="card-body">
+                                <form id="bankQuestionForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">প্রশ্নব্যাংক</label>
+                                        <select class="form-select" id="bankSelectForQuestion" required>
+                                            <option value="">সিলেক্ট করুন...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">প্রশ্ন টাইপ</label>
+                                        <select class="form-select" id="bankQuestionType" required>
+                                            <option value="mcq">MCQ</option>
+                                            <option value="written">Written</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">প্রশ্ন</label>
+                                        <textarea class="form-control" id="bankQuestionText" rows="2" required></textarea>
+                                    </div>
+                                    <div id="bankMcqOptions" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন A" id="bankOptionA">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন B" id="bankOptionB">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন C" id="bankOptionC">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন D" id="bankOptionD">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">সঠিক উত্তর</label>
+                                        <input type="text" class="form-control" id="bankCorrectAnswer" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">পূর্বের পরীক্ষা</label>
+                                        <input type="text" class="form-control" id="bankPreviousExam" 
+                                               placeholder="যেমন: এসএসসি ২০২৪">
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100 py-3">
+                                        <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ করুন
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-collection"></i> সব প্রশ্নব্যাংক (এডিট/ডিলিট করুন)</span>
+                                <span><i class="bi bi-collection"></i> সব প্রশ্নব্যাংক</span>
                                 <span class="badge bg-primary fs-6 px-3 py-2" id="totalBanks">0 ব্যাংক</span>
                             </div>
                             <div class="card-body">
@@ -687,9 +743,9 @@
                                             <tr>
                                                 <th>ব্যাংক নাম</th>
                                                 <th>মোট প্রশ্ন</th>
-                                                <th>এডিট</th>
-                                                <th>ডিলিট</th>
+                                                <th>এডিট নাম</th>
                                                 <th>প্রশ্ন যোগ</th>
+                                                <th>ডিলিট</th>
                                             </tr>
                                         </thead>
                                         <tbody id="bankTableBody">
@@ -700,15 +756,19 @@
                             </div>
                         </div>
 
-                        <!-- Question Add Section for Selected Bank -->
-                        <div class="card" id="bankQuestionSection" style="display: none;">
+                        <!-- প্রশ্নব্যাংকের প্রশ্ন দেখার সেকশন -->
+                        <div class="card">
                             <div class="card-header">
-                                <i class="bi bi-question-circle"></i> প্রশ্নব্যাংকে প্রশ্ন যোগ করুন
-                                <span class="badge bg-info ms-2" id="selectedBankName"></span>
+                                <i class="bi bi-eye"></i> প্রশ্নব্যাংকের প্রশ্ন দেখুন
                             </div>
                             <div class="card-body">
-                                <div id="bankQuestionForm">
-                                    <!-- Same as subject question form -->
+                                <div class="mb-3">
+                                    <select class="form-select" id="viewBankSelect" onchange="viewBankQuestions(this.value)">
+                                        <option value="">প্রশ্নব্যাংক সিলেক্ট করুন</option>
+                                    </select>
+                                </div>
+                                <div class="question-view" id="bankQuestionsView">
+                                    <!-- Bank questions will be loaded here -->
                                 </div>
                             </div>
                         </div>
@@ -737,6 +797,67 @@
                                 </form>
                             </div>
                         </div>
+
+                        <!-- ইউনিভার্সিটির জন্য প্রশ্ন যোগ করার ফর্ম -->
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-question-circle"></i> ইউনিভার্সিটিতে প্রশ্ন যোগ করুন
+                            </div>
+                            <div class="card-body">
+                                <form id="universityQuestionForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">ইউনিভার্সিটি</label>
+                                        <select class="form-select" id="universitySelectForQuestion" required>
+                                            <option value="">সিলেক্ট করুন...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">বিষয়/ডিপার্টমেন্ট</label>
+                                        <input type="text" class="form-control" id="universityDepartment" 
+                                               placeholder="যেমন: গণিত, পদার্থবিদ্যা" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">প্রশ্ন টাইপ</label>
+                                        <select class="form-select" id="uniQuestionType" required>
+                                            <option value="mcq">MCQ</option>
+                                            <option value="written">Written</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">প্রশ্ন</label>
+                                        <textarea class="form-control" id="uniQuestionText" rows="2" required></textarea>
+                                    </div>
+                                    <div id="uniMcqOptions" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন A" id="uniOptionA">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন B" id="uniOptionB">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন C" id="uniOptionC">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control" placeholder="অপশন D" id="uniOptionD">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">সঠিক উত্তর</label>
+                                        <input type="text" class="form-control" id="uniCorrectAnswer" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">বছর</label>
+                                        <input type="text" class="form-control" id="uniYear" 
+                                               placeholder="যেমন: ২০২৪">
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100 py-3">
+                                        <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ করুন
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-lg-8">
@@ -752,15 +873,32 @@
                                             <tr>
                                                 <th>ইউনিভার্সিটি নাম</th>
                                                 <th>মোট প্রশ্ন</th>
-                                                <th>এডিট</th>
-                                                <th>ডিলিট</th>
+                                                <th>এডিট নাম</th>
                                                 <th>প্রশ্ন যোগ</th>
+                                                <th>ডিলিট</th>
                                             </tr>
                                         </thead>
                                         <tbody id="universityTableBody">
                                             <!-- Universities will be loaded here -->
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ইউনিভার্সিটির প্রশ্ন দেখার সেকশন -->
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-eye"></i> ইউনিভার্সিটির প্রশ্ন দেখুন
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <select class="form-select" id="viewUniversitySelect" onchange="viewUniversityQuestions(this.value)">
+                                        <option value="">ইউনিভার্সিটি সিলেক্ট করুন</option>
+                                    </select>
+                                </div>
+                                <div class="question-view" id="universityQuestionsView">
+                                    <!-- University questions will be loaded here -->
                                 </div>
                             </div>
                         </div>
@@ -981,7 +1119,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Same form as subject questions -->
                     <form id="modelTestQuestionForm">
                         <div class="mb-3">
                             <label class="form-label">প্রশ্ন</label>
@@ -1057,6 +1194,8 @@
         let universities = [];
         let modelTests = [];
         let allQuestions = [];
+        let bankQuestions = [];
+        let universityQuestions = [];
         let currentModelTest = {
             questions: [],
             name: '',
@@ -1066,7 +1205,6 @@
             negativeMarking: false,
             negativeMarkValue: 0.25
         };
-        let selectedBankId = null;
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
@@ -1086,6 +1224,18 @@
                     this.value === 'mcq' ? 'block' : 'none';
             });
 
+            // Question type toggle for bank questions
+            document.getElementById('bankQuestionType').addEventListener('change', function() {
+                document.getElementById('bankMcqOptions').style.display = 
+                    this.value === 'mcq' ? 'block' : 'none';
+            });
+
+            // Question type toggle for university questions
+            document.getElementById('uniQuestionType').addEventListener('change', function() {
+                document.getElementById('uniMcqOptions').style.display = 
+                    this.value === 'mcq' ? 'block' : 'none';
+            });
+
             // Question type toggle for modal questions
             document.getElementById('modalQuestionType').addEventListener('change', function() {
                 document.getElementById('modalMcqOptions').style.display = 
@@ -1100,7 +1250,9 @@
             document.getElementById('subjectForm').addEventListener('submit', addSubject);
             document.getElementById('manualQuestionForm').addEventListener('submit', addManualQuestion);
             document.getElementById('questionBankForm').addEventListener('submit', addQuestionBank);
+            document.getElementById('bankQuestionForm').addEventListener('submit', addBankQuestion);
             document.getElementById('universityForm').addEventListener('submit', addUniversity);
+            document.getElementById('universityQuestionForm').addEventListener('submit', addUniversityQuestion);
             document.getElementById('modelTestForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 saveModelTestInfo();
@@ -1172,6 +1324,7 @@
                     questionBanks.push({ id: doc.id, ...doc.data() });
                 });
                 updateBankList();
+                updateBankSelects();
 
                 // Load universities
                 const uniSnapshot = await db.collection('universities').orderBy('createdAt', 'desc').get();
@@ -1180,6 +1333,7 @@
                     universities.push({ id: doc.id, ...doc.data() });
                 });
                 updateUniversityList();
+                updateUniversitySelects();
 
                 // Load all questions
                 const questionsSnapshot = await db.collection('questions').orderBy('createdAt', 'desc').get();
@@ -1188,6 +1342,20 @@
                     allQuestions.push({ id: doc.id, ...doc.data() });
                 });
                 updateAllQuestionsView();
+
+                // Load bank questions
+                const bankQuestionsSnapshot = await db.collection('bankQuestions').orderBy('createdAt', 'desc').get();
+                bankQuestions = [];
+                bankQuestionsSnapshot.forEach(doc => {
+                    bankQuestions.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Load university questions
+                const uniQuestionsSnapshot = await db.collection('universityQuestions').orderBy('createdAt', 'desc').get();
+                universityQuestions = [];
+                uniQuestionsSnapshot.forEach(doc => {
+                    universityQuestions.push({ id: doc.id, ...doc.data() });
+                });
 
                 // Load model tests
                 const testsSnapshot = await db.collection('modelTests').orderBy('createdAt', 'desc').get();
@@ -1300,227 +1468,6 @@
             }
         }
 
-        async function handleCSVUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            showToast("ফাইল আপলোড হচ্ছে...", "info");
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const data = e.target.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                    let successCount = 0;
-                    let errorCount = 0;
-
-                    for (const row of jsonData) {
-                        try {
-                            await processCSVQuestionRow(row);
-                            successCount++;
-                        } catch (error) {
-                            console.error("Error processing row:", row, error);
-                            errorCount++;
-                        }
-                    }
-
-                    showToast(`${successCount} টি প্রশ্ন সফলভাবে আপলোড হয়েছে! ${errorCount > 0 ? `${errorCount} টি ব্যর্থ।` : ''}`, 
-                             successCount > 0 ? "success" : "error");
-                    
-                    loadAllData();
-                };
-                reader.readAsBinaryString(file);
-            } catch (error) {
-                console.error("Error processing CSV:", error);
-                showToast("CSV ফাইল প্রসেস করতে সমস্যা!", "error");
-            }
-        }
-
-        async function processCSVQuestionRow(row) {
-            const subjectName = row.subject || row.subject_name || row.subjectName;
-            const questionType = (row.type || row.question_type || 'mcq').toLowerCase();
-            const question = row.question || row.question_text;
-            const correctAnswer = row.answer || row.correct_answer;
-            const previousExam = row.previous_exam || row.exam;
-
-            if (!subjectName || !question || !correctAnswer) {
-                throw new Error("Missing required fields");
-            }
-
-            // Find or create subject
-            let subject = subjects.find(s => s.name === subjectName);
-            let subjectId;
-            
-            if (!subject) {
-                const newSubject = await db.collection('subjects').add({
-                    name: subjectName,
-                    totalMCQ: 0,
-                    totalWritten: 0,
-                    totalQuestions: 0,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                subjectId = newSubject.id;
-            } else {
-                subjectId = subject.id;
-            }
-
-            const questionData = {
-                subjectId: subjectId,
-                subjectName: subjectName,
-                type: questionType,
-                question: question,
-                correctAnswer: correctAnswer,
-                previousExam: previousExam || null,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            if (questionType === 'mcq') {
-                questionData.options = {
-                    a: row.option_a || row.a || '',
-                    b: row.option_b || row.b || '',
-                    c: row.option_c || row.c || '',
-                    d: row.option_d || row.d || ''
-                };
-            }
-
-            const questionRef = await db.collection('questions').add(questionData);
-
-            // Update subject counts
-            const updateData = {};
-            if (questionType === 'mcq') {
-                updateData.totalMCQ = firebase.firestore.FieldValue.increment(1);
-            } else {
-                updateData.totalWritten = firebase.firestore.FieldValue.increment(1);
-            }
-            updateData.totalQuestions = firebase.firestore.FieldValue.increment(1);
-            updateData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-            
-            await db.collection('subjects').doc(subjectId).update(updateData);
-
-            return questionRef.id;
-        }
-
-        // Update subject list in UI
-        function updateSubjectList() {
-            const tbody = document.getElementById('subjectTableBody');
-            tbody.innerHTML = '';
-            
-            if (subjects.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-5">
-                            <i class="bi bi-inbox fs-1 text-muted"></i>
-                            <p class="mt-3">কোনো সাবজেক্ট পাওয়া যায়নি</p>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                subjects.forEach(subject => {
-                    const mcqCount = subject.totalMCQ || 0;
-                    const writtenCount = subject.totalWritten || 0;
-                    const totalCount = mcqCount + writtenCount;
-                    
-                    const row = `
-                        <tr>
-                            <td>
-                                <strong class="fs-6">${subject.name}</strong>
-                            </td>
-                            <td><span class="badge-mcq">${mcqCount}</span></td>
-                            <td><span class="badge-written">${writtenCount}</span></td>
-                            <td><strong>${totalCount}</strong></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-sm btn-outline-primary" onclick="editSubject('${subject.id}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('${subject.id}', '${subject.name}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    tbody.innerHTML += row;
-                });
-            }
-            
-            document.getElementById('totalSubjects').textContent = `${subjects.length} সাবজেক্ট`;
-        }
-
-        function updateSubjectSelect() {
-            const select = document.getElementById('questionSubject');
-            select.innerHTML = '<option value="">সাবজেক্ট সিলেক্ট করুন...</option>';
-            
-            subjects.forEach(subject => {
-                select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
-            });
-        }
-
-        // View all questions with edit/delete
-        function updateAllQuestionsView() {
-            const container = document.getElementById('allQuestionsView');
-            container.innerHTML = '';
-            
-            if (allQuestions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="bi bi-question-circle fs-1 text-muted"></i>
-                        <p class="mt-3">কোনো প্রশ্ন পাওয়া যায়নি</p>
-                    </div>
-                `;
-                return;
-            }
-
-            allQuestions.forEach((question, index) => {
-                const subject = subjects.find(s => s.id === question.subjectId);
-                const subjectName = subject ? subject.name : 'Unknown Subject';
-                
-                const questionHtml = `
-                    <div class="question-item animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div>
-                                <span class="badge ${question.type === 'mcq' ? 'bg-primary' : 'bg-success'}">
-                                    ${question.type === 'mcq' ? 'MCQ' : 'Written'}
-                                </span>
-                                <span class="badge bg-secondary ms-2">${subjectName}</span>
-                                ${question.previousExam ? `<span class="badge bg-warning ms-2">${question.previousExam}</span>` : ''}
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editQuestion('${question.id}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteQuestion('${question.id}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <h6 class="fw-bold">${question.question}</h6>
-                        ${question.type === 'mcq' && question.options ? `
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <p><strong>A:</strong> ${question.options.a}</p>
-                                    <p><strong>B:</strong> ${question.options.b}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p><strong>C:</strong> ${question.options.c}</p>
-                                    <p><strong>D:</strong> ${question.options.d}</p>
-                                </div>
-                            </div>
-                        ` : ''}
-                        <div class="mt-3">
-                            <p class="mb-1"><strong>সঠিক উত্তর:</strong></p>
-                            <div class="bg-light p-3 rounded">
-                                ${question.correctAnswer}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += questionHtml;
-            });
-        }
-
         // ২. প্রশ্নব্যাংক ম্যানেজমেন্ট
         async function addQuestionBank(e) {
             e.preventDefault();
@@ -1548,6 +1495,65 @@
             }
         }
 
+        async function addBankQuestion(e) {
+            e.preventDefault();
+            
+            const bankId = document.getElementById('bankSelectForQuestion').value;
+            const questionType = document.getElementById('bankQuestionType').value;
+            const questionText = document.getElementById('bankQuestionText').value.trim();
+            const correctAnswer = document.getElementById('bankCorrectAnswer').value.trim();
+            const previousExam = document.getElementById('bankPreviousExam').value.trim();
+
+            if (!bankId || !questionText || !correctAnswer) {
+                showToast("সব প্রয়োজনীয় তথ্য দিন!", "warning");
+                return;
+            }
+
+            const bank = questionBanks.find(b => b.id === bankId);
+            if (!bank) {
+                showToast("প্রশ্নব্যাংক খুঁজে পাওয়া যায়নি!", "error");
+                return;
+            }
+
+            const questionData = {
+                bankId: bankId,
+                bankName: bank.name,
+                type: questionType,
+                question: questionText,
+                correctAnswer: correctAnswer,
+                previousExam: previousExam || null,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (questionType === 'mcq') {
+                questionData.options = {
+                    a: document.getElementById('bankOptionA').value.trim(),
+                    b: document.getElementById('bankOptionB').value.trim(),
+                    c: document.getElementById('bankOptionC').value.trim(),
+                    d: document.getElementById('bankOptionD').value.trim()
+                };
+            }
+
+            try {
+                await db.collection('bankQuestions').add(questionData);
+                
+                // Update bank counts
+                await db.collection('questionBanks').doc(bankId).update({
+                    totalQuestions: firebase.firestore.FieldValue.increment(1),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showToast("প্রশ্ন ব্যাংকে যোগ হয়েছে!", "success");
+                document.getElementById('bankQuestionForm').reset();
+                document.getElementById('bankMcqOptions').style.display = 'none';
+                loadAllData();
+            } catch (error) {
+                console.error("Error adding bank question:", error);
+                showToast("প্রশ্ন যোগ করতে সমস্যা!", "error");
+            }
+        }
+
+        // Update bank list in UI
         function updateBankList() {
             const tbody = document.getElementById('bankTableBody');
             tbody.innerHTML = '';
@@ -1573,13 +1579,13 @@
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteBank('${bank.id}', '${bank.name}')">
-                                    <i class="bi bi-trash"></i> ডিলিট
+                                <button class="btn btn-sm btn-success" onclick="addQuestionToBank('${bank.id}')">
+                                    <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-success" onclick="addQuestionsToBank('${bank.id}', '${bank.name}')">
-                                    <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ
+                                <button class="btn btn-sm btn-danger" onclick="deleteBank('${bank.id}')">
+                                    <i class="bi bi-trash"></i> ডিলিট
                                 </button>
                             </td>
                         </tr>
@@ -1589,6 +1595,104 @@
             }
             
             document.getElementById('totalBanks').textContent = `${questionBanks.length} ব্যাংক`;
+        }
+
+        function updateBankSelects() {
+            // For adding questions to bank
+            const select1 = document.getElementById('bankSelectForQuestion');
+            select1.innerHTML = '<option value="">প্রশ্নব্যাংক সিলেক্ট করুন...</option>';
+            
+            // For viewing bank questions
+            const select2 = document.getElementById('viewBankSelect');
+            select2.innerHTML = '<option value="">প্রশ্নব্যাংক সিলেক্ট করুন...</option>';
+            
+            questionBanks.forEach(bank => {
+                select1.innerHTML += `<option value="${bank.id}">${bank.name}</option>`;
+                select2.innerHTML += `<option value="${bank.id}">${bank.name}</option>`;
+            });
+        }
+
+        // View bank questions
+        async function viewBankQuestions(bankId) {
+            if (!bankId) return;
+            
+            const container = document.getElementById('bankQuestionsView');
+            container.innerHTML = '<div class="text-center py-4"><i class="bi bi-hourglass-split"></i> লোড হচ্ছে...</div>';
+            
+            try {
+                const snapshot = await db.collection('bankQuestions')
+                    .where('bankId', '==', bankId)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                const questions = [];
+                snapshot.forEach(doc => {
+                    questions.push({ id: doc.id, ...doc.data() });
+                });
+                
+                displayBankQuestions(questions);
+            } catch (error) {
+                console.error("Error loading bank questions:", error);
+                container.innerHTML = '<div class="text-center py-4 text-danger">প্রশ্ন লোড করতে সমস্যা!</div>';
+            }
+        }
+
+        function displayBankQuestions(questions) {
+            const container = document.getElementById('bankQuestionsView');
+            container.innerHTML = '';
+            
+            if (questions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-question-circle fs-1 text-muted"></i>
+                        <p class="mt-3">কোনো প্রশ্ন পাওয়া যায়নি</p>
+                    </div>
+                `;
+                return;
+            }
+
+            questions.forEach((question, index) => {
+                const questionHtml = `
+                    <div class="question-item animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="badge ${question.type === 'mcq' ? 'bg-primary' : 'bg-success'}">
+                                    ${question.type === 'mcq' ? 'MCQ' : 'Written'}
+                                </span>
+                                ${question.previousExam ? `<span class="badge bg-warning ms-2">${question.previousExam}</span>` : ''}
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editBankQuestion('${question.id}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteBankQuestion('${question.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold">${question.question}</h6>
+                        ${question.type === 'mcq' && question.options ? `
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p><strong>A:</strong> ${question.options.a || ''}</p>
+                                    <p><strong>B:</strong> ${question.options.b || ''}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>C:</strong> ${question.options.c || ''}</p>
+                                    <p><strong>D:</strong> ${question.options.d || ''}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="mt-3">
+                            <p class="mb-1"><strong>সঠিক উত্তর:</strong></p>
+                            <div class="bg-light p-3 rounded">
+                                ${question.correctAnswer}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHtml;
+            });
         }
 
         // ৩. ইউনিভার্সিটি ম্যানেজমেন্ট
@@ -1618,6 +1722,67 @@
             }
         }
 
+        async function addUniversityQuestion(e) {
+            e.preventDefault();
+            
+            const uniId = document.getElementById('universitySelectForQuestion').value;
+            const department = document.getElementById('universityDepartment').value.trim();
+            const questionType = document.getElementById('uniQuestionType').value;
+            const questionText = document.getElementById('uniQuestionText').value.trim();
+            const correctAnswer = document.getElementById('uniCorrectAnswer').value.trim();
+            const year = document.getElementById('uniYear').value.trim();
+
+            if (!uniId || !department || !questionText || !correctAnswer) {
+                showToast("সব প্রয়োজনীয় তথ্য দিন!", "warning");
+                return;
+            }
+
+            const university = universities.find(u => u.id === uniId);
+            if (!university) {
+                showToast("ইউনিভার্সিটি খুঁজে পাওয়া যায়নি!", "error");
+                return;
+            }
+
+            const questionData = {
+                universityId: uniId,
+                universityName: university.name,
+                department: department,
+                type: questionType,
+                question: questionText,
+                correctAnswer: correctAnswer,
+                year: year || null,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (questionType === 'mcq') {
+                questionData.options = {
+                    a: document.getElementById('uniOptionA').value.trim(),
+                    b: document.getElementById('uniOptionB').value.trim(),
+                    c: document.getElementById('uniOptionC').value.trim(),
+                    d: document.getElementById('uniOptionD').value.trim()
+                };
+            }
+
+            try {
+                await db.collection('universityQuestions').add(questionData);
+                
+                // Update university counts
+                await db.collection('universities').doc(uniId).update({
+                    totalQuestions: firebase.firestore.FieldValue.increment(1),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showToast("প্রশ্ন ইউনিভার্সিটিতে যোগ হয়েছে!", "success");
+                document.getElementById('universityQuestionForm').reset();
+                document.getElementById('uniMcqOptions').style.display = 'none';
+                loadAllData();
+            } catch (error) {
+                console.error("Error adding university question:", error);
+                showToast("প্রশ্ন যোগ করতে সমস্যা!", "error");
+            }
+        }
+
+        // Update university list in UI
         function updateUniversityList() {
             const tbody = document.getElementById('universityTableBody');
             tbody.innerHTML = '';
@@ -1643,13 +1808,13 @@
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteUniversity('${uni.id}', '${uni.name}')">
-                                    <i class="bi bi-trash"></i> ডিলিট
+                                <button class="btn btn-sm btn-success" onclick="addQuestionToUniversity('${uni.id}')">
+                                    <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-success" onclick="addQuestionsToUniversity('${uni.id}', '${uni.name}')">
-                                    <i class="bi bi-plus-circle"></i> প্রশ্ন যোগ
+                                <button class="btn btn-sm btn-danger" onclick="deleteUniversity('${uni.id}')">
+                                    <i class="bi bi-trash"></i> ডিলিট
                                 </button>
                             </td>
                         </tr>
@@ -1659,6 +1824,105 @@
             }
             
             document.getElementById('totalUniversities').textContent = `${universities.length} ইউনিভার্সিটি`;
+        }
+
+        function updateUniversitySelects() {
+            // For adding questions to university
+            const select1 = document.getElementById('universitySelectForQuestion');
+            select1.innerHTML = '<option value="">ইউনিভার্সিটি সিলেক্ট করুন...</option>';
+            
+            // For viewing university questions
+            const select2 = document.getElementById('viewUniversitySelect');
+            select2.innerHTML = '<option value="">ইউনিভার্সিটি সিলেক্ট করুন...</option>';
+            
+            universities.forEach(uni => {
+                select1.innerHTML += `<option value="${uni.id}">${uni.name}</option>`;
+                select2.innerHTML += `<option value="${uni.id}">${uni.name}</option>`;
+            });
+        }
+
+        // View university questions
+        async function viewUniversityQuestions(uniId) {
+            if (!uniId) return;
+            
+            const container = document.getElementById('universityQuestionsView');
+            container.innerHTML = '<div class="text-center py-4"><i class="bi bi-hourglass-split"></i> লোড হচ্ছে...</div>';
+            
+            try {
+                const snapshot = await db.collection('universityQuestions')
+                    .where('universityId', '==', uniId)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                const questions = [];
+                snapshot.forEach(doc => {
+                    questions.push({ id: doc.id, ...doc.data() });
+                });
+                
+                displayUniversityQuestions(questions);
+            } catch (error) {
+                console.error("Error loading university questions:", error);
+                container.innerHTML = '<div class="text-center py-4 text-danger">প্রশ্ন লোড করতে সমস্যা!</div>';
+            }
+        }
+
+        function displayUniversityQuestions(questions) {
+            const container = document.getElementById('universityQuestionsView');
+            container.innerHTML = '';
+            
+            if (questions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-question-circle fs-1 text-muted"></i>
+                        <p class="mt-3">কোনো প্রশ্ন পাওয়া যায়নি</p>
+                    </div>
+                `;
+                return;
+            }
+
+            questions.forEach((question, index) => {
+                const questionHtml = `
+                    <div class="question-item animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="badge ${question.type === 'mcq' ? 'bg-primary' : 'bg-success'}">
+                                    ${question.type === 'mcq' ? 'MCQ' : 'Written'}
+                                </span>
+                                <span class="badge bg-secondary ms-2">${question.department}</span>
+                                ${question.year ? `<span class="badge bg-warning ms-2">${question.year}</span>` : ''}
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editUniversityQuestion('${question.id}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteUniversityQuestion('${question.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold">${question.question}</h6>
+                        ${question.type === 'mcq' && question.options ? `
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p><strong>A:</strong> ${question.options.a || ''}</p>
+                                    <p><strong>B:</strong> ${question.options.b || ''}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>C:</strong> ${question.options.c || ''}</p>
+                                    <p><strong>D:</strong> ${question.options.d || ''}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="mt-3">
+                            <p class="mb-1"><strong>সঠিক উত্তর:</strong></p>
+                            <div class="bg-light p-3 rounded">
+                                ${question.correctAnswer}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHtml;
+            });
         }
 
         // ৪. মডেল টেস্ট ফাংশনস
@@ -1728,56 +1992,7 @@
             updateTestPreview();
         }
 
-        async function handleModelTestCSVUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            showToast("মডেল টেস্ট ফাইল আপলোড হচ্ছে...", "info");
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const data = e.target.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                    let addedCount = 0;
-
-                    for (const row of jsonData) {
-                        const question = {
-                            id: Date.now().toString() + Math.random(),
-                            question: row.question || row.question_text,
-                            type: (row.type || row.question_type || 'mcq').toLowerCase(),
-                            marks: parseInt(row.marks || 1),
-                            correctAnswer: row.answer || row.correct_answer,
-                            createdAt: new Date().toISOString()
-                        };
-
-                        if (question.type === 'mcq') {
-                            question.options = {
-                                a: row.option_a || row.a || '',
-                                b: row.option_b || row.b || '',
-                                c: row.option_c || row.c || '',
-                                d: row.option_d || row.d || ''
-                            };
-                        }
-
-                        currentModelTest.questions.push(question);
-                        addedCount++;
-                    }
-
-                    showToast(`${addedCount} টি প্রশ্ন মডেল টেস্টে যোগ হয়েছে!`, "success");
-                    updateTestPreview();
-                };
-                reader.readAsBinaryString(file);
-            } catch (error) {
-                console.error("Error processing CSV:", error);
-                showToast("মডেল টেস্ট CSV প্রসেস করতে সমস্যা!", "error");
-            }
-        }
-
+        // Update test preview
         function updateTestPreview() {
             const container = document.getElementById('testPreview');
             container.innerHTML = '';
@@ -1844,6 +2059,7 @@
             document.getElementById('totalMarks').value = totalMarks;
         }
 
+        // Edit and delete functions for model test questions
         function editModelTestQuestion(index) {
             const question = currentModelTest.questions[index];
             if (!question) return;
@@ -1873,11 +2089,9 @@
         }
 
         function deleteModelTestQuestion(index) {
-            if (confirm("আপনি কি এই প্রশ্ন ডিলিট করতে চান?")) {
-                currentModelTest.questions.splice(index, 1);
-                updateTestPreview();
-                showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
-            }
+            currentModelTest.questions.splice(index, 1);
+            updateTestPreview();
+            showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
         }
 
         async function saveModelTest() {
@@ -1919,6 +2133,97 @@
             } catch (error) {
                 console.error("Error saving test:", error);
                 showToast("টেস্ট সেভ করতে সমস্যা!", "error");
+            }
+        }
+
+        // CSV Upload functions
+        async function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showToast("ফাইল আপলোড হচ্ছে...", "info");
+
+            try {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const data = e.target.result;
+                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                    let successCount = 0;
+                    let errorCount = 0;
+
+                    for (const row of jsonData) {
+                        try {
+                            await processCSVQuestionRow(row);
+                            successCount++;
+                        } catch (error) {
+                            console.error("Error processing row:", row, error);
+                            errorCount++;
+                        }
+                    }
+
+                    showToast(`${successCount} টি প্রশ্ন সফলভাবে আপলোড হয়েছে! ${errorCount > 0 ? `${errorCount} টি ব্যর্থ।` : ''}`, 
+                             successCount > 0 ? "success" : "error");
+                    
+                    loadAllData();
+                };
+                reader.readAsBinaryString(file);
+            } catch (error) {
+                console.error("Error processing CSV:", error);
+                showToast("CSV ফাইল প্রসেস করতে সমস্যা!", "error");
+            }
+        }
+
+        async function handleModelTestCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showToast("মডেল টেস্ট ফাইল আপলোড হচ্ছে...", "info");
+
+            try {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const data = e.target.result;
+                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                    let addedCount = 0;
+
+                    for (const row of jsonData) {
+                        const question = {
+                            id: Date.now().toString() + Math.random(),
+                            question: row.question || row.question_text,
+                            type: (row.type || row.question_type || 'mcq').toLowerCase(),
+                            marks: parseInt(row.marks || 1),
+                            correctAnswer: row.answer || row.correct_answer,
+                            createdAt: new Date().toISOString()
+                        };
+
+                        if (question.type === 'mcq') {
+                            question.options = {
+                                a: row.option_a || row.a || '',
+                                b: row.option_b || row.b || '',
+                                c: row.option_c || row.c || '',
+                                d: row.option_d || row.d || ''
+                            };
+                        }
+
+                        currentModelTest.questions.push(question);
+                        addedCount++;
+                    }
+
+                    showToast(`${addedCount} টি প্রশ্ন মডেল টেস্টে যোগ হয়েছে!`, "success");
+                    updateTestPreview();
+                };
+                reader.readAsBinaryString(file);
+            } catch (error) {
+                console.error("Error processing CSV:", error);
+                showToast("মডেল টেস্ট CSV প্রসেস করতে সমস্যা!", "error");
             }
         }
 
@@ -1992,14 +2297,14 @@
             const container = document.getElementById('activityList');
             container.innerHTML = '';
             
-            // Combine recent activities from all collections
+            // Combine recent activities
             const activities = [];
             
             // Add subjects
             subjects.slice(0, 3).forEach(subject => {
                 activities.push({
                     text: `নতুন সাবজেক্ট: ${subject.name}`,
-                    time: subject.createdAt ? 'সম্প্রতি' : 'অজানা',
+                    time: 'সম্প্রতি',
                     icon: 'book',
                     color: 'text-primary'
                 });
@@ -2009,7 +2314,7 @@
             questionBanks.slice(0, 2).forEach(bank => {
                 activities.push({
                     text: `প্রশ্নব্যাংক: ${bank.name}`,
-                    time: bank.createdAt ? 'সম্প্রতি' : 'অজানা',
+                    time: 'সম্প্রতি',
                     icon: 'bank',
                     color: 'text-success'
                 });
@@ -2065,86 +2370,225 @@
             showToast("CSV টেমপ্লেট ডাউনলোড হয়েছে!", "success");
         }
 
-        // CRUD operations
-        async function deleteSubject(subjectId, subjectName) {
-            if (confirm(`আপনি কি "${subjectName}" সাবজেক্ট ডিলিট করতে চান?`)) {
-                try {
-                    // Delete all questions under this subject
-                    const questionsQuery = await db.collection('questions').where('subjectId', '==', subjectId).get();
-                    const deletePromises = questionsQuery.docs.map(doc => doc.ref.delete());
-                    await Promise.all(deletePromises);
-                    
-                    // Delete subject
-                    await db.collection('subjects').doc(subjectId).delete();
-                    
-                    showToast("সাবজেক্ট এবং সংশ্লিষ্ট প্রশ্ন ডিলিট হয়েছে!", "success");
-                    loadAllData();
-                } catch (error) {
-                    console.error("Error deleting subject:", error);
-                    showToast("ডিলিট করতে সমস্যা!", "error");
-                }
+        // Update subject select
+        function updateSubjectSelect() {
+            const select = document.getElementById('questionSubject');
+            select.innerHTML = '<option value="">সাবজেক্ট সিলেক্ট করুন...</option>';
+            
+            subjects.forEach(subject => {
+                select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
+            });
+        }
+
+        // View all questions
+        function updateAllQuestionsView() {
+            const container = document.getElementById('allQuestionsView');
+            container.innerHTML = '';
+            
+            if (allQuestions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-question-circle fs-1 text-muted"></i>
+                        <p class="mt-3">কোনো প্রশ্ন পাওয়া যায়নি</p>
+                    </div>
+                `;
+                return;
+            }
+
+            allQuestions.forEach((question, index) => {
+                const subject = subjects.find(s => s.id === question.subjectId);
+                const subjectName = subject ? subject.name : 'Unknown Subject';
+                
+                const questionHtml = `
+                    <div class="question-item animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="badge ${question.type === 'mcq' ? 'bg-primary' : 'bg-success'}">
+                                    ${question.type === 'mcq' ? 'MCQ' : 'Written'}
+                                </span>
+                                <span class="badge bg-secondary ms-2">${subjectName}</span>
+                                ${question.previousExam ? `<span class="badge bg-warning ms-2">${question.previousExam}</span>` : ''}
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editQuestion('${question.id}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteQuestion('${question.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold">${question.question}</h6>
+                        ${question.type === 'mcq' && question.options ? `
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p><strong>A:</strong> ${question.options.a || ''}</p>
+                                    <p><strong>B:</strong> ${question.options.b || ''}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>C:</strong> ${question.options.c || ''}</p>
+                                    <p><strong>D:</strong> ${question.options.d || ''}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="mt-3">
+                            <p class="mb-1"><strong>সঠিক উত্তর:</strong></p>
+                            <div class="bg-light p-3 rounded">
+                                ${question.correctAnswer}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHtml;
+            });
+        }
+
+        // CRUD operations - NO CONFIRMATION REQUIRED
+        async function deleteSubject(subjectId) {
+            try {
+                // Delete all questions under this subject
+                const questionsQuery = await db.collection('questions').where('subjectId', '==', subjectId).get();
+                const deletePromises = questionsQuery.docs.map(doc => doc.ref.delete());
+                await Promise.all(deletePromises);
+                
+                // Delete subject
+                await db.collection('subjects').doc(subjectId).delete();
+                
+                showToast("সাবজেক্ট এবং সংশ্লিষ্ট প্রশ্ন ডিলিট হয়েছে!", "success");
+                loadAllData();
+            } catch (error) {
+                console.error("Error deleting subject:", error);
+                showToast("ডিলিট করতে সমস্যা!", "error");
             }
         }
 
         async function deleteQuestion(questionId) {
-            if (confirm("আপনি কি এই প্রশ্ন ডিলিট করতে চান?")) {
-                try {
-                    // First get the question to update subject counts
-                    const questionDoc = await db.collection('questions').doc(questionId).get();
-                    if (questionDoc.exists) {
-                        const question = questionDoc.data();
-                        
-                        // Update subject counts
-                        const subjectRef = db.collection('subjects').doc(question.subjectId);
-                        const updateData = {};
-                        if (question.type === 'mcq') {
-                            updateData.totalMCQ = firebase.firestore.FieldValue.increment(-1);
-                        } else {
-                            updateData.totalWritten = firebase.firestore.FieldValue.increment(-1);
-                        }
-                        updateData.totalQuestions = firebase.firestore.FieldValue.increment(-1);
-                        updateData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-                        
-                        await subjectRef.update(updateData);
+            try {
+                // First get the question to update subject counts
+                const questionDoc = await db.collection('questions').doc(questionId).get();
+                if (questionDoc.exists) {
+                    const question = questionDoc.data();
+                    
+                    // Update subject counts
+                    const subjectRef = db.collection('subjects').doc(question.subjectId);
+                    const updateData = {};
+                    if (question.type === 'mcq') {
+                        updateData.totalMCQ = firebase.firestore.FieldValue.increment(-1);
+                    } else {
+                        updateData.totalWritten = firebase.firestore.FieldValue.increment(-1);
                     }
+                    updateData.totalQuestions = firebase.firestore.FieldValue.increment(-1);
+                    updateData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
                     
-                    // Delete question
-                    await db.collection('questions').doc(questionId).delete();
+                    await subjectRef.update(updateData);
+                }
+                
+                // Delete question
+                await db.collection('questions').doc(questionId).delete();
+                
+                showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
+                loadAllData();
+            } catch (error) {
+                console.error("Error deleting question:", error);
+                showToast("প্রশ্ন ডিলিট করতে সমস্যা!", "error");
+            }
+        }
+
+        async function deleteBank(bankId) {
+            try {
+                // Delete all questions under this bank
+                const questionsQuery = await db.collection('bankQuestions').where('bankId', '==', bankId).get();
+                const deletePromises = questionsQuery.docs.map(doc => doc.ref.delete());
+                await Promise.all(deletePromises);
+                
+                // Delete bank
+                await db.collection('questionBanks').doc(bankId).delete();
+                
+                showToast("প্রশ্নব্যাংক ডিলিট হয়েছে!", "success");
+                loadAllData();
+            } catch (error) {
+                console.error("Error deleting bank:", error);
+                showToast("ডিলিট করতে সমস্যা!", "error");
+            }
+        }
+
+        async function deleteBankQuestion(questionId) {
+            try {
+                // First get the question to update bank counts
+                const questionDoc = await db.collection('bankQuestions').doc(questionId).get();
+                if (questionDoc.exists) {
+                    const question = questionDoc.data();
                     
-                    showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
-                    loadAllData();
-                } catch (error) {
-                    console.error("Error deleting question:", error);
-                    showToast("প্রশ্ন ডিলিট করতে সমস্যা!", "error");
+                    // Update bank counts
+                    const bankRef = db.collection('questionBanks').doc(question.bankId);
+                    await bankRef.update({
+                        totalQuestions: firebase.firestore.FieldValue.increment(-1),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 }
+                
+                // Delete question
+                await db.collection('bankQuestions').doc(questionId).delete();
+                
+                showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
+                
+                // Reload current view
+                const bankId = document.getElementById('viewBankSelect').value;
+                if (bankId) viewBankQuestions(bankId);
+            } catch (error) {
+                console.error("Error deleting bank question:", error);
+                showToast("প্রশ্ন ডিলিট করতে সমস্যা!", "error");
             }
         }
 
-        async function deleteBank(bankId, bankName) {
-            if (confirm(`আপনি কি "${bankName}" প্রশ্নব্যাংক ডিলিট করতে চান?`)) {
-                try {
-                    await db.collection('questionBanks').doc(bankId).delete();
-                    showToast("প্রশ্নব্যাংক ডিলিট হয়েছে!", "success");
-                    loadAllData();
-                } catch (error) {
-                    showToast("ডিলিট করতে সমস্যা!", "error");
-                }
+        async function deleteUniversity(uniId) {
+            try {
+                // Delete all questions under this university
+                const questionsQuery = await db.collection('universityQuestions').where('universityId', '==', uniId).get();
+                const deletePromises = questionsQuery.docs.map(doc => doc.ref.delete());
+                await Promise.all(deletePromises);
+                
+                // Delete university
+                await db.collection('universities').doc(uniId).delete();
+                
+                showToast("ইউনিভার্সিটি ডিলিট হয়েছে!", "success");
+                loadAllData();
+            } catch (error) {
+                console.error("Error deleting university:", error);
+                showToast("ডিলিট করতে সমস্যা!", "error");
             }
         }
 
-        async function deleteUniversity(uniId, uniName) {
-            if (confirm(`আপনি কি "${uniName}" ইউনিভার্সিটি ডিলিট করতে চান?`)) {
-                try {
-                    await db.collection('universities').doc(uniId).delete();
-                    showToast("ইউনিভার্সিটি ডিলিট হয়েছে!", "success");
-                    loadAllData();
-                } catch (error) {
-                    showToast("ডিলিট করতে সমস্যা!", "error");
+        async function deleteUniversityQuestion(questionId) {
+            try {
+                // First get the question to update university counts
+                const questionDoc = await db.collection('universityQuestions').doc(questionId).get();
+                if (questionDoc.exists) {
+                    const question = questionDoc.data();
+                    
+                    // Update university counts
+                    const uniRef = db.collection('universities').doc(question.universityId);
+                    await uniRef.update({
+                        totalQuestions: firebase.firestore.FieldValue.increment(-1),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 }
+                
+                // Delete question
+                await db.collection('universityQuestions').doc(questionId).delete();
+                
+                showToast("প্রশ্ন ডিলিট হয়েছে!", "success");
+                
+                // Reload current view
+                const uniId = document.getElementById('viewUniversitySelect').value;
+                if (uniId) viewUniversityQuestions(uniId);
+            } catch (error) {
+                console.error("Error deleting university question:", error);
+                showToast("প্রশ্ন ডিলিট করতে সমস্যা!", "error");
             }
         }
 
-        // Edit functions (simplified)
+        // Edit functions
         function editSubject(subjectId) {
             const subject = subjects.find(s => s.id === subjectId);
             if (subject) {
@@ -2199,6 +2643,27 @@
             }
         }
 
+        function editBankQuestion(questionId) {
+            const question = bankQuestions.find(q => q.id === questionId);
+            if (question) {
+                const newQuestion = prompt("প্রশ্নটি এডিট করুন:", question.question);
+                if (newQuestion && newQuestion.trim() !== question.question) {
+                    db.collection('bankQuestions').doc(questionId).update({
+                        question: newQuestion.trim(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        showToast("প্রশ্ন এডিট হয়েছে!", "success");
+                        
+                        // Reload current view
+                        const bankId = document.getElementById('viewBankSelect').value;
+                        if (bankId) viewBankQuestions(bankId);
+                    }).catch(error => {
+                        showToast("এডিট করতে সমস্যা!", "error");
+                    });
+                }
+            }
+        }
+
         function editUniversity(uniId) {
             const uni = universities.find(u => u.id === uniId);
             if (uni) {
@@ -2217,16 +2682,38 @@
             }
         }
 
-        // Add questions to bank/university (simplified)
-        function addQuestionsToBank(bankId, bankName) {
-            selectedBankId = bankId;
-            showToast(`${bankName} ব্যাংকে প্রশ্ন যোগ করতে প্রস্তুত!`, "info");
-            // In a complete implementation, this would show a form to add questions
+        function editUniversityQuestion(questionId) {
+            const question = universityQuestions.find(q => q.id === questionId);
+            if (question) {
+                const newQuestion = prompt("প্রশ্নটি এডিট করুন:", question.question);
+                if (newQuestion && newQuestion.trim() !== question.question) {
+                    db.collection('universityQuestions').doc(questionId).update({
+                        question: newQuestion.trim(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        showToast("প্রশ্ন এডিট হয়েছে!", "success");
+                        
+                        // Reload current view
+                        const uniId = document.getElementById('viewUniversitySelect').value;
+                        if (uniId) viewUniversityQuestions(uniId);
+                    }).catch(error => {
+                        showToast("এডিট করতে সমস্যা!", "error");
+                    });
+                }
+            }
         }
 
-        function addQuestionsToUniversity(uniId, uniName) {
-            showToast(`${uniName} ইউনিভার্সিটিতে প্রশ্ন যোগ করতে প্রস্তুত!`, "info");
-            // In a complete implementation, this would show a form to add questions
+        // Helper functions
+        function addQuestionToBank(bankId) {
+            const select = document.getElementById('bankSelectForQuestion');
+            select.value = bankId;
+            showToast("প্রশ্নব্যাংক সিলেক্ট করা হয়েছে!", "info");
+        }
+
+        function addQuestionToUniversity(uniId) {
+            const select = document.getElementById('universitySelectForQuestion');
+            select.value = uniId;
+            showToast("ইউনিভার্সিটি সিলেক্ট করা হয়েছে!", "info");
         }
     </script>
 </body>
