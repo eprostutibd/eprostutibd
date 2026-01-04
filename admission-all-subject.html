@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সাবজেক্ট প্রশ্ন - এডমিশন অ্যাসিস্ট্যান্ট</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            margin-bottom: 10px;
+        }
+        
+        .back-btn {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #2980b9;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #1a252f;
+        }
+        
+        .question-type {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .type-btn {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .type-btn.active {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+        
+        .upload-area {
+            border: 2px dashed #3498db;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            background: #e9ecef;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .questions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .questions-table th,
+        .questions-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .questions-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .questions-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .questions-table tr:hover {
+            background: #e9ecef;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .badge-mcq {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .badge-written {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .subjects-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .subject-item {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</h1>
+            <p>নতুন সাবজেক্ট অ্যাড করুন, CSV/Excel থেকে প্রশ্ন আপলোড করুন, প্রশ্ন ম্যানেজ করুন</p>
+        </header>
+        
+        <button class="back-btn" onclick="goBack()">← ব্যাক টু ড্যাশবোর্ড</button>
+        
+        <!-- Message Display -->
+        <div id="message" class="message"></div>
+        
+        <!-- Section 1: Add New Subject -->
+        <div class="section">
+            <h3>নতুন সাবজেক্ট অ্যাড করুন</h3>
+            <form id="subjectForm">
+                <div class="form-group">
+                    <label for="subjectName">সাবজেক্ট নাম</label>
+                    <input type="text" id="subjectName" placeholder="যেমন: গণিত, ইংরেজি, বিজ্ঞান" required>
+                </div>
+                <button type="submit">সাবজেক্ট অ্যাড করুন</button>
+            </form>
+            
+            <!-- Subjects List -->
+            <div class="subjects-list" id="subjectsList">
+                <!-- Subjects will appear here -->
+            </div>
+        </div>
+        
+        <!-- Section 2: Upload Questions from CSV/Excel -->
+        <div class="section">
+            <h3>CSV/Excel থেকে প্রশ্ন আপলোড করুন</h3>
+            
+            <!-- Subject Selection -->
+            <div class="form-group">
+                <label for="uploadSubject">সাবজেক্ট সিলেক্ট করুন</label>
+                <select id="uploadSubject" required>
+                    <option value="">সিলেক্ট করুন...</option>
+                </select>
+            </div>
+            
+            <!-- Question Type Selection -->
+            <div class="form-group">
+                <label>প্রশ্ন টাইপ সিলেক্ট করুন</label>
+                <div class="question-type">
+                    <div class="type-btn active" onclick="selectType('mcq')">MCQ</div>
+                    <div class="type-btn" onclick="selectType('written')">Written</div>
+                </div>
+            </div>
+            
+            <!-- Upload Area -->
+            <div class="upload-area" onclick="document.getElementById('csvFile').click()">
+                <h4>CSV/Excel ফাইল আপলোড করুন</h4>
+                <p>ক্লিক করুন অথবা ফাইল ড্র্যাগ এন্ড ড্রপ করুন</p>
+                <p style="color: #666; font-size: 14px;">সাপোর্টেড ফরম্যাট: .csv, .xlsx, .xls</p>
+                <input type="file" id="csvFile" class="file-input" accept=".csv,.xlsx,.xls">
+            </div>
+            
+            <button onclick="uploadCSV()">আপলোড করুন</button>
+        </div>
+        
+        <!-- Section 3: View All Questions -->
+        <div class="section">
+            <h3>সকল প্রশ্ন দেখুন</h3>
+            
+            <!-- Subject Filter -->
+            <div class="form-group">
+                <label for="filterSubject">সাবজেক্ট ফিল্টার</label>
+                <select id="filterSubject" onchange="filterQuestions()">
+                    <option value="">সব সাবজেক্ট</option>
+                </select>
+            </div>
+            
+            <!-- Type Filter -->
+            <div class="form-group">
+                <label for="filterType">প্রশ্ন টাইপ ফিল্টার</label>
+                <select id="filterType" onchange="filterQuestions()">
+                    <option value="">সব টাইপ</option>
+                    <option value="mcq">MCQ</option>
+                    <option value="written">Written</option>
+                </select>
+            </div>
+            
+            <!-- Questions Table -->
+            <table class="questions-table" id="questionsTable">
+                <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="30%">প্রশ্ন</th>
+                        <th width="10%">টাইপ</th>
+                        <th width="15%">সাবজেক্ট</th>
+                        <th width="30%">উত্তর</th>
+                        <th width="10%">একশন</th>
+                    </tr>
+                </thead>
+                <tbody id="questionsBody">
+                    <!-- Questions will appear here -->
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            কোনো প্রশ্ন পাওয়া যায়নি। প্রথমে প্রশ্ন অ্যাড করুন।
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedType = 'mcq';
+        let subjects = [];
+        let questions = [];
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSubjects();
+            loadQuestions();
+        });
+        
+        // Function to go back to dashboard
+        function goBack() {
+            window.location.href = 'admin.html';
+        }
+        
+        // Function to select question type
+        function selectType(type) {
+            selectedType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Function to show message
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Add new subject
+        document.getElementById('subjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const subjectName = document.getElementById('subjectName').value.trim();
+            
+            if (!subjectName) {
+                showMessage('দয়া করে সাবজেক্ট নাম লিখুন', 'error');
+                return;
+            }
+            
+            // Add subject to array
+            subjects.push({
+                id: Date.now(),
+                name: subjectName,
+                date: new Date().toLocaleDateString('bn-BD')
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            
+            // Update UI
+            updateSubjectList();
+            updateSubjectSelects();
+            
+            // Clear form
+            document.getElementById('subjectName').value = '';
+            
+            showMessage('সাবজেক্ট সফলভাবে অ্যাড হয়েছে!', 'success');
+        });
+        
+        // Load subjects from localStorage
+        function loadSubjects() {
+            const savedSubjects = localStorage.getItem('subjects');
+            if (savedSubjects) {
+                subjects = JSON.parse(savedSubjects);
+            }
+            updateSubjectList();
+            updateSubjectSelects();
+        }
+        
+        // Update subject list display
+        function updateSubjectList() {
+            const subjectsList = document.getElementById('subjectsList');
+            subjectsList.innerHTML = '';
+            
+            subjects.forEach(subject => {
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'subject-item';
+                subjectDiv.textContent = subject.name;
+                subjectsList.appendChild(subjectDiv);
+            });
+        }
+        
+        // Update subject selects in upload and filter
+        function updateSubjectSelects() {
+            const uploadSelect = document.getElementById('uploadSubject');
+            const filterSelect = document.getElementById('filterSubject');
+            
+            uploadSelect.innerHTML = '<option value="">সিলেক্ট করুন...</option>';
+            filterSelect.innerHTML = '<option value="">সব সাবজেক্ট</option>';
+            
+            subjects.forEach(subject => {
+                const option1 = document.createElement('option');
+                option1.value = subject.id;
+                option1.textContent = subject.name;
+                uploadSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = subject.id;
+                option2.textContent = subject.name;
+                filterSelect.appendChild(option2);
+            });
+        }
+        
+        // Upload CSV file
+        function uploadCSV() {
+            const fileInput = document.getElementById('csvFile');
+            const subjectSelect = document.getElementById('uploadSubject');
+            
+            if (!subjectSelect.value) {
+                showMessage('দয়া করে সাবজেক্ট সিলেক্ট করুন', 'error');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                showMessage('দয়া করে একটি ফাইল সিলেক্ট করুন', 'error');
+                return;
+            }
+            
+            const subjectId = parseInt(subjectSelect.value);
+            const subject = subjects.find(s => s.id === subjectId);
+            
+            if (!subject) {
+                showMessage('সাবজেক্ট পাওয়া যায়নি', 'error');
+                return;
+            }
+            
+            // Simulate CSV processing (in real app, use proper CSV parsing)
+            const fileName = file.name;
+            const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+            
+            showMessage(`${fileName} ফাইল প্রসেসিং...`, 'success');
+            
+            // Simulate adding questions from CSV
+            setTimeout(() => {
+                // Add sample questions for demo
+                const newQuestions = [
+                    {
+                        id: Date.now(),
+                        question: '2 + 2 = ?',
+                        type: selectedType,
+                        subject: subject.name,
+                        answer: '4',
+                        options: selectedType === 'mcq' ? ['4', '5', '6', '7'] : []
+                    },
+                    {
+                        id: Date.now() + 1,
+                        question: 'পানির রাসায়নিক সংকেত কী?',
+                        type: selectedType,
+                        subject: subject.name,
+                        answer: 'H₂O',
+                        options: selectedType === 'mcq' ? ['H₂O', 'O₂', 'CO₂', 'NaCl'] : []
+                    }
+                ];
+                
+                // Add to questions array
+                questions.push(...newQuestions);
+                
+                // Save to localStorage
+                localStorage.setItem('questions', JSON.stringify(questions));
+                
+                // Update UI
+                loadQuestions();
+                
+                // Reset file input
+                fileInput.value = '';
+                
+                showMessage('২টি প্রশ্ন সফলভাবে আপলোড হয়েছে!', 'success');
+            }, 1000);
+        }
+        
+        // Load questions from localStorage
+        function loadQuestions() {
+            const savedQuestions = localStorage.getItem('questions');
+            if (savedQuestions) {
+                questions = JSON.parse(savedQuestions);
+            }
+            displayQuestions(questions);
+        }
+        
+        // Display questions in table
+        function displayQuestions(questionsToShow) {
+            const tbody = document.getElementById('questionsBody');
+            
+            if (questionsToShow.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            কোনো প্রশ্ন পাওয়া যায়নি। প্রথমে প্রশ্ন অ্যাড করুন।
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            questionsToShow.forEach((question, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${question.question}</td>
+                    <td>
+                        <span class="badge ${question.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
+                            ${question.type === 'mcq' ? 'MCQ' : 'Written'}
+                        </span>
+                    </td>
+                    <td>${question.subject}</td>
+                    <td>${question.answer}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editQuestion(${question.id})">এডিট</button>
+                        <button class="action-btn delete-btn" onclick="deleteQuestion(${question.id})">ডিলিট</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Filter questions by subject and type
+        function filterQuestions() {
+            const subjectId = document.getElementById('filterSubject').value;
+            const type = document.getElementById('filterType').value;
+            
+            let filteredQuestions = questions;
+            
+            if (subjectId) {
+                const subject = subjects.find(s => s.id === parseInt(subjectId));
+                if (subject) {
+                    filteredQuestions = filteredQuestions.filter(q => q.subject === subject.name);
+                }
+            }
+            
+            if (type) {
+                filteredQuestions = filteredQuestions.filter(q => q.type === type);
+            }
+            
+            displayQuestions(filteredQuestions);
+        }
+        
+        // Edit question
+        function editQuestion(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                const newQuestion = prompt('প্রশ্ন এডিট করুন:', question.question);
+                if (newQuestion) {
+                    question.question = newQuestion;
+                    
+                    const newAnswer = prompt('উত্তর এডিট করুন:', question.answer);
+                    if (newAnswer) {
+                        question.answer = newAnswer;
+                    }
+                    
+                    // Save to localStorage
+                    localStorage.setItem('questions', JSON.stringify(questions));
+                    
+                    // Update UI
+                    loadQuestions();
+                    
+                    showMessage('প্রশ্ন সফলভাবে এডিট হয়েছে!', 'success');
+                }
+            }
+        }
+        
+        // Delete question
+        function deleteQuestion(questionId) {
+            if (confirm('আপনি কি এই প্রশ্ন ডিলিট করতে চান?')) {
+                questions = questions.filter(q => q.id !== questionId);
+                
+                // Save to localStorage
+                localStorage.setItem('questions', JSON.stringify(questions));
+                
+                // Update UI
+                loadQuestions();
+                
+                showMessage('প্রশ্ন সফলভাবে ডিলিট হয়েছে!', 'success');
+            }
+        }
+    </script>
+</body>
+</html>
