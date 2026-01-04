@@ -13,174 +13,433 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary: #1a237e;
+            --secondary: #283593;
+            --accent: #ff9800;
+            --light: #f8f9fa;
+            --dark: #333;
+            --success: #4caf50;
+            --danger: #ff4444;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
         }
         
         body {
-            background: #f5f5f5;
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
         }
         
+        /* লগইন পেজ */
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #1a237e, #283593);
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(40, 53, 147, 0.9)), 
+                        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
         }
         
         .login-box {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             text-align: center;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 450px;
+            animation: fadeIn 0.8s ease;
+            border: 1px solid rgba(255,255,255,0.2);
         }
         
-        .login-box h2 {
-            color: #1a237e;
-            margin-bottom: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .logo h1 {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 16px;
         }
         
         #gmailLoginBtn {
-            background: #db4437;
+            background: linear-gradient(to right, #db4437, #ea4335);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 18px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(219, 68, 55, 0.3);
         }
         
+        #gmailLoginBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(219, 68, 55, 0.4);
+        }
+        
+        /* ড্যাশবোর্ড */
         .dashboard-container {
             display: none;
         }
         
+        /* হেডার */
         .header {
-            background: #1a237e;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 15px 30px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
-        .user-info {
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 15px;
         }
         
+        .header-left p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+        
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: #fff;
-            color: #1a237e;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 22px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .user-details h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .user-details p {
+            font-size: 13px;
+            opacity: 0.8;
         }
         
         #logoutBtn {
-            background: #ff4444;
+            background: rgba(255,255,255,0.2);
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 25px;
+            border-radius: 30px;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
+        #logoutBtn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* মেইন কনটেন্ট */
         .main-content {
-            padding: 30px;
-            max-width: 1200px;
+            padding: 40px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
+        /* ওয়েলকাম সেকশন */
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .welcome-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-name {
+            color: #ffeb3b;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .welcome-section p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .welcome-icon {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 120px;
+            opacity: 0.2;
+        }
+        
+        /* অপশন গ্রিড */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
             margin-top: 30px;
         }
         
         .option-card {
             background: white;
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 35px 30px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid transparent;
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
         }
         
         .option-card:hover {
-            transform: translateY(-5px);
-            border-color: #1a237e;
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--primary);
         }
         
-        .option-card i {
-            font-size: 40px;
-            color: #1a237e;
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 36px;
+            box-shadow: 0 10px 20px rgba(26, 35, 126, 0.2);
+        }
+        
+        .option-card h3 {
+            font-size: 24px;
+            font-weight: 600;
             margin-bottom: 15px;
+            color: var(--primary);
         }
         
+        .option-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        /* অ্যাডমিন ম্যানেজমেন্ট */
         .admin-management {
             background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 30px;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
             display: none;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 2px solid var(--primary);
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
-            color: #555;
+            color: var(--primary);
+            font-size: 16px;
         }
         
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+            outline: none;
         }
         
         .btn-primary {
-            background: #1a237e;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
+            padding: 16px 35px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.3);
         }
         
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 35, 126, 0.4);
+        }
+        
+        /* মেসেজ বক্স */
+        .message-box {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            max-width: 400px;
+            z-index: 10000;
+            animation: slideIn 0.5s ease;
+            border-left: 5px solid var(--success);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .message-box.error {
+            border-left-color: var(--danger);
+        }
+        
+        .message-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .message-box.error .message-icon {
+            background: var(--danger);
+        }
+        
+        .message-content h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .message-content p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* অ্যাডমিন লিস্ট */
         .admins-list {
             margin-top: 40px;
             padding-top: 30px;
@@ -188,22 +447,94 @@
         }
         
         .admin-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .admin-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .admin-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .admin-info p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .admin-role {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
         
         .remove-btn {
-            background: #ff4444;
+            background: var(--danger);
             color: white;
             border: none;
-            padding: 5px 15px;
-            border-radius: 4px;
+            padding: 8px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .remove-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.05);
+        }
+        
+        /* রেস্পন্সিভ */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+                text-align: center;
+            }
+            
+            .welcome-icon {
+                display: none;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -212,117 +543,174 @@
     <!-- লগইন পেজ -->
     <div id="loginPage" class="login-container">
         <div class="login-box">
-            <h2><i class="fas fa-lock"></i> অ্যাডমিন লগইন</h2>
-            <p>শুধুমাত্র ভেরিফাইড অ্যাডমিন</p>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h1>Admission Pro</h1>
+                <p>অ্যাডমিন কন্ট্রোল প্যানেল</p>
+            </div>
             <button id="gmailLoginBtn">
-                <i class="fab fa-google"></i> Gmail দিয়ে লগইন
+                <i class="fab fa-google"></i> Gmail দিয়ে লগইন করুন
             </button>
+        </div>
+    </div>
+
+    <!-- মেসেজ বক্স -->
+    <div id="messageBox" class="message-box">
+        <div class="message-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="message-content">
+            <h4 id="messageTitle">সফল!</h4>
+            <p id="messageText">অপারেশন সফলভাবে সম্পন্ন হয়েছে</p>
         </div>
     </div>
 
     <!-- ড্যাশবোর্ড -->
     <div id="dashboard" class="dashboard-container">
+        <!-- হেডার -->
         <div class="header">
-            <h1><i class="fas fa-cogs"></i> অ্যাডমিন কন্ট্রোল প্যানেল</h1>
+            <div class="header-left">
+                <h1><i class="fas fa-cogs"></i> অ্যাডমিন কন্ট্রোল প্যানেল</h1>
+                <p>Admission Pro - সকল কনটেন্ট ব্যবস্থাপনা</p>
+            </div>
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">A</div>
-                <div>
-                    <div id="userEmail"></div>
-                    <div id="userRole" style="font-size: 12px;"></div>
+                <div class="user-details">
+                    <h3 id="userName">লোড হচ্ছে...</h3>
+                    <p id="userEmail">email@example.com</p>
                 </div>
-                <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+                <button id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> লগআউট
+                </button>
             </div>
         </div>
 
+        <!-- মেইন কনটেন্ট -->
         <div class="main-content">
-            <h2>স্বাগতম, <span id="welcomeName"></span>!</h2>
-            <p>নিচের অপশন থেকে কাজ নির্বাচন করুন:</p>
+            <!-- স্বাগতম সেকশন -->
+            <div class="welcome-section">
+                <h2>স্বাগতম, <span id="welcomeName" class="welcome-name">Md Ebadot Hossen</span>!</h2>
+                <p>নিচের অপশন থেকে কাজ নির্বাচন করুন:</p>
+                <div class="welcome-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+            </div>
 
-            <!-- অপশন গ্রিড - আপনি এখানে লিংক যোগ করবেন -->
+            <!-- অপশন গ্রিড -->
             <div class="options-grid">
                 <!-- একাডেমী -->
                 <a href="academy.html" class="option-card">
-                    <i class="fas fa-graduation-cap"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
                     <h3>একাডেমী</h3>
-                    <p>একাডেমী কনটেন্ট ম্যানেজ করুন</p>
+                    <p>একাডেমী সম্পর্কিত সকল কনটেন্ট ব্যবস্থাপনা</p>
                 </a>
                 
                 <!-- এডমিশন -->
                 <a href="admission.html" class="option-card">
-                    <i class="fas fa-university"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
                     <h3>এডমিশন অ্যাসিস্ট্যান্ট</h3>
-                    <p>এডমিশন প্রশ্ন ম্যানেজ করুন</p>
+                    <p>এডমিশন প্রশ্নব্যাংক ও গাইডলাইন ম্যানেজমেন্ট</p>
                 </a>
                 
                 <!-- জব -->
                 <a href="job.html" class="option-card">
-                    <i class="fas fa-briefcase"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
                     <h3>জব অ্যাসিস্ট্যান্ট</h3>
-                    <p>জব সম্পর্কিত কনটেন্ট</p>
+                    <p>চাকরি সংক্রান্ত কনটেন্ট ও গাইডলাইন</p>
                 </a>
                 
                 <!-- মডেল টেস্ট -->
                 <a href="model-test.html" class="option-card">
-                    <i class="fas fa-file-alt"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
                     <h3>মডেল টেস্ট</h3>
-                    <p>মডেল টেস্ট তৈরি করুন</p>
+                    <p>মডেল টেস্ট তৈরি ও ব্যবস্থাপনা</p>
                 </a>
                 
                 <!-- IELTS -->
                 <a href="ielts.html" class="option-card">
-                    <i class="fas fa-globe"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
                     <h3>IELTS অ্যাসিস্ট্যান্ট</h3>
-                    <p>IELTS প্রস্তুতি কনটেন্ট</p>
+                    <p>IELTS প্রস্তুতি ও টেস্ট ম্যাটেরিয়াল</p>
                 </a>
                 
                 <!-- কারেন্ট এফেয়ার্স -->
                 <a href="current-affairs.html" class="option-card">
-                    <i class="fas fa-newspaper"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
                     <h3>কারেন্ট এফেয়ার্স</h3>
-                    <p>কারেন্ট এফেয়ার্স আপডেট করুন</p>
+                    <p>সমসাময়িক বিষয়াবলী আপডেট করুন</p>
                 </a>
                 
                 <!-- ক্যারিয়ার -->
                 <a href="career.html" class="option-card">
-                    <i class="fas fa-bullseye"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
                     <h3>ক্যারিয়ার</h3>
-                    <p>ক্যারিয়ার গাইডেন্স কনটেন্ট</p>
+                    <p>ক্যারিয়ার গাইডেন্স ও পরামর্শ</p>
                 </a>
                 
                 <!-- নোটিশ -->
                 <a href="notice.html" class="option-card">
-                    <i class="fas fa-bell"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
                     <h3>নোটিশ</h3>
-                    <p>নোটিশ ও বিজ্ঞপ্তি</p>
+                    <p>নোটিশ ও বিজ্ঞপ্তি প্রকাশ করুন</p>
                 </a>
                 
                 <!-- ব্লগ -->
                 <a href="blog.html" class="option-card">
-                    <i class="fas fa-blog"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-blog"></i>
+                    </div>
                     <h3>ব্লগ</h3>
-                    <p>ব্লগ পোস্ট ম্যানেজ করুন</p>
+                    <p>ব্লগ পোস্ট তৈরি ও এডিট করুন</p>
                 </a>
                 
                 <!-- শুধু হেড অ্যাডমিন দেখবে -->
                 <div class="option-card" id="adminManageOption" style="display: none;" onclick="showAdminManagement()">
-                    <i class="fas fa-user-shield"></i>
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
                     <h3>অ্যাডমিন ম্যানেজমেন্ট</h3>
-                    <p>নতুন অ্যাডমিন অ্যাড/রিমুভ</p>
+                    <p>নতুন অ্যাডমিন অ্যাড/রিমুভ করুন</p>
                 </div>
             </div>
 
             <!-- অ্যাডমিন ম্যানেজমেন্ট -->
             <div id="adminManagement" class="admin-management">
-                <h2><i class="fas fa-user-shield"></i> অ্যাডমিন ম্যানেজমেন্ট</h2>
+                <h2 style="color: var(--primary); margin-bottom: 30px; font-size: 32px;">
+                    <i class="fas fa-user-shield"></i> অ্যাডমিন ম্যানেজমেন্ট
+                </h2>
+                <p style="color: #666; margin-bottom: 30px; font-size: 16px;">
+                    শুধুমাত্র হেড অ্যাডমিন নতুন অ্যাডমিন অ্যাড ও রিমুভ করতে পারবে
+                </p>
                 
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                    <h3>নতুন অ্যাডমিন অ্যাড করুন</h3>
+                <!-- নতুন অ্যাডমিন ফর্ম -->
+                <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 25px; font-size: 24px;">
+                        <i class="fas fa-user-plus"></i> নতুন অ্যাডমিন অ্যাড করুন
+                    </h3>
                     <div class="form-group">
-                        <label>ইউজারনেম:</label>
-                        <input type="text" id="adminUsername" placeholder="অ্যাডমিনের নাম">
+                        <label><i class="fas fa-user"></i> ইউজারনেম:</label>
+                        <input type="text" id="adminUsername" placeholder="অ্যাডমিনের পূর্ণ নাম লিখুন">
                     </div>
                     <div class="form-group">
-                        <label>Gmail:</label>
+                        <label><i class="fas fa-envelope"></i> Gmail ঠিকানা:</label>
                         <input type="email" id="adminGmail" placeholder="example@gmail.com">
                     </div>
                     <button class="btn-primary" onclick="addNewAdmin()">
@@ -330,15 +718,21 @@
                     </button>
                 </div>
 
+                <!-- অ্যাডমিন লিস্ট -->
                 <div class="admins-list">
-                    <h3>সকল অ্যাডমিন</h3>
-                    <div id="adminsContainer"></div>
+                    <h3 style="color: var(--primary); margin-bottom: 25px; font-size: 24px;">
+                        <i class="fas fa-users"></i> সকল অ্যাডমিন তালিকা
+                    </h3>
+                    <div id="adminsContainer">
+                        <!-- অ্যাডমিন লিস্ট এখানে লোড হবে -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Firebase কনফিগ
         const firebaseConfig = {
             apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
             authDomain: "eprostutibd-9ec31.firebaseapp.com",
@@ -349,117 +743,193 @@
             measurementId: "G-E5XHV46Z6B"
         };
 
+        // Firebase শুরু
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // হেড অ্যাডমিন
         const HEAD_ADMIN = "eprostutibd@gmail.com";
 
+        // মেসেজ শো ফাংশন
+        function showMessage(title, text, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            const messageTitle = document.getElementById('messageTitle');
+            const messageText = document.getElementById('messageText');
+            const messageIcon = messageBox.querySelector('.message-icon i');
+            
+            messageTitle.textContent = title;
+            messageText.textContent = text;
+            
+            if (type === 'error') {
+                messageBox.className = 'message-box error';
+                messageIcon.className = 'fas fa-exclamation-triangle';
+            } else {
+                messageBox.className = 'message-box';
+                messageIcon.className = 'fas fa-check';
+            }
+            
+            messageBox.style.display = 'flex';
+            
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 4000);
+        }
+
+        // পেজ লোড
         document.addEventListener('DOMContentLoaded', function() {
             const loginPage = document.getElementById('loginPage');
             const dashboard = document.getElementById('dashboard');
             const loginBtn = document.getElementById('gmailLoginBtn');
             const logoutBtn = document.getElementById('logoutBtn');
+            const userName = document.getElementById('userName');
             const userEmail = document.getElementById('userEmail');
             const userAvatar = document.getElementById('userAvatar');
             const welcomeName = document.getElementById('welcomeName');
-            const userRole = document.getElementById('userRole');
             const adminManageOption = document.getElementById('adminManageOption');
 
+            // গুগল লগইন
             const provider = new firebase.auth.GoogleAuthProvider();
 
+            // লগইন বাটন
             loginBtn.addEventListener('click', function() {
-                auth.signInWithPopup(provider);
+                auth.signInWithPopup(provider).catch(error => {
+                    showMessage('লগইন ব্যর্থ', error.message, 'error');
+                });
             });
 
+            // লগআউট
             logoutBtn.addEventListener('click', function() {
                 auth.signOut();
             });
 
+            // লগইন স্টেট চেক
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
-                    const isAdmin = await checkAdmin(user.email);
+                    // অ্যাডমিন চেক
+                    const adminData = await checkAdmin(user.email);
                     
-                    if (isAdmin) {
+                    if (adminData) {
+                        // লগইন সফল
                         loginPage.style.display = 'none';
                         dashboard.style.display = 'block';
                         
+                        // ইউজার ইনফো
+                        userName.textContent = adminData.username || user.displayName || user.email.split('@')[0];
                         userEmail.textContent = user.email;
-                        userAvatar.textContent = user.email.charAt(0).toUpperCase();
-                        welcomeName.textContent = user.displayName || user.email.split('@')[0];
+                        userAvatar.textContent = (adminData.username || user.email).charAt(0).toUpperCase();
+                        welcomeName.textContent = adminData.username || user.displayName || user.email.split('@')[0];
                         
+                        // হেড অ্যাডমিন চেক
                         if (user.email === HEAD_ADMIN) {
-                            userRole.innerHTML = "হেড অ্যাডমিন";
                             adminManageOption.style.display = 'block';
                             loadAdminsList();
-                        } else {
-                            userRole.textContent = "অ্যাডমিন";
                         }
+                        
+                        showMessage('লগইন সফল', `${adminData.username} হিসেবে লগইন করা হয়েছে`);
+                        
                     } else {
-                        alert("আপনি অ্যাডমিন নন।");
+                        showMessage('অ্যাক্সেস ডিনাইড', 'আপনি অ্যাডমিন নন', 'error');
                         auth.signOut();
                     }
                 } else {
+                    // লগআউট
                     loginPage.style.display = 'flex';
                     dashboard.style.display = 'none';
                 }
             });
         });
 
+        // অ্যাডমিন চেক
         async function checkAdmin(email) {
             try {
                 const doc = await db.collection('admins').doc(email).get();
                 
                 if (doc.exists) {
-                    return true;
+                    return doc.data();
                 } else if (email === HEAD_ADMIN) {
-                    await db.collection('admins').doc(email).set({
+                    // হেড অ্যাডমিন অটো অ্যাড
+                    const adminData = {
                         email: email,
                         username: "হেড অ্যাডমিন",
                         role: 'head',
-                        created: new Date()
-                    });
-                    return true;
+                        created: new Date(),
+                        addedBy: "system"
+                    };
+                    await db.collection('admins').doc(email).set(adminData);
+                    return adminData;
                 }
-                return false;
+                return null;
             } catch (error) {
-                return false;
+                console.error("অ্যাডমিন চেক ত্রুটি:", error);
+                return null;
             }
         }
 
+        // অ্যাডমিন ম্যানেজমেন্ট শো
         function showAdminManagement() {
             const user = auth.currentUser;
             
             if (!user || user.email !== HEAD_ADMIN) {
-                alert("শুধু হেড অ্যাডমিন");
+                showMessage('অ্যাক্সেস ডিনাইড', 'শুধু হেড অ্যাডমিন এই অংশ এক্সেস করতে পারে', 'error');
                 return;
             }
             
+            // অন্যান্য কনটেন্ট হাইড
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // অ্যাডমিন ম্যানেজমেন্ট শো
             document.getElementById('adminManagement').style.display = 'block';
+            
+            // বাটন যোগ ব্যাক করার
+            const backBtn = document.createElement('button');
+            backBtn.className = 'btn-primary';
+            backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> ব্যাক';
+            backBtn.style.marginTop = '20px';
+            backBtn.onclick = function() {
+                document.querySelectorAll('.option-card').forEach(card => {
+                    card.style.display = 'block';
+                });
+                document.getElementById('adminManagement').style.display = 'none';
+                backBtn.remove();
+            };
+            document.getElementById('adminManagement').appendChild(backBtn);
         }
 
+        // নতুন অ্যাডমিন অ্যাড
         async function addNewAdmin() {
             const username = document.getElementById('adminUsername').value;
             const email = document.getElementById('adminGmail').value;
             const user = auth.currentUser;
             
+            // শুধু হেড অ্যাডমিন পারবে
             if (!user || user.email !== HEAD_ADMIN) {
-                alert("শুধু হেড অ্যাডমিন");
+                showMessage('অ্যাক্সেস ডিনাইড', 'শুধু হেড অ্যাডমিন নতুন অ্যাডমিন অ্যাড করতে পারে', 'error');
                 return;
             }
             
             if (!username || !email) {
-                alert("ইউজারনেম ও Gmail দিন");
+                showMessage('তথ্য অসম্পূর্ণ', 'ইউজারনেম ও Gmail দিন', 'error');
+                return;
+            }
+            
+            if (!email.includes('@gmail.com')) {
+                showMessage('ভুল ইমেইল', 'সঠিক Gmail ঠিকানা দিন', 'error');
                 return;
             }
             
             try {
+                // চেক করুন আগে থেকে আছে কিনা
                 const existing = await db.collection('admins').doc(email).get();
                 
                 if (existing.exists) {
-                    alert("এই Gmail ইতিমধ্যেই আছে");
+                    showMessage('ইতিমধ্যেই আছে', 'এই Gmail ইতিমধ্যেই অ্যাডমিন আছে', 'error');
                     return;
                 }
                 
+                // নতুন অ্যাডমিন অ্যাড
                 await db.collection('admins').doc(email).set({
                     email: email,
                     username: username,
@@ -468,16 +938,21 @@
                     addedAt: new Date()
                 });
                 
-                alert("অ্যাডমিন অ্যাড করা হয়েছে!");
+                showMessage('সফল!', `${username} অ্যাডমিন হিসেবে অ্যাড করা হয়েছে`);
+                
+                // ফর্ম ক্লিয়ার
                 document.getElementById('adminUsername').value = '';
                 document.getElementById('adminGmail').value = '';
+                
+                // লিস্ট আপডেট
                 loadAdminsList();
                 
             } catch (error) {
-                alert("ত্রুটি: " + error.message);
+                showMessage('ত্রুটি', error.message, 'error');
             }
         }
 
+        // অ্যাডমিন লিস্ট লোড
         async function loadAdminsList() {
             const user = auth.currentUser;
             if (!user || user.email !== HEAD_ADMIN) return;
@@ -492,38 +967,50 @@
                     const adminDiv = document.createElement('div');
                     adminDiv.className = 'admin-item';
                     
+                    const roleText = data.role === 'head' ? 'হেড অ্যাডমিন' : 'অ্যাডমিন';
+                    
                     adminDiv.innerHTML = `
-                        <div>
-                            <strong>${data.username || data.email}</strong>
-                            <div>${data.email}</div>
+                        <div class="admin-info">
+                            <h4>${data.username || data.email}</h4>
+                            <p>${data.email}</p>
+                            <span class="admin-role">${roleText}</span>
                         </div>
                         ${data.email !== HEAD_ADMIN ? 
-                            `<button class="remove-btn" onclick="removeAdmin('${data.email}')">রিমুভ</button>` 
-                            : '<span>মালিক</span>'
+                            `<button class="remove-btn" onclick="removeAdmin('${data.email}', '${data.username || data.email}')">
+                                <i class="fas fa-trash"></i> রিমুভ
+                            </button>` 
+                            : '<span style="color: #ff9800; font-weight: bold; padding: 8px 15px; background: #fff3e0; border-radius: 8px;">মালিক</span>'
                         }
                     `;
                     
                     container.appendChild(adminDiv);
                 });
             } catch (error) {
-                console.error(error);
+                console.error("লিস্ট লোড ত্রুটি:", error);
             }
         }
 
-        async function removeAdmin(email) {
+        // অ্যাডমিন রিমুভ
+        async function removeAdmin(email, username) {
             const user = auth.currentUser;
             
             if (!user || user.email !== HEAD_ADMIN) {
-                alert("শুধু হেড অ্যাডমিন");
+                showMessage('অ্যাক্সেস ডিনাইড', 'শুধু হেড অ্যাডমিন রিমুভ করতে পারে', 'error');
                 return;
             }
             
-            if (confirm(`"${email}" রিমুভ করবেন?`)) {
+            if (email === HEAD_ADMIN) {
+                showMessage('অসম্ভব', 'হেড অ্যাডমিন রিমুভ করা যাবে না', 'error');
+                return;
+            }
+            
+            if (confirm(`আপনি কি "${username}" (${email}) অ্যাডমিন রিমুভ করতে চান?`)) {
                 try {
                     await db.collection('admins').doc(email).delete();
                     loadAdminsList();
+                    showMessage('সফল!', `${username} অ্যাডমিন রিমুভ করা হয়েছে`);
                 } catch (error) {
-                    alert("ত্রুটি");
+                    showMessage('ত্রুটি', error.message, 'error');
                 }
             }
         }
