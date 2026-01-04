@@ -4,680 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-        }
-        
         * {
-            font-family: 'Segoe UI', 'Kalpurush', 'Siyam Rupali', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
-            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
         
-        .admin-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        
-        .admin-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
+        header {
+            background: #2c3e50;
             color: white;
-            padding: 40px;
+            padding: 20px 0;
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 10px;
         }
         
-        .admin-header::after {
-            content: '';
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to bottom right, transparent 49%, rgba(255,255,255,0.95) 50%);
-        }
-        
-        .admin-header h1 {
-            font-weight: 800;
-            font-size: 3.2rem;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .admin-header h1 i {
-            color: var(--secondary-color);
-            margin-right: 15px;
-        }
-        
-        .admin-header p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-            line-height: 1.6;
-        }
-        
-        .admin-body {
-            padding: 60px 40px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .modules-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .module-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .module-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            border-color: var(--secondary-color);
-        }
-        
-        .module-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
-        }
-        
-        .module-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        
-        .module-card:nth-child(1) .module-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .module-card:nth-child(2) .module-icon {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .module-card:nth-child(3) .module-icon {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .module-card:nth-child(4) .module-icon {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
-        
-        .module-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .module-description {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        
-        .module-link {
-            display: inline-block;
-            background: var(--secondary-color);
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: 2px solid var(--secondary-color);
-        }
-        
-        .module-link:hover {
-            background: transparent;
-            color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-        
-        .module-link i {
-            margin-right: 8px;
-        }
-        
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            border-color: var(--secondary-color);
-            transform: translateY(-5px);
-        }
-        
-        .stat-number {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--primary-color);
+        header h1 {
             margin-bottom: 10px;
-            line-height: 1;
         }
         
-        .stat-label {
-            color: #666;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .admin-footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--primary-color);
-            color: white;
-            margin-top: 60px;
-        }
-        
-        .admin-footer p {
-            margin: 0;
-            opacity: 0.8;
-        }
-        
-        .module-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-secondary {
-            background: #f8f9fa;
-            color: var(--primary-color);
-            border: 2px solid #dee2e6;
-            padding: 8px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        @media (max-width: 768px) {
-            .admin-header {
-                padding: 30px 20px;
-            }
-            
-            .admin-header h1 {
-                font-size: 2.2rem;
-            }
-            
-            .admin-body {
-                padding: 40px 20px;
-            }
-            
-            .modules-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 700;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
-            border-radius: 2px;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-        
-        .quick-links {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 40px;
-        }
-        
-        .links-grid {
+        .modules {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
         
-        .link-item {
+        .module-card {
             background: white;
-            padding: 20px;
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: all 0.3s;
-            border: 2px solid transparent;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
         }
         
-        .link-item:hover {
-            border-color: var(--secondary-color);
+        .module-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
-        .link-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            background: var(--secondary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
+        .module-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         
-        .link-text {
-            font-weight: 600;
-        }
-        
-        .link-desc {
-            font-size: 0.85rem;
+        .module-card p {
             color: #666;
-            margin-top: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .module-link {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .module-link:hover {
+            background: #2980b9;
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <!-- Header Section -->
-        <div class="admin-header">
-            <h1><i class="bi bi-journal-bookmark-fill"></i> এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</h1>
-            <p>সাবজেক্ট বেসিস প্রশ্ন, প্রশ্নব্যাংক, ইউনিভার্সিটি প্রশ্ন ও মডেল টেস্ট ম্যানেজমেন্ট সিস্টেম</p>
-        </div>
-
-        <!-- Main Body Section -->
-        <div class="admin-body">
-            <!-- Stats Section -->
-            <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-number">৪</div>
-                    <div class="stat-label">মডিউল</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">০</div>
-                    <div class="stat-label">সক্রিয় লিঙ্ক</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">১০০%</div>
-                    <div class="stat-label">রেডি</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">২৪/৭</div>
-                    <div class="stat-label">এক্সেস</div>
-                </div>
+    <div class="container">
+        <header>
+            <h1>এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</h1>
+            <p>সাবজেক্ট প্রশ্ন, প্রশ্নব্যাংক, ইউনিভার্সিটি প্রশ্ন, মডেল টেস্ট</p>
+        </header>
+        
+        <div class="modules">
+            <!-- Module 1: Subject Questions -->
+            <div class="module-card">
+                <h3>সাবজেক্ট প্রশ্ন</h3>
+                <p>সাবজেক্ট ভিত্তিক প্রশ্ন ম্যানেজমেন্ট</p>
+                <a href="subject-questions.html" class="module-link">খুলুন</a>
             </div>
-
-            <!-- Modules Section -->
-            <h2 class="section-title">অ্যাডমিন মডিউলসমূহ</h2>
-            <p class="section-subtitle">
-                নিচের মডিউলগুলোতে ক্লিক করে সংশ্লিষ্ট পেজে যান। প্রতিটি মডিউল সম্পূর্ণভাবে আলাদা এবং স্বাধীনভাবে কাজ করবে।
-            </p>
             
-            <div class="modules-container">
-                <!-- Module 1: Subject Questions -->
-                <div class="module-card">
-                    <div class="module-icon">
-                        <i class="bi bi-book"></i>
-                    </div>
-                    <h3 class="module-title">সাবজেক্ট প্রশ্ন</h3>
-                    <p class="module-description">
-                        সাবজেক্ট ভিত্তিক প্রশ্ন ম্যানেজমেন্ট সিস্টেম। নতুন সাবজেক্ট অ্যাড করুন, প্রশ্ন আপলোড করুন (ম্যানুয়াল/CSV/Excel), এডিট/ডিলিট করুন এবং পূর্বের পরীক্ষার তথ্য সংরক্ষণ করুন।
-                    </p>
-                    <div class="module-actions">
-                        <a href="subject-questions.html" class="module-link">
-                            <i class="bi bi-arrow-right-circle"></i> মডিউলে যান
-                        </a>
-                        <a href="add-subject-question.html" class="btn-secondary">
-                            <i class="bi bi-plus-circle"></i> প্রশ্ন অ্যাড
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Module 2: Question Bank -->
-                <div class="module-card">
-                    <div class="module-icon">
-                        <i class="bi bi-bank"></i>
-                    </div>
-                    <h3 class="module-title">প্রশ্নব্যাংক</h3>
-                    <p class="module-description">
-                        প্রশ্নব্যাংক তৈরি করুন, প্রশ্ন যোগ করুন, CSV/Excel থেকে ইম্পোর্ট করুন। পূর্বের পরীক্ষার প্রশ্ন ট্র্যাক করুন এবং প্রয়োজন অনুযায়ী প্রশ্ন এডিট/ডিলিট করুন।
-                    </p>
-                    <div class="module-actions">
-                        <a href="question-bank.html" class="module-link">
-                            <i class="bi bi-arrow-right-circle"></i> মডিউলে যান
-                        </a>
-                        <a href="add-question-bank.html" class="btn-secondary">
-                            <i class="bi bi-plus-circle"></i> ব্যাংক তৈরি
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Module 3: University Questions -->
-                <div class="module-card">
-                    <div class="module-icon">
-                        <i class="bi bi-building"></i>
-                    </div>
-                    <h3 class="module-title">ইউনিভার্সিটি প্রশ্ন</h3>
-                    <p class="module-description">
-                        বিভিন্ন বিশ্ববিদ্যালয়ের ভর্তি পরীক্ষার প্রশ্নব্যাংক ম্যানেজমেন্ট। বিশ্ববিদ্যালয় অনুযায়ী প্রশ্ন সংরক্ষণ করুন, বিষয়ভিত্তিক বিভাগ তৈরি করুন এবং প্রশ্ন ম্যানেজ করুন।
-                    </p>
-                    <div class="module-actions">
-                        <a href="university-questions.html" class="module-link">
-                            <i class="bi bi-arrow-right-circle"></i> মডিউলে যান
-                        </a>
-                        <a href="add-university.html" class="btn-secondary">
-                            <i class="bi bi-plus-circle"></i> বিশ্ববিদ্যালয় অ্যাড
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Module 4: Model Test -->
-                <div class="module-card">
-                    <div class="module-icon">
-                        <i class="bi bi-clipboard-check"></i>
-                    </div>
-                    <h3 class="module-title">মডেল টেস্ট</h3>
-                    <p class="module-description">
-                        মডেল টেস্ট তৈরি করুন, প্রশ্ন সেট করুন, টেস্ট প্যারামিটার কনফিগার করুন। টাইম লিমিট, নেগেটিভ মার্কিং, পাশ মার্কস সেট করুন এবং টেস্ট প্রিভিউ ও এডিট করুন।
-                    </p>
-                    <div class="module-actions">
-                        <a href="model-test.html" class="module-link">
-                            <i class="bi bi-arrow-right-circle"></i> মডিউলে যান
-                        </a>
-                        <a href="create-model-test.html" class="btn-secondary">
-                            <i class="bi bi-plus-circle"></i> টেস্ট তৈরি
-                        </a>
-                    </div>
-                </div>
+            <!-- Module 2: Question Bank -->
+            <div class="module-card">
+                <h3>প্রশ্নব্যাংক</h3>
+                <p>প্রশ্নব্যাংক ম্যানেজমেন্ট সিস্টেম</p>
+                <a href="question-bank.html" class="module-link">খুলুন</a>
             </div>
-
-            <!-- Quick Links Section -->
-            <div class="quick-links">
-                <h3 style="color: var(--primary-color); margin-bottom: 25px; font-weight: 600;">
-                    <i class="bi bi-lightning-charge-fill me-2"></i> দ্রুত লিঙ্কসমূহ
-                </h3>
-                <div class="links-grid">
-                    <a href="subject-questions.html" class="link-item">
-                        <div class="link-icon" style="background: #667eea;">
-                            <i class="bi bi-book"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">সাবজেক্ট প্রশ্ন</div>
-                            <div class="link-desc">বিষয়ভিত্তিক প্রশ্ন ম্যানেজ করুন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="question-bank.html" class="link-item">
-                        <div class="link-icon" style="background: #f5576c;">
-                            <i class="bi bi-bank"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">প্রশ্নব্যাংক</div>
-                            <div class="link-desc">প্রশ্ন ব্যাংক ম্যানেজ করুন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="university-questions.html" class="link-item">
-                        <div class="link-icon" style="background: #4facfe;">
-                            <i class="bi bi-building"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">ইউনিভার্সিটি প্রশ্ন</div>
-                            <div class="link-desc">বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="model-test.html" class="link-item">
-                        <div class="link-icon" style="background: #43e97b;">
-                            <i class="bi bi-clipboard-check"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">মডেল টেস্ট</div>
-                            <div class="link-desc">মডেল টেস্ট তৈরি করুন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="dashboard.html" class="link-item">
-                        <div class="link-icon" style="background: #f39c12;">
-                            <i class="bi bi-speedometer2"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">ড্যাশবোর্ড</div>
-                            <div class="link-desc">সার্বিক অবস্থা দেখুন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="upload-questions.html" class="link-item">
-                        <div class="link-icon" style="background: #9b59b6;">
-                            <i class="bi bi-cloud-arrow-up"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">CSV আপলোড</div>
-                            <div class="link-desc">CSV/Excel থেকে প্রশ্ন আপলোড</div>
-                        </div>
-                    </a>
-                    
-                    <a href="view-questions.html" class="link-item">
-                        <div class="link-icon" style="background: #1abc9c;">
-                            <i class="bi bi-eye"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">প্রশ্ন দেখুন</div>
-                            <div class="link-desc">সমস্ত প্রশ্ন ব্রাউজ করুন</div>
-                        </div>
-                    </a>
-                    
-                    <a href="settings.html" class="link-item">
-                        <div class="link-icon" style="background: #34495e;">
-                            <i class="bi bi-gear"></i>
-                        </div>
-                        <div>
-                            <div class="link-text">সেটিংস</div>
-                            <div class="link-desc">সিস্টেম সেটিংস কনফিগার করুন</div>
-                        </div>
-                    </a>
-                </div>
+            
+            <!-- Module 3: University Questions -->
+            <div class="module-card">
+                <h3>ইউনিভার্সিটি প্রশ্ন</h3>
+                <p>ইউনিভার্সিটি ভিত্তিক প্রশ্ন</p>
+                <a href="university-questions.html" class="module-link">খুলুন</a>
             </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="admin-footer">
-            <p>© ২০২৪ এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন সিস্টেম | Version 1.0</p>
-            <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">
-                প্রতিটি মডিউল সম্পূর্ণ আলাদা পেজে তৈরি হবে। লিঙ্কগুলো সরাসরি কোডে সেট করা আছে।
-            </p>
+            
+            <!-- Module 4: Model Test -->
+            <div class="module-card">
+                <h3>মডেল টেস্ট</h3>
+                <p>মডেল টেস্ট তৈরি ও ম্যানেজমেন্ট</p>
+                <a href="model-test.html" class="module-link">খুলুন</a>
+            </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Function to handle module clicks with animation
-        document.querySelectorAll('.module-link, .link-item').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Add click animation
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 200);
-                
-                // Check if the link is valid
-                const href = this.getAttribute('href');
-                if (href && !href.includes('.html')) {
-                    e.preventDefault();
-                    alert('দয়া করে লিঙ্কটি সঠিকভাবে সেট করুন।');
-                }
-            });
-        });
-        
-        // Add hover effect to all cards
-        document.querySelectorAll('.module-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.zIndex = '10';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.zIndex = '1';
-            });
-        });
-        
-        // Simulate loading animation for stats
-        document.addEventListener('DOMContentLoaded', function() {
-            const stats = document.querySelectorAll('.stat-number');
-            stats.forEach(stat => {
-                const finalNumber = stat.textContent;
-                stat.textContent = '0';
-                
-                let counter = 0;
-                const interval = setInterval(() => {
-                    counter++;
-                    stat.textContent = counter;
-                    
-                    if (counter >= parseInt(finalNumber)) {
-                        clearInterval(interval);
-                        stat.textContent = finalNumber;
-                    }
-                }, 100);
-            });
-        });
-        
-        // Current date and time display
-        function updateDateTime() {
-            const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true 
-            };
-            
-            const dateTimeStr = now.toLocaleDateString('bn-BD', options);
-            
-            // Create or update datetime element
-            let datetimeEl = document.getElementById('current-datetime');
-            if (!datetimeEl) {
-                datetimeEl = document.createElement('div');
-                datetimeEl.id = 'current-datetime';
-                datetimeEl.style.cssText = `
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background: var(--primary-color);
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 10px;
-                    font-size: 0.9rem;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                    z-index: 1000;
-                `;
-                document.body.appendChild(datetimeEl);
-            }
-            
-            datetimeEl.innerHTML = `<i class="bi bi-calendar-check me-2"></i> ${dateTimeStr}`;
-        }
-        
-        // Update datetime every second
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Initial call
-    </script>
 </body>
 </html>
