@@ -4,17 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</title>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    <!-- Bootstrap -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <!-- SweetAlert2 for Beautiful Popups -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Excel/CSV Reader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
             --primary-color: #4e73df;
@@ -34,114 +26,215 @@
             padding: 20px;
         }
         
-        .dashboard-container {
-            max-width: 1400px;
+        .admin-container {
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+            min-height: 80vh;
         }
         
-        .header {
+        .admin-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
         
-        .header::before {
+        .admin-header::before {
             content: '';
             position: absolute;
             top: -50%;
             right: -20%;
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
         }
         
-        .header h1 {
-            font-weight: 700;
+        .admin-header h1 {
+            font-weight: 800;
+            font-size: 2.8rem;
             margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
         }
         
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-        
-        .nav-tabs {
-            background: #f8f9fc;
-            padding: 0 30px;
-            border-bottom: 3px solid #e3e6f0;
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-        }
-        
-        .nav-tabs .nav-link {
-            border: none;
-            color: #5a5c69;
-            font-weight: 600;
-            padding: 15px 25px;
-            white-space: nowrap;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .nav-tabs .nav-link:hover {
-            color: var(--primary-color);
-            background: rgba(78, 115, 223, 0.05);
-        }
-        
-        .nav-tabs .nav-link.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            background: transparent;
-        }
-        
-        .tab-content {
-            padding: 30px;
-        }
-        
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-        }
-        
-        .card-header {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
-            border-bottom: 2px solid var(--primary-color);
-            border-radius: 15px 15px 0 0 !important;
-            font-weight: 700;
+        .admin-header p {
             font-size: 1.2rem;
-            padding: 20px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .admin-body {
+            padding: 40px;
+        }
+        
+        .section-title {
+            color: #2e3a59;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .module-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .module-card:hover .module-icon {
+            transform: scale(1.1);
+        }
+        
+        .icon-subject {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .icon-questionbank {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .icon-university {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .icon-modeltest {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2e3a59;
+        }
+        
+        .module-description {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .module-features {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .module-features li {
+            margin-bottom: 8px;
+            color: #495057;
+            position: relative;
+        }
+        
+        .module-features li:before {
+            content: '✓';
+            position: absolute;
+            left: -20px;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .link-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .link-title {
+            color: #2e3a59;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+        
+        .link-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            outline: none;
         }
         
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
             border: none;
-            padding: 10px 25px;
+            color: white;
+            padding: 12px 30px;
             border-radius: 10px;
             font-weight: 600;
-            transition: all 0.3s;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
@@ -149,2084 +242,457 @@
             box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3);
         }
         
-        .btn-success {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #17a673 100%);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning-color) 0%, #dda20a 100%);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger-color) 0%, #c03527 100%);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .upload-area {
-            border: 3px dashed #4e73df;
-            border-radius: 15px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: rgba(78, 115, 223, 0.05);
-        }
-        
-        .upload-area:hover {
-            background: rgba(78, 115, 223, 0.1);
-            border-color: #224abe;
-        }
-        
-        .upload-area i {
-            font-size: 48px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .question-type-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .question-type-btn {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #e3e6f0;
-            border-radius: 10px;
-            background: white;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .question-type-btn.active {
-            border-color: var(--primary-color);
-            background: rgba(78, 115, 223, 0.1);
-            color: var(--primary-color);
-        }
-        
-        .question-type-btn i {
-            font-size: 24px;
-            margin-bottom: 10px;
-            display: block;
-        }
-        
-        .question-item {
-            background: #f8f9fc;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .question-item.written {
-            border-left-color: var(--secondary-color);
-        }
-        
-        .question-actions {
-            display: flex;
-            gap: 5px;
-            margin-top: 10px;
-        }
-        
-        .stats-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .stats-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .stats-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
-        }
-        
-        .icon-subject { background: linear-gradient(135deg, #e1f0ff 0%, #4e73df 100%); color: white; }
-        .icon-question { background: linear-gradient(135deg, #e6fff2 0%, #1cc88a 100%); color: white; }
-        .icon-bank { background: linear-gradient(135deg, #fff2e6 0%, #f6c23e 100%); color: white; }
-        .icon-university { background: linear-gradient(135deg, #f0e6ff 0%, #6f42c1 100%); color: white; }
-        .icon-test { background: linear-gradient(135deg, #ffe6e6 0%, #e74a3b 100%); color: white; }
-        
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 10px 0;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: #4a4c5a;
-            margin-bottom: 8px;
-        }
-        
-        .form-control, .form-select {
-            border-radius: 10px;
-            padding: 12px 15px;
-            border: 2px solid #e3e6f0;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
-        }
-        
-        .table {
+        .links-list {
             background: white;
             border-radius: 10px;
-            overflow: hidden;
+            padding: 20px;
+            margin-top: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
-        .table th {
-            background: linear-gradient(135deg, #f8f9fc 0%, #e3e6f0 100%);
-            border: none;
-            font-weight: 700;
-            color: #4a4c5a;
+        .link-item {
             padding: 15px;
-            text-align: center;
-        }
-        
-        .table td {
-            padding: 15px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e3e6f0;
-        }
-        
-        .badge-mcq {
-            background: linear-gradient(135deg, #e1f0ff 0%, #4e73df 100%);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        
-        .badge-written {
-            background: linear-gradient(135deg, #e6fff2 0%, #1cc88a 100%);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        
-        .exam-badge {
-            background: linear-gradient(135deg, #fff2e6 0%, #f6c23e 100%);
-            color: #000;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .action-buttons {
+            border-bottom: 1px solid #e1e5eb;
             display: flex;
-            gap: 5px;
-            justify-content: center;
-        }
-        
-        .action-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
         }
         
-        .edit-btn {
-            background: rgba(78, 115, 223, 0.1);
+        .link-item:last-child {
+            border-bottom: none;
+        }
+        
+        .link-name {
+            font-weight: 600;
+            color: #2e3a59;
+        }
+        
+        .link-url {
             color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
         }
         
-        .edit-btn:hover {
-            background: var(--primary-color);
-            color: white;
+        .link-url:hover {
+            text-decoration: underline;
         }
         
         .delete-btn {
-            background: rgba(231, 74, 59, 0.1);
+            background: none;
+            border: none;
             color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
         }
         
-        .delete-btn:hover {
-            background: var(--danger-color);
-            color: white;
-        }
-        
-        .view-btn {
-            background: rgba(28, 200, 138, 0.1);
-            color: var(--secondary-color);
-        }
-        
-        .view-btn:hover {
-            background: var(--secondary-color);
-            color: white;
-        }
-        
-        .preview-question {
-            background: #f8f9fc;
-            border-radius: 10px;
+        .admin-footer {
+            text-align: center;
             padding: 20px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .preview-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
+            color: #6c757d;
+            border-top: 1px solid #e1e5eb;
+            margin-top: 40px;
         }
         
         @media (max-width: 768px) {
-            .header {
-                padding: 20px;
+            .admin-header {
+                padding: 30px 20px;
             }
             
-            .nav-tabs {
-                padding: 0 15px;
-            }
-            
-            .nav-tabs .nav-link {
-                padding: 12px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .tab-content {
-                padding: 20px;
-            }
-            
-            .stats-card {
-                padding: 15px;
-            }
-            
-            .stats-number {
+            .admin-header h1 {
                 font-size: 2rem;
             }
+            
+            .admin-body {
+                padding: 20px;
+            }
+            
+            .module-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .link-section {
+                padding: 20px;
+            }
         }
         
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1050;
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
         }
         
-        .custom-toast {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            border-left: 5px solid var(--primary-color);
-            min-width: 300px;
-            max-width: 400px;
-        }
-        
-        .toast-success {
-            border-left-color: var(--secondary-color);
-        }
-        
-        .toast-error {
-            border-left-color: var(--danger-color);
-        }
-        
-        .toast-warning {
-            border-left-color: var(--warning-color);
-        }
-        
-        .toast-header {
-            background: white;
-            border-bottom: none;
-            border-radius: 10px 10px 0 0;
-            padding: 15px 20px;
-        }
-        
-        .toast-body {
-            padding: 20px;
+        .empty-state i {
+            font-size: 48px;
+            color: #dee2e6;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1><i class="bi bi-journal-bookmark-fill"></i> এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</h1>
-                    <p>সাবজেক্ট বেসিস প্রশ্ন, প্রশ্নব্যাংক, ইউনিভার্সিটি প্রশ্ন ও মডেল টেস্ট ম্যানেজমেন্ট</p>
+    <div class="admin-container">
+        <!-- Header Section -->
+        <div class="admin-header">
+            <h1><i class="bi bi-journal-bookmark-fill"></i> এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন</h1>
+            <p>সাবজেক্ট বেসিস প্রশ্ন, প্রশ্নব্যাংক, ইউনিভার্সিটি প্রশ্ন ও মডেল টেস্ট ম্যানেজমেন্ট সিস্টেম</p>
+        </div>
+
+        <!-- Main Body Section -->
+        <div class="admin-body">
+            <!-- Modules Section -->
+            <h2 class="section-title">অ্যাডমিন মডিউলসমূহ</h2>
+            
+            <div class="module-grid">
+                <!-- Module 1: Subject Questions -->
+                <div class="module-card" onclick="goToModule('subject')">
+                    <div class="module-icon icon-subject">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h3 class="module-title">সাবজেক্ট প্রশ্ন</h3>
+                    <p class="module-description">
+                        সাবজেক্ট ভিত্তিক প্রশ্ন ম্যানেজমেন্ট সিস্টেম। নতুন সাবজেক্ট অ্যাড করুন, প্রশ্ন আপলোড করুন, এডিট/ডিলিট করুন।
+                    </p>
+                    <ul class="module-features">
+                        <li>সাবজেক্ট অ্যাড/এডিট/ডিলিট</li>
+                        <li>ম্যানুয়াল প্রশ্ন অ্যাড</li>
+                        <li>CSV/Excel আপলোড</li>
+                        <li>পূর্বের পরীক্ষার তথ্য</li>
+                    </ul>
+                    <div class="btn-primary" style="width: auto;">
+                        ম্যানেজ করুন
+                    </div>
                 </div>
-                <div class="col-md-4 text-end">
-                    <div class="d-inline-block bg-white px-4 py-2 rounded-pill" style="background: rgba(255,255,255,0.2) !important; backdrop-filter: blur(10px);">
-                        <i class="bi bi-cloud-check me-2"></i> রিয়েল-টাইম ডাটাবেস
+
+                <!-- Module 2: Question Bank -->
+                <div class="module-card" onclick="goToModule('questionbank')">
+                    <div class="module-icon icon-questionbank">
+                        <i class="bi bi-bank"></i>
+                    </div>
+                    <h3 class="module-title">প্রশ্নব্যাংক</h3>
+                    <p class="module-description">
+                        প্রশ্নব্যাংক তৈরি করুন, প্রশ্ন যোগ করুন, CSV/Excel থেকে ইম্পোর্ট করুন এবং প্রশ্নব্যাংক ম্যানেজ করুন।
+                    </p>
+                    <ul class="module-features">
+                        <li>নতুন প্রশ্নব্যাংক তৈরি</li>
+                        <li>CSV/Excel ইম্পোর্ট</li>
+                        <li>প্রশ্ন এডিট/ডিলিট</li>
+                        <li>পূর্বের পরীক্ষার ট্র্যাকিং</li>
+                    </ul>
+                    <div class="btn-primary" style="width: auto;">
+                        ম্যানেজ করুন
+                    </div>
+                </div>
+
+                <!-- Module 3: University Questions -->
+                <div class="module-card" onclick="goToModule('university')">
+                    <div class="module-icon icon-university">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h3 class="module-title">ইউনিভার্সিটি প্রশ্ন</h3>
+                    <p class="module-description">
+                        বিভিন্ন বিশ্ববিদ্যালয়ের ভর্তি পরীক্ষার প্রশ্নব্যাংক ম্যানেজমেন্ট। বিশ্ববিদ্যালয় অনুযায়ী প্রশ্ন সংরক্ষণ করুন।
+                    </p>
+                    <ul class="module-features">
+                        <li>ইউনিভার্সিটি অ্যাড করুন</li>
+                        <li>ইউনিভার্সিটি ভিত্তিক প্রশ্ন</li>
+                        <li>CSV/Excel আপলোড</li>
+                        <li>বিষয়ভিত্তিক বিভাগ</li>
+                    </ul>
+                    <div class="btn-primary" style="width: auto;">
+                        ম্যানেজ করুন
+                    </div>
+                </div>
+
+                <!-- Module 4: Model Test -->
+                <div class="module-card" onclick="goToModule('modeltest')">
+                    <div class="module-icon icon-modeltest">
+                        <i class="bi bi-clipboard-check"></i>
+                    </div>
+                    <h3 class="module-title">মডেল টেস্ট</h3>
+                    <p class="module-description">
+                        মডেল টেস্ট তৈরি করুন, প্রশ্ন সেট করুন, টেস্ট প্যারামিটার কনফিগার করুন এবং টেস্ট ম্যানেজ করুন।
+                    </p>
+                    <ul class="module-features">
+                        <li>মডেল টেস্ট তৈরি</li>
+                        <li>টাইম লিমিট সেটিং</li>
+                        <li>নেগেটিভ মার্কিং</li>
+                        <li>টেস্ট প্রিভিউ ও এডিট</li>
+                    </ul>
+                    <div class="btn-primary" style="width: auto;">
+                        ম্যানেজ করুন
+                    </div>
+                </div>
+            </div>
+
+            <!-- Link Management Section -->
+            <div class="link-section">
+                <h2 class="link-title">মডিউল লিঙ্ক ম্যানেজমেন্ট</h2>
+                
+                <div class="link-form">
+                    <div class="form-group">
+                        <label class="form-label" for="moduleSelect">মডিউল সিলেক্ট করুন</label>
+                        <select class="form-control" id="moduleSelect">
+                            <option value="">সিলেক্ট করুন...</option>
+                            <option value="subject">সাবজেক্ট প্রশ্ন</option>
+                            <option value="questionbank">প্রশ্নব্যাংক</option>
+                            <option value="university">ইউনিভার্সিটি প্রশ্ন</option>
+                            <option value="modeltest">মডেল টেস্ট</option>
+                            <option value="custom">কাস্টম লিঙ্ক</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="linkName">লিঙ্কের নাম</label>
+                        <input type="text" class="form-control" id="linkName" placeholder="যেমন: গণিত প্রশ্ন ব্যাংক">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="linkUrl">লিঙ্ক URL</label>
+                        <input type="url" class="form-control" id="linkUrl" placeholder="https://example.com/subject-questions">
+                    </div>
+                    
+                    <button class="btn-primary w-100" onclick="addLink()">
+                        <i class="bi bi-plus-circle"></i> লিঙ্ক অ্যাড করুন
+                    </button>
+                </div>
+                
+                <!-- Links List -->
+                <div class="links-list" id="linksContainer">
+                    <div class="empty-state" id="emptyLinks">
+                        <i class="bi bi-link-45deg"></i>
+                        <h4>কোনো লিঙ্ক যোগ করা হয়নি</h4>
+                        <p>উপরে ফর্ম ব্যবহার করে লিঙ্ক অ্যাড করুন</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs" id="mainTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="subject-tab" data-bs-toggle="tab" data-bs-target="#subject">
-                    <i class="bi bi-book"></i> সাবজেক্ট প্রশ্ন
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="questionbank-tab" data-bs-toggle="tab" data-bs-target="#questionbank">
-                    <i class="bi bi-bank"></i> প্রশ্নব্যাংক
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="university-tab" data-bs-toggle="tab" data-bs-target="#university">
-                    <i class="bi bi-building"></i> ইউনিভার্সিটি প্রশ্ন
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="modeltest-tab" data-bs-toggle="tab" data-bs-target="#modeltest">
-                    <i class="bi bi-clipboard-check"></i> মডেল টেস্ট
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard">
-                    <i class="bi bi-speedometer2"></i> ড্যাশবোর্ড
-                </button>
-            </li>
-        </ul>
-
-        <!-- Toast Container -->
-        <div class="toast-container"></div>
-
-        <!-- Tab Contents -->
-        <div class="tab-content" id="mainTabContent">
-            
-            <!-- ১. সাবজেক্ট বেসিস প্রশ্ন -->
-            <div class="tab-pane fade show active" id="subject" role="tabpanel">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <!-- নতুন সাবজেক্ট -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-plus-circle"></i> নতুন সাবজেক্ট
-                            </div>
-                            <div class="card-body">
-                                <form id="subjectForm">
-                                    <div class="mb-3">
-                                        <label class="form-label">সাবজেক্ট নাম</label>
-                                        <input type="text" class="form-control" id="subjectName" required 
-                                               placeholder="যেমন: গণিত, ইংরেজি, বিজ্ঞান">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="bi bi-save"></i> সাবজেক্ট অ্যাড করুন
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- CSV/Excel আপলোড -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-file-earmark-spreadsheet"></i> CSV/Excel থেকে প্রশ্ন আপলোড
-                            </div>
-                            <div class="card-body">
-                                <!-- Question Type Selector -->
-                                <div class="question-type-selector mb-3">
-                                    <div class="question-type-btn active" data-type="mcq">
-                                        <i class="bi bi-check2-circle"></i>
-                                        <span>MCQ</span>
-                                    </div>
-                                    <div class="question-type-btn" data-type="written">
-                                        <i class="bi bi-pencil-square"></i>
-                                        <span>Written</span>
-                                    </div>
-                                </div>
-
-                                <!-- Subject Selector -->
-                                <div class="mb-3">
-                                    <label class="form-label">সাবজেক্ট সিলেক্ট করুন</label>
-                                    <select class="form-select" id="uploadSubject">
-                                        <option value="">সাবজেক্ট সিলেক্ট করুন...</option>
-                                    </select>
-                                </div>
-
-                                <!-- Upload Area -->
-                                <div class="upload-area" id="csvUploadArea">
-                                    <i class="bi bi-cloud-arrow-up"></i>
-                                    <h5>CSV/Excel ফাইল আপলোড</h5>
-                                    <p>ড্র্যাগ অ্যান্ড ড্রপ অথবা ক্লিক করুন</p>
-                                    <input type="file" id="csvFileInput" accept=".csv,.xlsx,.xls" hidden>
-                                    <button type="button" class="btn btn-outline-primary mt-2" onclick="document.getElementById('csvFileInput').click()">
-                                        <i class="bi bi-folder2-open"></i> ফাইল সিলেক্ট করুন
-                                    </button>
-                                </div>
-                                <div class="mt-3 text-center">
-                                    <a href="#" class="text-decoration-none" onclick="downloadSubjectCSVTemplate()">
-                                        <i class="bi bi-download"></i> CSV টেমপ্লেট ডাউনলোড করুন
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Subject List -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-list-check"></i> সাবজেক্ট লিস্ট
-                            </div>
-                            <div class="card-body">
-                                <div id="subjectList">
-                                    <!-- Subjects will be loaded here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                        <!-- ম্যানুয়ালি প্রশ্ন অ্যাড -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-pencil-square"></i> ম্যানুয়ালি প্রশ্ন অ্যাড করুন
-                            </div>
-                            <div class="card-body">
-                                <form id="manualQuestionForm">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">সাবজেক্ট</label>
-                                            <select class="form-select" id="questionSubject" required>
-                                                <option value="">সিলেক্ট করুন...</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">প্রশ্ন টাইপ</label>
-                                            <select class="form-select" id="questionType" required>
-                                                <option value="mcq">MCQ</option>
-                                                <option value="written">Written</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">প্রশ্ন</label>
-                                        <textarea class="form-control" id="questionText" rows="3" required></textarea>
-                                    </div>
-                                    <div class="row" id="mcqOptionsSection">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">অপশন A</label>
-                                            <input type="text" class="form-control" id="optionA">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">অপশন B</label>
-                                            <input type="text" class="form-control" id="optionB">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">অপশন C</label>
-                                            <input type="text" class="form-control" id="optionC">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">অপশন D</label>
-                                            <input type="text" class="form-control" id="optionD">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">সঠিক উত্তর</label>
-                                            <input type="text" class="form-control" id="correctAnswer" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">পূর্বের পরীক্ষা</label>
-                                            <input type="text" class="form-control" id="previousExam" 
-                                                   placeholder="যেমন: এসএসসি ২০২৪">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-success w-100">
-                                        <i class="bi bi-plus-circle"></i> প্রশ্ন অ্যাড করুন
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- সকল প্রশ্ন লিস্ট -->
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-question-circle"></i> সকল প্রশ্ন</span>
-                                <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-primary active" data-filter="all">
-                                        সব
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-primary" data-filter="mcq">
-                                        MCQ
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-primary" data-filter="written">
-                                        Written
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover" id="questionTable">
-                                        <thead>
-                                            <tr>
-                                                <th>প্রশ্ন</th>
-                                                <th width="100">টাইপ</th>
-                                                <th width="120">সাবজেক্ট</th>
-                                                <th width="150">পূর্বের পরীক্ষা</th>
-                                                <th width="100">একশন</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="questionTableBody">
-                                            <!-- Questions will be loaded here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ২. প্রশ্নব্যাংক -->
-            <div class="tab-pane fade" id="questionbank" role="tabpanel">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <!-- নতুন প্রশ্নব্যাংক -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-bank"></i> নতুন প্রশ্নব্যাংক
-                            </div>
-                            <div class="card-body">
-                                <form id="questionBankForm">
-                                    <div class="mb-3">
-                                        <label class="form-label">প্রশ্নব্যাংক নাম</label>
-                                        <input type="text" class="form-control" id="bankName" required
-                                               placeholder="যেমন: এডমিশন প্রিপারেশন ২০২৪">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">CSV/Excel আপলোড (ঐচ্ছিক)</label>
-                                        <input type="file" class="form-control" id="bankFile" accept=".csv,.xlsx,.xls">
-                                        <small class="text-muted">টেমপ্লেট ডাউনলোড করুন: 
-                                            <a href="#" onclick="downloadBankCSVTemplate()">CSV</a> | 
-                                            <a href="#" onclick="downloadBankExcelTemplate()">Excel</a>
-                                        </small>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="bi bi-save"></i> ব্যাংক তৈরি করুন
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                        <!-- প্রশ্নব্যাংক লিস্ট -->
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-collection"></i> প্রশ্নব্যাংক লিস্ট</span>
-                                <span class="badge bg-primary" id="totalBanks">0 ব্যাংক</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover" id="bankTable">
-                                        <thead>
-                                            <tr>
-                                                <th>ব্যাংক নাম</th>
-                                                <th width="100">প্রশ্ন</th>
-                                                <th width="100">MCQ</th>
-                                                <th width="100">Written</th>
-                                                <th width="150">তৈরির তারিখ</th>
-                                                <th width="120">একশন</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="bankTableBody">
-                                            <!-- Banks will be loaded here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ব্যাংকে প্রশ্ন অ্যাড -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-plus-circle-dotted"></i> ব্যাংকে প্রশ্ন অ্যাড/এডিট করুন
-                            </div>
-                            <div class="card-body">
-                                <div id="bankQuestionSection">
-                                    <div class="alert alert-info">
-                                        <i class="bi bi-info-circle"></i> প্রথমে একটি ব্যাংক সিলেক্ট করুন
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ৩. ইউনিভার্সিটি প্রশ্ন -->
-            <div class="tab-pane fade" id="university" role="tabpanel">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <!-- ইউনিভার্সিটি অ্যাড -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-building-add"></i> ইউনিভার্সিটি অ্যাড করুন
-                            </div>
-                            <div class="card-body">
-                                <form id="universityForm">
-                                    <div class="mb-3">
-                                        <label class="form-label">ইউনিভার্সিটি নাম</label>
-                                        <input type="text" class="form-control" id="universityName" required
-                                               placeholder="যেমন: ঢাকা বিশ্ববিদ্যালয়, রাজশাহী বিশ্ববিদ্যালয়">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">বিষয়/Department</label>
-                                        <input type="text" class="form-control" id="uniDepartment"
-                                               placeholder="যেমন: গণিত বিভাগ, কম্পিউটার বিজ্ঞান">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="bi bi-plus-circle"></i> ইউনিভার্সিটি অ্যাড করুন
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- ইউনিভার্সিটি লিস্ট -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-building-check"></i> ইউনিভার্সিটি লিস্ট
-                            </div>
-                            <div class="card-body">
-                                <div id="universityList">
-                                    <!-- Universities will be loaded here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                        <!-- ইউনিভার্সিটি প্রশ্ন ম্যানেজমেন্ট -->
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-journal-plus"></i> ইউনিভার্সিটি প্রশ্ন ম্যানেজমেন্ট</span>
-                                <div>
-                                    <select class="form-select form-select-sm" id="selectedUniversity" style="width: 200px;">
-                                        <option value="">ইউনিভার্সিটি সিলেক্ট করুন...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div id="universityQuestionContent">
-                                    <div class="alert alert-info text-center">
-                                        <i class="bi bi-building"></i> ইউনিভার্সিটি সিলেক্ট করুন প্রশ্ন ম্যানেজ করতে
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ৪. মডেল টেস্ট -->
-            <div class="tab-pane fade" id="modeltest" role="tabpanel">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- মডেল টেস্ট স্টেপস -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-clipboard-plus"></i> নতুন মডেল টেস্ট তৈরি করুন
-                            </div>
-                            <div class="card-body">
-                                <!-- Progress Steps -->
-                                <div class="progress-steps mb-4">
-                                    <div class="d-flex justify-content-between position-relative">
-                                        <div class="step active" data-step="1">
-                                            <div class="step-circle">1</div>
-                                            <div class="step-label">টেস্ট ইনফো</div>
-                                        </div>
-                                        <div class="step" data-step="2">
-                                            <div class="step-circle">2</div>
-                                            <div class="step-label">প্রশ্ন অ্যাড</div>
-                                        </div>
-                                        <div class="step" data-step="3">
-                                            <div class="step-circle">3</div>
-                                            <div class="step-label">প্রিভিউ</div>
-                                        </div>
-                                        <div class="progress-bar" style="width: 33.33%"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 1: Test Info -->
-                                <div id="step1" class="step-content">
-                                    <form id="modelTestForm">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">মডেল টেস্ট নাম</label>
-                                                <input type="text" class="form-control" id="testName" required
-                                                       placeholder="যেমন: এডমিশন মডেল টেস্ট ১">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">টোটাল মার্কস</label>
-                                                <input type="number" class="form-control" id="totalMarks" value="100" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">টাইম লিমিট (মিনিট)</label>
-                                                <input type="number" class="form-control" id="timeLimit" value="120" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">পাশ মার্কস (%)</label>
-                                                <input type="number" class="form-control" id="passingMarks" value="40" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">নেগেটিভ মার্কিং</label>
-                                                <select class="form-select" id="negativeMarking">
-                                                    <option value="yes">হ্যাঁ</option>
-                                                    <option value="no">না</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">নেগেটিভ মার্ক ভ্যালু</label>
-                                                <input type="number" step="0.01" class="form-control" id="negativeMarkValue" value="0.25">
-                                            </div>
-                                        </div>
-                                        <div class="text-end">
-                                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
-                                                পরবর্তী <i class="bi bi-arrow-right"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Step 2: Add Questions -->
-                                <div id="step2" class="step-content" style="display: none;">
-                                    <h5 class="mb-4">প্রশ্ন অ্যাড করার পদ্ধতি নির্বাচন করুন</h5>
-                                    
-                                    <div class="row mb-4">
-                                        <!-- Method 1: Manual -->
-                                        <div class="col-md-4">
-                                            <div class="card h-100 text-center">
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <i class="bi bi-pencil-square" style="font-size: 48px; color: var(--primary-color);"></i>
-                                                    </div>
-                                                    <h5>ম্যানুয়াল প্রশ্ন</h5>
-                                                    <p class="text-muted">প্রত্যেক প্রশ্ন আলাদাভাবে লিখুন</p>
-                                                    <button class="btn btn-outline-primary" onclick="showManualTestQuestionForm()">
-                                                        শুরু করুন
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Method 2: CSV Upload -->
-                                        <div class="col-md-4">
-                                            <div class="card h-100 text-center">
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <i class="bi bi-file-earmark-spreadsheet" style="font-size: 48px; color: var(--success);"></i>
-                                                    </div>
-                                                    <h5>CSV/Excel আপলোড</h5>
-                                                    <p class="text-muted">একসাথে অনেক প্রশ্ন আপলোড করুন</p>
-                                                    <input type="file" id="testCsvFile" accept=".csv,.xlsx,.xls" hidden 
-                                                           onchange="handleTestCSVUpload(this)">
-                                                    <button class="btn btn-outline-success" onclick="document.getElementById('testCsvFile').click()">
-                                                        আপলোড করুন
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Method 3: From Question Bank -->
-                                        <div class="col-md-4">
-                                            <div class="card h-100 text-center">
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <i class="bi bi-bank" style="font-size: 48px; color: var(--warning);"></i>
-                                                    </div>
-                                                    <h5>প্রশ্নব্যাংক থেকে</h5>
-                                                    <p class="text-muted">Existing ব্যাংক থেকে সিলেক্ট করুন</p>
-                                                    <button class="btn btn-outline-warning" onclick="showBankSelection()">
-                                                        সিলেক্ট করুন
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        <button class="btn btn-secondary" onclick="prevStep(1)">
-                                            <i class="bi bi-arrow-left"></i> পূর্ববর্তী
-                                        </button>
-                                        <button class="btn btn-primary" onclick="nextStep(3)">
-                                            পরবর্তী <i class="bi bi-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Step 3: Preview -->
-                                <div id="step3" class="step-content" style="display: none;">
-                                    <h5 class="mb-4">মডেল টেস্ট প্রিভিউ</h5>
-                                    <div id="testPreview">
-                                        <div class="alert alert-info">
-                                            <i class="bi bi-info-circle"></i> প্রিভিউ লোড হচ্ছে...
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-4">
-                                        <button class="btn btn-secondary" onclick="prevStep(2)">
-                                            <i class="bi bi-arrow-left"></i> পূর্ববর্তী
-                                        </button>
-                                        <button class="btn btn-success" onclick="publishModelTest()">
-                                            <i class="bi bi-check-circle"></i> পাবলিশ করুন
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Existing Model Tests -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-clipboard-data"></i> Existing মডেল টেস্ট
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>টেস্ট নাম</th>
-                                                <th width="100">মার্কস</th>
-                                                <th width="100">সময়</th>
-                                                <th width="100">প্রশ্ন</th>
-                                                <th width="100">স্ট্যাটাস</th>
-                                                <th width="120">একশন</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="modelTestTable">
-                                            <!-- Model tests will be loaded here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ৫. ড্যাশবোর্ড -->
-            <div class="tab-pane fade" id="dashboard" role="tabpanel">
-                <div class="row g-4">
-                    <!-- Stats Cards -->
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('subject')">
-                            <div class="stats-icon icon-subject">
-                                <i class="bi bi-book"></i>
-                            </div>
-                            <div class="stats-number" id="subjectsCount">0</div>
-                            <p class="text-muted mb-0">সাবজেক্ট</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('questionbank')">
-                            <div class="stats-icon icon-question">
-                                <i class="bi bi-question-circle"></i>
-                            </div>
-                            <div class="stats-number" id="questionsCount">0</div>
-                            <p class="text-muted mb-0">মোট প্রশ্ন</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('questionbank')">
-                            <div class="stats-icon icon-bank">
-                                <i class="bi bi-bank"></i>
-                            </div>
-                            <div class="stats-number" id="banksCount">0</div>
-                            <p class="text-muted mb-0">প্রশ্নব্যাংক</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('university')">
-                            <div class="stats-icon icon-university">
-                                <i class="bi bi-building"></i>
-                            </div>
-                            <div class="stats-number" id="universitiesCount">0</div>
-                            <p class="text-muted mb-0">ইউনিভার্সিটি</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('modeltest')">
-                            <div class="stats-icon icon-test">
-                                <i class="bi bi-clipboard-check"></i>
-                            </div>
-                            <div class="stats-number" id="testsCount">0</div>
-                            <p class="text-muted mb-0">মডেল টেস্ট</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('subject')">
-                            <div class="stats-icon" style="background: linear-gradient(135deg, #e1f0ff 0%, #0066cc 100%); color: white;">
-                                <i class="bi bi-check2-circle"></i>
-                            </div>
-                            <div class="stats-number" id="mcqCount">0</div>
-                            <p class="text-muted mb-0">MCQ প্রশ্ন</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card" onclick="showTab('subject')">
-                            <div class="stats-icon" style="background: linear-gradient(135deg, #e6fff2 0%, #00a65a 100%); color: white;">
-                                <i class="bi bi-pencil-square"></i>
-                            </div>
-                            <div class="stats-number" id="writtenCount">0</div>
-                            <p class="text-muted mb-0">Written প্রশ্ন</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <div class="stats-icon" style="background: linear-gradient(135deg, #fff2e6 0%, #ff9900 100%); color: white;">
-                                <i class="bi bi-graph-up"></i>
-                            </div>
-                            <div class="stats-number" id="totalUploads">0</div>
-                            <p class="text-muted mb-0">মোট আপলোড</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity -->
-                <div class="row mt-4">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="bi bi-clock-history"></i> সাম্প্রতিক এক্টিভিটি
-                            </div>
-                            <div class="card-body">
-                                <div class="activity-timeline" id="activityTimeline">
-                                    <div class="activity-item">
-                                        <div class="activity-icon">
-                                            <i class="bi bi-plus-circle text-success"></i>
-                                        </div>
-                                        <div class="activity-content">
-                                            <div class="activity-text">নতুন সাবজেক্ট "গণিত" অ্যাড করা হয়েছে</div>
-                                            <div class="activity-time">২ মিনিট আগে</div>
-                                        </div>
-                                    </div>
-                                    <div class="activity-item">
-                                        <div class="activity-icon">
-                                            <i class="bi bi-cloud-arrow-up text-primary"></i>
-                                        </div>
-                                        <div class="activity-content">
-                                            <div class="activity-text">CSV থেকে ১০টি প্রশ্ন আপলোড হয়েছে</div>
-                                            <div class="activity-time">১০ মিনিট আগে</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Footer -->
+        <div class="admin-footer">
+            <p>© ২০২৪ এডমিশন অ্যাসিস্ট্যান্ট অ্যাডমিন | সকল অধিকার সংরক্ষিত</p>
+            <p class="small">প্রতিটি মডিউলের জন্য আলাদা পেজ তৈরি করুন এবং লিঙ্ক অ্যাড করুন</p>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
-            authDomain: "eprostutibd-9ec31.firebaseapp.com",
-            projectId: "eprostutibd-9ec31",
-            storageBucket: "eprostutibd-9ec31.firebasestorage.app",
-            messagingSenderId: "441646770166",
-            appId: "1:441646770166:web:ba244b681de6e6b1bb49d7",
-            measurementId: "G-E5XHV46Z6B"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // Global Variables
-        let currentUser = 'admin';
-        let subjects = [];
-        let questionBanks = [];
-        let universities = [];
-        let modelTests = [];
-        let allQuestions = [];
-        let selectedQuestionType = 'mcq';
-
-        // Initialize when page loads
+        // Store links in localStorage
+        let moduleLinks = JSON.parse(localStorage.getItem('moduleLinks')) || [];
+        
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            setupEventListeners();
-            loadAllData();
+            loadLinks();
         });
-
-        function initializeApp() {
-            console.log('Admission Assistant Admin initialized');
+        
+        // Function to handle module clicks
+        function goToModule(moduleName) {
+            // Check if link exists for this module
+            const link = moduleLinks.find(link => link.module === moduleName);
             
-            // Firebase connection status
-            db.enableNetwork().then(() => {
-                showToast('Firebase Connected Successfully', 'success');
-            }).catch((error) => {
-                showToast('Firebase Connection Error', 'error');
-                console.error('Firebase error:', error);
-            });
-        }
-
-        function setupEventListeners() {
-            // Question type selector for upload
-            document.querySelectorAll('.question-type-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.question-type-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    selectedQuestionType = this.dataset.type;
-                });
-            });
-
-            // Question type toggle in manual form
-            document.getElementById('questionType').addEventListener('change', function() {
-                const mcqSection = document.getElementById('mcqOptionsSection');
-                mcqSection.style.display = this.value === 'mcq' ? 'block' : 'none';
-            });
-
-            // CSV file upload
-            document.getElementById('csvFileInput').addEventListener('change', handleSubjectCSVUpload);
-            document.getElementById('bankFile').addEventListener('change', handleBankFileUpload);
-
-            // Question filter buttons
-            document.querySelectorAll('[data-filter]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    filterQuestions(this.dataset.filter);
-                });
-            });
-
-            // University select change
-            document.getElementById('selectedUniversity').addEventListener('change', loadUniversityQuestions);
-        }
-
-        async function loadAllData() {
-            try {
-                // Load subjects
-                const subjectsSnapshot = await db.collection('subjects').get();
-                subjects = [];
-                subjectsSnapshot.forEach(doc => {
-                    subjects.push({ id: doc.id, ...doc.data() });
-                });
-                updateSubjectUI();
-
-                // Load questions
-                const questionsSnapshot = await db.collection('questions').get();
-                allQuestions = [];
-                questionsSnapshot.forEach(doc => {
-                    allQuestions.push({ id: doc.id, ...doc.data() });
-                });
-                updateQuestionTable();
-
-                // Load question banks
-                const banksSnapshot = await db.collection('questionBanks').get();
-                questionBanks = [];
-                banksSnapshot.forEach(doc => {
-                    questionBanks.push({ id: doc.id, ...doc.data() });
-                });
-                updateBankTable();
-
-                // Load universities
-                const uniSnapshot = await db.collection('universities').get();
-                universities = [];
-                uniSnapshot.forEach(doc => {
-                    universities.push({ id: doc.id, ...doc.data() });
-                });
-                updateUniversityUI();
-
-                // Load model tests
-                const testsSnapshot = await db.collection('modelTests').get();
-                modelTests = [];
-                testsSnapshot.forEach(doc => {
-                    modelTests.push({ id: doc.id, ...doc.data() });
-                });
-                updateModelTestTable();
-
-                // Update dashboard stats
-                updateDashboardStats();
-
-            } catch (error) {
-                console.error('Error loading data:', error);
-                showToast('ডাটা লোড করতে সমস্যা!', 'error');
+            if (link && link.url) {
+                // Redirect to the linked URL
+                window.open(link.url, '_blank');
+            } else {
+                // Show message to add link first
+                alert(`প্রথমে "${getModuleName(moduleName)}" মডিউলের জন্য লিঙ্ক অ্যাড করুন।`);
+                // Auto-select the module in the form
+                document.getElementById('moduleSelect').value = moduleName;
+                document.getElementById('moduleSelect').focus();
             }
         }
-
-        // ১. সাবজেক্ট ম্যানেজমেন্ট
-        document.getElementById('subjectForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        
+        // Function to add new link
+        function addLink() {
+            const moduleSelect = document.getElementById('moduleSelect');
+            const linkName = document.getElementById('linkName').value.trim();
+            const linkUrl = document.getElementById('linkUrl').value.trim();
             
-            const subjectName = document.getElementById('subjectName').value.trim();
-            if (!subjectName) {
-                showToast('দয়া করে সাবজেক্ট নাম লিখুন', 'warning');
+            if (!moduleSelect.value) {
+                alert('দয়া করে মডিউল সিলেক্ট করুন');
                 return;
             }
-
-            const subjectData = {
-                name: subjectName,
-                totalMCQ: 0,
-                totalWritten: 0,
-                totalQuestions: 0,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+            
+            if (!linkName) {
+                alert('দয়া করে লিঙ্কের নাম লিখুন');
+                return;
+            }
+            
+            if (!linkUrl) {
+                alert('দয়া করে লিঙ্ক URL লিখুন');
+                return;
+            }
+            
+            // Validate URL
+            try {
+                new URL(linkUrl);
+            } catch (e) {
+                alert('দয়া করে সঠিক URL লিখুন (https://example.com)');
+                return;
+            }
+            
+            // Remove existing link for this module if exists
+            moduleLinks = moduleLinks.filter(link => link.module !== moduleSelect.value);
+            
+            // Add new link
+            const newLink = {
+                id: Date.now(),
+                module: moduleSelect.value,
+                moduleName: getModuleName(moduleSelect.value),
+                name: linkName,
+                url: linkUrl,
+                addedDate: new Date().toLocaleDateString('bn-BD')
             };
-
-            try {
-                await db.collection('subjects').add(subjectData);
-                showToast('সাবজেক্ট সফলভাবে অ্যাড হয়েছে!', 'success');
-                this.reset();
-                loadAllData();
-            } catch (error) {
-                console.error('Error adding subject:', error);
-                showToast('সাবজেক্ট অ্যাড করতে সমস্যা!', 'error');
-            }
-        });
-
-        // ম্যানুয়াল প্রশ্ন অ্যাড
-        document.getElementById('manualQuestionForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
             
-            const subjectId = document.getElementById('questionSubject').value;
-            const questionType = document.getElementById('questionType').value;
-            const questionText = document.getElementById('questionText').value.trim();
-            const correctAnswer = document.getElementById('correctAnswer').value.trim();
-            const previousExam = document.getElementById('previousExam').value.trim();
-
-            if (!subjectId || !questionText || !correctAnswer) {
-                showToast('দয়া করে সবগুলো ফিল্ড পূরণ করুন', 'warning');
-                return;
-            }
-
-            const questionData = {
-                subjectId: subjectId,
-                type: questionType,
-                question: questionText,
-                correctAnswer: correctAnswer,
-                previousExam: previousExam || null,
-                createdAt: new Date().toISOString(),
-                addedBy: currentUser
-            };
-
-            if (questionType === 'mcq') {
-                questionData.options = {
-                    a: document.getElementById('optionA').value.trim(),
-                    b: document.getElementById('optionB').value.trim(),
-                    c: document.getElementById('optionC').value.trim(),
-                    d: document.getElementById('optionD').value.trim()
-                };
-            }
-
-            try {
-                await db.collection('questions').add(questionData);
-                showToast('প্রশ্ন সফলভাবে অ্যাড হয়েছে!', 'success');
-                this.reset();
-                loadAllData();
-            } catch (error) {
-                console.error('Error adding question:', error);
-                showToast('প্রশ্ন অ্যাড করতে সমস্যা!', 'error');
-            }
-        });
-
-        async function handleSubjectCSVUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const subjectId = document.getElementById('uploadSubject').value;
-            if (!subjectId) {
-                showToast('দয়া করে প্রথমে সাবজেক্ট সিলেক্ট করুন', 'warning');
-                return;
-            }
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const data = e.target.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                    let successCount = 0;
-                    let errorCount = 0;
-
-                    for (const row of jsonData) {
-                        try {
-                            const questionData = {
-                                subjectId: subjectId,
-                                type: selectedQuestionType,
-                                question: row.question || row.proshno,
-                                correctAnswer: row.correct_answer || row.uttor,
-                                previousExam: row.previous_exam || row.purber_porikkha,
-                                createdAt: new Date().toISOString(),
-                                addedBy: currentUser
-                            };
-
-                            if (selectedQuestionType === 'mcq') {
-                                questionData.options = {
-                                    a: row.option_a || row.a,
-                                    b: row.option_b || row.b,
-                                    c: row.option_c || row.c,
-                                    d: row.option_d || row.d
-                                };
-                            }
-
-                            await db.collection('questions').add(questionData);
-                            successCount++;
-                        } catch (error) {
-                            console.error('Error processing row:', error);
-                            errorCount++;
-                        }
-                    }
-
-                    showToast(`${successCount}টি প্রশ্ন সফলভাবে আপলোড হয়েছে! ${errorCount > 0 ? `${errorCount}টি প্রশ্ন ব্যর্থ হয়েছে।` : ''}`, 
-                             successCount > 0 ? 'success' : 'error');
-                    
-                    loadAllData();
-                };
-                reader.readAsBinaryString(file);
-            } catch (error) {
-                console.error('Error processing CSV:', error);
-                showToast('CSV ফাইল প্রসেস করতে সমস্যা!', 'error');
-            }
+            moduleLinks.push(newLink);
+            
+            // Save to localStorage
+            localStorage.setItem('moduleLinks', JSON.stringify(moduleLinks));
+            
+            // Clear form
+            moduleSelect.value = '';
+            document.getElementById('linkName').value = '';
+            document.getElementById('linkUrl').value = '';
+            
+            // Reload links list
+            loadLinks();
+            
+            // Show success message
+            showMessage(`"${linkName}" লিঙ্ক সফলভাবে অ্যাড হয়েছে!`, 'success');
         }
-
-        // UI Update Functions
-        function updateSubjectUI() {
-            // Update subject selects
-            const subjectSelects = [
-                'questionSubject',
-                'uploadSubject',
-                'testSubjects'
-            ];
+        
+        // Function to load and display links
+        function loadLinks() {
+            const linksContainer = document.getElementById('linksContainer');
+            const emptyLinks = document.getElementById('emptyLinks');
             
-            subjectSelects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    select.innerHTML = '<option value="">সিলেক্ট করুন...</option>';
-                    subjects.forEach(subject => {
-                        select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
-                    });
-                }
+            if (moduleLinks.length === 0) {
+                emptyLinks.style.display = 'block';
+                linksContainer.innerHTML = '';
+                linksContainer.appendChild(emptyLinks);
+                return;
+            }
+            
+            emptyLinks.style.display = 'none';
+            
+            // Sort links by module
+            moduleLinks.sort((a, b) => {
+                const moduleOrder = ['subject', 'questionbank', 'university', 'modeltest', 'custom'];
+                return moduleOrder.indexOf(a.module) - moduleOrder.indexOf(b.module);
             });
-
-            // Update subject list
-            const subjectList = document.getElementById('subjectList');
-            subjectList.innerHTML = '';
             
-            subjects.forEach(subject => {
-                const subjectItem = `
-                    <div class="subject-item mb-2 p-2 border rounded d-flex justify-content-between align-items-center">
-                        <span><strong>${subject.name}</strong></span>
+            let linksHTML = '';
+            
+            moduleLinks.forEach(link => {
+                linksHTML += `
+                    <div class="link-item">
                         <div>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editSubject('${subject.id}')">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('${subject.id}')">
+                            <div class="link-name">${link.name}</div>
+                            <div class="small text-muted">
+                                <strong>মডিউল:</strong> ${link.moduleName} | 
+                                <strong>যোগ হয়েছে:</strong> ${link.addedDate}
+                            </div>
+                            <a href="${link.url}" target="_blank" class="link-url">${link.url}</a>
+                        </div>
+                        <div>
+                            <button class="delete-btn" onclick="deleteLink(${link.id})" title="ডিলিট করুন">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
                     </div>
                 `;
-                subjectList.innerHTML += subjectItem;
             });
-        }
-
-        function updateQuestionTable() {
-            const tbody = document.getElementById('questionTableBody');
-            tbody.innerHTML = '';
             
-            allQuestions.forEach(question => {
-                const subject = subjects.find(s => s.id === question.subjectId);
-                const row = `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${question.question}</div>
-                            ${question.type === 'mcq' ? 
-                                `<small class="text-muted">
-                                    A: ${question.options?.a || ''} | 
-                                    B: ${question.options?.b || ''} | 
-                                    C: ${question.options?.c || ''} | 
-                                    D: ${question.options?.d || ''}
-                                </small>` : ''
-                            }
-                        </td>
-                        <td>
-                            <span class="${question.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
-                                ${question.type === 'mcq' ? 'MCQ' : 'Written'}
-                            </span>
-                        </td>
-                        <td>${subject ? subject.name : 'Unknown'}</td>
-                        <td>
-                            ${question.previousExam ? 
-                                `<span class="exam-badge">${question.previousExam}</span>` : 
-                                '<span class="text-muted">N/A</span>'
-                            }
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn edit-btn" onclick="editQuestion('${question.id}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="action-btn delete-btn" onclick="deleteQuestion('${question.id}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button class="action-btn view-btn" onclick="viewQuestion('${question.id}')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
+            linksContainer.innerHTML = linksHTML;
         }
-
-        function filterQuestions(filter) {
-            const rows = document.querySelectorAll('#questionTableBody tr');
-            rows.forEach(row => {
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else {
-                    const type = row.querySelector('td:nth-child(2) span').textContent.toLowerCase();
-                    row.style.display = type === filter ? '' : 'none';
-                }
-            });
-        }
-
-        // ২. প্রশ্নব্যাংক ম্যানেজমেন্ট
-        document.getElementById('questionBankForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const bankName = document.getElementById('bankName').value.trim();
-            if (!bankName) {
-                showToast('দয়া করে প্রশ্নব্যাংক নাম লিখুন', 'warning');
-                return;
+        
+        // Function to delete a link
+        function deleteLink(linkId) {
+            if (confirm('আপনি কি এই লিঙ্ক ডিলিট করতে চান?')) {
+                moduleLinks = moduleLinks.filter(link => link.id !== linkId);
+                localStorage.setItem('moduleLinks', JSON.stringify(moduleLinks));
+                loadLinks();
+                showMessage('লিঙ্ক সফলভাবে ডিলিট হয়েছে!', 'success');
             }
-
-            const bankData = {
-                name: bankName,
-                totalQuestions: 0,
-                totalMCQ: 0,
-                totalWritten: 0,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                createdBy: currentUser
+        }
+        
+        // Helper function to get module name
+        function getModuleName(moduleValue) {
+            const moduleNames = {
+                'subject': 'সাবজেক্ট প্রশ্ন',
+                'questionbank': 'প্রশ্নব্যাংক',
+                'university': 'ইউনিভার্সিটি প্রশ্ন',
+                'modeltest': 'মডেল টেস্ট',
+                'custom': 'কাস্টম লিঙ্ক'
             };
-
-            try {
-                const docRef = await db.collection('questionBanks').add(bankData);
-                
-                // Handle file upload if exists
-                const fileInput = document.getElementById('bankFile');
-                if (fileInput.files.length > 0) {
-                    await handleBankFileUpload({ target: fileInput }, docRef.id);
-                }
-
-                showToast('প্রশ্নব্যাংক সফলভাবে তৈরি হয়েছে!', 'success');
-                this.reset();
-                loadAllData();
-            } catch (error) {
-                console.error('Error creating bank:', error);
-                showToast('প্রশ্নব্যাংক তৈরি করতে সমস্যা!', 'error');
-            }
-        });
-
-        async function handleBankFileUpload(event, bankId = null) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!bankId) {
-                showToast('প্রথমে ব্যাংক তৈরি করুন', 'warning');
-                return;
-            }
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const data = e.target.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                    let successCount = 0;
-                    
-                    for (const row of jsonData) {
-                        try {
-                            const questionData = {
-                                bankId: bankId,
-                                type: row.question_type || 'mcq',
-                                question: row.question,
-                                correctAnswer: row.correct_answer,
-                                previousExam: row.previous_exam || null,
-                                createdAt: new Date().toISOString(),
-                                addedBy: currentUser
-                            };
-
-                            if (questionData.type === 'mcq') {
-                                questionData.options = {
-                                    a: row.option_a,
-                                    b: row.option_b,
-                                    c: row.option_c,
-                                    d: row.option_d
-                                };
-                            }
-
-                            await db.collection('bankQuestions').add(questionData);
-                            successCount++;
-                        } catch (error) {
-                            console.error('Error processing bank question:', error);
-                        }
-                    }
-
-                    showToast(`${successCount}টি প্রশ্ন ব্যাংকে যোগ হয়েছে!`, 'success');
-                };
-                reader.readAsBinaryString(file);
-            } catch (error) {
-                console.error('Error processing bank CSV:', error);
-                showToast('ব্যাংক CSV প্রসেস করতে সমস্যা!', 'error');
-            }
+            return moduleNames[moduleValue] || moduleValue;
         }
-
-        function updateBankTable() {
-            const tbody = document.getElementById('bankTableBody');
-            tbody.innerHTML = '';
-            
-            questionBanks.forEach(bank => {
-                const date = new Date(bank.createdAt).toLocaleDateString('bn-BD');
-                const row = `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${bank.name}</div>
-                            <small class="text-muted">আইডি: ${bank.id.substring(0, 8)}...</small>
-                        </td>
-                        <td><span class="badge bg-primary">${bank.totalQuestions || 0}</span></td>
-                        <td><span class="badge-mcq">${bank.totalMCQ || 0}</span></td>
-                        <td><span class="badge-written">${bank.totalWritten || 0}</span></td>
-                        <td>${date}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn view-btn" onclick="viewBankQuestions('${bank.id}')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button class="action-btn edit-btn" onclick="editQuestionBank('${bank.id}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="action-btn delete-btn" onclick="deleteQuestionBank('${bank.id}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-            
-            document.getElementById('totalBanks').textContent = `${questionBanks.length} ব্যাংক`;
-        }
-
-        // ৩. ইউনিভার্সিটি প্রশ্ন
-        document.getElementById('universityForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const uniName = document.getElementById('universityName').value.trim();
-            const department = document.getElementById('uniDepartment').value.trim();
-
-            if (!uniName) {
-                showToast('দয়া করে ইউনিভার্সিটি নাম লিখুন', 'warning');
-                return;
-            }
-
-            const uniData = {
-                name: uniName,
-                department: department || '',
-                totalQuestions: 0,
-                totalMCQ: 0,
-                totalWritten: 0,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-
-            try {
-                await db.collection('universities').add(uniData);
-                showToast('ইউনিভার্সিটি সফলভাবে অ্যাড হয়েছে!', 'success');
-                this.reset();
-                loadAllData();
-            } catch (error) {
-                console.error('Error adding university:', error);
-                showToast('ইউনিভার্সিটি অ্যাড করতে সমস্যা!', 'error');
-            }
-        });
-
-        function updateUniversityUI() {
-            // Update university list
-            const uniList = document.getElementById('universityList');
-            uniList.innerHTML = '';
-            
-            universities.forEach(uni => {
-                const uniItem = `
-                    <div class="university-item mb-2 p-2 border rounded d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>${uni.name}</strong>
-                            ${uni.department ? `<div class="text-muted small">${uni.department}</div>` : ''}
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editUniversity('${uni.id}')">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUniversity('${uni.id}')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                uniList.innerHTML += uniItem;
-            });
-
-            // Update university select
-            const uniSelect = document.getElementById('selectedUniversity');
-            uniSelect.innerHTML = '<option value="">ইউনিভার্সিটি সিলেক্ট করুন...</option>';
-            universities.forEach(uni => {
-                uniSelect.innerHTML += `<option value="${uni.id}">${uni.name}</option>`;
-            });
-        }
-
-        async function loadUniversityQuestions() {
-            const uniId = document.getElementById('selectedUniversity').value;
-            if (!uniId) return;
-
-            // This function will load university-specific questions
-            // Implementation similar to subject questions
-        }
-
-        // ৪. মডেল টেস্ট ফাংশনস
-        function nextStep(step) {
-            document.querySelectorAll('.step-content').forEach(el => el.style.display = 'none');
-            document.getElementById(`step${step}`).style.display = 'block';
-            
-            // Update progress bar
-            const progress = (step - 1) * 33.33;
-            document.querySelector('.progress-bar').style.width = `${progress}%`;
-            
-            // Update step indicators
-            document.querySelectorAll('.step').forEach(el => {
-                el.classList.remove('active');
-                if (parseInt(el.dataset.step) <= step) {
-                    el.classList.add('active');
-                }
-            });
-        }
-
-        function prevStep(step) {
-            nextStep(step);
-        }
-
-        function showManualTestQuestionForm() {
-            Swal.fire({
-                title: 'ম্যানুয়াল প্রশ্ন অ্যাড করুন',
-                html: `
-                    <div class="text-start">
-                        <div class="mb-3">
-                            <label class="form-label">প্রশ্ন</label>
-                            <textarea class="form-control" id="swalQuestion" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">প্রশ্ন টাইপ</label>
-                            <select class="form-select" id="swalQuestionType">
-                                <option value="mcq">MCQ</option>
-                                <option value="written">Written</option>
-                            </select>
-                        </div>
-                        <div class="mb-3" id="swalMcqOptions">
-                            <div class="row">
-                                <div class="col-6 mb-2">
-                                    <input type="text" class="form-control" placeholder="অপশন A" id="swalOptionA">
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <input type="text" class="form-control" placeholder="অপশন B" id="swalOptionB">
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <input type="text" class="form-control" placeholder="অপশন C" id="swalOptionC">
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <input type="text" class="form-control" placeholder="অপশন D" id="swalOptionD">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">সঠিক উত্তর</label>
-                            <input type="text" class="form-control" id="swalCorrectAnswer">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">পূর্বের পরীক্ষা (ঐচ্ছিক)</label>
-                            <input type="text" class="form-control" id="swalPreviousExam" placeholder="যেমন: এসএসসি ২০২৪">
-                        </div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'অ্যাড করুন',
-                cancelButtonText: 'বাতিল',
-                preConfirm: () => {
-                    const question = document.getElementById('swalQuestion').value;
-                    const type = document.getElementById('swalQuestionType').value;
-                    const correctAnswer = document.getElementById('swalCorrectAnswer').value;
-                    
-                    if (!question || !correctAnswer) {
-                        Swal.showValidationMessage('দয়া করে প্রশ্ন এবং সঠিক উত্তর লিখুন');
-                        return false;
-                    }
-                    
-                    return {
-                        question: question,
-                        type: type,
-                        options: type === 'mcq' ? {
-                            a: document.getElementById('swalOptionA').value,
-                            b: document.getElementById('swalOptionB').value,
-                            c: document.getElementById('swalOptionC').value,
-                            d: document.getElementById('swalOptionD').value
-                        } : null,
-                        correctAnswer: correctAnswer,
-                        previousExam: document.getElementById('swalPreviousExam').value
-                    };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Add question to model test
-                    showToast('প্রশ্ন মডেল টেস্টে যোগ হয়েছে!', 'success');
-                }
-            });
-
-            // Show/hide MCQ options based on type
-            document.getElementById('swalQuestionType').addEventListener('change', function() {
-                document.getElementById('swalMcqOptions').style.display = 
-                    this.value === 'mcq' ? 'block' : 'none';
-            });
-        }
-
-        async function handleTestCSVUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const data = e.target.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                    showToast(`${jsonData.length}টি প্রশ্ন CSV থেকে লোড হয়েছে!`, 'success');
-                };
-                reader.readAsBinaryString(file);
-            } catch (error) {
-                console.error('Error processing test CSV:', error);
-                showToast('টেস্ট CSV প্রসেস করতে সমস্যা!', 'error');
-            }
-        }
-
-        function showBankSelection() {
-            if (questionBanks.length === 0) {
-                showToast('কোনো প্রশ্নব্যাংক নেই', 'warning');
-                return;
-            }
-
-            Swal.fire({
-                title: 'প্রশ্নব্যাংক থেকে সিলেক্ট করুন',
-                html: `
-                    <div class="text-start">
-                        <select class="form-select mb-3" id="swalBankSelect">
-                            <option value="">ব্যাংক সিলেক্ট করুন...</option>
-                            ${questionBanks.map(bank => 
-                                `<option value="${bank.id}">${bank.name} (${bank.totalQuestions || 0} প্রশ্ন)</option>`
-                            ).join('')}
-                        </select>
-                        <div id="bankQuestionsPreview" class="mt-3"></div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'সিলেক্ট করুন',
-                cancelButtonText: 'বাতিল',
-                didOpen: () => {
-                    document.getElementById('swalBankSelect').addEventListener('change', async function() {
-                        const bankId = this.value;
-                        if (!bankId) return;
-
-                        // Load bank questions preview
-                        const preview = document.getElementById('bankQuestionsPreview');
-                        preview.innerHTML = '<div class="text-center"><i class="bi bi-hourglass"></i> লোড হচ্ছে...</div>';
-                        
-                        // Here you would load actual questions from the selected bank
-                        preview.innerHTML = '<div class="alert alert-info">এই ব্যাংক থেকে প্রশ্ন সিলেক্ট করুন</div>';
-                    });
-                }
-            });
-        }
-
-        async function publishModelTest() {
-            const testData = {
-                name: document.getElementById('testName').value,
-                totalMarks: parseInt(document.getElementById('totalMarks').value),
-                timeLimit: parseInt(document.getElementById('timeLimit').value),
-                passingMarks: parseInt(document.getElementById('passingMarks').value),
-                negativeMarking: document.getElementById('negativeMarking').value === 'yes',
-                negativeMarkValue: parseFloat(document.getElementById('negativeMarkValue').value) || 0,
-                status: 'published',
-                createdAt: new Date().toISOString(),
-                totalQuestions: 0 // Will be updated
-            };
-
-            try {
-                await db.collection('modelTests').add(testData);
-                showToast('মডেল টেস্ট সফলভাবে পাবলিশ হয়েছে!', 'success');
-                
-                // Reset form
-                document.getElementById('modelTestForm').reset();
-                nextStep(1);
-                loadAllData();
-            } catch (error) {
-                console.error('Error publishing test:', error);
-                showToast('টেস্ট পাবলিশ করতে সমস্যা!', 'error');
-            }
-        }
-
-        function updateModelTestTable() {
-            const tbody = document.getElementById('modelTestTable');
-            tbody.innerHTML = '';
-            
-            modelTests.forEach(test => {
-                const row = `
-                    <tr>
-                        <td><strong>${test.name}</strong></td>
-                        <td>${test.totalMarks || 100}</td>
-                        <td>${test.timeLimit || 120} মিনিট</td>
-                        <td><span class="badge bg-info">${test.totalQuestions || 0}</span></td>
-                        <td>
-                            <span class="badge ${test.status === 'published' ? 'bg-success' : 'bg-warning'}">
-                                ${test.status === 'published' ? 'Published' : 'Draft'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn view-btn" onclick="viewModelTest('${test.id}')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button class="action-btn edit-btn" onclick="editModelTest('${test.id}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="action-btn delete-btn" onclick="deleteModelTest('${test.id}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-        }
-
-        // ৫. ড্যাশবোর্ড ফাংশনস
-        function updateDashboardStats() {
-            const totalMCQ = allQuestions.filter(q => q.type === 'mcq').length;
-            const totalWritten = allQuestions.filter(q => q.type === 'written').length;
-            
-            document.getElementById('subjectsCount').textContent = subjects.length;
-            document.getElementById('questionsCount').textContent = allQuestions.length;
-            document.getElementById('banksCount').textContent = questionBanks.length;
-            document.getElementById('universitiesCount').textContent = universities.length;
-            document.getElementById('testsCount').textContent = modelTests.length;
-            document.getElementById('mcqCount').textContent = totalMCQ;
-            document.getElementById('writtenCount').textContent = totalWritten;
-            document.getElementById('totalUploads').textContent = allQuestions.length + questionBanks.length;
-        }
-
-        function showTab(tabName) {
-            const tab = document.querySelector(`#${tabName}-tab`);
-            if (tab) {
-                tab.click();
-            }
-        }
-
-        // Utility Functions
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `custom-toast toast-${type}`;
-            toast.innerHTML = `
-                <div class="toast-header">
-                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill text-success' : 
-                                  type === 'error' ? 'bi-x-circle-fill text-danger' : 
-                                  type === 'warning' ? 'bi-exclamation-triangle-fill text-warning' : 
-                                  'bi-info-circle-fill text-primary'} me-2"></i>
-                    <strong class="me-auto">${type === 'success' ? 'সফল!' : 
-                                            type === 'error' ? 'ত্রুটি!' : 
-                                            type === 'warning' ? 'সতর্কতা!' : 'তথ্য'}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                </div>
-                <div class="toast-body">
-                    ${message}
-                </div>
+        
+        // Function to show messages
+        function showMessage(message, type = 'info') {
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
+                color: ${type === 'success' ? '#155724' : '#721c24'};
+                border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                z-index: 1000;
+                font-weight: 600;
+                max-width: 400px;
+                animation: slideIn 0.3s ease;
             `;
             
-            const container = document.querySelector('.toast-container');
-            container.appendChild(toast);
+            messageDiv.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2"></i>
+                ${message}
+            `;
             
-            // Auto remove after 5 seconds
+            document.body.appendChild(messageDiv);
+            
+            // Remove after 3 seconds
             setTimeout(() => {
-                toast.remove();
-            }, 5000);
-        }
-
-        function downloadSubjectCSVTemplate() {
-            const template = `question,correct_answer,option_a,option_b,option_c,option_d,previous_exam\n"2+2=?",4,4,5,6,7,"এসএসসি ২০২৪"\n"Write a paragraph about...","Paragraph content",,,,,`;
+                messageDiv.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => messageDiv.remove(), 300);
+            }, 3000);
             
-            const blob = new Blob([template], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'question_template.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function downloadBankCSVTemplate() {
-            const template = `question,question_type,correct_answer,option_a,option_b,option_c,option_d,previous_exam\n"2+2=?",mcq,4,4,5,6,7,"এসএসসি ২০২৪"\n"Write an essay...",written,"Essay content",,,,,`;
-            
-            const blob = new Blob([template], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'bank_question_template.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function downloadBankExcelTemplate() {
-            // For Excel template, you would need to create an actual Excel file
-            showToast('Excel টেমপ্লেট ডাউনলোড হবে', 'info');
-        }
-
-        // CRUD Operations
-        async function deleteSubject(subjectId) {
-            Swal.fire({
-                title: 'আপনি কি নিশ্চিত?',
-                text: 'এই সাবজেক্ট ডিলিট করা হবে!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'হ্যাঁ, ডিলিট করুন',
-                cancelButtonText: 'না, বাতিল করুন'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await db.collection('subjects').doc(subjectId).delete();
-                        showToast('সাবজেক্ট ডিলিট হয়েছে!', 'success');
-                        loadAllData();
-                    } catch (error) {
-                        showToast('ডিলিট করতে সমস্যা!', 'error');
+            // Add CSS animations
+            if (!document.getElementById('message-styles')) {
+                const style = document.createElement('style');
+                style.id = 'message-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
                     }
-                }
-            });
-        }
-
-        async function deleteQuestion(questionId) {
-            Swal.fire({
-                title: 'প্রশ্ন ডিলিট করবেন?',
-                text: 'এই প্রশ্নটি সম্পূর্ণ মুছে যাবে!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'ডিলিট করুন',
-                cancelButtonText: 'বাতিল'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await db.collection('questions').doc(questionId).delete();
-                        showToast('প্রশ্ন ডিলিট হয়েছে!', 'success');
-                        loadAllData();
-                    } catch (error) {
-                        showToast('ডিলিট করতে সমস্যা!', 'error');
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
                     }
-                }
-            });
-        }
-
-        async function deleteQuestionBank(bankId) {
-            Swal.fire({
-                title: 'প্রশ্নব্যাংক ডিলিট করবেন?',
-                text: 'এই ব্যাংক এবং এর সব প্রশ্ন মুছে যাবে!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'ডিলিট করুন',
-                cancelButtonText: 'বাতিল'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await db.collection('questionBanks').doc(bankId).delete();
-                        showToast('প্রশ্নব্যাংক ডিলিট হয়েছে!', 'success');
-                        loadAllData();
-                    } catch (error) {
-                        showToast('ডিলিট করতে সমস্যা!', 'error');
-                    }
-                }
-            });
-        }
-
-        // Edit functions (stubs - implement as needed)
-        function editSubject(id) {
-            showToast('এডিট ফিচার শীঘ্রই আসছে!', 'info');
-        }
-
-        function editQuestion(id) {
-            showToast('প্রশ্ন এডিট শীঘ্রই আসছে!', 'info');
-        }
-
-        function viewQuestion(id) {
-            const question = allQuestions.find(q => q.id === id);
-            if (question) {
-                Swal.fire({
-                    title: 'প্রশ্ন দেখুন',
-                    html: `
-                        <div class="text-start">
-                            <div class="mb-3">
-                                <strong>প্রশ্ন:</strong>
-                                <p class="mt-1">${question.question}</p>
-                            </div>
-                            ${question.type === 'mcq' ? `
-                                <div class="mb-3">
-                                    <strong>অপশনস:</strong>
-                                    <div class="mt-1">
-                                        <div>A: ${question.options?.a || ''}</div>
-                                        <div>B: ${question.options?.b || ''}</div>
-                                        <div>C: ${question.options?.c || ''}</div>
-                                        <div>D: ${question.options?.d || ''}</div>
-                                    </div>
-                                </div>
-                            ` : ''}
-                            <div class="mb-3">
-                                <strong>সঠিক উত্তর:</strong>
-                                <p class="mt-1">${question.correctAnswer}</p>
-                            </div>
-                            ${question.previousExam ? `
-                                <div class="mb-3">
-                                    <strong>পূর্বের পরীক্ষা:</strong>
-                                    <span class="exam-badge">${question.previousExam}</span>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `,
-                    confirmButtonText: 'ঠিক আছে'
-                });
+                `;
+                document.head.appendChild(style);
             }
         }
-
-        function editQuestionBank(id) {
-            showToast('প্রশ্নব্যাংক এডিট শীঘ্রই আসছে!', 'info');
-        }
-
-        function viewBankQuestions(id) {
-            showToast('ব্যাংক প্রশ্ন দেখুন শীঘ্রই আসছে!', 'info');
-        }
-
-        function editUniversity(id) {
-            showToast('ইউনিভার্সিটি এডিট শীঘ্রই আসছে!', 'info');
-        }
-
-        function deleteUniversity(id) {
-            Swal.fire({
-                title: 'ইউনিভার্সিটি ডিলিট করবেন?',
-                text: 'এই ইউনিভার্সিটি এবং এর সব প্রশ্ন মুছে যাবে!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'ডিলিট করুন',
-                cancelButtonText: 'বাতিল'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await db.collection('universities').doc(id).delete();
-                        showToast('ইউনিভার্সিটি ডিলিট হয়েছে!', 'success');
-                        loadAllData();
-                    } catch (error) {
-                        showToast('ডিলিট করতে সমস্যা!', 'error');
-                    }
+        
+        // Auto-fill custom module name
+        document.getElementById('moduleSelect').addEventListener('change', function() {
+            const linkNameInput = document.getElementById('linkName');
+            
+            if (this.value && !linkNameInput.value) {
+                if (this.value === 'custom') {
+                    linkNameInput.placeholder = 'যেমন: ড্যাশবোর্ড, রিপোর্টস, সেটিংস';
+                } else {
+                    linkNameInput.value = getModuleName(this.value);
                 }
-            });
-        }
-
-        function viewModelTest(id) {
-            showToast('মডেল টেস্ট দেখুন শীঘ্রই আসছে!', 'info');
-        }
-
-        function editModelTest(id) {
-            showToast('মডেল টেস্ট এডিট শীঘ্রই আসছে!', 'info');
-        }
-
-        function deleteModelTest(id) {
-            Swal.fire({
-                title: 'মডেল টেস্ট ডিলিট করবেন?',
-                text: 'এই টেস্টটি সম্পূর্ণ মুছে যাবে!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'ডিলিট করুন',
-                cancelButtonText: 'বাতিল'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await db.collection('modelTests').doc(id).delete();
-                        showToast('মডেল টেস্ট ডিলিট হয়েছে!', 'success');
-                        loadAllData();
-                    } catch (error) {
-                        showToast('ডিলিট করতে সমস্যা!', 'error');
-                    }
-                }
-            });
-        }
+            }
+        });
     </script>
 </body>
 </html>
