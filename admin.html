@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel | eProstutiBD</title>
+
+<!-- ================= CSS ================= -->
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+.hidden { display: none; }
+
+#loginSection {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 260px;
+  background: #1f2937;
+  color: #fff;
+  height: 100vh;
+  padding: 15px;
+  position: fixed;
+}
+.sidebar h3, .sidebar h4 { margin-top: 0; }
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+  border-radius: 4px;
+}
+.sidebar ul li a:hover {
+  background: #374151;
+}
+
+.content {
+  margin-left: 280px;
+  padding: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginSection">
+  <h2>Admin Login</h2>
+  <button id="googleLogin">Login with Google</button>
+</div>
+
+<!-- ================= ADMIN PANEL ================= -->
+<div id="adminPanel" class="hidden">
+  <aside class="sidebar">
+    <h3>Admin Panel</h3>
+    <ul id="sidebarLinks"></ul>
+
+    <!-- Head Admin Only -->
+    <div id="adminControl" class="hidden">
+      <h4>Admin Control</h4>
+      <input type="email" id="newAdminEmail" placeholder="Add admin email">
+      <button id="addAdmin">Add Admin</button>
+      <ul id="adminList"></ul>
+    </div>
+
+    <button id="logout">Logout</button>
+  </aside>
+
+  <main class="content">
+    <h2>Welcome to Admin Dashboard</h2>
+    <p>Select an option from sidebar.</p>
+  </main>
+</div>
+
+<!-- ================= FIREBASE + JS ================= -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* 🔐 Firebase Config */
+const firebaseConfig = {
+  apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
+  authDomain: "eprostutibd-9ec31.firebaseapp.com",
+  projectId: "eprostutibd-9ec31",
+  storageBucket: "eprostutibd-9ec31.firebasestorage.app",
+  messagingSenderId: "441646770166",
+  appId: "1:441646770166:web:ba244b681de6e6b1bb49d7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* 👑 Head Admin */
+const HEAD_ADMIN = "eprsotutibd@gmail.com";
+
+/* 🔗 Sidebar Links (future ready) */
+const sidebarItems = [
+  { name: "Academy", link: "#" },
+  { name: "Admission Assistant", link: "#" },
+  { name: "Job Assistant", link: "#" },
+  { name: "Model Test", link: "#" },
+  { name: "IELTS Assistant", link: "#" },
+  { name: "Current Affairs", link: "#" },
+  { name: "Career", link: "#" },
+  { name: "Notice", link: "#" },
+  { name: "Blog", link: "#" }
+];
+
+/* Render Sidebar */
+const sidebarLinks = document.getElementById("sidebarLinks");
+sidebarItems.forEach(item => {
+  const li = document.createElement("li");
+  li.innerHTML = `<a href="${item.link}">${item.name}</a>`;
+  sidebarLinks.appendChild(li);
+});
+
+/* Google Login */
+document.getElementById("googleLogin").onclick = async () => {
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  handleUser(result.user);
+};
+
+/* Handle User */
+async function handleUser(user) {
+  document.getElementById("loginSection").classList.add("hidden");
+  document.getElementById("adminPanel").classList.remove("hidden");
+
+  const adminControl = document.getElementById("adminControl");
+
+  if (user.email === HEAD_ADMIN) {
+    adminControl.classList.remove("hidden");
+    await setDoc(doc(db, "admins", user.email), { role: "head" });
+    loadAdmins();
+  } else {
+    const snap = await getDoc(doc(db, "admins", user.email));
+    if (!snap.exists()) {
+      alert("You are not authorized");
+      logout();
+    }
+  }
+}
+
+/* Add Admin */
+document.getElementById("addAdmin").onclick = async () => {
+  const email = document.getElementById("newAdminEmail").value;
+  if (!email) return;
+  await setDoc(doc(db, "admins", email), { role: "sub" });
+  document.getElementById("newAdminEmail").value = "";
+  loadAdmins();
+};
+
+/* Load Admin List */
+async function loadAdmins() {
+  const list = document.getElementById("adminList");
+  list.innerHTML = "";
+  const snap = await getDocs(collection(db, "admins"));
+
+  snap.forEach(d => {
+    if (d.id !== HEAD_ADMIN) {
+      const li = document.createElement("li");
+      li.innerHTML = `${d.id} <button>Remove</button>`;
+      li.querySelector("button").onclick = async () => {
+        await deleteDoc(doc(db, "admins", d.id));
+        loadAdmins();
+      };
+      list.appendChild(li);
+    }
+  });
+}
+
+/* Logout */
+document.getElementById("logout").onclick = logout;
+function logout() {
+  signOut(auth);
+  location.reload();
+}
+</script>
+
+</body>
+</html>
