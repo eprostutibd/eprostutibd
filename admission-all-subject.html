@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>এডমিশন অল সাবজেক্ট - eProstutiBD.com</title>
+    <meta name="description" content="এডমিশন প্রস্তুতির জন্য সকল সাবজেক্টের প্রশ্নব্যাংক। গণিত, ইংরেজি, বিজ্ঞান, বাংলা সহ সকল বিষয়ের MCQ ও Written প্রশ্ন।">
+    <meta name="keywords" content="এডমিশন, ভর্তি পরীক্ষা, প্রশ্নব্যাংক, MCQ প্রশ্ন, Written প্রশ্ন, গণিত, ইংরেজি, বিজ্ঞান, বাংলা">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .main-header {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        .logo-sub {
+            font-size: 12px;
+            color: #666;
+            margin-top: -5px;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-menu a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .nav-menu a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .nav-menu a.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+        
+        /* Page Navigation */
+        .page-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-card {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .nav-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .nav-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        /* Subjects Grid */
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .subject-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .subject-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .subject-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 20px 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        /* Ad Space */
+        .ad-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px auto;
+            text-align: center;
+            border: 2px dashed #ddd;
+            max-width: 800px;
+        }
+        
+        .ad-placeholder {
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 2000;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+        
+        .mobile-nav a {
+            display: block;
+            padding: 15px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                gap: 15px;
+            }
+            
+            .nav-menu a {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .nav-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .page-nav {
+                flex-direction: column;
+            }
+            
+            .nav-card {
+                min-width: 100%;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 50px 20px;
+            }
+            
+            .subject-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .subject-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* No Subjects Message */
+        .no-subjects {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .no-subjects i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        /* SEO Elements */
+        .breadcrumb {
+            padding: 15px 20px;
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .schema-info {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-bar">
+            <div>
+                <a href="#"><i class="fas fa-phone-alt"></i> ০১৭XX-XXXXXX</a>
+                <a href="#"><i class="fas fa-envelope"></i> info@eprostutibd.com</a>
+            </div>
+        </div>
+        
+        <div class="main-header">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    eProstuti<span>BD</span>
+                    <div class="logo-sub">www.eprostutibd.com</div>
+                </a>
+            </div>
+            
+            <div class="nav-container">
+                <nav class="nav-menu">
+                    <a href="academy.html">একাডেমী</a>
+                    <a href="admission.html" class="active">এডমিশন অ্যাসিস্ট্যান্ট</a>
+                    <a href="job.html">জব অ্যাসিস্ট্যান্ট</a>
+                    <a href="ielts.html">IELTS অ্যাসিস্ট্যান্ট</a>
+                    <a href="current-affairs.html">কারেন্ট এফেয়ার্স</a>
+                    <a href="career.html">ক্যারিয়ার</a>
+                    <a href="notice.html">নোটিশ</a>
+                    <a href="blog.html">ব্লগ</a>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                eProstuti<span>BD</span>
+            </div>
+            <button class="close-menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="academy.html">একাডেমী</a>
+            <a href="admission.html" class="active">এডমিশন অ্যাসিস্ট্যান্ট</a>
+            <a href="job.html">জব অ্যাসিস্ট্যান্ট</a>
+            <a href="ielts.html">IELTS অ্যাসিস্ট্যান্ট</a>
+            <a href="current-affairs.html">কারেন্ট এফেয়ার্স</a>
+            <a href="career.html">ক্যারিয়ার</a>
+            <a href="notice.html">নোটিশ</a>
+            <a href="blog.html">ব্লগ</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>এডমিশন প্রস্তুতির জন্য সকল সাবজেক্ট</h1>
+            <p>বিশ্ববিদ্যালয়, মেডিকেল, প্রকৌশলসহ সকল ভর্তি পরীক্ষার প্রস্তুতির জন্য সম্পূর্ণ প্রশ্নব্যাংক</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; font-size: 14px;">
+                    <i class="fas fa-check-circle"></i> ১০০০+ MCQ প্রশ্ন
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; font-size: 14px;">
+                    <i class="fas fa-check-circle"></i> ৫০০+ Written প্রশ্ন
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; font-size: 14px;">
+                    <i class="fas fa-check-circle"></i> ২০+ সাবজেক্ট
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">হোম</a> &gt;
+            <a href="admission.html">এডমিশন অ্যাসিস্ট্যান্ট</a> &gt;
+            <span>সকল সাবজেক্ট</span>
+        </div>
+    </div>
+
+    <!-- Ad Space -->
+    <div class="container">
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i><br>
+                Advertisement Space (728x90)<br>
+                <small>Google AdSense / Adstra</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Navigation -->
+    <div class="container">
+        <div class="page-nav">
+            <a href="subject-questions.html" class="nav-card">
+                <i class="fas fa-book"></i>
+                <h3>বিষয়ভিত্তিক প্রশ্ন</h3>
+                <p>প্রতিটি বিষয়ের আলাদা প্রশ্নব্যাংক</p>
+            </a>
+            
+            <a href="question-bank.html" class="nav-card">
+                <i class="fas fa-bank"></i>
+                <h3>সকল প্রশ্নব্যাংক</h3>
+                <p>সম্পূর্ণ প্রশ্ন সংগ্রহ</p>
+            </a>
+            
+            <a href="university-questions.html" class="nav-card">
+                <i class="fas fa-university"></i>
+                <h3>উনিভার্সিটি ভিত্তিক প্রশ্ন</h3>
+                <p>বিশ্ববিদ্যালয় অনুযায়ী প্রশ্ন</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2 class="section-title">
+            <i class="fas fa-th-list"></i> সকল এডমিশন সাবজেক্ট
+        </h2>
+        
+        <!-- Subjects will be loaded here -->
+        <div id="subjectsContainer" class="subjects-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>সাবজেক্ট লোড হচ্ছে...</p>
+            </div>
+        </div>
+
+        <!-- Ad Space -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i><br>
+                Advertisement Space (300x250)<br>
+                <small>Mobile Friendly Ad</small>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature-card">
+                <h3><i class="fas fa-chart-line"></i> Why Choose Us?</h3>
+                <p>✓ Daily Updated Questions</p>
+                <p>✓ Previous Year Questions</p>
+                <p>✓ Model Test Facility</p>
+                <p>✓ Mobile Friendly Interface</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3><i class="fas fa-users"></i> Our Users</h3>
+                <p>✓ 50,000+ Active Students</p>
+                <p>✓ 100+ Educational Institutions</p>
+                <p>✓ 24/7 Support Available</p>
+                <p>✓ Free & Premium Content</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>eProstutiBD</h3>
+                <p>বাংলাদেশের বৃহত্তম অনলাইন শিক্ষা প্ল্যাটফর্ম। বিশ্ববিদ্যালয় ভর্তি, চাকরি পরীক্ষা, IELTS প্রস্তুতি সহ সকল ধরনের শিক্ষা সেবা।</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <div class="footer-links">
+                    <a href="about.html">আমাদের সম্পর্কে</a>
+                    <a href="contact.html">যোগাযোগ</a>
+                    <a href="privacy.html">প্রাইভেসি পলিসি</a>
+                    <a href="terms.html">শর্তাবলী</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>আমাদের সেবাসমূহ</h3>
+                <div class="footer-links">
+                    <a href="admission.html">এডমিশন অ্যাসিস্ট্যান্ট</a>
+                    <a href="job.html">জব অ্যাসিস্ট্যান্ট</a>
+                    <a href="ielts.html">IELTS অ্যাসিস্ট্যান্ট</a>
+                    <a href="academy.html">ভর্তি কোচিং</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>যোগাযোগ</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ঢাকা, বাংলাদেশ</p>
+                <p><i class="fas fa-phone"></i> ০১৭XX-XXXXXX</p>
+                <p><i class="fas fa-envelope"></i> info@eprostutibd.com</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © ২০২৪ eProstutiBD.com - All Rights Reserved
+        </div>
+    </footer>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "eProstutiBD - Admission Assistant",
+        "url": "https://www.eprostutibd.com",
+        "description": "বাংলাদেশের বৃহত্তম অনলাইন এডমিশন প্রস্তুতি প্ল্যাটফর্ম",
+        "publisher": {
+            "@type": "Organization",
+            "name": "eProstutiBD",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.eprostutibd.com/logo.png"
+            }
+        }
+    }
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
+            authDomain: "eprostutibd-9ec31.firebaseapp.com",
+            projectId: "eprostutibd-9ec31",
+            storageBucket: "eprostutibd-9ec31.firebasestorage.app",
+            messagingSenderId: "441646770166",
+            appId: "1:441646770166:web:ba244b681de6e6b1bb49d7",
+            measurementId: "G-E5XHV46Z6B"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.add('active');
+        });
+
+        document.querySelector('.close-menu').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.remove('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mobileMenu').classList.remove('active');
+            });
+        });
+
+        // Load admission subjects from Firebase
+        async function loadAdmissionSubjects() {
+            try {
+                const subjectsContainer = document.getElementById('subjectsContainer');
+                
+                // Show loading
+                subjectsContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>সাবজেক্ট লোড হচ্ছে...</p>
+                    </div>
+                `;
+                
+                // Fetch admission subjects
+                const snapshot = await db.collection('admission_subjects')
+                    .orderBy('questionCount', 'desc')
+                    .get();
+                
+                if (snapshot.empty) {
+                    subjectsContainer.innerHTML = `
+                        <div class="no-subjects">
+                            <i class="fas fa-book"></i>
+                            <h3>কোনো সাবজেক্ট পাওয়া যায়নি</h3>
+                            <p>অ্যাডমিন প্যানেল থেকে সাবজেক্ট যোগ করুন</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let subjectsHTML = '';
+                let subjectCount = 0;
+                
+                snapshot.forEach(doc => {
+                    const subject = { id: doc.id, ...doc.data() };
+                    subjectCount++;
+                    
+                    // Get subject icon based on name
+                    const icon = getSubjectIcon(subject.name);
+                    
+                    // Calculate MCQ and Written counts (in real app, fetch from questions)
+                    const mcqCount = Math.floor(Math.random() * 100) + 50; // Demo data
+                    const writtenCount = Math.floor(Math.random() * 30) + 20; // Demo data
+                    
+                    subjectsHTML += `
+                        <a href="subject-details.html?subject=${subject.id}" class="subject-card">
+                            <div class="subject-header">
+                                <div class="subject-icon">
+                                    <i class="${icon}"></i>
+                                </div>
+                                <div>
+                                    <div class="subject-title">${subject.name}</div>
+                                    <div style="color: #666; font-size: 14px;">এডমিশন সাবজেক্ট</div>
+                                </div>
+                            </div>
+                            <p style="color: #666; margin-top: 10px;">${subject.name} বিষয়ের সকল এডমিশন প্রশ্ন</p>
+                            <div class="subject-stats">
+                                <div class="stat">
+                                    <span class="stat-number">${mcqCount}</span>
+                                    <span class="stat-label">MCQ প্রশ্ন</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">${writtenCount}</span>
+                                    <span class="stat-label">Written প্রশ্ন</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">${subject.questionCount || 0}</span>
+                                    <span class="stat-label">মোট প্রশ্ন</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+                
+                // Update subjects count in hero section
+                document.querySelector('.hero h1').innerHTML = `এডমিশন প্রস্তুতির জন্য ${subjectCount}টি সাবজেক্ট`;
+                
+                subjectsContainer.innerHTML = subjectsHTML;
+                
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+                document.getElementById('subjectsContainer').innerHTML = `
+                    <div class="no-subjects">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>ডাটা লোড করতে সমস্যা</h3>
+                        <p>দয়া করে পুনরায় চেষ্টা করুন</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Get appropriate icon for subject
+        function getSubjectIcon(subjectName) {
+            const lowerName = subjectName.toLowerCase();
+            
+            if (lowerName.includes('গণিত') || lowerName.includes('math')) {
+                return 'fas fa-calculator';
+            } else if (lowerName.includes('ইংরেজি') || lowerName.includes('english')) {
+                return 'fas fa-language';
+            } else if (lowerName.includes('বিজ্ঞান') || lowerName.includes('science')) {
+                return 'fas fa-flask';
+            } else if (lowerName.includes('বাংলা')) {
+                return 'fas fa-book-open';
+            } else if (lowerName.includes('সাধারণ') || lowerName.includes('general')) {
+                return 'fas fa-globe-asia';
+            } else if (lowerName.includes('পদার্থ')) {
+                return 'fas fa-atom';
+            } else if (lowerName.includes('রসায়ন')) {
+                return 'fas fa-vial';
+            } else if (lowerName.includes('জীব')) {
+                return 'fas fa-dna';
+            } else {
+                return 'fas fa-book';
+            }
+        }
+
+        // Load subjects when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdmissionSubjects();
+            
+            // Update page title with subject count
+            setTimeout(() => {
+                const subjectCards = document.querySelectorAll('.subject-card');
+                if (subjectCards.length > 0) {
+                    document.title = `${subjectCards.length}টি এডমিশন সাবজেক্ট - eProstutiBD`;
+                }
+            }, 1000);
+            
+            // Initialize AdSense (demo)
+            initializeAds();
+        });
+
+        // AdSense initialization (demo function)
+        function initializeAds() {
+            console.log('AdSense ads initialized for mobile and desktop');
+            // In real implementation, this would initialize Google AdSense
+        }
+
+        // Add structured data for SEO
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": [],
+            "name": "Admission Subjects",
+            "description": "Complete list of admission subjects with MCQ and Written questions",
+            "url": window.location.href
+        };
+
+        // Update structured data after loading subjects
+        setTimeout(() => {
+            const subjectElements = document.querySelectorAll('.subject-card');
+            subjectElements.forEach((card, index) => {
+                const subjectName = card.querySelector('.subject-title').textContent;
+                const mcqCount = card.querySelector('.stat-number').textContent;
+                
+                structuredData.itemListElement.push({
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "item": {
+                        "@type": "EducationalOccupationalCredential",
+                        "name": subjectName,
+                        "description": `${mcqCount} MCQ questions available`,
+                        "url": card.href
+                    }
+                });
+            });
+            
+            // Add structured data to page
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(structuredData);
+            document.head.appendChild(script);
+        }, 2000);
+    </script>
+</body>
+</html>
