@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</title>
+    <title>এডমিশন সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -18,7 +18,7 @@
         }
         
         body {
-            background: #f0f2f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -30,74 +30,62 @@
         
         /* Header */
         .header {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 25px 30px;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
+            padding: 25px 30px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
         
-        .header-left h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .header-left p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-        
-        .back-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
+            justify-content: center;
+            gap: 15px;
         }
         
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .header p {
+            color: #666;
+            font-size: 1rem;
         }
         
         /* Main Content */
         .main-content {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 350px 1fr;
             gap: 25px;
         }
         
-        /* Left Sidebar */
-        .sidebar {
+        /* Left Panel */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        /* Card Design */
+        .card {
             background: white;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            height: fit-content;
+            transition: transform 0.3s;
         }
         
-        .sidebar-section {
-            margin-bottom: 30px;
+        .card:hover {
+            transform: translateY(-5px);
         }
         
-        .sidebar-title {
-            font-size: 1.2rem;
-            color: #333;
+        .card-title {
+            color: #2c3e50;
             margin-bottom: 20px;
+            font-size: 1.2rem;
             padding-bottom: 10px;
-            border-bottom: 2px solid #4361ee;
+            border-bottom: 2px solid #3498db;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -127,10 +115,10 @@
         }
         
         .form-control:focus {
-            border-color: #4361ee;
+            border-color: #3498db;
             background: white;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
         /* Button Styles */
@@ -144,42 +132,43 @@
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            width: 100%;
         }
         
         .btn-primary {
-            background: #4361ee;
+            background: #3498db;
             color: white;
-            width: 100%;
-            justify-content: center;
         }
         
         .btn-primary:hover {
-            background: #3a0ca3;
+            background: #2980b9;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
         
         .btn-success {
-            background: #4cc9f0;
+            background: #2ecc71;
             color: white;
         }
         
         .btn-success:hover {
-            background: #4361ee;
+            background: #27ae60;
+            transform: translateY(-2px);
         }
         
-        .btn-danger {
-            background: #f72585;
+        .btn-warning {
+            background: #f39c12;
             color: white;
         }
         
-        .btn-danger:hover {
-            background: #b5179e;
+        .btn-warning:hover {
+            background: #d68910;
         }
         
         /* Question Type */
-        .type-buttons {
+        .type-selector {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
@@ -199,93 +188,56 @@
         }
         
         .type-btn.active {
-            border-color: #4361ee;
-            background: #4361ee;
+            border-color: #3498db;
+            background: #3498db;
             color: white;
         }
         
         /* Upload Area */
-        .upload-area {
-            border: 3px dashed #4361ee;
-            border-radius: 10px;
-            padding: 40px 20px;
-            text-align: center;
+        .upload-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed #3498db;
             cursor: pointer;
-            transition: all 0.3s;
-            background: #f8f9fa;
-            margin-bottom: 20px;
         }
         
-        .upload-area:hover {
-            background: #edf2ff;
+        .upload-content {
+            text-align: center;
+            padding: 20px;
         }
         
         .upload-icon {
             font-size: 48px;
-            color: #4361ee;
+            color: #3498db;
             margin-bottom: 15px;
-        }
-        
-        .file-info {
-            font-size: 13px;
-            color: #666;
-            margin-top: 10px;
         }
         
         .file-input {
             display: none;
         }
         
-        /* Demo Download */
-        .demo-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 25px;
-            border: 2px solid #e1e5e9;
-        }
-        
-        .demo-title {
-            font-size: 0.9rem;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .demo-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .demo-btn {
-            padding: 10px 15px;
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
             background: white;
-            border: 2px solid #4361ee;
-            border-radius: 6px;
-            color: #4361ee;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
         }
         
-        .demo-btn:hover {
-            background: #4361ee;
+        .clear-file {
+            background: #e74c3c;
             color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
         }
         
         /* Subjects List */
-        .subjects-list {
-            max-height: 200px;
+        .subjects-container {
+            max-height: 300px;
             overflow-y: auto;
-            margin-top: 15px;
         }
         
         .subject-item {
@@ -296,16 +248,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 4px solid #4361ee;
+            border-left: 4px solid #3498db;
         }
         
         .subject-name {
             font-weight: 600;
-            color: #333;
+            color: #2c3e50;
         }
         
         .subject-count {
-            background: #4361ee;
+            background: #3498db;
             color: white;
             padding: 3px 10px;
             border-radius: 20px;
@@ -313,27 +265,31 @@
             font-weight: 600;
         }
         
-        /* Main Content Area */
-        .content-area {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        /* Right Panel */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
         
         /* Search Bar */
-        .search-bar {
+        .search-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .search-container {
             display: flex;
             gap: 15px;
-            margin-bottom: 25px;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            flex-wrap: wrap;
         }
         
         .search-input {
             flex: 1;
-            padding: 12px 20px;
+            min-width: 250px;
+            padding: 12px 15px;
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 14px;
@@ -341,13 +297,22 @@
         }
         
         .search-input:focus {
-            border-color: #4361ee;
+            border-color: #3498db;
             outline: none;
         }
         
         /* Questions Table */
+        .table-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            flex: 1;
+        }
+        
         .table-container {
             overflow-x: auto;
+            margin-top: 20px;
             border-radius: 10px;
             border: 1px solid #e1e5e9;
         }
@@ -355,11 +320,11 @@
         .questions-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 1000px;
         }
         
         .questions-table thead {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             color: white;
         }
         
@@ -395,21 +360,22 @@
         }
         
         .badge-mcq {
-            background: #4cc9f0;
+            background: #2ecc71;
             color: white;
         }
         
         .badge-written {
-            background: #f72585;
+            background: #e74c3c;
             color: white;
         }
         
         .exam-badge {
-            background: #7209b7;
+            background: #9b59b6;
             color: white;
             font-size: 11px;
             padding: 3px 8px;
             margin: 2px;
+            border-radius: 4px;
             display: inline-block;
         }
         
@@ -433,26 +399,26 @@
         }
         
         .edit-btn {
-            background: rgba(76, 201, 240, 0.1);
-            color: #4cc9f0;
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
         }
         
         .edit-btn:hover {
-            background: #4cc9f0;
+            background: #3498db;
             color: white;
         }
         
         .delete-btn {
-            background: rgba(247, 37, 133, 0.1);
-            color: #f72585;
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
         }
         
         .delete-btn:hover {
-            background: #f72585;
+            background: #e74c3c;
             color: white;
         }
         
-        /* Message Toast */
+        /* Toast Messages */
         .toast-container {
             position: fixed;
             bottom: 30px;
@@ -471,20 +437,20 @@
             gap: 15px;
             margin-top: 10px;
             animation: slideUp 0.3s ease;
-            border-left: 5px solid #4361ee;
+            border-left: 5px solid #3498db;
             max-width: 500px;
         }
         
         .toast.success {
-            border-left-color: #4cc9f0;
+            border-left-color: #2ecc71;
         }
         
         .toast.error {
-            border-left-color: #f72585;
+            border-left-color: #e74c3c;
         }
         
         .toast.warning {
-            border-left-color: #ff9e00;
+            border-left-color: #f39c12;
         }
         
         @keyframes slideUp {
@@ -502,9 +468,9 @@
             font-size: 22px;
         }
         
-        .toast.success .toast-icon { color: #4cc9f0; }
-        .toast.error .toast-icon { color: #f72585; }
-        .toast.warning .toast-icon { color: #ff9e00; }
+        .toast.success .toast-icon { color: #2ecc71; }
+        .toast.error .toast-icon { color: #e74c3c; }
+        .toast.warning .toast-icon { color: #f39c12; }
         
         .toast-content {
             flex: 1;
@@ -530,11 +496,7 @@
             padding: 5px;
         }
         
-        .close-toast:hover {
-            color: #333;
-        }
-        
-        /* Loading Overlay */
+        /* Loading */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -554,7 +516,7 @@
             width: 50px;
             height: 50px;
             border: 5px solid #f3f3f3;
-            border-top: 5px solid #4361ee;
+            border-top: 5px solid #3498db;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
@@ -578,84 +540,163 @@
             color: #ddd;
         }
         
+        /* Demo Section */
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .demo-title {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .demo-btn {
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        
+        .demo-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+        
         /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
             
-            .sidebar {
+            .left-panel {
                 order: 2;
             }
             
-            .content-area {
+            .right-panel {
                 order: 1;
             }
         }
         
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .header-left h1 {
-                justify-content: center;
-            }
-            
-            .search-bar {
+            .search-container {
                 flex-direction: column;
             }
+            
+            .search-input {
+                min-width: 100%;
+            }
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #2980b9;
         }
     </style>
 </head>
 <body>
+    <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> ড্যাশবোর্ড
+    </button>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="header-left">
-                <h1><i class="fas fa-book"></i> সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</h1>
-                <p>নতুন সাবজেক্ট অ্যাড করুন, CSV/Excel থেকে প্রশ্ন আপলোড করুন, প্রশ্ন ম্যানেজ করুন</p>
-            </div>
-            <button class="back-btn" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> ড্যাশবোর্ড
-            </button>
+            <h1><i class="fas fa-book"></i> এডমিশন সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</h1>
+            <p>এডমিশন সাবজেক্ট প্রশ্ন যোগ করুন, CSV/Excel থেকে ইম্পোর্ট করুন, প্রশ্ন ম্যানেজ করুন</p>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Left Sidebar -->
-            <div class="sidebar">
-                <!-- Add Subject Form -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><i class="fas fa-plus-circle"></i> নতুন সাবজেক্ট</h3>
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <!-- Add Subject Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-plus-circle"></i> নতুন এডমিশন সাবজেক্ট</h3>
                     <form id="subjectForm">
                         <div class="form-group">
-                            <label class="form-label">সাবজেক্ট নাম</label>
+                            <label class="form-label">এডমিশন সাবজেক্ট নাম</label>
                             <input type="text" id="subjectName" class="form-control" 
                                    placeholder="যেমন: গণিত, ইংরেজি, বিজ্ঞান" required>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> সাবজেক্ট অ্যাড করুন
+                            <i class="fas fa-save"></i> এডমিশন সাবজেক্ট যোগ করুন
                         </button>
                     </form>
                 </div>
 
-                <!-- Subjects List -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><i class="fas fa-list"></i> সাবজেক্টসমূহ</h3>
-                    <div id="subjectsList" class="subjects-list">
+                <!-- Subjects List Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-list"></i> এডমিশন সাবজেক্টসমূহ</h3>
+                    <div id="subjectsList" class="subjects-container">
                         <!-- Subjects will appear here -->
                     </div>
                 </div>
 
-                <!-- Upload Questions -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><i class="fas fa-upload"></i> CSV/Excel আপলোড</h3>
+                <!-- Upload Card -->
+                <div class="card upload-card" onclick="document.getElementById('csvFile').click()">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3 class="card-title">CSV/Excel ফাইল আপলোড</h3>
+                        <p style="color: #666; margin-bottom: 15px;">ক্লিক করুন অথবা ফাইল ড্র্যাগ করুন</p>
+                        <p style="color: #999; font-size: 12px;">সাপোর্টেড: .csv, .xlsx, .xls</p>
+                        <input type="file" id="csvFile" class="file-input" accept=".csv,.xlsx,.xls">
+                    </div>
+                    
+                    <div id="fileInfo" class="file-info" style="display: none;">
+                        <div id="fileName"></div>
+                        <div id="fileSize" style="font-size: 12px; color: #666;"></div>
+                        <button class="clear-file" onclick="clearFile()">ফাইল রিমুভ করুন</button>
+                    </div>
+                </div>
+
+                <!-- Upload Settings Card -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-cog"></i> আপলোড সেটিংস</h3>
                     
                     <div class="form-group">
-                        <label class="form-label">সাবজেক্ট</label>
+                        <label class="form-label">এডমিশন সাবজেক্ট</label>
                         <select id="uploadSubject" class="form-control" required>
                             <option value="">সিলেক্ট করুন...</option>
                         </select>
@@ -663,84 +704,88 @@
                     
                     <div class="form-group">
                         <label class="form-label">প্রশ্ন টাইপ</label>
-                        <div class="type-buttons">
+                        <div class="type-selector">
                             <div class="type-btn active" onclick="selectType('mcq')">MCQ</div>
                             <div class="type-btn" onclick="selectType('written')">Written</div>
                         </div>
                     </div>
                     
-                    <div class="upload-area" onclick="document.getElementById('csvFile').click()">
-                        <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                        </div>
-                        <p>CSV/Excel ফাইল আপলোড করুন</p>
-                        <p class="file-info">সাপোর্টেড: .csv, .xlsx, .xls</p>
-                        <input type="file" id="csvFile" class="file-input" accept=".csv,.xlsx,.xls">
+                    <div class="form-group">
+                        <label class="form-label">পরীক্ষার তথ্য (ঐচ্ছিক)</label>
+                        <input type="text" id="examHistory" class="form-control" 
+                               placeholder="যেমন: এসএসসি ২০২৩ রাজশাহী বোর্ড">
                     </div>
                     
                     <button class="btn btn-success" onclick="uploadCSV()">
-                        <i class="fas fa-upload"></i> আপলোড করুন
+                        <i class="fas fa-upload"></i> প্রশ্ন আপলোড করুন
                     </button>
                 </div>
 
-                <!-- Demo Templates -->
+                <!-- Demo Templates Card -->
                 <div class="demo-section">
-                    <h4 class="demo-title"><i class="fas fa-download"></i> টেমপ্লেট ডাউনলোড</h4>
+                    <h4 class="demo-title"><i class="fas fa-download"></i> টেমপ্লেট ডাউনলোড করুন</h4>
                     <div class="demo-buttons">
                         <a href="#" class="demo-btn" onclick="downloadTemplate('mcq-csv')">
-                            <i class="fas fa-file-csv"></i> MCQ CSV টেমপ্লেট
+                            <i class="fas fa-file-csv"></i> MCQ প্রশ্ন CSV টেমপ্লেট
                         </a>
                         <a href="#" class="demo-btn" onclick="downloadTemplate('written-csv')">
-                            <i class="fas fa-file-csv"></i> Written CSV টেমপ্লেট
+                            <i class="fas fa-file-csv"></i> Written প্রশ্ন CSV টেমপ্লেট
                         </a>
                         <a href="#" class="demo-btn" onclick="downloadTemplate('mcq-excel')">
-                            <i class="fas fa-file-excel"></i> MCQ Excel টেমপ্লেট
+                            <i class="fas fa-file-excel"></i> MCQ প্রশ্ন Excel টেমপ্লেট
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content Area -->
-            <div class="content-area">
-                <!-- Search Bar -->
-                <div class="search-bar">
-                    <input type="text" id="searchInput" class="search-input" 
-                           placeholder="প্রশ্ন বা উত্তর সার্চ করুন..." onkeyup="searchQuestions()">
-                    <select id="filterSubject" class="search-input" onchange="searchQuestions()" style="width: 200px;">
-                        <option value="">সব সাবজেক্ট</option>
-                    </select>
-                    <select id="filterType" class="search-input" onchange="searchQuestions()" style="width: 150px;">
-                        <option value="">সব টাইপ</option>
-                        <option value="mcq">MCQ</option>
-                        <option value="written">Written</option>
-                    </select>
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <!-- Search Card -->
+                <div class="search-card">
+                    <h3 class="card-title"><i class="fas fa-search"></i> প্রশ্ন সার্চ করুন</h3>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" 
+                               placeholder="প্রশ্ন বা উত্তর সার্চ করুন..." onkeyup="searchQuestions()">
+                        <select id="filterSubject" class="search-input" onchange="searchQuestions()" style="min-width: 200px;">
+                            <option value="">সব এডমিশন সাবজেক্ট</option>
+                        </select>
+                        <select id="filterType" class="search-input" onchange="searchQuestions()" style="min-width: 150px;">
+                            <option value="">সব টাইপ</option>
+                            <option value="mcq">MCQ প্রশ্ন</option>
+                            <option value="written">Written প্রশ্ন</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Questions Table -->
-                <div class="table-container">
-                    <table class="questions-table" id="questionsTable">
-                        <thead>
-                            <tr>
-                                <th width="5%">#</th>
-                                <th width="30%">প্রশ্ন</th>
-                                <th width="10%">টাইপ</th>
-                                <th width="15%">সাবজেক্ট</th>
-                                <th width="20%">উত্তর</th>
-                                <th width="15%">পরীক্ষার তথ্য</th>
-                                <th width="5%">একশন</th>
-                            </tr>
-                        </thead>
-                        <tbody id="questionsBody">
-                            <!-- Questions will appear here -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- No Data Message -->
-                <div id="noData" class="no-data" style="display: none;">
-                    <i class="fas fa-inbox"></i>
-                    <h4>কোনো প্রশ্ন পাওয়া যায়নি</h4>
-                    <p>প্রথমে প্রশ্ন অ্যাড করুন অথবা CSV/Excel থেকে ইম্পোর্ট করুন</p>
+                <!-- Questions Table Card -->
+                <div class="table-card">
+                    <h3 class="card-title"><i class="fas fa-question-circle"></i> এডমিশন প্রশ্নসমূহ</h3>
+                    
+                    <div class="table-container">
+                        <table class="questions-table" id="questionsTable">
+                            <thead>
+                                <tr>
+                                    <th width="5%">#</th>
+                                    <th width="25%">প্রশ্ন</th>
+                                    <th width="10%">টাইপ</th>
+                                    <th width="15%">সাবজেক্ট</th>
+                                    <th width="25%">উত্তর</th>
+                                    <th width="15%">পরীক্ষার তথ্য</th>
+                                    <th width="5%">একশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questionsBody">
+                                <!-- Questions will appear here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- No Data Message -->
+                    <div id="noData" class="no-data" style="display: none;">
+                        <i class="fas fa-inbox"></i>
+                        <h4>কোনো এডমিশন প্রশ্ন পাওয়া যায়নি</h4>
+                        <p>প্রথমে প্রশ্ন যোগ করুন অথবা CSV/Excel থেকে ইম্পোর্ট করুন</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -786,7 +831,7 @@
             await loadSubjects();
             await loadQuestions();
             hideLoading();
-            showToast('সিস্টেম রেডি!', 'সকল ডাটা লোড করা হয়েছে', 'success');
+            showToast('সিস্টেম রেডি!', 'এডমিশন সাবজেক্ট প্রশ্ন সিস্টেম লোড করা হয়েছে', 'success');
         });
 
         // Function to go back to dashboard
@@ -843,39 +888,40 @@
             }, 5000);
         }
 
-        // Add new subject
+        // Add new admission subject
         document.getElementById('subjectForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const subjectName = document.getElementById('subjectName').value.trim();
             
             if (!subjectName) {
-                showToast('ত্রুটি!', 'দয়া করে সাবজেক্ট নাম লিখুন', 'error');
+                showToast('ত্রুটি!', 'দয়া করে এডমিশন সাবজেক্ট নাম লিখুন', 'error');
                 return;
             }
 
             try {
                 showLoading();
                 
-                // Check if subject already exists
-                const snapshot = await db.collection('subjects')
+                // Check if subject already exists in admission_subjects collection
+                const snapshot = await db.collection('admission_subjects')
                     .where('name', '==', subjectName)
                     .get();
                 
                 if (!snapshot.empty) {
-                    showToast('সতর্কতা!', 'এই সাবজেক্ট ইতিমধ্যে আছে', 'warning');
+                    showToast('সতর্কতা!', 'এই এডমিশন সাবজেক্ট ইতিমধ্যে আছে', 'warning');
                     hideLoading();
                     return;
                 }
 
-                // Add subject to Firebase
+                // Add subject to Firebase - admission_subjects collection
                 const subjectData = {
                     name: subjectName,
+                    type: 'admission',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     questionCount: 0
                 };
 
-                await db.collection('subjects').add(subjectData);
+                await db.collection('admission_subjects').add(subjectData);
                 
                 // Update UI
                 await loadSubjects();
@@ -883,19 +929,19 @@
                 // Clear form
                 document.getElementById('subjectName').value = '';
                 
-                showToast('সফল!', `${subjectName} সাবজেক্ট অ্যাড হয়েছে`, 'success');
+                showToast('সফল!', `${subjectName} এডমিশন সাবজেক্ট যোগ করা হয়েছে`, 'success');
             } catch (error) {
-                console.error('Error adding subject:', error);
-                showToast('ত্রুটি!', 'সাবজেক্ট অ্যাড করতে সমস্যা', 'error');
+                console.error('Error adding admission subject:', error);
+                showToast('ত্রুটি!', 'এডমিশন সাবজেক্ট যোগ করতে সমস্যা', 'error');
             } finally {
                 hideLoading();
             }
         });
 
-        // Load subjects from Firebase
+        // Load admission subjects from Firebase
         async function loadSubjects() {
             try {
-                const snapshot = await db.collection('subjects')
+                const snapshot = await db.collection('admission_subjects')
                     .orderBy('createdAt', 'desc')
                     .get();
                 
@@ -907,8 +953,8 @@
                 updateSubjectList();
                 updateSubjectSelects();
             } catch (error) {
-                console.error('Error loading subjects:', error);
-                showToast('ত্রুটি!', 'সাবজেক্ট লোড করতে সমস্যা', 'error');
+                console.error('Error loading admission subjects:', error);
+                showToast('ত্রুটি!', 'এডমিশন সাবজেক্ট লোড করতে সমস্যা', 'error');
             }
         }
 
@@ -918,9 +964,10 @@
             
             if (subjects.length === 0) {
                 subjectsList.innerHTML = `
-                    <div style="text-align: center; color: #666; padding: 20px;">
-                        <i class="fas fa-book" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
-                        <p>কোনো সাবজেক্ট নেই</p>
+                    <div style="text-align: center; color: #666; padding: 40px 20px;">
+                        <i class="fas fa-book" style="font-size: 32px; margin-bottom: 10px; display: block;"></i>
+                        <p>কোনো এডমিশন সাবজেক্ট নেই</p>
+                        <p style="font-size: 12px; margin-top: 5px;">প্রথমে একটি সাবজেক্ট যোগ করুন</p>
                     </div>
                 `;
                 return;
@@ -931,7 +978,10 @@
                 const subjectDiv = document.createElement('div');
                 subjectDiv.className = 'subject-item';
                 subjectDiv.innerHTML = `
-                    <div class="subject-name">${subject.name}</div>
+                    <div>
+                        <div class="subject-name">${subject.name}</div>
+                        <div style="font-size: 11px; color: #666;">এডমিশন সাবজেক্ট</div>
+                    </div>
                     <div class="subject-count">${subject.questionCount || 0}</div>
                 `;
                 subjectsList.appendChild(subjectDiv);
@@ -944,7 +994,7 @@
             const filterSelect = document.getElementById('filterSubject');
             
             uploadSelect.innerHTML = '<option value="">সিলেক্ট করুন...</option>';
-            filterSelect.innerHTML = '<option value="">সব সাবজেক্ট</option>';
+            filterSelect.innerHTML = '<option value="">সব এডমিশন সাবজেক্ট</option>';
             
             subjects.forEach(subject => {
                 const option1 = document.createElement('option');
@@ -964,17 +1014,10 @@
             const file = e.target.files[0];
             if (file) {
                 currentFile = file;
-                const uploadArea = document.querySelector('.upload-area');
-                uploadArea.innerHTML = `
-                    <div style="color: #4361ee;">
-                        <i class="fas fa-file-alt" style="font-size: 48px;"></i>
-                    </div>
-                    <p style="font-weight: 600;">${file.name}</p>
-                    <p class="file-info">${(file.size / 1024).toFixed(2)} KB</p>
-                    <button class="btn btn-danger" onclick="clearFile()" style="margin-top: 10px;">
-                        <i class="fas fa-times"></i> ফাইল রিমুভ করুন
-                    </button>
-                `;
+                const fileInfo = document.getElementById('fileInfo');
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = `সাইজ: ${(file.size / 1024).toFixed(2)} KB`;
+                fileInfo.style.display = 'block';
             }
         });
 
@@ -982,92 +1025,84 @@
         function clearFile() {
             document.getElementById('csvFile').value = '';
             currentFile = null;
-            document.querySelector('.upload-area').innerHTML = `
-                <div class="upload-icon">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </div>
-                <p>CSV/Excel ফাইল আপলোড করুন</p>
-                <p class="file-info">সাপোর্টেড: .csv, .xlsx, .xls</p>
-            `;
+            document.getElementById('fileInfo').style.display = 'none';
         }
 
         // Upload CSV file
         async function uploadCSV() {
             const subjectSelect = document.getElementById('uploadSubject');
             const subjectId = subjectSelect.value;
+            const examHistory = document.getElementById('examHistory').value.trim();
             
             if (!subjectId) {
-                showToast('ত্রুটি!', 'দয়া করে সাবজেক্ট সিলেক্ট করুন', 'error');
+                showToast('ত্রুটি!', 'দয়া করে একটি এডমিশন সাবজেক্ট সিলেক্ট করুন', 'error');
                 return;
             }
             
             if (!currentFile) {
-                showToast('ত্রুটি!', 'দয়া করে একটি ফাইল সিলেক্ট করুন', 'error');
+                showToast('ত্রুটি!', 'দয়া করে একটি CSV/Excel ফাইল সিলেক্ট করুন', 'error');
                 return;
             }
             
             const subject = subjects.find(s => s.id === subjectId);
             if (!subject) {
-                showToast('ত্রুটি!', 'সাবজেক্ট পাওয়া যায়নি', 'error');
+                showToast('ত্রুটি!', 'এডমিশন সাবজেক্ট পাওয়া যায়নি', 'error');
                 return;
             }
             
             try {
                 showLoading();
                 
-                // Simulate CSV processing (in real app, parse CSV here)
-                // For demo, we'll add sample questions
-                const sampleQuestions = [
-                    {
-                        question: '2 + 2 = কত?',
-                        type: selectedType,
-                        subjectId: subjectId,
-                        subjectName: subject.name,
-                        answer: '4',
-                        options: selectedType === 'mcq' ? ['4', '5', '6', '7'] : [],
-                        examHistory: ['এসএসসি ২০২৩ রাজশাহী বোর্ড'],
-                        uploadedFrom: 'CSV',
-                        uploadDate: new Date().toISOString(),
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    },
-                    {
-                        question: 'পানির রাসায়নিক সংকেত কী?',
-                        type: selectedType,
-                        subjectId: subjectId,
-                        subjectName: subject.name,
-                        answer: 'H₂O',
-                        options: selectedType === 'mcq' ? ['H₂O', 'O₂', 'CO₂', 'NaCl'] : [],
-                        examHistory: ['এইচএসসি ২০২২ ঢাকা বোর্ড'],
-                        uploadedFrom: 'CSV',
-                        uploadDate: new Date().toISOString(),
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    },
-                    {
-                        question: 'বাংলাদেশের রাজধানীর নাম কী?',
-                        type: selectedType,
-                        subjectId: subjectId,
-                        subjectName: subject.name,
-                        answer: 'ঢাকা',
-                        options: selectedType === 'mcq' ? ['ঢাকা', 'চট্টগ্রাম', 'রাজশাহী', 'খুলনা'] : [],
-                        examHistory: ['জেএসসি ২০২৪'],
-                        uploadedFrom: 'CSV',
-                        uploadDate: new Date().toISOString(),
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }
-                ];
+                // Parse CSV file (simulated for demo)
+                // In real app, use proper CSV parsing library
+                const fileContent = await readFileAsText(currentFile);
+                const rows = fileContent.split('\n').filter(row => row.trim());
                 
-                // Add questions to Firebase
+                if (rows.length < 2) {
+                    throw new Error('ফাইলে কোনো ডাটা নেই');
+                }
+                
+                const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                const questionRows = rows.slice(1);
+                
+                const questionsToAdd = [];
                 const batch = db.batch();
-                sampleQuestions.forEach(question => {
-                    const docRef = db.collection('questions').doc();
-                    batch.set(docRef, question);
-                });
+                
+                // Process each row
+                for (let i = 0; i < Math.min(questionRows.length, 10); i++) {
+                    const row = questionRows[i];
+                    const values = parseCSVRow(row);
+                    
+                    if (values.length >= 2) {
+                        const questionData = {
+                            question: values[0] || `ইম্পোর্ট করা প্রশ্ন ${i + 1}`,
+                            type: selectedType,
+                            subjectId: subjectId,
+                            subjectName: subject.name,
+                            answer: values[1] || 'উত্তর',
+                            examHistory: examHistory ? [examHistory] : [],
+                            uploadedFrom: 'CSV',
+                            uploadDate: new Date().toISOString(),
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            collection: 'admission_questions' // Added for identification
+                        };
+                        
+                        if (selectedType === 'mcq' && values.length >= 6) {
+                            questionData.options = values.slice(2, 6);
+                        }
+                        
+                        const docRef = db.collection('admission_questions').doc();
+                        batch.set(docRef, questionData);
+                        questionsToAdd.push(questionData);
+                    }
+                }
                 
                 await batch.commit();
                 
-                // Update subject question count
-                await db.collection('subjects').doc(subjectId).update({
-                    questionCount: (subject.questionCount || 0) + sampleQuestions.length,
+                // Update admission subject question count
+                const newCount = (subject.questionCount || 0) + questionsToAdd.length;
+                await db.collection('admission_subjects').doc(subjectId).update({
+                    questionCount: newCount,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
@@ -1075,16 +1110,50 @@
                 await loadSubjects();
                 await loadQuestions();
                 
-                // Clear file
+                // Clear form
                 clearFile();
+                document.getElementById('examHistory').value = '';
                 
-                showToast('সফল!', `${sampleQuestions.length}টি প্রশ্ন আপলোড হয়েছে`, 'success');
+                showToast('সফল!', `${questionsToAdd.length}টি এডমিশন প্রশ্ন আপলোড হয়েছে`, 'success');
             } catch (error) {
                 console.error('Error uploading CSV:', error);
-                showToast('ত্রুটি!', 'ফাইল আপলোড করতে সমস্যা', 'error');
+                showToast('ত্রুটি!', 'ফাইল আপলোড করতে সমস্যা: ' + error.message, 'error');
             } finally {
                 hideLoading();
             }
+        }
+
+        // Helper function to read file as text
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsText(file);
+            });
+        }
+
+        // Helper function to parse CSV row
+        function parseCSVRow(row) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim().replace(/"/g, ''));
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim().replace(/"/g, ''));
+            return result;
         }
 
         // Download template
@@ -1095,25 +1164,25 @@
             switch(type) {
                 case 'mcq-csv':
                     content = 'question,option_a,option_b,option_c,option_d,correct_answer,exam_history\n';
-                    content += '"2+2=?",4,5,6,7,"4","এসএসসি ২০২৩ রাজশাহী বোর্ড"\n';
-                    content += '"পানির রাসায়নিক সংকেত?",H2O,O2,CO2,NaCl,"H2O","এইচএসসি ২০২২ ঢাকা বোর্ড"';
-                    fileName = 'mcq_template.csv';
+                    content += '"২+২=?",৪,৫,৬,৭,"৪","এসএসসি ২০২৩ রাজশাহী বোর্ড"\n';
+                    content += '"পানির রাসায়নিক সংকেত?",H₂O,O₂,CO₂,NaCl,"H₂O","এইচএসসি ২০২২ ঢাকা বোর্ড"';
+                    fileName = 'admission_mcq_template.csv';
                     break;
                 case 'written-csv':
                     content = 'question,correct_answer,exam_history\n';
                     content += '"পানির গুরুত্ব লিখুন","পানি জীবনের জন্য অপরিহার্য","এসএসসি ২০২৩ রাজশাহী বোর্ড"\n';
-                    content += '"বাংলাদেশের ইতিহাস লিখুন","বাংলাদেশ ১৯৭১ সালে স্বাধীনতা লাভ করে","এসএসসি ২০২৩ ঢাকা বোর্ড"';
-                    fileName = 'written_template.csv';
+                    content += '"বাংলাদেশের স্বাধীনতা যুদ্ধের গুরুত্ব লিখুন","১৯৭১ সালের মুক্তিযুদ্ধ বাংলাদেশের গৌরবোজ্জ্বল অধ্যায়","এসএসসি ২০২৩ ঢাকা বোর্ড"';
+                    fileName = 'admission_written_template.csv';
                     break;
                 case 'mcq-excel':
-                    content = 'Question\tOption A\tOption B\tOption C\tOption D\tCorrect Answer\tExam History\n';
-                    content += '2+2=?\t4\t5\t6\t7\t4\tএসএসসি ২০২৩ রাজশাহী বোর্ড\n';
-                    content += 'পানির রাসায়নিক সংকেত?\tH2O\tO2\tCO2\tNaCl\tH2O\tএইচএসসি ২০২২ ঢাকা বোর্ড';
-                    fileName = 'mcq_template.xls';
+                    content = 'প্রশ্ন\tঅপশন A\tঅপশন B\tঅপশন C\tঅপশন D\tসঠিক উত্তর\tপরীক্ষার তথ্য\n';
+                    content += '২+২=?\t৪\t৫\t৬\t৭\t৪\tএসএসসি ২০২৩ রাজশাহী বোর্ড\n';
+                    content += 'পানির রাসায়নিক সংকেত?\tH₂O\tO₂\tCO₂\tNaCl\tH₂O\tএইচএসসি ২০২২ ঢাকা বোর্ড';
+                    fileName = 'admission_mcq_template.xls';
                     break;
             }
             
-            const blob = new Blob([content], { type: type.includes('excel') ? 'application/vnd.ms-excel' : 'text/csv' });
+            const blob = new Blob([content], { type: type.includes('excel') ? 'application/vnd.ms-excel' : 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -1126,10 +1195,10 @@
             showToast('সফল!', `${fileName} ডাউনলোড শুরু হয়েছে`, 'success');
         }
 
-        // Load questions from Firebase
+        // Load admission questions from Firebase
         async function loadQuestions() {
             try {
-                const snapshot = await db.collection('questions')
+                const snapshot = await db.collection('admission_questions')
                     .orderBy('createdAt', 'desc')
                     .get();
                 
@@ -1140,8 +1209,8 @@
                 
                 searchQuestions();
             } catch (error) {
-                console.error('Error loading questions:', error);
-                showToast('ত্রুটি!', 'প্রশ্ন লোড করতে সমস্যা', 'error');
+                console.error('Error loading admission questions:', error);
+                showToast('ত্রুটি!', 'এডমিশন প্রশ্ন লোড করতে সমস্যা', 'error');
             }
         }
 
@@ -1172,14 +1241,17 @@
                     examBadges = '<span style="color: #999; font-size: 13px;">N/A</span>';
                 }
                 
-                // Format options for MCQ
+                // Format answer
                 let answerText = question.answer;
                 if (question.type === 'mcq' && question.options && question.options.length > 0) {
-                    answerText += `<br><small style="color: #666; font-size: 12px;">Options: ${question.options.join(', ')}</small>`;
+                    const optionsHtml = question.options.map((opt, i) => 
+                        `${String.fromCharCode(65 + i)}: ${opt}`
+                    ).join(', ');
+                    answerText += `<br><small style="color: #666; font-size: 12px;">${optionsHtml}</small>`;
                 }
                 
                 row.innerHTML = `
-                    <td>${index + 1}</td>
+                    <td style="font-weight: 600;">${index + 1}</td>
                     <td style="font-weight: 500;">${question.question}</td>
                     <td>
                         <span class="badge ${question.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
@@ -1221,7 +1293,7 @@
                 );
             }
             
-            // Filter by subject
+            // Filter by admission subject
             if (subjectId) {
                 filteredQuestions = filteredQuestions.filter(q => q.subjectId === subjectId);
             }
@@ -1234,15 +1306,15 @@
             displayQuestions(filteredQuestions);
         }
 
-        // Edit question
+        // Edit admission question
         async function editQuestion(questionId) {
             const question = questions.find(q => q.id === questionId);
             if (!question) return;
             
-            const newQuestion = prompt('প্রশ্ন এডিট করুন:', question.question);
+            const newQuestion = prompt('এডমিশন প্রশ্ন এডিট করুন:', question.question);
             if (newQuestion === null) return;
             
-            const newAnswer = prompt('উত্তর এডিট করুন:', question.answer);
+            const newAnswer = prompt('সঠিক উত্তর এডিট করুন:', question.answer);
             if (newAnswer === null) return;
             
             const newExamHistory = prompt('পরীক্ষার তথ্য (কমা দিয়ে আলাদা করুন):', 
@@ -1261,23 +1333,23 @@
                     updateData.examHistory = newExamHistory.split(',').map(e => e.trim()).filter(e => e);
                 }
                 
-                await db.collection('questions').doc(questionId).update(updateData);
+                await db.collection('admission_questions').doc(questionId).update(updateData);
                 
                 // Reload questions
                 await loadQuestions();
                 
-                showToast('সফল!', 'প্রশ্ন সফলভাবে আপডেট হয়েছে', 'success');
+                showToast('সফল!', 'এডমিশন প্রশ্ন সফলভাবে আপডেট হয়েছে', 'success');
             } catch (error) {
-                console.error('Error updating question:', error);
-                showToast('ত্রুটি!', 'প্রশ্ন আপডেট করতে সমস্যা', 'error');
+                console.error('Error updating admission question:', error);
+                showToast('ত্রুটি!', 'এডমিশন প্রশ্ন আপডেট করতে সমস্যা', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        // Delete question
+        // Delete admission question
         async function deleteQuestion(questionId) {
-            if (!confirm('আপনি কি এই প্রশ্ন ডিলিট করতে চান?')) return;
+            if (!confirm('আপনি কি এই এডমিশন প্রশ্ন ডিলিট করতে চান?')) return;
             
             const question = questions.find(q => q.id === questionId);
             if (!question) return;
@@ -1286,14 +1358,14 @@
                 showLoading();
                 
                 // Delete from Firebase
-                await db.collection('questions').doc(questionId).delete();
+                await db.collection('admission_questions').doc(questionId).delete();
                 
-                // Update subject question count
+                // Update admission subject question count
                 if (question.subjectId) {
                     const subject = subjects.find(s => s.id === question.subjectId);
                     if (subject) {
                         const newCount = Math.max(0, (subject.questionCount || 1) - 1);
-                        await db.collection('subjects').doc(question.subjectId).update({
+                        await db.collection('admission_subjects').doc(question.subjectId).update({
                             questionCount: newCount,
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -1304,32 +1376,33 @@
                 await loadSubjects();
                 await loadQuestions();
                 
-                showToast('সফল!', 'প্রশ্ন সফলভাবে ডিলিট হয়েছে', 'success');
+                showToast('সফল!', 'এডমিশন প্রশ্ন সফলভাবে ডিলিট হয়েছে', 'success');
             } catch (error) {
-                console.error('Error deleting question:', error);
-                showToast('ত্রুটি!', 'প্রশ্ন ডিলিট করতে সমস্যা', 'error');
+                console.error('Error deleting admission question:', error);
+                showToast('ত্রুটি!', 'এডমিশন প্রশ্ন ডিলিট করতে সমস্যা', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        // Add sample data if no subjects exist
-        async function addSampleData() {
+        // Add sample admission data if no subjects exist
+        async function addSampleAdmissionData() {
             try {
-                const snapshot = await db.collection('subjects').get();
+                const snapshot = await db.collection('admission_subjects').get();
                 if (snapshot.empty) {
                     const sampleSubjects = [
                         { name: 'গণিত', questionCount: 0 },
-                        { name: 'বিজ্ঞান', questionCount: 0 },
                         { name: 'ইংরেজি', questionCount: 0 },
-                        { name: 'বাংলাদেশ স্টাডিজ', questionCount: 0 }
+                        { name: 'সাধারণ জ্ঞান', questionCount: 0 },
+                        { name: 'বাংলা', questionCount: 0 }
                     ];
                     
                     const batch = db.batch();
                     sampleSubjects.forEach(subject => {
-                        const docRef = db.collection('subjects').doc();
+                        const docRef = db.collection('admission_subjects').doc();
                         batch.set(docRef, {
                             ...subject,
+                            type: 'admission',
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -1338,15 +1411,15 @@
                     await batch.commit();
                     await loadSubjects();
                     
-                    showToast('তথ্য', 'স্যাম্পল ডাটা অ্যাড করা হয়েছে', 'success');
+                    showToast('তথ্য', 'নমুনা এডমিশন ডাটা যোগ করা হয়েছে', 'success');
                 }
             } catch (error) {
-                console.error('Error adding sample data:', error);
+                console.error('Error adding sample admission data:', error);
             }
         }
 
-        // Call addSampleData on first load
-        addSampleData();
+        // Call addSampleAdmissionData on first load
+        addSampleAdmissionData();
     </script>
 </body>
 </html>
