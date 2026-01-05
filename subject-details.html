@@ -1007,7 +1007,7 @@
         let timeLeft = 30 * 60; // 30 minutes in seconds
 
         // Initialize page
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Get subject ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const subjectId = urlParams.get('subject');
@@ -1018,9 +1018,17 @@
                 return;
             }
             
-            await loadSubject(subjectId);
-            await loadSubjectQuestions(subjectId);
-            showCategory(currentCategory);
+            // Load subject and questions
+            loadSubject(subjectId);
+            loadSubjectQuestions(subjectId);
+            
+            // Show MCQ by default
+            setTimeout(() => {
+                const mcqTab = document.querySelector('.category-tab');
+                if (mcqTab) {
+                    mcqTab.click();
+                }
+            }, 1000);
         });
 
         // Function to go back
@@ -1056,12 +1064,22 @@
             }, 3000);
         }
 
-        // Load subject details
+        // Load subject details from Firebase
         async function loadSubject(subjectId) {
             try {
-                const doc = await db.collection('admission_subjects').doc(subjectId).get();
+                console.log('Loading subject:', subjectId);
+                
+                // Try admission_subjects collection first
+                let doc = await db.collection('admission_subjects').doc(subjectId).get();
+                
+                if (!doc.exists) {
+                    // Try subjects collection if admission_subjects doesn't exist
+                    doc = await db.collection('subjects').doc(subjectId).get();
+                }
+                
                 if (doc.exists) {
                     currentSubject = { id: doc.id, ...doc.data() };
+                    console.log('Subject loaded:', currentSubject);
                     
                     // Update UI
                     document.getElementById('subjectInfo').textContent = 
@@ -1071,6 +1089,7 @@
                     // Update stats
                     document.getElementById('totalQuestions').textContent = currentSubject.questionCount || 0;
                 } else {
+                    console.error('Subject not found:', subjectId);
                     showToast('ত্রুটি!', 'সাবজেক্ট পাওয়া যায়নি', 'error');
                     setTimeout(() => goBack(), 2000);
                 }
@@ -1080,18 +1099,37 @@
             }
         }
 
-        // Load subject questions
+        // Load subject questions from Firebase
         async function loadSubjectQuestions(subjectId) {
             try {
-                const snapshot = await db.collection('admission_questions')
-                    .where('subjectId', '==', subjectId)
-                    .orderBy('createdAt', 'desc')
-                    .get();
+                console.log('Loading questions for subject:', subjectId);
+                
+                // Try admission_questions collection first
+                let query = db.collection('admission_questions')
+                    .where('subjectId', '==', subjectId);
+                
+                let snapshot = await query.get();
+                
+                if (snapshot.empty) {
+                    // Try questions collection if admission_questions is empty
+                    query = db.collection('questions')
+                        .where('subjectId', '==', subjectId);
+                    snapshot = await query.get();
+                }
                 
                 allQuestions = [];
                 snapshot.forEach(doc => {
-                    allQuestions.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    console.log('Question found:', data);
+                    allQuestions.push({ 
+                        id: doc.id, 
+                        ...data,
+                        // Ensure options array exists
+                        options: data.options || []
+                    });
                 });
+                
+                console.log('Total questions loaded:', allQuestions.length);
                 
                 // Update stats
                 const mcqCount = allQuestions.filter(q => q.type === 'mcq').length;
@@ -1103,7 +1141,15 @@
                 document.getElementById('totalCount').textContent = allQuestions.length;
                 document.getElementById('examCount').textContent = examCount;
                 
-                showToast('সফল!', `${allQuestions.length}টি প্রশ্ন লোড হয়েছে`, 'success');
+                if (allQuestions.length > 0) {
+                    showToast('সফল!', `${allQuestions.length}টি প্রশ্ন লোড হয়েছে`, 'success');
+                } else {
+                    showToast('তথ্য', 'এই সাবজেক্টে এখনও কোনো প্রশ্ন নেই', 'warning');
+                }
+                
+                // Automatically show questions
+                showCategory(currentCategory);
+                
             } catch (error) {
                 console.error('Error loading questions:', error);
                 showToast('ত্রুটি!', 'প্রশ্ন লোড করতে সমস্যা', 'error');
@@ -1139,6 +1185,8 @@
             
             // Filter questions
             filteredQuestions = allQuestions.filter(q => q.type === category);
+            console.log(`Filtered ${category} questions:`, filteredQuestions.length);
+            
             totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
             
             displayQuestions();
@@ -1162,11 +1210,14 @@
             
             noData.style.display = 'none';
             questionsList.style.display = 'flex';
+            questionsList.innerHTML = '';
             
             // Calculate pagination
             const startIndex = (currentPage - 1) * questionsPerPage;
             const endIndex = Math.min(startIndex + questionsPerPage, filteredQuestions.length);
             const pageQuestions = filteredQuestions.slice(startIndex, endIndex);
+            
+            console.log(`Displaying page ${currentPage}:`, pageQuestions.length, 'questions');
             
             // Update pagination buttons
             prevBtn.disabled = currentPage === 1;
@@ -1175,8 +1226,6 @@
                 `পেজ ${currentPage} / ${totalPages}`;
             
             // Display questions
-            questionsList.innerHTML = '';
-            
             pageQuestions.forEach((question, index) => {
                 const questionNumber = startIndex + index + 1;
                 const questionElement = createQuestionElement(question, questionNumber);
@@ -1196,7 +1245,7 @@
                         ${question.options.map((option, index) => `
                             <div class="option-item">
                                 <div class="option-label">${String.fromCharCode(65 + index)}</div>
-                                <div class="option-text">${option}</div>
+                                <div class="option-text">${option || 'N/A'}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -1208,6 +1257,8 @@
                 examBadges = question.examHistory.map(exam => 
                     `<span class="exam-badge">${exam}</span>`
                 ).join(' ');
+            } else if (question.previousExam) {
+                examBadges = `<span class="exam-badge">${question.previousExam}</span>`;
             }
             
             div.innerHTML = `
@@ -1218,14 +1269,14 @@
                         ${question.type === 'mcq' ? 'MCQ' : 'Written'}
                     </span>
                 </div>
-                <div class="question-text">${question.question}</div>
+                <div class="question-text">${question.question || 'প্রশ্ন নেই'}</div>
                 ${optionsHtml}
                 <div class="answer-section">
                     <div class="answer-title">
                         <i class="fas fa-check-circle"></i>
                         সঠিক উত্তর
                     </div>
-                    <div class="answer-text">${question.answer}</div>
+                    <div class="answer-text">${question.correctAnswer || question.answer || 'উত্তর নেই'}</div>
                     ${examBadges ? `
                         <div class="exam-info">
                             <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">
@@ -1254,22 +1305,18 @@
 
         // Start mock test
         function startMockTest() {
-            if (allQuestions.length < 5) {
-                showToast('সতর্কতা!', 'মক টেস্টের জন্য কমপক্ষে ৫টি প্রশ্ন প্রয়োজন', 'warning');
+            // Filter only MCQ questions for mock test
+            const mcqQuestions = allQuestions.filter(q => q.type === 'mcq');
+            
+            if (mcqQuestions.length < 5) {
+                showToast('সতর্কতা!', 'মক টেস্টের জন্য কমপক্ষে ৫টি MCQ প্রশ্ন প্রয়োজন', 'warning');
                 return;
             }
             
-            // Select random questions for mock test
-            const availableQuestions = allQuestions.filter(q => q.type === 'mcq');
-            if (availableQuestions.length < 10) {
-                showToast('সতর্কতা!', 'পর্যাপ্ত MCQ প্রশ্ন নেই', 'warning');
-                return;
-            }
-            
-            // Shuffle and select 20 questions
-            mockTestQuestions = [...availableQuestions]
+            // Shuffle and select questions (max 20)
+            mockTestQuestions = [...mcqQuestions]
                 .sort(() => Math.random() - 0.5)
-                .slice(0, 20);
+                .slice(0, Math.min(20, mcqQuestions.length));
             
             // Reset test state
             currentTestQuestion = 0;
@@ -1290,14 +1337,12 @@
         function startTestTimer() {
             if (testTimer) clearInterval(testTimer);
             
+            // Update timer display immediately
+            updateTimerDisplay();
+            
             testTimer = setInterval(() => {
                 timeLeft--;
-                
-                // Update timer display
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('timer').textContent = 
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                updateTimerDisplay();
                 
                 // Time's up
                 if (timeLeft <= 0) {
@@ -1307,8 +1352,18 @@
             }, 1000);
         }
 
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
         // Load test question
         function loadTestQuestion() {
+            if (mockTestQuestions.length === 0) return;
+            
             const question = mockTestQuestions[currentTestQuestion];
             const container = document.getElementById('testQuestionContainer');
             
@@ -1324,10 +1379,6 @@
             document.getElementById('prevTestBtn').disabled = currentTestQuestion === 0;
             document.getElementById('nextTestBtn').disabled = 
                 currentTestQuestion === mockTestQuestions.length - 1;
-            document.getElementById('submitTestBtn').style.display = 
-                currentTestQuestion === mockTestQuestions.length - 1 ? 'block' : 'none';
-            document.getElementById('nextTestBtn').style.display = 
-                currentTestQuestion === mockTestQuestions.length - 1 ? 'none' : 'block';
             
             // Create question HTML
             let optionsHtml = '';
@@ -1344,7 +1395,7 @@
                                       font-weight: 600; color: ${isSelected ? '#3498db' : '#666'};">
                                     ${String.fromCharCode(65 + index)}
                                 </div>
-                                <div style="flex: 1;">${option}</div>
+                                <div style="flex: 1;">${option || ''}</div>
                             </div>
                         </div>
                     `;
@@ -1354,7 +1405,7 @@
             container.innerHTML = `
                 <div class="test-question">
                     <div class="test-question-text">
-                        <strong>প্রশ্ন ${currentTestQuestion + 1}:</strong> ${question.question}
+                        <strong>প্রশ্ন ${currentTestQuestion + 1}:</strong> ${question.question || ''}
                     </div>
                     <div class="test-options">
                         ${optionsHtml}
@@ -1397,25 +1448,23 @@
                 const question = mockTestQuestions[i];
                 const userAnswer = userAnswers[i];
                 
-                if (userAnswer !== null) {
-                    if (question.type === 'mcq' && question.options) {
-                        const correctAnswer = question.answer;
-                        const selectedOption = question.options[userAnswer];
-                        
-                        if (selectedOption === correctAnswer) {
-                            correct++;
-                        } else {
-                            wrong++;
-                        }
+                if (userAnswer !== null && question.options) {
+                    const correctAnswer = question.correctAnswer || question.answer;
+                    const selectedOption = question.options[userAnswer];
+                    
+                    if (selectedOption === correctAnswer) {
+                        correct++;
+                    } else {
+                        wrong++;
                     }
                 } else {
                     wrong++; // Not answered counts as wrong
                 }
             }
             
-            // Calculate marks
+            // Calculate marks and percentage
             const totalMarks = correct * 1; // Each correct answer = 1 mark
-            const percentage = (correct / mockTestQuestions.length) * 100;
+            const percentage = mockTestQuestions.length > 0 ? (correct / mockTestQuestions.length) * 100 : 0;
             
             // Display results
             document.getElementById('correctAnswers').textContent = correct;
@@ -1440,24 +1489,8 @@
             document.getElementById('timer').style.display = 'none';
             document.getElementById('testModalTitle').textContent = 'উত্তর রিভিউ';
             
-            // Disable option selection
-            const options = document.querySelectorAll('.test-option');
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-                
-                // Highlight correct and wrong answers
-                const questionIndex = currentTestQuestion;
-                const question = mockTestQuestions[questionIndex];
-                const optionIndex = Array.from(option.parentElement.children).indexOf(option);
-                
-                if (question.options[optionIndex] === question.answer) {
-                    option.style.borderColor = '#2ecc71';
-                    option.style.background = 'rgba(46, 204, 113, 0.1)';
-                } else if (userAnswers[questionIndex] === optionIndex && question.options[optionIndex] !== question.answer) {
-                    option.style.borderColor = '#e74c3c';
-                    option.style.background = 'rgba(231, 76, 60, 0.1)';
-                }
-            });
+            // Load current question for review
+            loadTestQuestion();
         }
 
         // Close result modal
@@ -1465,7 +1498,7 @@
             document.getElementById('resultModal').style.display = 'none';
         }
 
-        // Close test modal
+        // Close test modal on outside click
         window.onclick = function(event) {
             const testModal = document.getElementById('testModal');
             const resultModal = document.getElementById('resultModal');
@@ -1482,68 +1515,76 @@
             }
         }
 
-        // Add sample data for testing
-        async function addSampleQuestions() {
-            if (!currentSubject || allQuestions.length > 0) return;
-            
-            const sampleQuestions = [
-                {
-                    question: '২ + ২ = কত?',
-                    type: 'mcq',
-                    subjectId: currentSubject.id,
-                    subjectName: currentSubject.name,
-                    answer: '৪',
-                    options: ['৪', '৫', '৬', '৭'],
-                    examHistory: ['এসএসসি ২০২৩ রাজশাহী বোর্ড'],
-                    uploadDate: new Date().toISOString(),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                {
-                    question: 'পানির রাসায়নিক সংকেত কী?',
-                    type: 'mcq',
-                    subjectId: currentSubject.id,
-                    subjectName: currentSubject.name,
-                    answer: 'H₂O',
-                    options: ['H₂O', 'O₂', 'CO₂', 'NaCl'],
-                    examHistory: ['এইচএসসি ২০২২ ঢাকা বোর্ড'],
-                    uploadDate: new Date().toISOString(),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                {
-                    question: 'বাংলাদেশের স্বাধীনতা দিবস কত তারিখ?',
-                    type: 'written',
-                    subjectId: currentSubject.id,
-                    subjectName: currentSubject.name,
-                    answer: '২৬ মার্চ',
-                    examHistory: ['এসএসসি ২০২৩ সকল বোর্ড'],
-                    uploadDate: new Date().toISOString(),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }
-            ];
-            
+        // Auto load data on page load
+        setTimeout(() => {
+            // Check if data is loaded, if not show warning
+            if (allQuestions.length === 0) {
+                console.log('No questions found, checking collections...');
+                
+                // Check available collections
+                checkFirebaseCollections();
+            }
+        }, 2000);
+
+        // Check available Firebase collections
+        async function checkFirebaseCollections() {
             try {
-                const batch = db.batch();
-                sampleQuestions.forEach(question => {
-                    const docRef = db.collection('admission_questions').doc();
-                    batch.set(docRef, question);
-                });
+                console.log('Checking Firebase collections...');
                 
-                await batch.commit();
-                await loadSubjectQuestions(currentSubject.id);
-                showCategory(currentCategory);
+                // Check admission_questions
+                const admissionSnapshot = await db.collection('admission_questions').limit(1).get();
+                console.log('admission_questions exists:', !admissionSnapshot.empty);
                 
-                showToast('সফল!', 'নমুনা প্রশ্ন যোগ করা হয়েছে', 'success');
+                // Check questions
+                const questionsSnapshot = await db.collection('questions').limit(1).get();
+                console.log('questions exists:', !questionsSnapshot.empty);
+                
+                // Check admission_subjects
+                const admissionSubjects = await db.collection('admission_subjects').limit(1).get();
+                console.log('admission_subjects exists:', !admissionSubjects.empty);
+                
+                // Check subjects
+                const subjectsSnapshot = await db.collection('subjects').limit(1).get();
+                console.log('subjects exists:', !subjectsSnapshot.empty);
+                
             } catch (error) {
-                console.error('Error adding sample questions:', error);
+                console.error('Error checking collections:', error);
             }
         }
 
-        // Auto-add sample questions if no questions exist
-        setTimeout(() => {
-            if (allQuestions.length === 0) {
-                addSampleQuestions();
-            }
-        }, 1000);
+        // Debug: Add sample questions button (for testing only)
+        function addDebugButton() {
+            const debugBtn = document.createElement('button');
+            debugBtn.innerHTML = '<i class="fas fa-bug"></i> ডিবাগ: ফায়ারবেস ডাটা দেখুন';
+            debugBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #e74c3c;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+                z-index: 1000;
+            `;
+            debugBtn.onclick = async function() {
+                console.log('=== FIREBASE DEBUG INFO ===');
+                console.log('Current Subject:', currentSubject);
+                console.log('All Questions:', allQuestions);
+                console.log('Filtered Questions:', filteredQuestions);
+                
+                // Show collections info
+                await checkFirebaseCollections();
+                
+                alert('ডিবাগ তথ্য কনসোলে দেখুন (F12 চাপুন)');
+            };
+            document.body.appendChild(debugBtn);
+        }
+
+        // Add debug button for testing
+        addDebugButton();
     </script>
 </body>
 </html>
