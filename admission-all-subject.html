@@ -3,72 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eProstutiBD - বাংলাদেশের #১ প্রশ্ন ব্যাংক</title>
-    <meta name="description" content="বাংলাদেশের সেরা প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি, IELTS প্রস্তুতির জন্য হাজার হাজার প্রশ্ন।">
-    <meta name="keywords" content="প্রশ্ন ব্যাংক, এডমিশন, চাকরি, IELTS, MCQ, Written">
+    <title>eProstutiBD - বাংলাদেশের #১ প্রশ্ন ব্যাংক প্ল্যাটফর্ম</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় ভর্তি পরীক্ষার প্রশ্ন সমাধান।">
+    <meta name="keywords" content="প্রশ্ন ব্যাংক, এডমিশন প্রশ্ন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় প্রশ্ন, MCQ প্রশ্ন, Written প্রশ্ন">
+    <meta name="author" content="eProstutiBD">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="eProstutiBD - প্রশ্ন ব্যাংক">
+    <meta property="og:description" content="বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eprostutibd.com">
+    <meta property="og:image" content="https://eprostutibd.com/logo.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://eprostutibd.com">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Kalpurush&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #2E86C1;
-            --secondary: #28B463;
-            --accent: #E74C3C;
-            --light: #F8F9FA;
-            --dark: #2C3E50;
-            --gray: #7F8C8D;
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            font-family: 'Hind Siliguri', 'Kalpurush', sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
             line-height: 1.6;
         }
         
         /* Header Styles */
         .main-header {
             background: white;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
         
-        .header-top {
-            background: var(--primary);
-            color: white;
-            padding: 8px 0;
-        }
-        
         .logo-container {
+            display: flex;
+            align-items: center;
             padding: 15px 0;
         }
         
         .logo {
+            text-decoration: none;
             display: flex;
             align-items: center;
-            text-decoration: none;
             color: var(--dark);
         }
         
         .logo-icon {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
             color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,38 +89,32 @@
         .logo-text h3 {
             font-weight: 700;
             margin: 0;
+            font-size: 1.5rem;
             color: var(--dark);
         }
         
         .logo-text p {
-            font-size: 12px;
+            font-size: 0.85rem;
             color: var(--gray);
             margin: 0;
         }
         
         /* Navigation */
-        .main-nav {
-            border-top: 1px solid #eee;
-        }
-        
-        .nav-item {
-            margin: 0 3px;
-        }
-        
-        .nav-link {
+        .main-nav .nav-link {
             color: var(--dark) !important;
             font-weight: 500;
             padding: 12px 20px !important;
             border-radius: 8px;
             transition: all 0.3s;
+            margin: 0 5px;
         }
         
-        .nav-link:hover {
-            background: rgba(46, 134, 193, 0.1);
+        .main-nav .nav-link:hover {
+            background: rgba(37, 99, 235, 0.1);
             color: var(--primary) !important;
         }
         
-        .nav-link.active {
+        .main-nav .nav-link.active {
             background: var(--primary);
             color: white !important;
         }
@@ -118,28 +122,34 @@
         /* Mobile Menu */
         .mobile-menu-btn {
             display: none;
-            background: none;
             border: none;
+            background: none;
             font-size: 24px;
             color: var(--dark);
         }
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, var(--primary) 0%, #1a5276 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             color: white;
-            padding: 60px 0;
-            margin-bottom: 40px;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
         }
         
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
         }
         
         .hero-title {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.2;
@@ -149,43 +159,41 @@
             font-size: 1.2rem;
             opacity: 0.9;
             margin-bottom: 30px;
-        }
-        
-        .search-container {
             max-width: 600px;
-            margin: 0 auto;
-            position: relative;
         }
         
-        .search-input {
-            width: 100%;
-            padding: 15px 50px 15px 20px;
-            border-radius: 30px;
+        .hero-search {
+            max-width: 600px;
+            margin-top: 30px;
+        }
+        
+        .hero-search input {
+            padding: 15px 20px;
+            border-radius: 10px;
             border: none;
             font-size: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         
-        .search-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+        .hero-search button {
             background: var(--secondary);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
         
-        /* Categories */
-        .categories-section {
+        .hero-search button:hover {
+            background: #0da271;
+            transform: translateY(-2px);
+        }
+        
+        /* Quick Links Section */
+        .quick-links-section {
             padding: 40px 0;
+            background: white;
         }
         
         .section-title {
@@ -193,46 +201,97 @@
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 30px;
-            position: relative;
-            padding-bottom: 15px;
+            text-align: center;
         }
         
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
+        .quick-links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
         
-        .category-tabs {
+        .quick-link-card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quick-link-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+            text-decoration: none;
+            color: var(--primary);
+        }
+        
+        .quick-link-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-link-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .quick-link-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Subjects Section */
+        .subjects-section {
+            padding: 60px 0;
+        }
+        
+        .subjects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .subjects-filter {
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
         }
         
-        .category-tab {
-            padding: 10px 25px;
+        .filter-btn {
+            padding: 10px 20px;
             background: white;
-            border: 2px solid #eee;
+            border: 2px solid #e5e7eb;
             border-radius: 25px;
             color: var(--dark);
-            text-decoration: none;
             font-weight: 500;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
-        .category-tab:hover,
-        .category-tab.active {
+        .filter-btn:hover,
+        .filter-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(46, 134, 193, 0.2);
         }
         
         /* Subjects Grid */
@@ -247,21 +306,22 @@
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s;
             text-decoration: none;
             color: inherit;
             display: block;
             position: relative;
             overflow: hidden;
-            border: 1px solid #eee;
+            border: 1px solid #e5e7eb;
         }
         
         .subject-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
             text-decoration: none;
             color: inherit;
+            border-color: var(--primary);
         }
         
         .subject-card::before {
@@ -277,7 +337,7 @@
         .subject-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary), #3498db);
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -299,7 +359,7 @@
             color: var(--gray);
             font-size: 0.95rem;
             margin-bottom: 20px;
-            min-height: 60px;
+            min-height: 40px;
         }
         
         .subject-stats {
@@ -307,53 +367,42 @@
             gap: 15px;
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #e5e7eb;
         }
         
         .stat-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            flex: 1;
         }
         
         .stat-count {
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--dark);
         }
         
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--gray);
+            margin-top: 5px;
         }
         
-        .mcq-badge {
-            background: rgba(40, 180, 99, 0.1);
+        .mcq-stat .stat-count {
             color: var(--secondary);
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
         }
         
-        .written-badge {
-            background: rgba(231, 76, 60, 0.1);
+        .written-stat .stat-count {
             color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
         }
         
         /* Stats Section */
         .stats-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            padding: 80px 0;
             margin: 60px 0;
-            border-radius: 20px;
         }
         
         .stat-box {
@@ -362,16 +411,15 @@
         }
         
         .stat-number {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            color: var(--primary);
             margin-bottom: 10px;
+            color: white;
         }
         
         .stat-text {
-            color: var(--dark);
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.2rem;
+            opacity: 0.9;
         }
         
         /* Footer */
@@ -418,7 +466,7 @@
         }
         
         .footer-links a {
-            color: #bdc3c7;
+            color: #d1d5db;
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -432,12 +480,12 @@
             text-align: center;
             padding-top: 30px;
             margin-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #95a5a6;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
             font-size: 0.9rem;
         }
         
-        /* Loading Spinner */
+        /* Loading */
         .loading-container {
             display: flex;
             justify-content: center;
@@ -448,7 +496,7 @@
         .spinner {
             width: 50px;
             height: 50px;
-            border: 5px solid rgba(46, 134, 193, 0.2);
+            border: 5px solid rgba(37, 99, 235, 0.2);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -467,11 +515,11 @@
         
         .empty-state i {
             font-size: 4rem;
-            color: #ddd;
+            color: #e5e7eb;
             margin-bottom: 20px;
         }
         
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .mobile-menu-btn {
                 display: block;
@@ -484,10 +532,11 @@
                 width: 280px;
                 height: 100vh;
                 background: white;
-                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
                 transition: left 0.3s;
                 z-index: 1001;
                 padding: 20px;
+                overflow-y: auto;
             }
             
             .main-nav.active {
@@ -506,6 +555,12 @@
                 grid-template-columns: 1fr;
             }
             
+            .subjects-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
             .stat-number {
                 font-size: 2.5rem;
             }
@@ -520,8 +575,15 @@
                 font-size: 1.5rem;
             }
             
-            .category-tabs {
-                justify-content: center;
+            .quick-links-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .main-header, .quick-links-section, .main-footer {
+                display: none;
             }
         }
     </style>
@@ -529,129 +591,166 @@
 <body>
     <!-- Header -->
     <header class="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="logo-container">
-                            <a href="/" class="logo">
-                                <div class="logo-icon">
-                                    <i class="fas fa-graduation-cap"></i>
-                                </div>
-                                <div class="logo-text">
-                                    <h3>eProstutiBD</h3>
-                                    <p>প্রশ্নের বিশ্বস্ত ভাণ্ডার</p>
-                                </div>
-                            </a>
-                        </div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="logo-container">
+                        <a href="/" class="logo">
+                            <div class="logo-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="logo-text">
+                                <h3>eProstutiBD</h3>
+                                <p>প্রশ্নের বিশ্বস্ত ভাণ্ডার</p>
+                            </div>
+                        </a>
                     </div>
-                    <div class="col-6 text-end">
-                        <button class="mobile-menu-btn" id="mobileMenuBtn">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                    </div>
+                </div>
+                
+                <div class="col-lg-9 col-md-8 col-6 text-end">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <nav class="main-nav" id="mainNav">
+                        <ul class="nav nav-menu">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/">
+                                    <i class="fas fa-home me-2"></i> হোম
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admission-assistant">
+                                    <i class="fas fa-university me-2"></i> এডমিশন অ্যাসিস্ট্যান্ট
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/job-assistant">
+                                    <i class="fas fa-briefcase me-2"></i> জব অ্যাসিস্ট্যান্ট
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ielts-assistant">
+                                    <i class="fas fa-language me-2"></i> IELTS অ্যাসিস্ট্যান্ট
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/current-affairs">
+                                    <i class="fas fa-newspaper me-2"></i> কারেন্ট অ্যাফেয়ার্স
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/notice">
+                                    <i class="fas fa-bullhorn me-2"></i> নোটিশ
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/career">
+                                    <i class="fas fa-chart-line me-2"></i> ক্যারিয়ার
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/blog">
+                                    <i class="fas fa-blog me-2"></i> ব্লগ
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
-        
-        <!-- Navigation -->
-        <div class="container">
-            <nav class="main-nav" id="mainNav">
-                <ul class="nav nav-menu">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">
-                            <i class="fas fa-home me-2"></i> হোম
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admission">
-                            <i class="fas fa-university me-2"></i> এডমিশন অ্যাসিস্ট্যান্ট
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/job">
-                            <i class="fas fa-briefcase me-2"></i> জব অ্যাসিস্ট্যান্ট
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ielts">
-                            <i class="fas fa-language me-2"></i> IELTS অ্যাসিস্ট্যান্ট
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/current-affairs">
-                            <i class="fas fa-newspaper me-2"></i> কারেন্ট অ্যাফেয়ার্স
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/notice">
-                            <i class="fas fa-bullhorn me-2"></i> নোটিশ
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/career">
-                            <i class="fas fa-chart-line me-2"></i> ক্যারিয়ার
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/blog">
-                            <i class="fas fa-blog me-2"></i> ব্লগ
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
     </header>
-    
+
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">বাংলাদেশের #১ প্রশ্ন ব্যাংক প্ল্যাটফর্ম</h1>
-                <p class="hero-subtitle">এডমিশন, চাকরি, IELTS প্রস্তুতির জন্য হাজার হাজার প্রশ্নের সংগ্রহ</p>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম</h1>
+                    <p class="hero-subtitle">
+                        এডমিশন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় ভর্তি পরীক্ষার জন্য হাজার হাজার প্রশ্নের সংগ্রহ। 
+                        একই স্থানে পাবেন সব ধরনের MCQ ও Written প্রশ্ন।
+                    </p>
+                    
+                    <div class="hero-search d-flex gap-2">
+                        <input type="text" class="form-control flex-grow-1" id="searchInput" 
+                               placeholder="আপনি কোন বিষয়ে প্রশ্ন খুঁজছেন?">
+                        <button class="btn" id="searchBtn">
+                            <i class="fas fa-search me-2"></i> খুঁজুন
+                        </button>
+                    </div>
+                </div>
                 
-                <div class="search-container">
-                    <input type="text" class="search-input" id="searchInput" placeholder="কোন বিষয়ে প্রশ্ন খুঁজতে চান?">
-                    <button class="search-btn" id="searchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
+                <div class="col-lg-6 text-center">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 400'%3E%3Crect width='500' height='400' fill='%233b82f6'/%3E%3Ctext x='250' y='200' font-family='Arial' font-size='40' fill='white' text-anchor='middle'%3E📚 Question Bank%3C/text%3E%3C/svg%3E" 
+                         alt="Question Bank Illustration" style="max-width: 100%; border-radius: 10px;">
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Categories -->
-        <section class="categories-section">
-            <h2 class="section-title">বিষয় ভিত্তিক প্রশ্ন</h2>
+
+    <!-- Quick Links Section -->
+    <section class="quick-links-section">
+        <div class="container">
+            <h2 class="section-title">দ্রুত অ্যাক্সেস</h2>
             
-            <div class="category-tabs">
-                <a href="#all" class="category-tab active" data-filter="all">সকল বিষয়</a>
-                <a href="#popular" class="category-tab" data-filter="popular">জনপ্রিয়</a>
-                <a href="#new" class="category-tab" data-filter="new">নতুন</a>
-                <a href="#science" class="category-tab" data-filter="science">বিজ্ঞান</a>
-                <a href="#arts" class="category-tab" data-filter="arts">আর্টস</a>
-                <a href="#commerce" class="category-tab" data-filter="commerce">বাণিজ্য</a>
+            <div class="quick-links-container">
+                <a href="#subjects" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="quick-link-title">বিষয় ভিত্তিক প্রশ্ন</h3>
+                    <p class="quick-link-desc">বিভিন্ন বিষয়ের উপর MCQ ও Written প্রশ্ন</p>
+                </a>
+                
+                <a href="/all-questions" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3 class="quick-link-title">সকল প্রশ্ন ব্যাংক</h3>
+                    <p class="quick-link-desc">সব ধরনের প্রশ্নের সম্পূর্ণ সংগ্রহ</p>
+                </a>
+                
+                <a href="/university-questions" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="quick-link-title">বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন</h3>
+                    <p class="quick-link-desc">বিভিন্ন বিশ্ববিদ্যালয়ের প্রশ্নপত্র</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subjects Section -->
+    <section class="subjects-section" id="subjects">
+        <div class="container">
+            <div class="subjects-header">
+                <h2 class="section-title mb-0">বিষয় সমূহ</h2>
+                
+                <div class="subjects-filter">
+                    <button class="filter-btn active" data-filter="all">সকল</button>
+                    <button class="filter-btn" data-filter="popular">জনপ্রিয়</button>
+                    <button class="filter-btn" data-filter="recent">সাম্প্রতিক</button>
+                </div>
             </div>
             
-            <!-- Subjects will be loaded here -->
             <div id="subjectsContainer">
                 <div class="loading-container">
                     <div class="spinner"></div>
                 </div>
             </div>
-        </section>
-    </div>
-    
+        </div>
+    </section>
+
     <!-- Stats Section -->
     <section class="stats-section">
         <div class="container">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-md-3 col-6 mb-4">
                     <div class="stat-box">
                         <div class="stat-number" id="totalSubjects">0</div>
-                        <div class="stat-text">বিষয়</div>
+                        <div class="stat-text">বিষয়</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
@@ -675,7 +774,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
     <footer class="main-footer">
         <div class="container">
@@ -684,19 +783,26 @@
                     <a href="/" class="footer-logo">
                         <i class="fas fa-graduation-cap me-2"></i>eProstutiBD
                     </a>
-                    <p class="mt-3" style="color: #bdc3c7;">
-                        বাংলাদেশের সেরা প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি, IELTS প্রস্তুতির জন্য হাজার হাজার প্রশ্নের সংগ্রহ।
+                    <p class="mt-3" style="color: #d1d5db;">
+                        বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি, IELTS প্রস্তুতির জন্য হাজার হাজার প্রশ্নের সংগ্রহ।
                     </p>
+                    
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
                 
                 <div class="col-lg-2 col-md-4 mb-4">
                     <div class="footer-section">
-                        <h4>দ্রুত লিংক</h4>
+                        <h4>লিংক</h4>
                         <ul class="footer-links">
                             <li><a href="/">হোম</a></li>
                             <li><a href="/about">আমাদের সম্পর্কে</a></li>
                             <li><a href="/contact">যোগাযোগ</a></li>
-                            <li><a href="/privacy">গোপনীয়তা নীতি</a></li>
+                            <li><a href="/privacy">গোপনীয়তা</a></li>
                             <li><a href="/terms">শর্তাবলী</a></li>
                         </ul>
                     </div>
@@ -709,8 +815,8 @@
                             <li><a href="/admission">এডমিশন প্রস্তুতি</a></li>
                             <li><a href="/job">চাকরি প্রস্তুতি</a></li>
                             <li><a href="/ielts">IELTS প্রস্তুতি</a></li>
-                            <li><a href="/current-affairs">কারেন্ট অ্যাফেয়ার্স</a></li>
-                            <li><a href="/model-tests">মডেল টেস্ট</a></li>
+                            <li><a href="/university">বিশ্ববিদ্যালয়</a></li>
+                            <li><a href="/model-test">মডেল টেস্ট</a></li>
                         </ul>
                     </div>
                 </div>
@@ -720,7 +826,7 @@
                         <h4>যোগাযোগ</h4>
                         <ul class="footer-links">
                             <li><i class="fas fa-envelope me-2"></i> support@eprostutibd.com</li>
-                            <li><i class="fas fa-phone me-2"></i> +880 1XXX-XXXXXX</li>
+                            <li><i class="fas fa-phone me-2"></i> +৮৮০ ১৭XX-XXXXXX</li>
                             <li><i class="fas fa-map-marker-alt me-2"></i> ঢাকা, বাংলাদেশ</li>
                         </ul>
                     </div>
@@ -730,7 +836,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="copyright">
-                        &copy; 2023 eProstutiBD.com - সকল স্বত্ব সংরক্ষিত
+                        © ২০২৩ eProstutiBD.com - সকল অধিকার সংরক্ষিত
                     </div>
                 </div>
             </div>
@@ -763,21 +869,23 @@
         const searchBtn = document.getElementById('searchBtn');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mainNav = document.getElementById('mainNav');
-        const categoryTabs = document.querySelectorAll('.category-tab');
+        const filterButtons = document.querySelectorAll('.filter-btn');
 
         // State
-        let allSubjects = [];
-        let filteredSubjects = [];
+        let subjects = [];
+        let displayedSubjects = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadSubjects();
             setupEventListeners();
+            setupRealtimeUpdates();
         });
 
         function setupEventListeners() {
             // Mobile menu toggle
-            mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 mainNav.classList.toggle('active');
             });
 
@@ -788,23 +896,19 @@
                 }
             });
 
-            // Search
-            searchBtn.addEventListener('click', searchSubjects);
+            // Search functionality
+            searchBtn.addEventListener('click', handleSearch);
             searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') searchSubjects();
+                if (e.key === 'Enter') handleSearch();
             });
 
-            // Category tabs
-            categoryTabs.forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
+            // Filter buttons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
                     
-                    // Update active tab
-                    categoryTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // Filter subjects
-                    const filter = tab.getAttribute('data-filter');
+                    const filter = this.dataset.filter;
                     filterSubjects(filter);
                 });
             });
@@ -812,51 +916,55 @@
 
         async function loadSubjects() {
             try {
-                // Get subjects from Firestore
+                // Clear container and show loading
+                subjectsContainer.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+                
+                // Get subjects from Firestore - একবারই লোড হবে
                 const subjectsSnapshot = await db.collection('admission_subjects').get();
                 
                 if (subjectsSnapshot.empty) {
-                    subjectsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-book"></i>
-                            <h4>কোনো বিষয় পাওয়া যায়নি</h4>
-                            <p>অ্যাডমিন প্যানেল থেকে বিষয় যোগ করুন</p>
-                        </div>
-                    `;
+                    showEmptyState();
                     return;
                 }
 
-                allSubjects = [];
-                const promises = [];
-
-                subjectsSnapshot.forEach(doc => {
+                subjects = [];
+                const subjectIds = new Set(); // Duplicate চেক করার জন্য
+                
+                // Process each subject
+                for (const doc of subjectsSnapshot.docs) {
+                    const subjectId = doc.id;
+                    
+                    // Duplicate চেক করুন
+                    if (subjectIds.has(subjectId)) {
+                        console.log('Duplicate subject skipped:', subjectId);
+                        continue;
+                    }
+                    
+                    subjectIds.add(subjectId);
+                    
                     const subjectData = doc.data();
                     
-                    // Get question counts for this subject
-                    const promise = getQuestionCounts(doc.id).then(counts => {
-                        allSubjects.push({
-                            id: doc.id,
-                            name: subjectData.name || 'Unnamed Subject',
-                            description: subjectData.description || `${subjectData.name} বিষয়ের সকল প্রশ্নের সংগ্রহ`,
-                            mcqCount: counts.mcq,
-                            writtenCount: counts.written,
-                            totalCount: counts.total,
-                            createdAt: subjectData.createdAt || new Date()
-                        });
-                    });
+                    // Get question counts
+                    const counts = await getQuestionCounts(subjectId);
                     
-                    promises.push(promise);
-                });
-
-                // Wait for all counts to be fetched
-                await Promise.all(promises);
+                    // Add subject to array
+                    subjects.push({
+                        id: subjectId,
+                        name: subjectData.name || 'Unnamed Subject',
+                        description: subjectData.description || `${subjectData.name} বিষয়ের সকল প্রশ্ন`,
+                        mcqCount: counts.mcq,
+                        writtenCount: counts.written,
+                        totalCount: counts.total,
+                        createdAt: subjectData.createdAt ? subjectData.createdAt.toDate() : new Date()
+                    });
+                }
                 
                 // Sort by total questions (descending)
-                allSubjects.sort((a, b) => b.totalCount - a.totalCount);
+                subjects.sort((a, b) => b.totalCount - a.totalCount);
                 
                 // Display subjects
-                filteredSubjects = [...allSubjects];
-                displaySubjects(filteredSubjects);
+                displayedSubjects = [...subjects];
+                displaySubjects(displayedSubjects);
                 
                 // Update stats
                 updateStats();
@@ -897,28 +1005,23 @@
             }
         }
 
-        function displaySubjects(subjects) {
-            if (subjects.length === 0) {
-                subjectsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-search"></i>
-                        <h4>কোনো বিষয় পাওয়া যায়নি</h4>
-                        <p>অন্যান্য কীওয়ার্ড দিয়ে খুঁজুন</p>
-                    </div>
-                `;
+        function displaySubjects(subjectsToDisplay) {
+            if (subjectsToDisplay.length === 0) {
+                showEmptyState();
                 return;
             }
 
             let html = '<div class="subjects-grid">';
             
-            subjects.forEach(subject => {
+            subjectsToDisplay.forEach(subject => {
                 const icon = getSubjectIcon(subject.name);
                 
                 html += `
                     <a href="admission-subject-details.html?subject=${subject.id}" 
                        class="subject-card"
                        target="_blank"
-                       onclick="trackSubjectClick('${subject.id}', '${subject.name}')">
+                       onclick="trackSubjectClick('${subject.id}', '${subject.name}')"
+                       aria-label="${subject.name} - ${subject.totalCount}টি প্রশ্ন">
                         <div class="subject-icon">
                             <i class="${icon}"></i>
                         </div>
@@ -926,25 +1029,19 @@
                         <p class="subject-description">${subject.description}</p>
                         
                         <div class="subject-stats">
-                            <div class="stat-item">
-                                <span class="mcq-badge">
-                                    <i class="fas fa-list-ol"></i>
-                                    <span class="stat-count">${subject.mcqCount}</span>
-                                    <span class="stat-label">MCQ</span>
-                                </span>
+                            <div class="stat-item mcq-stat">
+                                <div class="stat-count">${subject.mcqCount}</div>
+                                <div class="stat-label">MCQ প্রশ্ন</div>
                             </div>
-                            <div class="stat-item">
-                                <span class="written-badge">
-                                    <i class="fas fa-pen"></i>
-                                    <span class="stat-count">${subject.writtenCount}</span>
-                                    <span class="stat-label">Written</span>
-                                </span>
+                            <div class="stat-item written-stat">
+                                <div class="stat-count">${subject.writtenCount}</div>
+                                <div class="stat-label">Written প্রশ্ন</div>
                             </div>
                         </div>
                         
                         <div class="mt-3 text-end">
                             <small style="color: var(--primary);">
-                                <i class="fas fa-arrow-right me-1"></i> বিস্তারিত দেখুন
+                                <i class="fas fa-external-link-alt me-1"></i> বিস্তারিত দেখুন
                             </small>
                         </div>
                     </a>
@@ -962,42 +1059,101 @@
                 'বাংলা': 'fas fa-book',
                 'সাধারণ জ্ঞান': 'fas fa-brain',
                 'বিজ্ঞান': 'fas fa-flask',
-                'পদার্থ': 'fas fa-atom',
-                'রসায়ন': 'fas fa-vial',
+                'পদার্থবিদ্যা': 'fas fa-atom',
+                'রসায়ন': 'fas fa-vial',
                 'জীববিজ্ঞান': 'fas fa-dna',
                 'ইতিহাস': 'fas fa-landmark',
-                'ভূগোল': 'fas fa-globe',
+                'ভূগোল': 'fas fa-globe-asia',
                 'অর্থনীতি': 'fas fa-chart-line',
-                'বাংলাদেশ': 'fas fa-flag',
-                'আন্তর্জাতিক': 'fas fa-globe-americas'
+                'বাংলাদেশ স্টাডিজ': 'fas fa-flag',
+                'আন্তর্জাতিক সম্পর্ক': 'fas fa-globe',
+                'সাংবিধানিক আইন': 'fas fa-balance-scale',
+                'মনোবিজ্ঞান': 'fas fa-brain',
+                'সমাজবিজ্ঞান': 'fas fa-users',
+                'দর্শন': 'fas fa-lightbulb',
+                'পরিসংখ্যান': 'fas fa-chart-bar',
+                'হিসাববিজ্ঞান': 'fas fa-calculator'
             };
             
-            // Check for exact match
+            // Exact match
             if (iconMap[subjectName]) {
                 return iconMap[subjectName];
             }
             
-            // Check for partial match
+            // Partial match
+            const lowerName = subjectName.toLowerCase();
             for (const [key, icon] of Object.entries(iconMap)) {
-                if (subjectName.includes(key)) {
+                if (lowerName.includes(key.toLowerCase())) {
                     return icon;
                 }
             }
             
-            // Default icon
             return 'fas fa-book-open';
+        }
+
+        function filterSubjects(filterType) {
+            let filtered = [...subjects];
+            
+            if (filterType === 'popular') {
+                // Sort by total questions and take top 6
+                filtered.sort((a, b) => b.totalCount - a.totalCount);
+                filtered = filtered.slice(0, 6);
+            } else if (filterType === 'recent') {
+                // Sort by creation date
+                filtered.sort((a, b) => b.createdAt - a.createdAt);
+                filtered = filtered.slice(0, 6);
+            }
+            
+            displayedSubjects = filtered;
+            displaySubjects(displayedSubjects);
+        }
+
+        function handleSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (!searchTerm) {
+                displaySubjects(displayedSubjects);
+                return;
+            }
+            
+            const searchResults = subjects.filter(subject => {
+                return subject.name.toLowerCase().includes(searchTerm) ||
+                       subject.description.toLowerCase().includes(searchTerm);
+            });
+            
+            if (searchResults.length === 0) {
+                subjectsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h4>"${searchTerm}" এর জন্য কোনো বিষয় পাওয়া যায়নি</h4>
+                        <p>অন্যান্য কীওয়ার্ড দিয়ে চেষ্টা করুন</p>
+                    </div>
+                `;
+            } else {
+                displaySubjects(searchResults);
+            }
+        }
+
+        function showEmptyState() {
+            subjectsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-book"></i>
+                    <h4>কোনো বিষয় পাওয়া যায়নি</h4>
+                    <p>অ্যাডমিন প্যানেল থেকে বিষয় যোগ করুন</p>
+                </div>
+            `;
         }
 
         function updateStats() {
             // Update total subjects
-            document.getElementById('totalSubjects').textContent = allSubjects.length;
+            document.getElementById('totalSubjects').textContent = subjects.length;
             
-            // Calculate total questions
+            // Calculate totals
             let totalQuestions = 0;
             let totalMCQ = 0;
             let totalWritten = 0;
             
-            allSubjects.forEach(subject => {
+            subjects.forEach(subject => {
                 totalQuestions += subject.totalCount;
                 totalMCQ += subject.mcqCount;
                 totalWritten += subject.writtenCount;
@@ -1011,103 +1167,49 @@
 
         function animateNumber(elementId, finalValue) {
             const element = document.getElementById(elementId);
-            let current = 0;
-            const increment = finalValue / 50;
+            const current = parseInt(element.textContent) || 0;
+            const diff = finalValue - current;
+            const steps = 20;
+            const increment = diff / steps;
+            let step = 0;
+            
             const timer = setInterval(() => {
-                current += increment;
-                if (current >= finalValue) {
-                    current = finalValue;
+                step++;
+                const value = Math.floor(current + (increment * step));
+                element.textContent = value.toLocaleString();
+                
+                if (step >= steps) {
+                    element.textContent = finalValue.toLocaleString();
                     clearInterval(timer);
                 }
-                element.textContent = Math.floor(current).toLocaleString();
-            }, 20);
+            }, 30);
         }
 
-        function filterSubjects(filterType) {
-            if (filterType === 'all') {
-                filteredSubjects = [...allSubjects];
-            } else if (filterType === 'popular') {
-                filteredSubjects = [...allSubjects]
-                    .sort((a, b) => b.totalCount - a.totalCount)
-                    .slice(0, 6);
-            } else if (filterType === 'new') {
-                filteredSubjects = [...allSubjects]
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .slice(0, 6);
-            } else {
-                // Filter by category (science, arts, commerce)
-                filteredSubjects = allSubjects.filter(subject => {
-                    const name = subject.name.toLowerCase();
-                    if (filterType === 'science') {
-                        return name.includes('বিজ্ঞান') || name.includes('পদার্থ') || 
-                               name.includes('রসায়ন') || name.includes('জীব');
-                    } else if (filterType === 'arts') {
-                        return name.includes('বাংলা') || name.includes('ইংরেজি') || 
-                               name.includes('ইতিহাস') || name.includes('ভূগোল');
-                    } else if (filterType === 'commerce') {
-                        return name.includes('অর্থনীতি') || name.includes('বাণিজ্য');
-                    }
-                    return true;
-                });
-            }
-            
-            displaySubjects(filteredSubjects);
-        }
-
-        function searchSubjects() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            
-            if (!searchTerm) {
-                displaySubjects(filteredSubjects);
-                return;
-            }
-            
-            const searchResults = allSubjects.filter(subject => {
-                return subject.name.toLowerCase().includes(searchTerm) ||
-                       subject.description.toLowerCase().includes(searchTerm);
-            });
-            
-            if (searchResults.length === 0) {
-                subjectsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-search"></i>
-                        <h4>"${searchTerm}" এর জন্য কোনো ফলাফল নেই</h4>
-                        <p>অন্যান্য কীওয়ার্ড দিয়ে চেষ্টা করুন</p>
-                    </div>
-                `;
-            } else {
-                displaySubjects(searchResults);
-            }
-            
-            // Clear search after 5 seconds
-            setTimeout(() => {
-                searchInput.value = '';
-                displaySubjects(filteredSubjects);
-            }, 5000);
-        }
-
-        // Function to track subject clicks (for analytics)
         function trackSubjectClick(subjectId, subjectName) {
-            // You can implement analytics tracking here
-            console.log(`Subject clicked: ${subjectName} (${subjectId})`);
+            // For analytics
+            console.log(`Subject clicked: ${subjectName}`);
             
-            // Example for Google Analytics
+            // You can add Google Analytics or other tracking here
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'subject_click', {
-                    'subject_name': subjectName,
-                    'subject_id': subjectId
+                    'event_category': 'engagement',
+                    'event_label': subjectName
                 });
             }
         }
 
-        // Real-time updates from Firebase
-        function setupRealTimeUpdates() {
+        function setupRealtimeUpdates() {
             // Listen for new subjects
             db.collection('admission_subjects').onSnapshot((snapshot) => {
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === 'added') {
                         console.log('New subject added:', change.doc.data().name);
-                        // Reload subjects to show new addition
+                        // Reload subjects
+                        loadSubjects();
+                    }
+                    if (change.type === 'modified') {
+                        console.log('Subject updated:', change.doc.data().name);
+                        // Reload subjects
                         loadSubjects();
                     }
                 });
@@ -1115,13 +1217,41 @@
             
             // Listen for new questions
             db.collection('admission_questions').onSnapshot(() => {
-                // Update stats when new questions are added
+                // Update when new questions are added
                 loadSubjects();
             });
         }
 
-        // Setup real-time updates
-        setupRealTimeUpdates();
+        // Schema.org structured data
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "eProstutiBD",
+            "description": "বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম",
+            "url": "https://eprostutibd.com",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://eprostutibd.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        };
+
+        // Add structured data to page
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        // Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(() => {
+                    console.log('Service Worker registered');
+                }).catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            });
+        }
 
     </script>
 </body>
