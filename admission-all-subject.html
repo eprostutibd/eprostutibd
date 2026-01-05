@@ -3,116 +3,1498 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">বিষয় বিস্তারিত - eProstutiBD</title>
-    <!-- Same CSS and meta tags as above -->
+    <title>eProstutiBD - বাংলাদেশের সর্ববৃহৎ প্রশ্ন ব্যাংক প্লাটফর্ম</title>
+    <meta name="description" content="বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম। এডমিশন প্রস্তুতি, জব প্রস্তুতি, IELTS প্রস্তুতি ও কারেন্ট অ্যাফেয়ার্স।">
+    <meta name="keywords" content="admission question bank, job preparation, IELTS, current affairs, বাংলাদেশ প্রশ্ন ব্যাংক, এডমিশন প্রস্তুতি">
+    <meta name="author" content="eProstutiBD">
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="eProstutiBD - প্রশ্ন ব্যাংক">
+    <meta property="og:description" content="বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eprostutibd.com">
+    <meta property="og:image" content="https://eprostutibd.com/images/og-image.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="eProstutiBD - প্রশ্ন ব্যাংক">
+    <meta name="twitter:description" content="বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://eprostutibd.com">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Noto Sans Bengali -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        * {
+            font-family: 'Noto Sans Bengali', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a2530 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            padding: 15px 0;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .logo-text {
+            line-height: 1.2;
+        }
+        
+        .logo-subtext {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+            display: block;
+        }
+        
+        /* Main Navigation */
+        .main-nav {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-link {
+            color: #ecf0f1 !important;
+            padding: 12px 20px !important;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-radius: 5px;
+            margin: 0 2px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+        }
+        
+        /* Mobile Menu Toggle */
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        /* Secondary Navigation */
+        .secondary-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 10px 0;
+        }
+        
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            gap: 15px;
+        }
+        
+        .category-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .category-nav::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .category-btn {
+            white-space: nowrap;
+            padding: 8px 20px;
+            border-radius: 25px;
+            background: #f8f9fa;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .category-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .category-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-box input {
+            border-radius: 30px;
+            padding: 15px 25px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+        
+        /* Subjects Grid */
+        .subjects-section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .subject-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            height: 100%;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--secondary);
+        }
+        
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .subject-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .subject-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        
+        .subject-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .stat-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .stat-badge.mcq {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+        
+        .stat-badge.written {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary), #1a2530);
+            color: white;
+            padding: 60px 0;
+            margin: 60px 0;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 60px 0;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+        }
+        
+        /* Footer */
+        .main-footer {
+            background: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-links h5 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        
+        /* Loading Spinner */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        /* Ads Container */
+        .ads-container {
+            margin: 30px 0;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed #ddd;
+        }
+        
+        .ads-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: none;
+            padding: 15px 0;
+            margin-bottom: 0;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--primary);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .subject-name {
+                font-size: 1.1rem;
+            }
+            
+            .nav-link {
+                padding: 10px 15px !important;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .subject-card {
+                padding: 20px;
+            }
+            
+            .category-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .hero-section {
+                padding: 50px 0;
+            }
+        }
+        
+        /* SEO Optimization */
+        .schema-item {
+            display: none;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .main-header, .secondary-nav, .main-footer {
+                display: none;
+            }
+            
+            .subject-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus Styles for Accessibility */
+        a:focus, button:focus, input:focus {
+            outline: 2px solid var(--secondary);
+            outline-offset: 2px;
+        }
+        
+        /* Lazy Loading */
+        .lazy-load {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .lazy-load.loaded {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-    <!-- Same header and navigation as above -->
+    <!-- Schema.org Markup -->
+    <div class="schema-item" itemscope itemtype="https://schema.org/WebSite">
+        <meta itemprop="name" content="eProstutiBD">
+        <meta itemprop="description" content="বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম">
+        <meta itemprop="url" content="https://eprostutibd.com">
+    </div>
     
-    <!-- Subject Details Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">হোম</a></li>
-                        <li class="breadcrumb-item"><a href="/subjects">সকল বিষয়</a></li>
-                        <li class="breadcrumb-item active" id="currentSubject">বিষয়</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h1 id="subjectTitle" class="mb-3"></h1>
-                        <p id="subjectDescription" class="text-muted"></p>
-                        
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <div class="card stat-card bg-light">
-                                    <div class="card-body text-center">
-                                        <h3 id="mcqCount">0</h3>
-                                        <p class="text-muted mb-0">MCQ প্রশ্ন</p>
-                                        <button class="btn btn-primary btn-sm mt-2" id="viewMCQBtn">
-                                            MCQ প্রশ্ন দেখুন
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card stat-card bg-light">
-                                    <div class="card-body text-center">
-                                        <h3 id="writtenCount">0</h3>
-                                        <p class="text-muted mb-0">Written প্রশ্ন</p>
-                                        <button class="btn btn-warning btn-sm mt-2" id="viewWrittenBtn">
-                                            Written প্রশ্ন দেখুন
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Logo -->
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="/" class="logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="logo-text">
+                            eProstutiBD
+                            <span class="logo-subtext">প্রশ্নের ভাণ্ডার</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
-                <!-- Questions will be loaded here -->
-                <div id="questionsContainer"></div>
+                <!-- Main Navigation -->
+                <div class="col-lg-9 col-md-8 col-6">
+                    <nav class="navbar navbar-expand-lg p-0">
+                        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        
+                        <div class="collapse navbar-collapse" id="mainNavbar">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/">
+                                        <i class="fas fa-home"></i> Home
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admission-assistant">
+                                        <i class="fas fa-university"></i> Admission Assistant
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/job-assistant">
+                                        <i class="fas fa-briefcase"></i> Job Assistant
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/ielts-assistant">
+                                        <i class="fas fa-language"></i> IELTS Assistant
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/current-affairs">
+                                        <i class="fas fa-newspaper"></i> Current Affairs
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/notice">
+                                        <i class="fas fa-bullhorn"></i> Notice
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/career">
+                                        <i class="fas fa-chart-line"></i> Career
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/blog">
+                                        <i class="fas fa-blog"></i> Blog
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
             </div>
-            
-            <div class="col-lg-4">
-                <!-- Sidebar with related subjects -->
-                <div id="relatedSubjects"></div>
-                
-                <!-- Ads -->
-                <div class="ads-container">
-                    <div class="ads-label">Advertisement</div>
-                    <!-- Ad code here -->
+        </div>
+    </header>
+    
+    <!-- Secondary Navigation -->
+    <div class="secondary-nav">
+        <div class="container">
+            <div class="category-nav">
+                <a href="#subject-based" class="category-btn active">
+                    <i class="fas fa-book me-1"></i> বিষয় ভিত্তিক প্রশ্ন
+                </a>
+                <a href="#all-questions" class="category-btn">
+                    <i class="fas fa-question-circle me-1"></i> সকল প্রশ্নব্যাংক
+                </a>
+                <a href="#university-based" class="category-btn">
+                    <i class="fas fa-university me-1"></i> বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন
+                </a>
+                <a href="#model-tests" class="category-btn">
+                    <i class="fas fa-clipboard-check me-1"></i> মডেল টেস্ট
+                </a>
+                <a href="#previous-years" class="category-btn">
+                    <i class="fas fa-history me-1"></i> বিগত বছরের প্রশ্ন
+                </a>
+                <a href="#analysis" class="category-btn">
+                    <i class="fas fa-chart-bar me-1"></i> প্রশ্ন বিশ্লেষণ
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1 class="hero-title">বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম</h1>
+                    <p class="hero-subtitle">এডমিশন প্রস্তুতি, জব প্রস্তুতি, IELTS প্রস্তুতি এবং কারেন্ট অ্যাফেয়ার্সের জন্য সেরা প্রশ্ন সংগ্রহ</p>
+                    
+                    <div class="search-box position-relative">
+                        <input type="text" class="form-control" id="globalSearch" placeholder="আপনি কোন বিষয়ে প্রশ্ন খুঁজছেন?">
+                        <button class="btn" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ads Container 1 -->
+    <div class="container">
+        <div class="ads-container">
+            <div class="ads-label">Advertisement</div>
+            <div id="adSlot1">
+                <!-- AdSense or other ad code will go here -->
+                <div style="width: 728px; height: 90px; background: #f0f0f0; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: #999;">
+                    Leaderboard Ad (728x90)
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Same footer as above -->
+    <!-- Subjects Grid Section -->
+    <section class="subjects-section" id="subjectsGrid">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="section-title">বিষয় ভিত্তিক প্রশ্ন ব্যাংক</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">হোম</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">সকল বিষয়</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" id="subjectsContainer">
+                <!-- Subjects will be loaded here dynamically -->
+                <div class="col-12">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number" id="totalSubjects">0</div>
+                    <div class="stat-label">বিষয়</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number" id="totalQuestions">0</div>
+                    <div class="stat-label">প্রশ্ন</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number" id="totalMCQ">0</div>
+                    <div class="stat-label">MCQ প্রশ্ন</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number" id="totalWritten">0</div>
+                    <div class="stat-label">Written প্রশ্ন</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ads Container 2 -->
+    <div class="container">
+        <div class="ads-container">
+            <div class="ads-label">Advertisement</div>
+            <div id="adSlot2">
+                <!-- AdSense or other ad code will go here -->
+                <div style="width: 300px; height: 250px; background: #f0f0f0; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: #999;">
+                    Medium Rectangle (300x250)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h2 class="section-title text-center">কেন eProstutiBD?</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4>বিশাল প্রশ্ন ব্যাংক</h4>
+                        <p>বাংলাদেশের সবচেয়ে বড় প্রশ্ন সংগ্রহ। এডমিশন, জব, IELTS এর জন্য হাজার হাজার প্রশ্ন।</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h4>নিয়মিত আপডেট</h4>
+                        <p>নতুন প্রশ্ন নিয়মিত যোগ করা হয়। সবচেয়ে সাম্প্রতিক প্রশ্নগুলো পাওয়া যায় আমাদের সংগ্রহে।</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>মোবাইল ফ্রেন্ডলি</h4>
+                        <p>যেকোনো ডিভাইস থেকে অ্যাক্সেস করুন। মোবাইল অ্যাপের মতো অভিজ্ঞতা ওয়েবসাইটেই।</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ads Container 3 -->
+    <div class="container">
+        <div class="ads-container">
+            <div class="ads-label">Advertisement</div>
+            <div id="adSlot3">
+                <!-- AdSense or other ad code will go here -->
+                <div style="width: 728px; height: 90px; background: #f0f0f0; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: #999;">
+                    Leaderboard Ad (728x90)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <a href="/" class="footer-logo">
+                        <i class="fas fa-graduation-cap me-2"></i>eProstutiBD
+                    </a>
+                    <p>বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম। এডমিশন প্রস্তুতি, জব প্রস্তুতি, IELTS প্রস্তুতি এবং কারেন্ট অ্যাফেয়ার্সের জন্য সেরা প্রশ্ন সংগ্রহ।</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <div class="footer-links">
+                        <h5>দ্রুত লিংক</h5>
+                        <ul>
+                            <li><a href="/">হোম</a></li>
+                            <li><a href="/about">আমাদের সম্পর্কে</a></li>
+                            <li><a href="/contact">যোগাযোগ</a></li>
+                            <li><a href="/privacy">গোপনীয়তা নীতি</a></li>
+                            <li><a href="/terms">শর্তাবলী</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <div class="footer-links">
+                        <h5>সেবাসমূহ</h5>
+                        <ul>
+                            <li><a href="/admission-assistant">এডমিশন অ্যাসিস্ট্যান্ট</a></li>
+                            <li><a href="/job-assistant">জব অ্যাসিস্ট্যান্ট</a></li>
+                            <li><a href="/ielts-assistant">IELTS অ্যাসিস্ট্যান্ট</a></li>
+                            <li><a href="/current-affairs">কারেন্ট অ্যাফেয়ার্স</a></li>
+                            <li><a href="/model-tests">মডেল টেস্ট</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <div class="footer-links">
+                        <h5>যোগাযোগ</h5>
+                        <ul>
+                            <li><i class="fas fa-envelope me-2"></i> info@eprostutibd.com</li>
+                            <li><i class="fas fa-phone me-2"></i> +880 1XXX-XXXXXX</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i> ঢাকা, বাংলাদেশ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="copyright">
+                        &copy; 2023 eProstutiBD.com - All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Firebase & Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Firebase config and initialization
-        
-        // Get subject ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const subjectId = urlParams.get('subject');
-        
-        // Load subject details and questions
-        async function loadSubjectDetails() {
-            if (!subjectId) {
-                window.location.href = '/';
-                return;
-            }
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
+            authDomain: "eprostutibd-9ec31.firebaseapp.com",
+            projectId: "eprostutibd-9ec31",
+            storageBucket: "eprostutibd-9ec31.firebasestorage.app",
+            messagingSenderId: "441646770166",
+            appId: "1:441646770166:web:ba244b681de6e6b1bb49d7",
+            measurementId: "G-E5XHV46Z6B"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Collections
+        const subjectsCollection = db.collection("admission_subjects");
+        const questionsCollection = db.collection("admission_questions");
+
+        // Global variables
+        let subjects = [];
+        let questions = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+        });
+
+        function initializePage() {
+            // Load data
+            loadSubjects();
+            loadQuestionsStats();
             
-            // Load subject info
-            const subjectDoc = await db.collection("admission_subjects").doc(subjectId).get();
-            if (!subjectDoc.exists) {
-                window.location.href = '/';
-                return;
-            }
+            // Setup event listeners
+            setupEventListeners();
             
-            const subjectData = subjectDoc.data();
-            
-            // Update page title and headings
-            document.getElementById('pageTitle').textContent = `${subjectData.name} - eProstutiBD`;
-            document.getElementById('subjectTitle').textContent = subjectData.name;
-            document.getElementById('subjectDescription').textContent = subjectData.description || `${subjectData.name} বিষয়ের সকল প্রশ্নের সংগ্রহ`;
-            document.getElementById('currentSubject').textContent = subjectData.name;
-            
-            // Load questions for this subject
-            loadSubjectQuestions(subjectId, subjectData.name);
-            
-            // Load related subjects
-            loadRelatedSubjects(subjectId);
+            // Setup lazy loading
+            setupLazyLoading();
         }
-        
-        // Rest of the JavaScript for loading questions, etc.
+
+        function setupEventListeners() {
+            // Search button click
+            document.getElementById('searchButton').addEventListener('click', function() {
+                const searchTerm = document.getElementById('globalSearch').value;
+                if (searchTerm.trim()) {
+                    searchSubjects(searchTerm);
+                }
+            });
+            
+            // Search input enter key
+            document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value;
+                    if (searchTerm.trim()) {
+                        searchSubjects(searchTerm);
+                    }
+                }
+            });
+            
+            // Category navigation
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Scroll to section
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId !== '#') {
+                        document.querySelector(targetId)?.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Mobile menu fix
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const mainNavbar = document.getElementById('mainNavbar');
+            
+            navbarToggler.addEventListener('click', function() {
+                mainNavbar.classList.toggle('show');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!navbarToggler.contains(e.target) && !mainNavbar.contains(e.target)) {
+                    mainNavbar.classList.remove('show');
+                }
+            });
+        }
+
+        function setupLazyLoading() {
+            // Setup intersection observer for lazy loading
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('loaded');
+                    }
+                });
+            });
+            
+            // Observe all lazy-load elements
+            document.querySelectorAll('.lazy-load').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        async function loadSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            `;
+            
+            try {
+                const snapshot = await subjectsCollection.orderBy('name').get();
+                subjects = [];
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="col-12">
+                            <div class="empty-state">
+                                <i class="fas fa-book"></i>
+                                <h4>কোনো বিষয় পাওয়া যায়নি</h4>
+                                <p>অ্যাডমিন প্যানেল থেকে নতুন বিষয় যোগ করুন</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Get question counts for each subject
+                const subjectPromises = [];
+                snapshot.forEach(doc => {
+                    subjectPromises.push(
+                        getSubjectQuestionCounts(doc.id).then(counts => ({
+                            id: doc.id,
+                            ...doc.data(),
+                            mcqCount: counts.mcq,
+                            writtenCount: counts.written,
+                            totalCount: counts.total
+                        }))
+                    );
+                });
+                
+                // Wait for all counts to be fetched
+                subjects = await Promise.all(subjectPromises);
+                
+                // Display subjects
+                displaySubjects(subjects);
+                
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            বিষয় লোড করতে সমস্যা হয়েছে
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        async function getSubjectQuestionCounts(subjectId) {
+            try {
+                // Get MCQ questions count
+                const mcqSnapshot = await questionsCollection
+                    .where('subjectId', '==', subjectId)
+                    .where('type', '==', 'mcq')
+                    .get();
+                
+                // Get Written questions count
+                const writtenSnapshot = await questionsCollection
+                    .where('subjectId', '==', subjectId)
+                    .where('type', '==', 'written')
+                    .get();
+                
+                return {
+                    mcq: mcqSnapshot.size,
+                    written: writtenSnapshot.size,
+                    total: mcqSnapshot.size + writtenSnapshot.size
+                };
+            } catch (error) {
+                console.error('Error getting question counts:', error);
+                return { mcq: 0, written: 0, total: 0 };
+            }
+        }
+
+        function displaySubjects(subjectsToDisplay) {
+            const container = document.getElementById('subjectsContainer');
+            
+            if (subjectsToDisplay.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h4>কোনো বিষয় পাওয়া যায়নি</h4>
+                            <p>অন্যান্য কীওয়ার্ড দিয়ে খুঁজুন</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            subjectsToDisplay.forEach(subject => {
+                // Get subject icon based on name
+                const icon = getSubjectIcon(subject.name);
+                
+                html += `
+                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                        <a href="admission-subject-details.html?subject=${subject.id}" 
+                           class="subject-card lazy-load"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="${subject.name} এর প্রশ্ন ব্যাংক দেখুন">
+                            <div class="subject-icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <h3 class="subject-name">${subject.name}</h3>
+                            <p class="subject-description">
+                                ${subject.description || `${subject.name} বিষয়ের সকল MCQ ও Written প্রশ্নের সংগ্রহ`}
+                            </p>
+                            <div class="subject-stats">
+                                <div class="stat-item">
+                                    <span class="stat-badge mcq">
+                                        <i class="fas fa-list-ol me-1"></i> ${subject.mcqCount} MCQ
+                                    </span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-badge written">
+                                        <i class="fas fa-pen me-1"></i> ${subject.writtenCount} Written
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-end">
+                                <small class="text-muted">
+                                    <i class="fas fa-arrow-right me-1"></i> বিস্তারিত দেখুন
+                                </small>
+                            </div>
+                        </a>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Add click tracking
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const subjectName = this.querySelector('.subject-name').textContent;
+                    trackEvent('subject_click', subjectName);
+                });
+            });
+        }
+
+        function getSubjectIcon(subjectName) {
+            const subjectIcons = {
+                'গণিত': 'fas fa-calculator',
+                'ইংরেজি': 'fas fa-language',
+                'বাংলা': 'fas fa-book',
+                'সাধারণ জ্ঞান': 'fas fa-brain',
+                'বিজ্ঞান': 'fas fa-flask',
+                'পদার্থবিজ্ঞান': 'fas fa-atom',
+                'রসায়ন': 'fas fa-vial',
+                'জীববিজ্ঞান': 'fas fa-dna',
+                'ইতিহাস': 'fas fa-landmark',
+                'ভূগোল': 'fas fa-globe-asia',
+                'অর্থনীতি': 'fas fa-chart-line',
+                'বাংলাদেশ বিষয়াবলি': 'fas fa-flag',
+                'আন্তর্জাতিক বিষয়াবলি': 'fas fa-globe',
+                'মুক্তিযুদ্ধ': 'fas fa-fist-raised',
+                'সাহিত্য': 'fas fa-pen-nib',
+                'ব্যাকরণ': 'fas fa-spell-check'
+            };
+            
+            // Check for exact match
+            if (subjectIcons[subjectName]) {
+                return subjectIcons[subjectName];
+            }
+            
+            // Check for partial match
+            for (const [key, value] of Object.entries(subjectIcons)) {
+                if (subjectName.includes(key)) {
+                    return value;
+                }
+            }
+            
+            // Default icon
+            return 'fas fa-book-open';
+        }
+
+        async function loadQuestionsStats() {
+            try {
+                // Get total subjects
+                const subjectsSnapshot = await subjectsCollection.get();
+                document.getElementById('totalSubjects').textContent = subjectsSnapshot.size;
+                
+                // Get total questions
+                const questionsSnapshot = await questionsCollection.get();
+                document.getElementById('totalQuestions').textContent = questionsSnapshot.size;
+                
+                // Count by type
+                let mcqCount = 0;
+                let writtenCount = 0;
+                questionsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.type === 'mcq') mcqCount++;
+                    if (data.type === 'written') writtenCount++;
+                });
+                
+                document.getElementById('totalMCQ').textContent = mcqCount;
+                document.getElementById('totalWritten').textContent = writtenCount;
+                
+                // Animate numbers
+                animateValue('totalSubjects', 0, subjectsSnapshot.size, 1000);
+                animateValue('totalQuestions', 0, questionsSnapshot.size, 1000);
+                animateValue('totalMCQ', 0, mcqCount, 1000);
+                animateValue('totalWritten', 0, writtenCount, 1000);
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                obj.textContent = value.toLocaleString('bn-BD');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function searchSubjects(searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            
+            const filteredSubjects = subjects.filter(subject => {
+                return (
+                    subject.name.toLowerCase().includes(searchLower) ||
+                    (subject.description && subject.description.toLowerCase().includes(searchLower))
+                );
+            });
+            
+            displaySubjects(filteredSubjects);
+            
+            // Update search results count
+            const resultsCount = document.createElement('div');
+            resultsCount.className = 'alert alert-info mt-3';
+            resultsCount.innerHTML = `
+                <i class="fas fa-search me-2"></i>
+                "${searchTerm}" এর জন্য ${filteredSubjects.length}টি ফলাফল পাওয়া গেছে
+            `;
+            
+            const container = document.getElementById('subjectsContainer');
+            container.insertAdjacentElement('beforebegin', resultsCount);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                resultsCount.remove();
+            }, 5000);
+            
+            // Track search event
+            trackEvent('search', searchTerm);
+        }
+
+        function trackEvent(eventName, eventValue) {
+            // Here you can implement your analytics tracking
+            // For example: Google Analytics, Facebook Pixel, etc.
+            console.log(`Event: ${eventName}, Value: ${eventValue}`);
+            
+            // Example for Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, {
+                    'event_category': 'engagement',
+                    'event_label': eventValue
+                });
+            }
+        }
+
+        // Real-time updates from Firebase
+        function setupRealtimeUpdates() {
+            // Listen for new subjects
+            subjectsCollection.onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        console.log('New subject added:', change.doc.data().name);
+                        // Reload subjects to show new addition
+                        loadSubjects();
+                    }
+                    if (change.type === 'modified') {
+                        console.log('Subject modified:', change.doc.data().name);
+                        // Update specific subject if needed
+                    }
+                    if (change.type === 'removed') {
+                        console.log('Subject removed:', change.doc.id);
+                        // Remove subject from display
+                    }
+                });
+            });
+            
+            // Listen for new questions
+            questionsCollection.onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        console.log('New question added');
+                        // Update stats
+                        loadQuestionsStats();
+                    }
+                });
+            });
+        }
+
+        // Initialize real-time updates
+        setupRealtimeUpdates();
+
+        // SEO Optimization: Update page title based on content
+        function updatePageTitle() {
+            const totalQuestions = document.getElementById('totalQuestions').textContent;
+            document.title = `eProstutiBD - ${totalQuestions} প্রশ্নের সংগ্রহ | বাংলাদেশের #১ প্রশ্ন ব্যাংক`;
+        }
+
+        // Update title after stats load
+        setTimeout(updatePageTitle, 1500);
+
+        // Schema.org structured data
+        function addStructuredData() {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "EducationalOrganization",
+                "name": "eProstutiBD",
+                "description": "বাংলাদেশের #১ প্রশ্ন ব্যাংক প্লাটফর্ম",
+                "url": "https://eprostutibd.com",
+                "logo": "https://eprostutibd.com/logo.png",
+                "sameAs": [
+                    "https://facebook.com/eprostutibd",
+                    "https://twitter.com/eprostutibd"
+                ],
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "Bangladesh",
+                    "addressLocality": "Dhaka"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "category": "EducationalResources"
+                }
+            });
+            document.head.appendChild(script);
+        }
+
+        // Add structured data
+        addStructuredData();
+
+        // Service Worker for PWA (Progressive Web App)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Add to homescreen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button if you want
+            // You can add a button to trigger the install prompt
+        });
+
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            console.log('Online');
+            // Reload data if needed
+            loadSubjects();
+            loadQuestionsStats();
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('Offline');
+            // Show offline message
+            showOfflineMessage();
+        });
+
+        function showOfflineMessage() {
+            const message = document.createElement('div');
+            message.className = 'alert alert-warning fixed-top m-3';
+            message.innerHTML = `
+                <i class="fas fa-wifi-slash me-2"></i>
+                আপনি অফলাইনে আছেন। কিছু ফিচার কাজ নাও করতে পারে।
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 5000);
+        }
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            // Calculate load time
+            const timing = performance.timing;
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            console.log(`Page load time: ${loadTime}ms`);
+            
+            // Report to analytics if load time is too high
+            if (loadTime > 3000) {
+                console.warn('Page load time is high:', loadTime);
+            }
+        });
+
+        // Handle errors gracefully
+        window.addEventListener('error', (e) => {
+            console.error('Error occurred:', e.error);
+            // You can report this to your error tracking service
+        });
+
+        // Handle unhandled promise rejections
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            // You can report this to your error tracking service
+        });
+
+    </script>
+    
+    <!-- Structured Data for Breadcrumb -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "হোম",
+                "item": "https://eprostutibd.com"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "সকল বিষয়",
+                "item": "https://eprostutibd.com/subjects"
+            }
+        ]
+    }
     </script>
 </body>
 </html>
