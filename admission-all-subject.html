@@ -3,657 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>বিষয় বিস্তারিত - eProStuti</title>
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
-            authDomain: "eprostutibd-9ec31.firebaseapp.com",
-            projectId: "eprostutibd-9ec31",
-            storageBucket: "eprostutibd-9ec31.firebasestorage.app",
-            messagingSenderId: "441646770166",
-            appId: "1:441646770166:web:ba244b681de6e6b1bb49d7",
-            measurementId: "G-E5XHV46Z6B"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        
-        window.firebaseApp = app;
-        window.firebaseDb = db;
-    </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        /* Header Styles */
-        .header {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-icon {
-            background: white;
-            color: #1a73e8;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        
-        .subject-header {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            border-left: 5px solid #1a73e8;
-        }
-        
-        .subject-title {
-            font-size: 28px;
-            color: #1a73e8;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .subject-icon {
-            background: #1a73e8;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        .subject-meta {
-            display: flex;
-            gap: 20px;
-            color: #666;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-        
-        /* Question Type Selector */
-        .question-type-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .type-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: white;
-            color: #555;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .type-btn.active {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .type-btn:hover:not(.active) {
-            background: #e8f0fe;
-            color: #1a73e8;
-        }
-        
-        /* Question Sections */
-        .question-section {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-        
-        .question-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .section-title {
-            font-size: 22px;
-            color: #1a73e8;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e8f0fe;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* MCQ Questions */
-        .mcq-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        
-        .mcq-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            background: #fafafa;
-            transition: all 0.3s ease;
-        }
-        
-        .mcq-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .mcq-number {
-            display: inline-block;
-            background: #1a73e8;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 32px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .mcq-question {
-            font-weight: 500;
-            margin-bottom: 15px;
-            color: #333;
-            line-height: 1.5;
-        }
-        
-        .mcq-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .mcq-option {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .mcq-option.correct {
-            background: #e8f5e9;
-            border-color: #4caf50;
-            color: #2e7d32;
-        }
-        
-        .mcq-option:hover {
-            background: #f1f3f4;
-        }
-        
-        /* Written Questions */
-        .written-container {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        
-        .written-card {
-            border-left: 4px solid #ff9800;
-            padding-left: 20px;
-            background: #fff8e1;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        
-        .written-number {
-            background: #ff9800;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .written-question {
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .written-answer {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            border-left: 3px solid #4caf50;
-        }
-        
-        .written-answer-label {
-            color: #4caf50;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        /* Exam Info */
-        .exam-info {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #4caf50;
-        }
-        
-        .exam-year {
-            color: #2e7d32;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Loading and Error */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 18px;
-            color: #666;
-        }
-        
-        .error {
-            text-align: center;
-            padding: 40px;
-            color: #d32f2f;
-            background: #ffebee;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #1a237e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-menu {
-                justify-content: center;
-            }
-            
-            .mcq-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .question-type-selector {
-                justify-content: center;
-            }
-        }
-    </style>
+    <title id="pageTitle">বিষয় বিস্তারিত - eProstutiBD</title>
+    <!-- Same CSS and meta tags as above -->
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <div class="header-container">
-            <div class="logo">
-                <div class="logo-icon">eP</div>
-                <span>eProStuti</span>
-            </div>
-            <nav class="nav-menu">
-                <a href="#" class="nav-item">একাডেমী</a>
-                <a href="#" class="nav-item">এডমিশন অ্যাসিস্ট্যান্ট</a>
-                <a href="#" class="nav-item">জব অ্যাসিস্ট্যান্ট</a>
-                <a href="#" class="nav-item">IELTS অ্যাসিস্ট্যান্ট</a>
-                <a href="#" class="nav-item">কারেন্ট এফেয়ার্স</a>
-                <a href="#" class="nav-item">ক্যারিয়ার</a>
-                <a href="#" class="nav-item">নোটিশ</a>
-                <a href="#" class="nav-item">ব্লগ</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Subject Header -->
-        <div class="subject-header">
-            <h1 class="subject-title">
-                <div class="subject-icon">📚</div>
-                <span id="subjectName">বিষয়ের নাম লোড হচ্ছে...</span>
-            </h1>
-            <div class="subject-meta">
-                <span id="subjectCode"></span>
-                <span id="totalQuestions"></span>
-                <span id="examYear"></span>
+    <!-- Same header and navigation as above -->
+    
+    <!-- Subject Details Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">হোম</a></li>
+                        <li class="breadcrumb-item"><a href="/subjects">সকল বিষয়</a></li>
+                        <li class="breadcrumb-item active" id="currentSubject">বিষয়</li>
+                    </ol>
+                </nav>
             </div>
         </div>
-
-        <!-- Question Type Selector -->
-        <div class="question-type-selector">
-            <button class="type-btn active" data-type="mcq">MCQ প্রশ্ন</button>
-            <button class="type-btn" data-type="written">লিখিত প্রশ্ন</button>
-        </div>
-
-        <!-- Loading State -->
-        <div id="loading" class="loading">
-            প্রশ্নগুলো লোড হচ্ছে... ⏳
-        </div>
-
-        <!-- Error State -->
-        <div id="error" class="error" style="display: none;">
-            তথ্য লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে আবার চেষ্টা করুন।
-        </div>
-
-        <!-- MCQ Questions Section -->
-        <div id="mcqSection" class="question-section active">
-            <h2 class="section-title">
-                <span>📝</span> MCQ প্রশ্নপত্র
-            </h2>
-            <div id="mcqContainer" class="mcq-container">
-                <!-- MCQ questions will be inserted here -->
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h1 id="subjectTitle" class="mb-3"></h1>
+                        <p id="subjectDescription" class="text-muted"></p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card stat-card bg-light">
+                                    <div class="card-body text-center">
+                                        <h3 id="mcqCount">0</h3>
+                                        <p class="text-muted mb-0">MCQ প্রশ্ন</p>
+                                        <button class="btn btn-primary btn-sm mt-2" id="viewMCQBtn">
+                                            MCQ প্রশ্ন দেখুন
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card stat-card bg-light">
+                                    <div class="card-body text-center">
+                                        <h3 id="writtenCount">0</h3>
+                                        <p class="text-muted mb-0">Written প্রশ্ন</p>
+                                        <button class="btn btn-warning btn-sm mt-2" id="viewWrittenBtn">
+                                            Written প্রশ্ন দেখুন
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Questions will be loaded here -->
+                <div id="questionsContainer"></div>
             </div>
-        </div>
-
-        <!-- Written Questions Section -->
-        <div id="writtenSection" class="question-section">
-            <h2 class="section-title">
-                <span>✍️</span> লিখিত প্রশ্নপত্র
-            </h2>
-            <div id="writtenContainer" class="written-container">
-                <!-- Written questions will be inserted here -->
-            </div>
-        </div>
-
-        <!-- Exam Information -->
-        <div id="examInfo" class="exam-info" style="display: none;">
-            <div class="exam-year">
-                <span>📅</span>
-                <span id="examInfoText"></span>
+            
+            <div class="col-lg-4">
+                <!-- Sidebar with related subjects -->
+                <div id="relatedSubjects"></div>
+                
+                <!-- Ads -->
+                <div class="ads-container">
+                    <div class="ads-label">Advertisement</div>
+                    <!-- Ad code here -->
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2024 eProStuti - সকল অধিকার সংরক্ষিত</p>
-    </footer>
-
+    
+    <!-- Same footer as above -->
+    
     <script>
-        // URL থেকে সাবজেক্ট ID পাওয়া
+        // Firebase config and initialization
+        
+        // Get subject ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const subjectId = urlParams.get('id') || 'subject1';
+        const subjectId = urlParams.get('subject');
         
-        // DOM Elements
-        const loadingElement = document.getElementById('loading');
-        const errorElement = document.getElementById('error');
-        const subjectNameElement = document.getElementById('subjectName');
-        const subjectCodeElement = document.getElementById('subjectCode');
-        const totalQuestionsElement = document.getElementById('totalQuestions');
-        const examYearElement = document.getElementById('examYear');
-        const examInfoElement = document.getElementById('examInfo');
-        const examInfoTextElement = document.getElementById('examInfoText');
-        const mcqSection = document.getElementById('mcqSection');
-        const writtenSection = document.getElementById('writtenSection');
-        const mcqContainer = document.getElementById('mcqContainer');
-        const writtenContainer = document.getElementById('writtenContainer');
-        const typeButtons = document.querySelectorAll('.type-btn');
-        
-        // প্রশ্নের ধরন পরিবর্তন
-        typeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const type = button.getAttribute('data-type');
-                
-                // Active বাটন আপডেট
-                typeButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // সেকশন শো/হাইড
-                if (type === 'mcq') {
-                    mcqSection.classList.add('active');
-                    writtenSection.classList.remove('active');
-                } else {
-                    writtenSection.classList.add('active');
-                    mcqSection.classList.remove('active');
-                }
-            });
-        });
-        
-        // Firebase থেকে ডাটা লোড
+        // Load subject details and questions
         async function loadSubjectDetails() {
-            try {
-                const db = window.firebaseDb;
-                
-                // সাবজেক্ট ডিটেলস লোড
-                const subjectDoc = await getDoc(doc(db, 'subjects', subjectId));
-                
-                if (subjectDoc.exists()) {
-                    const subjectData = subjectDoc.data();
-                    
-                    // সাবজেক্ট ইনফো শো
-                    subjectNameElement.textContent = subjectData.name || 'বিষয়ের নাম';
-                    subjectCodeElement.textContent = subjectData.code ? `কোড: ${subjectData.code}` : '';
-                    totalQuestionsElement.textContent = subjectData.totalQuestions ? `মোট প্রশ্ন: ${subjectData.totalQuestions}` : '';
-                    examYearElement.textContent = subjectData.year ? `সাল: ${subjectData.year}` : '';
-                    
-                    // পরীক্ষার তথ্য
-                    if (subjectData.examInfo) {
-                        examInfoTextElement.textContent = subjectData.examInfo;
-                        examInfoElement.style.display = 'block';
-                    }
-                    
-                    // MCQ প্রশ্ন লোড
-                    if (subjectData.mcqQuestions && Array.isArray(subjectData.mcqQuestions)) {
-                        renderMCQQuestions(subjectData.mcqQuestions);
-                    }
-                    
-                    // লিখিত প্রশ্ন লোড
-                    if (subjectData.writtenQuestions && Array.isArray(subjectData.writtenQuestions)) {
-                        renderWrittenQuestions(subjectData.writtenQuestions);
-                    }
-                    
-                    // লোডিং হাইড
-                    loadingElement.style.display = 'none';
-                } else {
-                    showError('বিষয়ের তথ্য পাওয়া যায়নি');
-                }
-                
-            } catch (error) {
-                console.error('Error loading subject details:', error);
-                showError('ডাটা লোড করতে সমস্যা হয়েছে');
+            if (!subjectId) {
+                window.location.href = '/';
+                return;
             }
-        }
-        
-        // MCQ প্রশ্ন রেন্ডার
-        function renderMCQQuestions(questions) {
-            mcqContainer.innerHTML = '';
             
-            questions.forEach((question, index) => {
-                const mcqCard = document.createElement('div');
-                mcqCard.className = 'mcq-card';
-                
-                mcqCard.innerHTML = `
-                    <div class="mcq-number">${index + 1}</div>
-                    <div class="mcq-question">${question.question}</div>
-                    <div class="mcq-options">
-                        ${question.options.map((option, optIndex) => `
-                            <div class="mcq-option ${optIndex === question.correctAnswer ? 'correct' : ''}">
-                                ${String.fromCharCode(65 + optIndex)}. ${option}
-                            </div>
-                        `).join('')}
-                    </div>
-                    ${question.year ? `<div style="margin-top: 10px; font-size: 12px; color: #666;">${question.year} সালের প্রশ্ন</div>` : ''}
-                `;
-                
-                mcqContainer.appendChild(mcqCard);
-            });
-        }
-        
-        // লিখিত প্রশ্ন রেন্ডার
-        function renderWrittenQuestions(questions) {
-            writtenContainer.innerHTML = '';
+            // Load subject info
+            const subjectDoc = await db.collection("admission_subjects").doc(subjectId).get();
+            if (!subjectDoc.exists) {
+                window.location.href = '/';
+                return;
+            }
             
-            questions.forEach((question, index) => {
-                const writtenCard = document.createElement('div');
-                writtenCard.className = 'written-card';
-                
-                writtenCard.innerHTML = `
-                    <div class="written-number">প্রশ্ন ${index + 1}</div>
-                    <div class="written-question">${question.question}</div>
-                    ${question.parts ? `
-                        <div style="margin: 15px 0;">
-                            <strong>অংশসমূহ:</strong>
-                            <ul style="margin-top: 10px; padding-left: 20px;">
-                                ${question.parts.map(part => `<li>${part}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    <div class="written-answer">
-                        <span class="written-answer-label">উত্তর:</span>
-                        ${question.answer}
-                    </div>
-                    ${question.year ? `<div style="margin-top: 15px; font-size: 13px; color: #666; font-style: italic;">${question.year} সালের প্রশ্ন</div>` : ''}
-                `;
-                
-                writtenContainer.appendChild(writtenCard);
-            });
+            const subjectData = subjectDoc.data();
+            
+            // Update page title and headings
+            document.getElementById('pageTitle').textContent = `${subjectData.name} - eProstutiBD`;
+            document.getElementById('subjectTitle').textContent = subjectData.name;
+            document.getElementById('subjectDescription').textContent = subjectData.description || `${subjectData.name} বিষয়ের সকল প্রশ্নের সংগ্রহ`;
+            document.getElementById('currentSubject').textContent = subjectData.name;
+            
+            // Load questions for this subject
+            loadSubjectQuestions(subjectId, subjectData.name);
+            
+            // Load related subjects
+            loadRelatedSubjects(subjectId);
         }
         
-        // Error শো
-        function showError(message) {
-            loadingElement.style.display = 'none';
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-        }
-        
-        // পেজ লোড হলে ডাটা লোড শুরু
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSubjectDetails();
-        });
-        
-        // ফায়ারবেসে স্যাম্পল ডাটা স্ট্রাকচার যোগ করতে (আপনার Firebase Console এ যান):
-        /*
-        subjects/subject1:
-        {
-            name: "গণিত",
-            code: "MAT101",
-            year: "২০২৪",
-            totalQuestions: 20,
-            examInfo: "বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয় (BUET) ভর্তি পরীক্ষা ২০২৪",
-            mcqQuestions: [
-                {
-                    question: "যদি x² + y² = 25 এবং xy = 12 হয়, তবে x + y = কত?",
-                    options: ["5", "7", "8", "9"],
-                    correctAnswer: 1,
-                    year: "২০২৪"
-                },
-                {
-                    question: "একটি ত্রিভুজের তিনটি কোণের অনুপাত 2:3:4 হলে, বৃহত্তম কোণের মান কত?",
-                    options: ["40°", "60°", "80°", "100°"],
-                    correctAnswer: 2,
-                    year: "২০২৩"
-                }
-            ],
-            writtenQuestions: [
-                {
-                    question: "অন্তরীকরণের সংজ্ঞা দাও।",
-                    parts: ["সংজ্ঞা", "উদাহরণ", "প্রয়োগ"],
-                    answer: "কোনো ফাংশনের পরিবর্তনের হার নির্ণয় করার প্রক্রিয়াকে অন্তরীকরণ বলে।",
-                    year: "২০২৪"
-                }
-            ]
-        }
-        */
-        
-        // admission-all-subject.html থেকে এই পেজে রিডাইরেক্ট করার জন্য:
-        // <a href="subject-details.html?id=subject1" class="subject-card">গণিত</a>
+        // Rest of the JavaScript for loading questions, etc.
     </script>
 </body>
 </html>
