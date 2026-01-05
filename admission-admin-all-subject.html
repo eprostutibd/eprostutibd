@@ -3,983 +3,604 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিশন সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
-    <!-- SheetJS for Excel processing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
+    <title>Admission Admin - All Subjects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
     <style>
-        /* Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Kalpurush&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Kalpurush', 'Hind Siliguri', 'Segoe UI', sans-serif;
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
         }
-        
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 15px;
-            direction: ltr;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        /* Header - Smaller */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-            text-align: center;
-            position: relative;
-        }
-        
-        .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .header p {
-            font-size: 0.9rem;
-            opacity: 0.95;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.4;
-        }
-        
-        .back-btn {
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-        }
-        
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Main Layout */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-        }
-        
-        /* Sidebar */
         .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        /* Cards - Smaller */
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-title {
-            font-size: 1.1rem;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
-        
-        /* Form Styles - Smaller */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 6px;
-            color: #2c3e50;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e1e5eb;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            background: #f8f9fa;
-            font-family: 'Kalpurush', sans-serif;
-        }
-        
-        .form-control:focus {
-            border-color: #667eea;
-            background: white;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        /* Buttons - Smaller */
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: 'Kalpurush', sans-serif;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            width: 100%;
+            min-height: 100vh;
+            position: fixed;
+            width: 250px;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* Question Type Selector - Smaller */
-        .type-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .type-option {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e1e5eb;
-            background: #f8f9fa;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            color: #4b5563;
-            font-size: 0.85rem;
-        }
-        
-        .type-option:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-        }
-        
-        .type-option.active {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-        
-        .type-option i {
-            font-size: 18px;
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        /* Upload Area - Smaller */
-        .upload-area {
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #f8f9fa;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-        }
-        
-        .upload-area:hover {
-            background: #edf2ff;
-        }
-        
-        .upload-icon {
-            font-size: 36px;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .file-info {
-            margin-top: 15px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e1e5eb;
-            display: none;
-            font-size: 0.85rem;
-        }
-        
-        .file-input {
-            display: none;
-        }
-        
-        /* Subjects List - Smaller */
-        .subjects-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        
-        .subject-item {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 10px 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .subject-item:hover {
-            transform: translateX(3px);
-        }
-        
-        .subject-name {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .subject-count {
-            background: #667eea;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        /* Main Content */
         .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        /* Search Section - Smaller */
-        .search-section {
-            background: white;
-            border-radius: 15px;
+            margin-left: 250px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        
-        .search-container {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
         }
-        
-        .search-input {
-            flex: 1;
-            min-width: 250px;
-            padding: 10px 12px;
-            border: 2px solid #e1e5eb;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            background: white;
-            font-family: 'Kalpurush', sans-serif;
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: var(--accent-color);
         }
-        
-        .search-input:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-        
-        /* Questions Table - Compact */
-        .table-section {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            flex: 1;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin-top: 15px;
+        .card {
             border-radius: 10px;
-            border: 1px solid #e1e5eb;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
-        
-        .questions-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
-            font-family: 'Kalpurush', sans-serif;
-            font-size: 0.85rem;
+        .card:hover {
+            transform: translateY(-2px);
         }
-        
-        .questions-table thead {
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-        
-        .questions-table th {
-            padding: 12px 10px;
-            text-align: right;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-        
-        .questions-table tbody tr {
-            border-bottom: 1px solid #f1f5f9;
-            transition: all 0.2s;
-        }
-        
-        .questions-table tbody tr:hover {
-            background: #f8fafc;
-        }
-        
-        .questions-table td {
-            padding: 12px 10px;
-            color: #334155;
-            vertical-align: top;
-            text-align: right;
-            line-height: 1.4;
-        }
-        
-        /* Badges - Smaller */
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .badge-mcq {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        
-        .badge-written {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-        
-        .exam-badge {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            margin: 2px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-        
-        /* Action Buttons - Smaller */
-        .action-buttons {
-            display: flex;
-            gap: 6px;
-            justify-content: flex-end;
-        }
-        
-        .action-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-        
-        .edit-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-        }
-        
-        .edit-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .delete-btn {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-        }
-        
-        .delete-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e1e5eb;
-        }
-        
-        .page-btn {
-            padding: 6px 12px;
-            border: 1px solid #e1e5eb;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-            min-width: 30px;
-            text-align: center;
-        }
-        
-        .page-btn:hover {
-            border-color: #667eea;
-            background: #f8f9fa;
-        }
-        
-        .page-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
-        .page-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Toast Messages */
-        .toast-container {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .toast {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            animation: slideUp 0.3s ease;
-            border-left: 4px solid #667eea;
-            max-width: 400px;
-            font-family: 'Kalpurush', sans-serif;
-            font-size: 0.9rem;
-        }
-        
-        .toast.success {
-            border-left-color: #10b981;
-        }
-        
-        .toast.error {
-            border-left-color: #ef4444;
-        }
-        
-        .toast.warning {
-            border-left-color: #f59e0b;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .toast-icon {
-            font-size: 20px;
-            min-width: 30px;
-            text-align: center;
-        }
-        
-        .toast.success .toast-icon { color: #10b981; }
-        .toast.error .toast-icon { color: #ef4444; }
-        .toast.warning .toast-icon { color: #f59e0b; }
-        
-        .toast-content {
-            flex: 1;
-        }
-        
-        .toast-title {
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 3px;
-            font-size: 0.95rem;
-        }
-        
-        .toast-message {
-            color: #6b7280;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        
-        .close-toast {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 5px;
-        }
-        
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-            display: none;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* No Data */
-        .no-data {
-            text-align: center;
-            padding: 40px 20px;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .no-data i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #d1d5db;
-        }
-        
-        /* Demo Templates */
-        .demo-templates {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.85rem;
-        }
-        
-        .demo-title {
-            font-size: 0.9rem;
-            color: #2c3e50;
+        .question-item {
+            border-left: 4px solid var(--accent-color);
+            background-color: white;
             margin-bottom: 10px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 15px;
+            border-radius: 5px;
         }
-        
-        .template-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        .mcq-badge {
+            background-color: #4CAF50;
         }
-        
-        .template-btn {
-            padding: 8px 12px;
-            background: white;
-            border: 1px solid #667eea;
-            border-radius: 8px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            text-align: right;
-            font-family: 'Kalpurush', sans-serif;
-            font-size: 0.85rem;
+        .written-badge {
+            background-color: #FF9800;
         }
-        
-        .template-btn:hover {
-            background: #667eea;
+        .modal-header {
+            background-color: var(--primary-color);
             color: white;
         }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                order: 2;
-            }
-            
-            .main-content {
-                order: 1;
-            }
+        .table-hover tbody tr:hover {
+            background-color: rgba(74, 111, 165, 0.1);
         }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .header {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.2rem;
-                flex-direction: column;
-                gap: 5px;
-                margin-top: 30px;
-            }
-            
-            .back-btn {
-                left: 15px;
-                top: 15px;
-                font-size: 0.8rem;
-                padding: 6px 12px;
-            }
-            
-            .search-container {
-                flex-direction: column;
-            }
-            
-            .search-input {
-                min-width: 100%;
-            }
-            
-            .type-selector {
-                flex-direction: column;
-            }
+        .search-box {
+            border-radius: 25px;
+            border: 2px solid #e0e0e0;
+            padding: 8px 20px;
         }
-        
-        /* File Format Info */
-        .file-formats {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .format-badge {
-            background: #e0e7ff;
-            color: #4f46e5;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        /* Question Text Compact */
-        .question-text {
-            max-width: 250px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            line-height: 1.4;
-        }
-        
-        .answer-text {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        /* MCQ Options Hidden for Admin */
-        .mcq-options-admin {
-            display: none;
-        }
-        
-        /* Pagination Info */
-        .pagination-info {
-            text-align: center;
-            color: #6b7280;
-            font-size: 0.85rem;
-            margin-top: 10px;
+        .search-box:focus {
+            border-color: var(--accent-color);
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
-    <!-- Back Button -->
-    <button class="back-btn" onclick="goBack()">
-        <i class="fas fa-arrow-left"></i> ড্যাশবোর্ড
-    </button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="p-4">
+            <h4 class="text-center mb-4">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Admission Admin
+            </h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" id="nav-dashboard">
+                        <i class="fas fa-tachometer-alt me-2"></i> ড্যাশবোর্ড
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-subjects">
+                        <i class="fas fa-book me-2"></i> বিষয় পরিচালনা
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-questions">
+                        <i class="fas fa-question-circle me-2"></i> প্রশ্ন ব্যবস্থাপনা
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-upload">
+                        <i class="fas fa-upload me-2"></i> ফাইল আপলোড
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-export">
+                        <i class="fas fa-download me-2"></i> ডাউনলোড
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1><i class="fas fa-graduation-cap"></i> এডমিশন সাবজেক্ট প্রশ্ন</h1>
-            <p class="bangla-text">সাবজেক্ট প্রশ্ন ম্যানেজমেন্ট সিস্টেম</p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3><i class="fas fa-tachometer-alt me-2"></i> ড্যাশবোর্ড</h3>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control search-box me-2" id="global-search" placeholder="সব প্রশ্নে সার্চ করুন...">
+                    <button class="btn btn-primary" id="add-question-btn">
+                        <i class="fas fa-plus me-1"></i> নতুন প্রশ্ন
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">মোট বিষয়</h5>
+                            <h2 class="display-6" id="total-subjects">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">মোট প্রশ্ন</h5>
+                            <h2 class="display-6" id="total-questions">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">MCQ প্রশ্ন</h5>
+                            <h2 class="display-6" id="total-mcq">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Written প্রশ্ন</h5>
+                            <h2 class="display-6" id="total-written">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Questions -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">সাম্প্রতিক প্রশ্নগুলো</h5>
+                </div>
+                <div class="card-body">
+                    <div id="recent-questions">
+                        <!-- Recent questions will be loaded here -->
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Layout -->
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Add Subject Card -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-plus"></i> নতুন সাবজেক্ট</h3>
-                    <form id="subjectForm">
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-book"></i> সাবজেক্ট নাম</label>
-                            <input type="text" id="subjectName" class="form-control" 
-                                   placeholder="যেমন: গণিত, ইংরেজি" required>
+        <!-- Subjects Management Section -->
+        <div id="subjects-section" class="d-none">
+            <h3 class="mb-4"><i class="fas fa-book me-2"></i> বিষয় পরিচালনা</h3>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">নতুন বিষয় যোগ করুন</h5>
+                </div>
+                <div class="card-body">
+                    <form id="add-subject-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="subject-name" class="form-label">বিষয়ের নাম</label>
+                                    <input type="text" class="form-control" id="subject-name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="subject-code" class="form-label">বিষয় কোড</label>
+                                    <input type="text" class="form-control" id="subject-code">
+                                </div>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> সংরক্ষণ
+                            <i class="fas fa-plus me-1"></i> বিষয় যোগ করুন
                         </button>
                     </form>
                 </div>
+            </div>
 
-                <!-- Subjects List Card -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-list"></i> সাবজেক্টসমূহ</h3>
-                    <div id="subjectsList" class="subjects-list">
-                        <!-- Subjects will appear here -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">বিষয় তালিকা</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>বিষয়ের নাম</th>
+                                    <th>বিষয় কোড</th>
+                                    <th>মোট প্রশ্ন</th>
+                                    <th>ক্রিয়েশন তারিখ</th>
+                                    <th>অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subjects-table">
+                                <!-- Subjects will be loaded here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Upload Settings Card -->
-                <div class="card">
-                    <h3 class="card-title"><i class="fas fa-cogs"></i> ফাইল আপলোড</h3>
-                    
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-book-open"></i> সাবজেক্ট</label>
-                        <select id="uploadSubject" class="form-control" required>
-                            <option value="">সিলেক্ট করুন...</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-question"></i> প্রশ্নের ধরন</label>
-                        <div class="type-selector">
-                            <div class="type-option active" onclick="selectType('mcq')">
-                                <i class="fas fa-check-circle"></i>
-                                <div>MCQ</div>
-                            </div>
-                            <div class="type-option" onclick="selectType('written')">
-                                <i class="fas fa-edit"></i>
-                                <div>Written</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                        <div class="upload-icon">
-                            <i class="fas fa-file-upload"></i>
-                        </div>
-                        <p>CSV/Excel ফাইল আপলোড</p>
-                        
-                        <div class="file-formats">
-                            <span class="format-badge"><i class="fas fa-file-csv"></i> CSV</span>
-                            <span class="format-badge"><i class="fas fa-file-excel"></i> Excel</span>
-                        </div>
-                        
-                        <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
-                    </div>
-                    
-                    <div id="fileInfo" class="file-info">
-                        <div id="fileName" style="font-weight: 600;"></div>
-                        <div id="fileSize" style="color: #6b7280; margin-top: 3px;"></div>
-                    </div>
-                    
-                    <button class="btn btn-success" onclick="uploadFile()" style="margin-top: 10px;">
-                        <i class="fas fa-upload"></i> আপলোড
-                    </button>
+        <!-- Questions Management Section -->
+        <div id="questions-section" class="d-none">
+            <h3 class="mb-4"><i class="fas fa-question-circle me-2"></i> প্রশ্ন ব্যবস্থাপনা</h3>
+            
+            <!-- Filters -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">ফিল্টার অপশন</h5>
                 </div>
-
-                <!-- Demo Templates -->
-                <div class="demo-templates">
-                    <h4 class="demo-title"><i class="fas fa-download"></i> টেমপ্লেট</h4>
-                    <div class="template-buttons">
-                        <a href="#" class="template-btn" onclick="downloadTemplate('mcq-csv')">
-                            <i class="fas fa-file-csv"></i>
-                            <span>MCQ CSV</span>
-                        </a>
-                        <a href="#" class="template-btn" onclick="downloadTemplate('written-csv')">
-                            <i class="fas fa-file-csv"></i>
-                            <span>Written CSV</span>
-                        </a>
-                        <a href="#" class="template-btn" onclick="downloadTemplate('mcq-excel')">
-                            <i class="fas fa-file-excel"></i>
-                            <span>MCQ Excel</span>
-                        </a>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="filter-subject" class="form-label">বিষয়</label>
+                            <select class="form-select" id="filter-subject">
+                                <option value="">সকল বিষয়</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filter-type" class="form-label">প্রশ্নের ধরন</label>
+                            <select class="form-select" id="filter-type">
+                                <option value="">সকল ধরন</option>
+                                <option value="mcq">MCQ</option>
+                                <option value="written">Written</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filter-exam" class="form-label">পরীক্ষার নাম</label>
+                            <input type="text" class="form-control" id="filter-exam" placeholder="যেমন: DU Admission 2023">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-8">
+                            <label for="search-questions" class="form-label">প্রশ্নে সার্চ করুন</label>
+                            <input type="text" class="form-control" id="search-questions" placeholder="প্রশ্নের টেক্সট লিখুন...">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" id="apply-filters">
+                                <i class="fas fa-filter me-1"></i> ফিল্টার প্রয়োগ করুন
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content -->
-            <div class="main-content">
-                <!-- Search Section -->
-                <div class="search-section">
-                    <h3 class="card-title"><i class="fas fa-search"></i> প্রশ্ন খুঁজুন</h3>
-                    <div class="search-container">
-                        <input type="text" id="searchInput" class="search-input" 
-                               placeholder="প্রশ্ন বা উত্তর সার্চ..." 
-                               oninput="searchQuestions()">
-                        <select id="filterSubject" class="search-input" onchange="searchQuestions()" style="width: 200px;">
-                            <option value="">সব সাবজেক্ট</option>
-                        </select>
-                        <select id="filterType" class="search-input" onchange="searchQuestions()" style="width: 150px;">
-                            <option value="">সব টাইপ</option>
-                            <option value="mcq">MCQ</option>
-                            <option value="written">Written</option>
-                        </select>
+            <!-- Questions List -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">প্রশ্ন তালিকা</h5>
+                    <div>
+                        <button class="btn btn-outline-danger btn-sm me-2" id="delete-selected">
+                            <i class="fas fa-trash me-1"></i> নির্বাচিত মুছুন
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" id="select-all">
+                            <i class="fas fa-check-square me-1"></i> সব নির্বাচন
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="questions-list">
+                        <!-- Questions will be loaded here -->
+                    </div>
+                    <div id="questions-pagination" class="mt-3">
+                        <!-- Pagination will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div id="upload-section" class="d-none">
+            <h3 class="mb-4"><i class="fas fa-upload me-2"></i> ফাইল আপলোড</h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">CSV ফাইল আপলোড</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="csv-file" class="form-label">CSV ফাইল নির্বাচন করুন</label>
+                                <input type="file" class="form-control" id="csv-file" accept=".csv">
+                            </div>
+                            <div class="mb-3">
+                                <label for="csv-subject" class="form-label">বিষয় নির্বাচন করুন</label>
+                                <select class="form-select" id="csv-subject">
+                                    <option value="">বিষয় নির্বাচন করুন</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary w-100" id="upload-csv">
+                                <i class="fas fa-upload me-1"></i> CSV আপলোড করুন
+                            </button>
+                            <small class="text-muted mt-2 d-block">
+                                CSV ফরমেট: question,type,options,answer,exam,year,marks
+                            </small>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Questions Table -->
-                <div class="table-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 class="card-title" style="margin: 0;"><i class="fas fa-question-circle"></i> প্রশ্নসমূহ</h3>
-                        <div class="pagination-info" id="paginationInfo">
-                            পৃষ্ঠা 1, মোট 0 প্রশ্ন
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Excel ফাইল আপলোড</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="excel-file" class="form-label">Excel ফাইল নির্বাচন করুন</label>
+                                <input type="file" class="form-control" id="excel-file" accept=".xlsx,.xls">
+                            </div>
+                            <div class="mb-3">
+                                <label for="excel-subject" class="form-label">বিষয় নির্বাচন করুন</label>
+                                <select class="form-select" id="excel-subject">
+                                    <option value="">বিষয় নির্বাচন করুন</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary w-100" id="upload-excel">
+                                <i class="fas fa-upload me-1"></i> Excel আপলোড করুন
+                            </button>
+                            <small class="text-muted mt-2 d-block">
+                                Excel ফরমেট: একই CSV ফরমেট অনুসরণ করুন
+                            </small>
                         </div>
                     </div>
-                    
-                    <div class="table-container">
-                        <table class="questions-table" id="questionsTable">
-                            <thead>
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="25%">প্রশ্ন</th>
-                                    <th width="10%">টাইপ</th>
-                                    <th width="15%">সাবজেক্ট</th>
-                                    <th width="20%">উত্তর</th>
-                                    <th width="15%">পরীক্ষা</th>
-                                    <th width="10%">একশন</th>
-                                </tr>
-                            </thead>
-                            <tbody id="questionsBody">
-                                <!-- Questions will appear here -->
-                            </tbody>
-                        </table>
+                </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div class="card mt-4 d-none" id="upload-progress">
+                <div class="card-header">
+                    <h5 class="mb-0">আপলোড প্রোগ্রেস</h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress mb-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             id="progress-bar" style="width: 0%"></div>
                     </div>
-                    
-                    <!-- Pagination -->
-                    <div class="pagination" id="pagination">
-                        <!-- Pagination buttons will appear here -->
+                    <p id="progress-text">আপলোড শুরু হচ্ছে...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div id="export-section" class="d-none">
+            <h3 class="mb-4"><i class="fas fa-download me-2"></i> ডাউনলোড</h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">CSV ফরমেটে ডাউনলোড</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="export-subject-csv" class="form-label">বিষয় নির্বাচন করুন</label>
+                                <select class="form-select" id="export-subject-csv">
+                                    <option value="">সকল বিষয়</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="export-type-csv" class="form-label">প্রশ্নের ধরন</label>
+                                <select class="form-select" id="export-type-csv">
+                                    <option value="">সকল ধরন</option>
+                                    <option value="mcq">MCQ</option>
+                                    <option value="written">Written</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success w-100" id="export-csv">
+                                <i class="fas fa-file-csv me-1"></i> CSV ডাউনলোড করুন
+                            </button>
+                        </div>
                     </div>
-                    
-                    <!-- No Data Message -->
-                    <div id="noData" class="no-data" style="display: none;">
-                        <i class="fas fa-inbox"></i>
-                        <h4>কোনো প্রশ্ন নেই</h4>
-                        <p>প্রথমে প্রশ্ন যোগ করুন</p>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Excel ফরমেটে ডাউনলোড</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="export-subject-excel" class="form-label">বিষয় নির্বাচন করুন</label>
+                                <select class="form-select" id="export-subject-excel">
+                                    <option value="">সকল বিষয়</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="export-type-excel" class="form-label">প্রশ্নের ধরন</label>
+                                <select class="form-select" id="export-type-excel">
+                                    <option value="">সকল ধরন</option>
+                                    <option value="mcq">MCQ</option>
+                                    <option value="written">Written</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success w-100" id="export-excel">
+                                <i class="fas fa-file-excel me-1"></i> Excel ডাউনলোড করুন
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p style="font-size: 0.9rem; font-weight: 600; color: #374151;">অপেক্ষা করুন...</p>
+    <!-- Modals -->
+    <!-- Add Question Modal -->
+    <div class="modal fade" id="addQuestionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">নতুন প্রশ্ন যোগ করুন</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-question-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="question-subject" class="form-label">বিষয়</label>
+                                    <select class="form-select" id="question-subject" required>
+                                        <option value="">বিষয় নির্বাচন করুন</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="question-type" class="form-label">প্রশ্নের ধরন</label>
+                                    <select class="form-select" id="question-type" required>
+                                        <option value="">নির্বাচন করুন</option>
+                                        <option value="mcq">MCQ</option>
+                                        <option value="written">Written</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question-text" class="form-label">প্রশ্ন</label>
+                            <textarea class="form-control" id="question-text" rows="3" required></textarea>
+                        </div>
+                        <div id="mcq-options" class="d-none">
+                            <div class="mb-3">
+                                <label class="form-label">বিকল্পসমূহ</label>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="option-a" placeholder="বিকল্প A">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="option-b" placeholder="বিকল্প B">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="option-c" placeholder="বিকল্প C">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="option-d" placeholder="বিকল্প D">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correct-answer" class="form-label">সঠিক উত্তর</label>
+                                <select class="form-select" id="correct-answer">
+                                    <option value="">সঠিক উত্তর নির্বাচন করুন</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="written-answer" class="d-none">
+                            <div class="mb-3">
+                                <label for="written-answer-text" class="form-label">উত্তর</label>
+                                <textarea class="form-control" id="written-answer-text" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="question-exam" class="form-label">পরীক্ষার নাম</label>
+                                    <input type="text" class="form-control" id="question-exam" placeholder="যেমন: DU Admission 2023">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="question-year" class="form-label">বছর</label>
+                                    <input type="number" class="form-control" id="question-year" min="2000" max="2030">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question-marks" class="form-label">মার্কস</label>
+                            <input type="number" class="form-control" id="question-marks" min="1" value="1">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
+                    <button type="button" class="btn btn-primary" id="save-question-btn">সংরক্ষণ করুন</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
+    <!-- Edit Question Modal -->
+    <div class="modal fade" id="editQuestionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">প্রশ্ন সম্পাদনা করুন</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Similar to add question form, will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Font Awesome -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Edit Subject Modal -->
+    <div class="modal fade" id="editSubjectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">বিষয় সম্পাদনা করুন</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-subject-form">
+                        <input type="hidden" id="edit-subject-id">
+                        <div class="mb-3">
+                            <label for="edit-subject-name" class="form-label">বিষয়ের নাম</label>
+                            <input type="text" class="form-control" id="edit-subject-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-subject-code" class="form-label">বিষয় কোড</label>
+                            <input type="text" class="form-control" id="edit-subject-code">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
+                    <button type="button" class="btn btn-primary" id="update-subject-btn">আপডেট করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -993,758 +614,1089 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        // Global variables
-        let selectedType = 'mcq';
-        let subjects = [];
+        // Collections
+        const subjectsCollection = db.collection("admission_subjects");
+        const questionsCollection = db.collection("admission_questions");
+
+        // State variables
+        let currentUser = null;
+        let allSubjects = [];
         let allQuestions = [];
-        let filteredQuestions = [];
-        let currentFile = null;
+        let selectedQuestions = new Set();
         let currentPage = 1;
-        const itemsPerPage = 20; // 20 questions per page
+        const itemsPerPage = 10;
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', async function() {
-            showLoading();
-            await loadSubjects();
-            await loadQuestions();
-            hideLoading();
-            showToast('সিস্টেম প্রস্তুত', 'প্রশ্ন ম্যানেজমেন্ট সিস্টেম', 'success');
+        // DOM Elements
+        const sections = {
+            dashboard: document.getElementById('dashboard-section'),
+            subjects: document.getElementById('subjects-section'),
+            questions: document.getElementById('questions-section'),
+            upload: document.getElementById('upload-section'),
+            export: document.getElementById('export-section')
+        };
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = e.target.closest('.nav-link').id.replace('nav-', '');
+                
+                // Update active nav
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                e.target.closest('.nav-link').classList.add('active');
+                
+                // Show target section
+                Object.values(sections).forEach(section => section.classList.add('d-none'));
+                sections[target].classList.remove('d-none');
+                
+                // Load data for the section
+                switch(target) {
+                    case 'subjects':
+                        loadSubjects();
+                        break;
+                    case 'questions':
+                        loadQuestions();
+                        populateFilters();
+                        break;
+                    case 'upload':
+                        populateUploadSubjects();
+                        break;
+                    case 'export':
+                        populateExportSubjects();
+                        break;
+                    case 'dashboard':
+                        loadDashboardStats();
+                        loadRecentQuestions();
+                        break;
+                }
+            });
         });
 
-        // Function to go back to dashboard
-        function goBack() {
-            window.location.href = 'admin.html';
-        }
-
-        // Function to select question type
-        function selectType(type) {
-            selectedType = type;
-            document.querySelectorAll('.type-option').forEach(btn => {
-                btn.classList.remove('active');
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize modals
+            const modalElements = document.querySelectorAll('.modal');
+            modalElements.forEach(modal => {
+                new bootstrap.Modal(modal);
             });
-            event.target.closest('.type-option').classList.add('active');
-        }
 
-        // Show loading overlay
-        function showLoading() {
-            document.getElementById('loadingOverlay').style.display = 'flex';
-        }
-
-        // Hide loading overlay
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
-
-        // Show toast message
-        function showToast(title, message, type = 'success') {
-            const toastContainer = document.getElementById('toastContainer');
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <div class="toast-icon">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                </div>
-                <div class="toast-content">
-                    <div class="toast-title">${title}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-                <button class="close-toast" onclick="this.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            
-            toastContainer.appendChild(toast);
-            
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.remove();
+            // Check authentication
+            auth.onAuthStateChanged((user) => {
+                currentUser = user;
+                if (!user) {
+                    // Redirect to login if not authenticated
+                    window.location.href = 'login.html';
+                } else {
+                    loadDashboardStats();
+                    loadRecentQuestions();
+                    loadSubjects();
+                    populateFilters();
                 }
-            }, 5000);
+            });
+
+            // Question type toggle
+            document.getElementById('question-type').addEventListener('change', (e) => {
+                const type = e.target.value;
+                document.getElementById('mcq-options').classList.toggle('d-none', type !== 'mcq');
+                document.getElementById('written-answer').classList.toggle('d-none', type !== 'written');
+            });
+
+            // Add question button
+            document.getElementById('add-question-btn').addEventListener('click', () => {
+                populateSubjectSelect(document.getElementById('question-subject'));
+                bootstrap.Modal.getInstance(document.getElementById('addQuestionModal')).show();
+            });
+
+            // Save question
+            document.getElementById('save-question-btn').addEventListener('click', saveQuestion);
+
+            // Apply filters
+            document.getElementById('apply-filters').addEventListener('click', loadQuestions);
+
+            // Delete selected questions
+            document.getElementById('delete-selected').addEventListener('click', deleteSelectedQuestions);
+
+            // Select all questions
+            document.getElementById('select-all').addEventListener('click', toggleSelectAll);
+
+            // File uploads
+            document.getElementById('upload-csv').addEventListener('click', uploadCSV);
+            document.getElementById('upload-excel').addEventListener('click', uploadExcel);
+
+            // Exports
+            document.getElementById('export-csv').addEventListener('click', exportToCSV);
+            document.getElementById('export-excel').addEventListener('click', exportToExcel);
+
+            // Global search
+            document.getElementById('global-search').addEventListener('input', (e) => {
+                if (e.target.value.length > 2) {
+                    searchQuestions(e.target.value);
+                }
+            });
+
+            // Add subject form
+            document.getElementById('add-subject-form').addEventListener('submit', addSubject);
+        });
+
+        // Functions
+        async function loadDashboardStats() {
+            try {
+                // Load subjects count
+                const subjectsSnapshot = await subjectsCollection.get();
+                document.getElementById('total-subjects').textContent = subjectsSnapshot.size;
+
+                // Load questions count
+                const questionsSnapshot = await questionsCollection.get();
+                document.getElementById('total-questions').textContent = questionsSnapshot.size;
+
+                // Count by type
+                let mcqCount = 0;
+                let writtenCount = 0;
+                questionsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.type === 'mcq') mcqCount++;
+                    if (data.type === 'written') writtenCount++;
+                });
+
+                document.getElementById('total-mcq').textContent = mcqCount;
+                document.getElementById('total-written').textContent = writtenCount;
+
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+                showAlert('স্ট্যাটস লোড করতে সমস্যা হয়েছে', 'danger');
+            }
         }
 
-        // Add new admission subject
-        document.getElementById('subjectForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const subjectName = document.getElementById('subjectName').value.trim();
-            
-            if (!subjectName) {
-                showToast('ত্রুটি', 'সাবজেক্ট নাম লিখুন', 'error');
-                return;
-            }
-
+        async function loadRecentQuestions() {
             try {
-                showLoading();
-                
-                // Check if subject already exists
-                const snapshot = await db.collection('admission_subjects')
-                    .where('name', '==', subjectName)
+                const snapshot = await questionsCollection
+                    .orderBy('createdAt', 'desc')
+                    .limit(10)
                     .get();
-                
-                if (!snapshot.empty) {
-                    showToast('সতর্কতা', 'এই সাবজেক্ট আছে', 'warning');
-                    hideLoading();
+
+                const container = document.getElementById('recent-questions');
+                container.innerHTML = '';
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p class="text-muted">কোনো প্রশ্ন পাওয়া যায়নি</p>';
                     return;
                 }
 
-                // Add subject to Firebase
-                const subjectData = {
-                    name: subjectName,
-                    type: 'admission',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    questionCount: 0
-                };
-
-                await db.collection('admission_subjects').add(subjectData);
-                
-                // Update UI
-                await loadSubjects();
-                
-                // Clear form
-                document.getElementById('subjectName').value = '';
-                
-                showToast('সফল', 'সাবজেক্ট সংরক্ষণ হয়েছে', 'success');
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-item';
+                    questionDiv.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="badge ${data.type === 'mcq' ? 'mcq-badge' : 'written-badge'} me-2">
+                                    ${data.type === 'mcq' ? 'MCQ' : 'Written'}
+                                </span>
+                                <strong>${data.subjectName || 'N/A'}</strong>
+                                <p class="mb-1 mt-2">${data.question.substring(0, 100)}...</p>
+                                <small class="text-muted">
+                                    ${data.exam ? `পরীক্ষা: ${data.exam}` : ''}
+                                    ${data.year ? `, বছর: ${data.year}` : ''}
+                                </small>
+                            </div>
+                            <small class="text-muted">${new Date(data.createdAt?.toDate()).toLocaleDateString('bn-BD')}</small>
+                        </div>
+                    `;
+                    container.appendChild(questionDiv);
+                });
             } catch (error) {
-                console.error('Error adding subject:', error);
-                showToast('ত্রুটি', 'সাবজেক্ট সংরক্ষণে সমস্যা', 'error');
-            } finally {
-                hideLoading();
+                console.error('Error loading recent questions:', error);
             }
-        });
+        }
 
-        // Load admission subjects
         async function loadSubjects() {
             try {
-                const snapshot = await db.collection('admission_subjects')
-                    .orderBy('createdAt', 'desc')
-                    .get();
-                
-                subjects = [];
+                const snapshot = await subjectsCollection.orderBy('name').get();
+                allSubjects = [];
+                const tableBody = document.getElementById('subjects-table');
+                tableBody.innerHTML = '';
+
+                if (snapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো বিষয় পাওয়া যায়নি</td></tr>';
+                    return;
+                }
+
+                let index = 1;
                 snapshot.forEach(doc => {
-                    subjects.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    allSubjects.push({ id: doc.id, ...data });
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index++}</td>
+                        <td>${data.name}</td>
+                        <td>${data.code || 'N/A'}</td>
+                        <td>${data.questionCount || 0}</td>
+                        <td>${new Date(data.createdAt?.toDate()).toLocaleDateString('bn-BD')}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editSubject('${doc.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('${doc.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
                 });
-                
-                updateSubjectList();
-                updateSubjectSelects();
             } catch (error) {
                 console.error('Error loading subjects:', error);
-                showToast('ত্রুটি', 'সাবজেক্ট লোডে সমস্যা', 'error');
+                showAlert('বিষয়গুলো লোড করতে সমস্যা হয়েছে', 'danger');
             }
         }
 
-        // Update subject list display
-        function updateSubjectList() {
-            const subjectsList = document.getElementById('subjectsList');
-            
-            if (subjects.length === 0) {
-                subjectsList.innerHTML = `
-                    <div style="text-align: center; color: #6b7280; padding: 20px;">
-                        <i class="fas fa-book-open" style="font-size: 24px; margin-bottom: 8px; display: block;"></i>
-                        <p style="font-size: 0.85rem;">কোনো সাবজেক্ট নেই</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            subjectsList.innerHTML = '';
-            subjects.forEach(subject => {
-                const subjectDiv = document.createElement('div');
-                subjectDiv.className = 'subject-item';
-                subjectDiv.innerHTML = `
-                    <div>
-                        <div class="subject-name">${subject.name}</div>
-                    </div>
-                    <div class="subject-count">${subject.questionCount || 0}</div>
-                `;
-                subjectsList.appendChild(subjectDiv);
-            });
-        }
-
-        // Update subject selects
-        function updateSubjectSelects() {
-            const uploadSelect = document.getElementById('uploadSubject');
-            const filterSelect = document.getElementById('filterSubject');
-            
-            uploadSelect.innerHTML = '<option value="">সিলেক্ট করুন...</option>';
-            filterSelect.innerHTML = '<option value="">সব সাবজেক্ট</option>';
-            
-            subjects.forEach(subject => {
-                const option1 = document.createElement('option');
-                option1.value = subject.id;
-                option1.textContent = `${subject.name} (${subject.questionCount || 0})`;
-                uploadSelect.appendChild(option1);
-                
-                const option2 = document.createElement('option');
-                option2.value = subject.id;
-                option2.textContent = subject.name;
-                filterSelect.appendChild(option2);
-            });
-        }
-
-        // Handle file selection
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                currentFile = file;
-                const fileInfo = document.getElementById('fileInfo');
-                const fileName = document.getElementById('fileName');
-                const fileSize = document.getElementById('fileSize');
-                
-                fileName.textContent = file.name;
-                fileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
-                fileInfo.style.display = 'block';
-            }
-        });
-
-        // Upload file function
-        async function uploadFile() {
-            const subjectSelect = document.getElementById('uploadSubject');
-            const subjectId = subjectSelect.value;
-            
-            if (!subjectId) {
-                showToast('ত্রুটি', 'সাবজেক্ট নির্বাচন করুন', 'error');
-                return;
-            }
-            
-            if (!currentFile) {
-                showToast('ত্রুটি', 'ফাইল নির্বাচন করুন', 'error');
-                return;
-            }
-            
-            const subject = subjects.find(s => s.id === subjectId);
-            if (!subject) {
-                showToast('ত্রুটি', 'সাবজেক্ট পাওয়া যায়নি', 'error');
-                return;
-            }
-            
+        async function loadQuestions() {
             try {
-                showLoading();
+                let query = questionsCollection;
                 
-                // Parse file based on extension
-                const fileExtension = currentFile.name.split('.').pop().toLowerCase();
-                let parsedQuestions = [];
-                
-                if (fileExtension === 'csv') {
-                    parsedQuestions = await parseCSVFile(currentFile);
-                } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
-                    parsedQuestions = await parseExcelFile(currentFile);
-                } else {
-                    throw new Error('অসমর্থিত ফাইল ফরম্যাট');
+                // Apply filters
+                const subjectFilter = document.getElementById('filter-subject').value;
+                const typeFilter = document.getElementById('filter-type').value;
+                const examFilter = document.getElementById('filter-exam').value;
+                const searchFilter = document.getElementById('search-questions').value;
+
+                if (subjectFilter) {
+                    query = query.where('subjectId', '==', subjectFilter);
                 }
+                if (typeFilter) {
+                    query = query.where('type', '==', typeFilter);
+                }
+
+                const snapshot = await query.get();
+                allQuestions = [];
                 
-                // Add questions to Firebase
-                const batch = db.batch();
-                const questionsToAdd = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    // Apply exam filter
+                    if (examFilter && !data.exam?.toLowerCase().includes(examFilter.toLowerCase())) {
+                        return;
+                    }
+                    // Apply search filter
+                    if (searchFilter && !data.question?.toLowerCase().includes(searchFilter.toLowerCase())) {
+                        return;
+                    }
+                    allQuestions.push({ id: doc.id, ...data });
+                });
+
+                displayQuestions();
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                showAlert('প্রশ্নগুলো লোড করতে সমস্যা হয়েছে', 'danger');
+            }
+        }
+
+        function displayQuestions() {
+            const container = document.getElementById('questions-list');
+            const pagination = document.getElementById('questions-pagination');
+            
+            if (allQuestions.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted">কোনো প্রশ্ন পাওয়া যায়নি</p>';
+                pagination.innerHTML = '';
+                return;
+            }
+
+            // Calculate pagination
+            const totalPages = Math.ceil(allQuestions.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageQuestions = allQuestions.slice(startIndex, endIndex);
+
+            // Display questions
+            container.innerHTML = '';
+            pageQuestions.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item mb-3';
+                questionDiv.innerHTML = `
+                    <div class="d-flex">
+                        <div class="form-check me-3">
+                            <input class="form-check-input question-checkbox" type="checkbox" 
+                                   value="${question.id}" ${selectedQuestions.has(question.id) ? 'checked' : ''}>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="badge ${question.type === 'mcq' ? 'mcq-badge' : 'written-badge'} me-2">
+                                        ${question.type === 'mcq' ? 'MCQ' : 'Written'}
+                                    </span>
+                                    <strong>${question.subjectName || 'N/A'}</strong>
+                                    ${question.exam ? `<span class="badge bg-info ms-2">${question.exam}</span>` : ''}
+                                    ${question.year ? `<span class="badge bg-secondary ms-1">${question.year}</span>` : ''}
+                                    <span class="badge bg-warning ms-1">${question.marks || 1} মার্কস</span>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary me-1" onclick="editQuestion('${question.id}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteQuestion('${question.id}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="mt-2 mb-1">${question.question}</p>
+                            ${question.type === 'mcq' ? `
+                                <div class="mt-2">
+                                    <small><strong>বিকল্পসমূহ:</strong> 
+                                        ${question.options ? Object.entries(question.options).map(([key, val]) => `${key}: ${val}`).join(', ') : 'N/A'}
+                                    </small><br>
+                                    <small><strong>সঠিক উত্তর:</strong> ${question.answer || 'N/A'}</small>
+                                </div>
+                            ` : `
+                                <div class="mt-2">
+                                    <small><strong>উত্তর:</strong> ${question.answer?.substring(0, 100) || 'N/A'}...</small>
+                                </div>
+                            `}
+                            <small class="text-muted mt-2 d-block">
+                                যোগ হয়েছে: ${new Date(question.createdAt?.toDate()).toLocaleDateString('bn-BD')}
+                            </small>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+
+            // Add checkbox event listeners
+            document.querySelectorAll('.question-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedQuestions.add(e.target.value);
+                    } else {
+                        selectedQuestions.delete(e.target.value);
+                    }
+                });
+            });
+
+            // Display pagination
+            pagination.innerHTML = createPagination(totalPages);
+        }
+
+        function createPagination(totalPages) {
+            let paginationHTML = '<nav><ul class="pagination justify-content-center">';
+            
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">পূর্ববর্তী</a>
+                </li>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">পরবর্তী</a>
+                </li>
+            `;
+
+            paginationHTML += '</ul></nav>';
+            return paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function populateFilters() {
+            const subjectSelects = [
+                document.getElementById('filter-subject'),
+                document.getElementById('csv-subject'),
+                document.getElementById('excel-subject'),
+                document.getElementById('export-subject-csv'),
+                document.getElementById('export-subject-excel'),
+                document.getElementById('question-subject')
+            ];
+
+            try {
+                const snapshot = await subjectsCollection.orderBy('name').get();
+                const defaultOption = '<option value="">সকল বিষয়</option>';
                 
-                for (let i = 0; i < parsedQuestions.length; i++) {
-                    const q = parsedQuestions[i];
-                    const questionData = {
-                        question: q.question || `প্রশ্ন ${i + 1}`,
-                        type: selectedType,
-                        subjectId: subjectId,
-                        subjectName: subject.name,
-                        answer: q.answer || 'উত্তর',
-                        options: q.options || [], // Admin can see options in edit mode
-                        examHistory: q.examHistory || [],
-                        uploadedFrom: 'file',
-                        uploadDate: new Date().toISOString(),
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        collection: 'admission_questions'
-                    };
+                subjectSelects.forEach(select => {
+                    if (select.id === 'csv-subject' || select.id === 'excel-subject' || select.id === 'question-subject') {
+                        select.innerHTML = '<option value="">বিষয় নির্বাচন করুন</option>';
+                    } else {
+                        select.innerHTML = defaultOption;
+                    }
                     
-                    const docRef = db.collection('admission_questions').doc();
-                    batch.set(docRef, questionData);
-                    questionsToAdd.push(questionData);
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const option = document.createElement('option');
+                        option.value = doc.id;
+                        option.textContent = data.name;
+                        select.appendChild(option);
+                    });
+                });
+            } catch (error) {
+                console.error('Error populating filters:', error);
+            }
+        }
+
+        function populateSubjectSelect(selectElement) {
+            selectElement.innerHTML = '<option value="">বিষয় নির্বাচন করুন</option>';
+            allSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                selectElement.appendChild(option);
+            });
+        }
+
+        async function addSubject(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('subject-name').value.trim();
+            const code = document.getElementById('subject-code').value.trim();
+            
+            if (!name) {
+                showAlert('বিষয়ের নাম প্রয়োজন', 'warning');
+                return;
+            }
+
+            try {
+                await subjectsCollection.add({
+                    name: name,
+                    code: code || null,
+                    questionCount: 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showAlert('বিষয় সফলভাবে যোগ হয়েছে', 'success');
+                document.getElementById('add-subject-form').reset();
+                loadSubjects();
+                populateFilters();
+            } catch (error) {
+                console.error('Error adding subject:', error);
+                showAlert('বিষয় যোগ করতে সমস্যা হয়েছে', 'danger');
+            }
+        }
+
+        async function editSubject(subjectId) {
+            const subject = allSubjects.find(s => s.id === subjectId);
+            if (!subject) return;
+
+            document.getElementById('edit-subject-id').value = subjectId;
+            document.getElementById('edit-subject-name').value = subject.name;
+            document.getElementById('edit-subject-code').value = subject.code || '';
+
+            const modal = new bootstrap.Modal(document.getElementById('editSubjectModal'));
+            modal.show();
+
+            document.getElementById('update-subject-btn').onclick = async () => {
+                const name = document.getElementById('edit-subject-name').value.trim();
+                const code = document.getElementById('edit-subject-code').value.trim();
+
+                if (!name) {
+                    showAlert('বিষয়ের নাম প্রয়োজন', 'warning');
+                    return;
                 }
+
+                try {
+                    await subjectsCollection.doc(subjectId).update({
+                        name: name,
+                        code: code || null,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    showAlert('বিষয় সফলভাবে আপডেট হয়েছে', 'success');
+                    modal.hide();
+                    loadSubjects();
+                    populateFilters();
+                } catch (error) {
+                    console.error('Error updating subject:', error);
+                    showAlert('বিষয় আপডেট করতে সমস্যা হয়েছে', 'danger');
+                }
+            };
+        }
+
+        async function deleteSubject(subjectId) {
+            if (!confirm('আপনি কি এই বিষয় মুছতে চান? বিষয় মুছে ফেললে এর সাথে সংযুক্ত সকল প্রশ্নও মুছে যাবে।')) {
+                return;
+            }
+
+            try {
+                // First, delete all questions in this subject
+                const questionsSnapshot = await questionsCollection.where('subjectId', '==', subjectId).get();
+                const batch = db.batch();
+                
+                questionsSnapshot.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
                 
                 await batch.commit();
                 
+                // Then delete the subject
+                await subjectsCollection.doc(subjectId).delete();
+                
+                showAlert('বিষয় এবং এর সকল প্রশ্ন সফলভাবে মুছে ফেলা হয়েছে', 'success');
+                loadSubjects();
+                loadDashboardStats();
+                loadRecentQuestions();
+            } catch (error) {
+                console.error('Error deleting subject:', error);
+                showAlert('বিষয় মুছতে সমস্যা হয়েছে', 'danger');
+            }
+        }
+
+        async function saveQuestion() {
+            const subjectId = document.getElementById('question-subject').value;
+            const type = document.getElementById('question-type').value;
+            const questionText = document.getElementById('question-text').value.trim();
+            const exam = document.getElementById('question-exam').value.trim();
+            const year = document.getElementById('question-year').value;
+            const marks = document.getElementById('question-marks').value || 1;
+
+            if (!subjectId || !type || !questionText) {
+                showAlert('বিষয়, প্রশ্নের ধরন এবং প্রশ্নের টেক্সট প্রয়োজন', 'warning');
+                return;
+            }
+
+            const subject = allSubjects.find(s => s.id === subjectId);
+            if (!subject) {
+                showAlert('বিষয় পাওয়া যায়নি', 'warning');
+                return;
+            }
+
+            const questionData = {
+                subjectId: subjectId,
+                subjectName: subject.name,
+                type: type,
+                question: questionText,
+                exam: exam || null,
+                year: year ? parseInt(year) : null,
+                marks: parseInt(marks),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (type === 'mcq') {
+                const options = {
+                    A: document.getElementById('option-a').value.trim(),
+                    B: document.getElementById('option-b').value.trim(),
+                    C: document.getElementById('option-c').value.trim(),
+                    D: document.getElementById('option-d').value.trim()
+                };
+                const answer = document.getElementById('correct-answer').value;
+
+                questionData.options = options;
+                questionData.answer = answer;
+            } else if (type === 'written') {
+                questionData.answer = document.getElementById('written-answer-text').value.trim();
+            }
+
+            try {
+                // Add question
+                await questionsCollection.add(questionData);
+
                 // Update subject question count
-                const newCount = (subject.questionCount || 0) + questionsToAdd.length;
-                await db.collection('admission_subjects').doc(subjectId).update({
-                    questionCount: newCount,
+                const subjectRef = subjectsCollection.doc(subjectId);
+                await subjectRef.update({
+                    questionCount: firebase.firestore.FieldValue.increment(1),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                showAlert('প্রশ্ন সফলভাবে সংরক্ষণ হয়েছে', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('addQuestionModal')).hide();
+                document.getElementById('add-question-form').reset();
                 
-                // Reload data
-                await loadSubjects();
-                await loadQuestions();
-                
-                // Clear form
-                document.getElementById('fileInput').value = '';
-                document.getElementById('fileInfo').style.display = 'none';
-                currentFile = null;
-                
-                showToast('সফল', `${questionsToAdd.length}টি প্রশ্ন আপলোড হয়েছে`, 'success');
+                // Refresh data
+                loadDashboardStats();
+                loadRecentQuestions();
+                if (sections.questions.classList.contains('d-none')) {
+                    loadQuestions();
+                }
             } catch (error) {
-                console.error('Error uploading file:', error);
-                showToast('ত্রুটি', `ফাইল আপলোডে সমস্যা: ${error.message}`, 'error');
-            } finally {
-                hideLoading();
+                console.error('Error saving question:', error);
+                showAlert('প্রশ্ন সংরক্ষণ করতে সমস্যা হয়েছে', 'danger');
             }
         }
 
-        // Parse CSV file using SheetJS
-        async function parseCSVFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const data = e.target.result;
-                        const workbook = XLSX.read(data, { type: 'binary' });
-                        const firstSheet = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[firstSheet];
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                        
-                        const questions = [];
-                        
-                        // Skip header row
-                        for (let i = 1; i < jsonData.length; i++) {
-                            const row = jsonData[i];
-                            if (row.length >= 2) {
-                                const question = {
-                                    question: row[0] || `প্রশ্ন ${i}`,
-                                    answer: row[1] || 'উত্তর'
-                                };
-                                
-                                // For MCQ, include options
-                                if (selectedType === 'mcq' && row.length >= 6) {
-                                    question.options = [row[2], row[3], row[4], row[5]].filter(Boolean);
-                                }
-                                
-                                // Check for exam history
-                                if (row.length >= 7 && row[6]) {
-                                    question.examHistory = [row[6]];
-                                }
-                                
-                                questions.push(question);
+        async function deleteQuestion(questionId) {
+            if (!confirm('আপনি কি এই প্রশ্ন মুছতে চান?')) {
+                return;
+            }
+
+            try {
+                const questionDoc = await questionsCollection.doc(questionId).get();
+                if (!questionDoc.exists) return;
+
+                const questionData = questionDoc.data();
+                
+                // Delete the question
+                await questionsCollection.doc(questionId).delete();
+
+                // Update subject question count
+                if (questionData.subjectId) {
+                    const subjectRef = subjectsCollection.doc(questionData.subjectId);
+                    await subjectRef.update({
+                        questionCount: firebase.firestore.FieldValue.increment(-1),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                showAlert('প্রশ্ন সফলভাবে মুছে ফেলা হয়েছে', 'success');
+                selectedQuestions.delete(questionId);
+                loadDashboardStats();
+                loadRecentQuestions();
+                loadQuestions();
+            } catch (error) {
+                console.error('Error deleting question:', error);
+                showAlert('প্রশ্ন মুছতে সমস্যা হয়েছে', 'danger');
+            }
+        }
+
+        async function deleteSelectedQuestions() {
+            if (selectedQuestions.size === 0) {
+                showAlert('দয়া করে মুছতে চাওয়া প্রশ্নগুলো নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            if (!confirm(`আপনি কি ${selectedQuestions.size}টি প্রশ্ন মুছতে চান?`)) {
+                return;
+            }
+
+            try {
+                const batch = db.batch();
+                const subjectUpdates = {};
+
+                // Get all selected questions
+                for (const questionId of selectedQuestions) {
+                    const questionDoc = await questionsCollection.doc(questionId).get();
+                    if (questionDoc.exists) {
+                        const questionData = questionDoc.data();
+                        batch.delete(questionDoc.ref);
+
+                        // Track subject updates
+                        if (questionData.subjectId) {
+                            if (!subjectUpdates[questionData.subjectId]) {
+                                subjectUpdates[questionData.subjectId] = 0;
                             }
+                            subjectUpdates[questionData.subjectId]--;
                         }
-                        
-                        resolve(questions);
-                    } catch (error) {
-                        reject(error);
                     }
-                };
-                reader.onerror = (e) => reject(e);
-                reader.readAsBinaryString(file);
+                }
+
+                await batch.commit();
+
+                // Update subject counts
+                for (const [subjectId, count] of Object.entries(subjectUpdates)) {
+                    const subjectRef = subjectsCollection.doc(subjectId);
+                    await subjectRef.update({
+                        questionCount: firebase.firestore.FieldValue.increment(count),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                showAlert(`${selectedQuestions.size}টি প্রশ্ন সফলভাবে মুছে ফেলা হয়েছে`, 'success');
+                selectedQuestions.clear();
+                loadDashboardStats();
+                loadRecentQuestions();
+                loadQuestions();
+            } catch (error) {
+                console.error('Error deleting selected questions:', error);
+                showAlert('প্রশ্নগুলো মুছতে সমস্যা হয়েছে', 'danger');
+            }
+        }
+
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('.question-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+                if (!allChecked) {
+                    selectedQuestions.add(cb.value);
+                } else {
+                    selectedQuestions.delete(cb.value);
+                }
             });
         }
 
-        // Parse Excel file using SheetJS
-        async function parseExcelFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const firstSheet = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[firstSheet];
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                        
-                        const questions = [];
-                        
-                        // Skip header row
-                        for (let i = 1; i < jsonData.length; i++) {
-                            const row = jsonData[i];
-                            if (row && row.length >= 2) {
-                                const question = {
-                                    question: row[0] || `প্রশ্ন ${i}`,
-                                    answer: row[1] || 'উত্তর'
-                                };
-                                
-                                // For MCQ, include options
-                                if (selectedType === 'mcq' && row.length >= 6) {
-                                    question.options = [row[2], row[3], row[4], row[5]].filter(Boolean);
-                                }
-                                
-                                // Check for exam history
-                                if (row.length >= 7 && row[6]) {
-                                    question.examHistory = [row[6]];
-                                }
-                                
-                                questions.push(question);
-                            }
-                        }
-                        
-                        resolve(questions);
-                    } catch (error) {
-                        reject(error);
-                    }
-                };
-                reader.onerror = (e) => reject(e);
-                reader.readAsArrayBuffer(file);
+        async function uploadCSV() {
+            const fileInput = document.getElementById('csv-file');
+            const subjectId = document.getElementById('csv-subject').value;
+
+            if (!fileInput.files[0]) {
+                showAlert('দয়া করে একটি CSV ফাইল নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            if (!subjectId) {
+                showAlert('দয়া করে একটি বিষয় নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            const subject = allSubjects.find(s => s.id === subjectId);
+            if (!subject) {
+                showAlert('বিষয় পাওয়া যায়নি', 'warning');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: async function(results) {
+                    await processUploadedData(results.data, subject, 'CSV');
+                    fileInput.value = '';
+                },
+                error: function(error) {
+                    console.error('CSV parsing error:', error);
+                    showAlert('CSV ফাইল পার্স করতে সমস্যা হয়েছে', 'danger');
+                }
             });
         }
 
-        // Download template
-        function downloadTemplate(type) {
-            let content = '';
-            let fileName = '';
-            let mimeType = '';
-            
-            switch(type) {
-                case 'mcq-csv':
-                    content = 'প্রশ্ন,উত্তর,অপশন১,অপশন২,অপশন৩,অপশন৪,পরীক্ষা\n';
-                    content += '২+২= কত?,৪,৪,৫,৬,৭,এসএসসি ২০২৩\n';
-                    content += 'পানির সংকেত?,H₂O,H₂O,O₂,CO₂,NaCl,এইচএসসি ২০২২';
-                    fileName = 'mcq_template.csv';
-                    mimeType = 'text/csv;charset=utf-8;';
-                    break;
-                case 'written-csv':
-                    content = 'প্রশ্ন,উত্তর,পরীক্ষা\n';
-                    content += 'পানির গুরুত্ব?,জীবনের জন্য প্রয়োজনীয়,এসএসসি ২০২৩\n';
-                    content += 'বাংলাদেশের রাজধানী?,ঢাকা,জেএসসি ২০২৪';
-                    fileName = 'written_template.csv';
-                    mimeType = 'text/csv;charset=utf-8;';
-                    break;
-                case 'mcq-excel':
-                    // Create Excel file using SheetJS
-                    const wb = XLSX.utils.book_new();
-                    const wsData = [
-                        ['প্রশ্ন', 'উত্তর', 'অপশন১', 'অপশন২', 'অপশন৩', 'অপশন৪', 'পরীক্ষা'],
-                        ['২+২= কত?', '৪', '৪', '৫', '৬', '৭', 'এসএসসি ২০২৩'],
-                        ['পানির সংকেত?', 'H₂O', 'H₂O', 'O₂', 'CO₂', 'NaCl', 'এইচএসসি ২০২২']
-                    ];
-                    const ws = XLSX.utils.aoa_to_sheet(wsData);
-                    XLSX.utils.book_append_sheet(wb, ws, 'MCQ প্রশ্ন');
-                    XLSX.writeFile(wb, 'mcq_template.xlsx');
-                    showToast('সফল', 'Excel টেমপ্লেট ডাউনলোড হয়েছে', 'success');
+        async function uploadExcel() {
+            const fileInput = document.getElementById('excel-file');
+            const subjectId = document.getElementById('excel-subject').value;
+
+            if (!fileInput.files[0]) {
+                showAlert('দয়া করে একটি Excel ফাইল নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            if (!subjectId) {
+                showAlert('দয়া করে একটি বিষয় নির্বাচন করুন', 'warning');
+                return;
+            }
+
+            const subject = allSubjects.find(s => s.id === subjectId);
+            if (!subject) {
+                showAlert('বিষয় পাওয়া যায়নি', 'warning');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+                    await processUploadedData(jsonData, subject, 'Excel');
+                    fileInput.value = '';
+                } catch (error) {
+                    console.error('Excel parsing error:', error);
+                    showAlert('Excel ফাইল পার্স করতে সমস্যা হয়েছে', 'danger');
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function processUploadedData(data, subject, source) {
+            const progressDiv = document.getElementById('upload-progress');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            progressDiv.classList.remove('d-none');
+            let successCount = 0;
+            let errorCount = 0;
+
+            const totalItems = data.length;
+            let processedItems = 0;
+
+            for (const item of data) {
+                try {
+                    const questionData = {
+                        subjectId: subject.id,
+                        subjectName: subject.name,
+                        type: item.type || (item.options ? 'mcq' : 'written'),
+                        question: item.question,
+                        exam: item.exam || null,
+                        year: item.year ? parseInt(item.year) : null,
+                        marks: item.marks ? parseInt(item.marks) : 1,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    if (questionData.type === 'mcq') {
+                        // Parse options - could be string or object
+                        let options = {};
+                        if (typeof item.options === 'string') {
+                            try {
+                                options = JSON.parse(item.options);
+                            } catch {
+                                // If not JSON, try to parse as comma-separated
+                                const parts = item.options.split(',');
+                                parts.forEach((part, index) => {
+                                    const key = String.fromCharCode(65 + index); // A, B, C, D
+                                    options[key] = part.trim();
+                                });
+                            }
+                        } else if (item.options && typeof item.options === 'object') {
+                            options = item.options;
+                        }
+                        questionData.options = options;
+                        questionData.answer = item.answer;
+                    } else {
+                        questionData.answer = item.answer;
+                    }
+
+                    await questionsCollection.add(questionData);
+                    successCount++;
+                } catch (error) {
+                    console.error('Error processing item:', item, error);
+                    errorCount++;
+                }
+
+                processedItems++;
+                const progress = Math.round((processedItems / totalItems) * 100);
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `প্রক্রিয়াকরণ চলছে: ${processedItems}/${totalItems} (সফল: ${successCount}, ব্যর্থ: ${errorCount})`;
+            }
+
+            // Update subject count
+            if (successCount > 0) {
+                await subjectsCollection.doc(subject.id).update({
+                    questionCount: firebase.firestore.FieldValue.increment(successCount),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+
+            // Show completion message
+            setTimeout(() => {
+                progressDiv.classList.add('d-none');
+                showAlert(`${source} থেকে ${successCount}টি প্রশ্ন সফলভাবে আপলোড হয়েছে। ${errorCount}টি প্রশ্নে সমস্যা হয়েছে।`, 
+                         successCount > 0 ? 'success' : 'warning');
+                
+                // Refresh data
+                loadDashboardStats();
+                loadRecentQuestions();
+            }, 1000);
+        }
+
+        async function exportToCSV() {
+            const subjectId = document.getElementById('export-subject-csv').value;
+            const type = document.getElementById('export-type-csv').value;
+
+            await exportData('csv', subjectId, type);
+        }
+
+        async function exportToExcel() {
+            const subjectId = document.getElementById('export-subject-excel').value;
+            const type = document.getElementById('export-type-excel').value;
+
+            await exportData('excel', subjectId, type);
+        }
+
+        async function exportData(format, subjectId, questionType) {
+            try {
+                let query = questionsCollection;
+                
+                if (subjectId) {
+                    query = query.where('subjectId', '==', subjectId);
+                }
+                if (questionType) {
+                    query = query.where('type', '==', questionType);
+                }
+
+                const snapshot = await query.get();
+                const data = [];
+
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    const exportItem = {
+                        subject: item.subjectName,
+                        type: item.type,
+                        question: item.question,
+                        exam: item.exam || '',
+                        year: item.year || '',
+                        marks: item.marks || 1,
+                        createdAt: item.createdAt?.toDate().toISOString().split('T')[0]
+                    };
+
+                    if (item.type === 'mcq') {
+                        exportItem.options = item.options ? JSON.stringify(item.options) : '';
+                        exportItem.answer = item.answer || '';
+                    } else {
+                        exportItem.answer = item.answer || '';
+                    }
+
+                    data.push(exportItem);
+                });
+
+                if (data.length === 0) {
+                    showAlert('ডাউনলোড করার জন্য কোন ডেটা নেই', 'warning');
                     return;
+                }
+
+                if (format === 'csv') {
+                    const csv = Papa.unparse(data);
+                    downloadFile(csv, 'questions.csv', 'text/csv');
+                } else if (format === 'excel') {
+                    const worksheet = XLSX.utils.json_to_sheet(data);
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
+                    XLSX.writeFile(workbook, 'questions.xlsx');
+                }
+
+                showAlert(`${data.length}টি প্রশ্ন ${format.toUpperCase()} ফরম্যাটে ডাউনলোড করা হয়েছে`, 'success');
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showAlert('ডেটা ডাউনলোড করতে সমস্যা হয়েছে', 'danger');
             }
-            
-            const blob = new Blob(['\uFEFF' + content], { type: mimeType });
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = fileName;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            showToast('সফল', 'টেমপ্লেট ডাউনলোড হয়েছে', 'success');
         }
 
-        // Load admission questions
-        async function loadQuestions() {
+        async function searchQuestions(searchTerm) {
             try {
-                const snapshot = await db.collection('admission_questions')
-                    .orderBy('createdAt', 'desc')
-                    .get();
-                
-                allQuestions = [];
+                const snapshot = await questionsCollection.get();
+                const results = [];
+
                 snapshot.forEach(doc => {
-                    allQuestions.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    if (data.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        data.answer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        data.exam?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        data.subjectName?.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        results.push({ id: doc.id, ...data });
+                    }
                 });
-                
-                filteredQuestions = [...allQuestions];
-                currentPage = 1;
-                updatePagination();
-                displayCurrentPage();
+
+                displaySearchResults(results);
             } catch (error) {
-                console.error('Error loading questions:', error);
-                showToast('ত্রুটি', 'প্রশ্ন লোডে সমস্যা', 'error');
+                console.error('Error searching questions:', error);
             }
         }
 
-        // Display current page questions
-        function displayCurrentPage() {
-            const tbody = document.getElementById('questionsBody');
-            const noData = document.getElementById('noData');
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageQuestions = filteredQuestions.slice(startIndex, endIndex);
+        function displaySearchResults(results) {
+            const dashboardSection = document.getElementById('dashboard-section');
             
-            if (pageQuestions.length === 0) {
-                tbody.innerHTML = '';
-                noData.style.display = 'block';
+            if (results.length === 0) {
+                dashboardSection.querySelector('#recent-questions').innerHTML = 
+                    '<p class="text-muted">কোনো প্রশ্ন পাওয়া যায়নি</p>';
                 return;
             }
-            
-            noData.style.display = 'none';
-            tbody.innerHTML = '';
-            
-            pageQuestions.forEach((question, index) => {
-                const row = document.createElement('tr');
-                const globalIndex = startIndex + index + 1;
-                
-                // Create exam history badges
-                let examBadges = '';
-                if (question.examHistory && question.examHistory.length > 0) {
-                    question.examHistory.forEach(exam => {
-                        examBadges += `<span class="exam-badge">${exam}</span> `;
-                    });
-                }
-                
-                row.innerHTML = `
-                    <td style="font-weight: 600;">${globalIndex}</td>
-                    <td>
-                        <div class="question-text">${question.question}</div>
-                    </td>
-                    <td>
-                        <span class="badge ${question.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
+
+            const container = dashboardSection.querySelector('#recent-questions');
+            container.innerHTML = '<h5 class="mb-3">সার্চ রেজাল্ট</h5>';
+
+            results.slice(0, 10).forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item mb-3';
+                questionDiv.innerHTML = `
+                    <div>
+                        <span class="badge ${question.type === 'mcq' ? 'mcq-badge' : 'written-badge'} me-2">
                             ${question.type === 'mcq' ? 'MCQ' : 'Written'}
                         </span>
-                    </td>
-                    <td style="font-weight: 600;">${question.subjectName}</td>
-                    <td>
-                        <div class="answer-text">${question.answer}</div>
-                    </td>
-                    <td>${examBadges}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn edit-btn" onclick="editQuestion('${question.id}')" title="এডিট">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn delete-btn" onclick="deleteQuestion('${question.id}')" title="ডিলিট">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
+                        <strong>${question.subjectName || 'N/A'}</strong>
+                        <p class="mb-1 mt-2">${question.question.substring(0, 150)}...</p>
+                        <small class="text-muted">
+                            ${question.exam ? `পরীক্ষা: ${question.exam}` : ''}
+                            ${question.year ? `, বছর: ${question.year}` : ''}
+                        </small>
+                    </div>
                 `;
-                tbody.appendChild(row);
+                container.appendChild(questionDiv);
             });
-            
-            // Update pagination info
-            const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-            const startItem = startIndex + 1;
-            const endItem = Math.min(startIndex + itemsPerPage, filteredQuestions.length);
-            document.getElementById('paginationInfo').textContent = 
-                `পৃষ্ঠা ${currentPage}/${totalPages}, ${startItem}-${endItem} / ${filteredQuestions.length} প্রশ্ন`;
         }
 
-        // Update pagination
-        function updatePagination() {
-            const pagination = document.getElementById('pagination');
-            const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
-            
-            if (totalPages <= 1) {
-                pagination.innerHTML = '';
-                return;
-            }
-            
-            let paginationHTML = '';
-            
-            // Previous button
-            paginationHTML += `
-                <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
-                        onclick="changePage(${currentPage - 1})" 
-                        ${currentPage === 1 ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
+            document.body.appendChild(alertDiv);
             
-            // Page numbers
-            const maxVisiblePages = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-            
-            if (endPage - startPage + 1 < maxVisiblePages) {
-                startPage = Math.max(1, endPage - maxVisiblePages + 1);
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                paginationHTML += `
-                    <button class="page-btn ${i === currentPage ? 'active' : ''}" 
-                            onclick="changePage(${i})">
-                        ${i}
-                    </button>
-                `;
-            }
-            
-            // Next button
-            paginationHTML += `
-                <button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" 
-                        onclick="changePage(${currentPage + 1})" 
-                        ${currentPage === totalPages ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            `;
-            
-            pagination.innerHTML = paginationHTML;
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
         }
 
-        // Change page
-        function changePage(page) {
-            if (page < 1 || page > Math.ceil(filteredQuestions.length / itemsPerPage)) return;
-            currentPage = page;
-            displayCurrentPage();
-            updatePagination();
-        }
-
-        // Search and filter questions
-        function searchQuestions() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const subjectId = document.getElementById('filterSubject').value;
-            const type = document.getElementById('filterType').value;
+        function populateUploadSubjects() {
+            const csvSubject = document.getElementById('csv-subject');
+            const excelSubject = document.getElementById('excel-subject');
             
-            filteredQuestions = allQuestions.filter(q => {
-                // Search by text
-                if (searchText && 
-                    !q.question.toLowerCase().includes(searchText) && 
-                    !q.answer.toLowerCase().includes(searchText) &&
-                    !(q.examHistory && q.examHistory.some(e => e.toLowerCase().includes(searchText)))) {
-                    return false;
-                }
+            csvSubject.innerHTML = '<option value="">বিষয় নির্বাচন করুন</option>';
+            excelSubject.innerHTML = '<option value="">বিষয় নির্বাচন করুন</option>';
+            
+            allSubjects.forEach(subject => {
+                const option1 = document.createElement('option');
+                option1.value = subject.id;
+                option1.textContent = subject.name;
+                csvSubject.appendChild(option1.cloneNode(true));
                 
-                // Filter by subject
-                if (subjectId && q.subjectId !== subjectId) {
-                    return false;
-                }
-                
-                // Filter by type
-                if (type && q.type !== type) {
-                    return false;
-                }
-                
-                return true;
+                const option2 = option1.cloneNode(true);
+                excelSubject.appendChild(option2);
             });
-            
-            currentPage = 1;
-            updatePagination();
-            displayCurrentPage();
         }
 
-        // Edit question (options hidden in admin view but available in edit mode)
+        function populateExportSubjects() {
+            const csvSubject = document.getElementById('export-subject-csv');
+            const excelSubject = document.getElementById('export-subject-excel');
+            
+            csvSubject.innerHTML = '<option value="">সকল বিষয়</option>';
+            excelSubject.innerHTML = '<option value="">সকল বিষয়</option>';
+            
+            allSubjects.forEach(subject => {
+                const option1 = document.createElement('option');
+                option1.value = subject.id;
+                option1.textContent = subject.name;
+                csvSubject.appendChild(option1.cloneNode(true));
+                
+                const option2 = option1.cloneNode(true);
+                excelSubject.appendChild(option2);
+            });
+        }
+
+        // Expose functions to global scope for onclick handlers
+        window.editSubject = editSubject;
+        window.deleteSubject = deleteSubject;
+        window.editQuestion = editQuestion;
+        window.deleteQuestion = deleteQuestion;
+        window.changePage = changePage;
+
+        // Edit question function
         async function editQuestion(questionId) {
-            const question = allQuestions.find(q => q.id === questionId);
-            if (!question) return;
-            
-            let editText = `প্রশ্ন এডিট করুন:\n\nপ্রশ্ন:\n${question.question}\n\nউত্তর:\n${question.answer}`;
-            
-            // For MCQ, show options in edit mode
-            if (question.type === 'mcq' && question.options && question.options.length > 0) {
-                editText += `\n\nঅপশনসমূহ:\n`;
-                question.options.forEach((opt, i) => {
-                    editText += `${String.fromCharCode(65 + i)}: ${opt}\n`;
-                });
-            }
-            
-            if (question.examHistory && question.examHistory.length > 0) {
-                editText += `\n\nপরীক্ষার তথ্য:\n${question.examHistory.join(', ')}`;
-            }
-            
-            const newQuestion = prompt(editText, question.question);
-            if (newQuestion === null) return;
-            
-            const newAnswer = prompt('সঠিক উত্তর:', question.answer);
-            if (newAnswer === null) return;
-            
             try {
-                showLoading();
-                
-                const updateData = {
-                    question: newQuestion,
-                    answer: newAnswer,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                // For MCQ, update options if needed
-                if (question.type === 'mcq') {
-                    const optionsText = prompt('অপশনসমূহ (কমা দিয়ে আলাদা করুন):', 
-                        question.options ? question.options.join(', ') : '');
-                    if (optionsText !== null) {
-                        updateData.options = optionsText.split(',').map(o => o.trim()).filter(o => o);
-                    }
-                }
-                
-                const examHistory = prompt('পরীক্ষার তথ্য (কমা দিয়ে আলাদা করুন):', 
-                    question.examHistory ? question.examHistory.join(', ') : '');
-                if (examHistory !== null) {
-                    updateData.examHistory = examHistory.split(',').map(e => e.trim()).filter(e => e);
-                }
-                
-                await db.collection('admission_questions').doc(questionId).update(updateData);
-                
-                // Reload questions
-                await loadQuestions();
-                
-                showToast('সফল', 'প্রশ্ন আপডেট হয়েছে', 'success');
+                const questionDoc = await questionsCollection.doc(questionId).get();
+                if (!questionDoc.exists) return;
+
+                const questionData = questionDoc.data();
+                showAlert('প্রশ্ন সম্পাদনা ফিচারটি শীঘ্রই আসছে!', 'info');
+                // You can implement the edit modal similar to add question modal
             } catch (error) {
-                console.error('Error updating question:', error);
-                showToast('ত্রুটি', 'প্রশ্ন আপডেটে সমস্যা', 'error');
-            } finally {
-                hideLoading();
+                console.error('Error loading question for edit:', error);
+                showAlert('প্রশ্ন লোড করতে সমস্যা হয়েছে', 'danger');
             }
         }
 
-        // Delete question
-        async function deleteQuestion(questionId) {
-            if (!confirm('এই প্রশ্নটি ডিলিট করতে চান?')) return;
-            
-            const question = allQuestions.find(q => q.id === questionId);
-            if (!question) return;
-            
-            try {
-                showLoading();
-                
-                // Delete from Firebase
-                await db.collection('admission_questions').doc(questionId).delete();
-                
-                // Update subject question count
-                if (question.subjectId) {
-                    const subject = subjects.find(s => s.id === question.subjectId);
-                    if (subject) {
-                        const newCount = Math.max(0, (subject.questionCount || 1) - 1);
-                        await db.collection('admission_subjects').doc(question.subjectId).update({
-                            questionCount: newCount,
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    }
-                }
-                
-                // Reload data
-                await loadSubjects();
-                await loadQuestions();
-                
-                showToast('সফল', 'প্রশ্ন ডিলিট হয়েছে', 'success');
-            } catch (error) {
-                console.error('Error deleting question:', error);
-                showToast('ত্রুটি', 'প্রশ্ন ডিলিটে সমস্যা', 'error');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // Add sample data if no subjects exist
-        async function addSampleData() {
-            try {
-                const snapshot = await db.collection('admission_subjects').get();
-                if (snapshot.empty) {
-                    const sampleSubjects = [
-                        { name: 'গণিত', questionCount: 0 },
-                        { name: 'ইংরেজি', questionCount: 0 },
-                        { name: 'সাধারণ জ্ঞান', questionCount: 0 }
-                    ];
-                    
-                    const batch = db.batch();
-                    sampleSubjects.forEach(subject => {
-                        const docRef = db.collection('admission_subjects').doc();
-                        batch.set(docRef, {
-                            ...subject,
-                            type: 'admission',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    });
-                    
-                    await batch.commit();
-                    await loadSubjects();
-                }
-            } catch (error) {
-                console.error('Error adding sample data:', error);
-            }
-        }
-
-        // Call on first load
-        addSampleData();
     </script>
 </body>
 </html>
