@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts - Noto Sans Bengali -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
@@ -494,6 +496,185 @@
             margin-bottom: 20px;
             color: #ddd;
         }
+        
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        /* Subject Stats Cards */
+        .subject-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .subject-stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .subject-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+        
+        .subject-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .subject-stat-item {
+            text-align: center;
+        }
+        
+        .subject-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .subject-stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        /* Recent Activity */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .activity-icon.add {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .activity-icon.update {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .activity-icon.delete {
+            background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-time {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        /* File Format Card */
+        .format-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        
+        .format-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .format-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .format-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .format-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .format-table th, .format-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .format-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        /* MCQ/Written Tabs */
+        .type-tabs {
+            display: flex;
+            border-bottom: 2px solid #eaeaea;
+            margin-bottom: 20px;
+        }
+        
+        .type-tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .type-tab.active {
+            color: var(--primary);
+        }
+        
+        .type-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -528,16 +709,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="#" id="nav-upload">
                     <i class="fas fa-file-upload"></i> ফাইল আপলোড
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="nav-export">
-                    <i class="fas fa-file-download"></i> ডাউনলোড
-                </a>
-            </li>
-            <li class="nav-item mt-4">
-                <a class="nav-link" href="#" id="nav-settings">
-                    <i class="fas fa-cog"></i> সেটিংস
                 </a>
             </li>
         </ul>
@@ -615,14 +786,48 @@
                 </div>
             </div>
             
-            <!-- Recent Questions -->
+            <!-- Charts and Recent Activity -->
+            <div class="row mb-4">
+                <div class="col-lg-8 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>প্রশ্নের পরিসংখ্যান</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="questionsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>সাম্প্রতিক কার্যক্রম</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recent-activity">
+                                <div class="activity-item">
+                                    <div class="spinner-container">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Subject-wise Statistics -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>সাম্প্রতিক প্রশ্ন</h5>
+                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>বিষয় ভিত্তিক পরিসংখ্যান</h5>
                 </div>
                 <div class="card-body">
-                    <div id="recent-questions" class="spinner-container">
-                        <div class="spinner"></div>
+                    <div id="subject-stats">
+                        <div class="spinner-container">
+                            <div class="spinner"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -650,9 +855,9 @@
                                 <tr>
                                     <th width="50">#</th>
                                     <th>বিষয়ের নাম</th>
-                                    <th>কোড</th>
-                                    <th>প্রশ্ন সংখ্যা</th>
-                                    <th>যোগ করার তারিখ</th>
+                                    <th width="120">মোট প্রশ্ন</th>
+                                    <th width="120">MCQ প্রশ্ন</th>
+                                    <th width="120">Written প্রশ্ন</th>
                                     <th width="150">অ্যাকশন</th>
                                 </tr>
                             </thead>
@@ -689,13 +894,13 @@
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">বিষয়</label>
                             <select class="form-select" id="filter-subject">
                                 <option value="">সকল বিষয়</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">প্রশ্নের ধরন</label>
                             <select class="form-select" id="filter-type">
                                 <option value="">সকল ধরন</option>
@@ -703,13 +908,9 @@
                                 <option value="written">Written</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">পরীক্ষা</label>
-                            <input type="text" class="form-control" id="filter-exam" placeholder="পরীক্ষার নাম">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">বছর</label>
-                            <input type="number" class="form-control" id="filter-year" placeholder="বছর" min="2000" max="2030">
+                        <div class="col-md-4">
+                            <label class="form-label">নোট/পরীক্ষার নাম</label>
+                            <input type="text" class="form-control" id="filter-note" placeholder="যেকোনো নোট বা পরীক্ষার নাম">
                         </div>
                         <div class="col-md-8">
                             <label class="form-label">প্রশ্নে সার্চ</label>
@@ -755,164 +956,256 @@
                 <h2><i class="fas fa-file-upload me-2"></i> ফাইল আপলোড</h2>
             </div>
             
-            <div class="row">
+            <!-- File Format Guide -->
+            <div class="row mb-4">
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-file-csv me-2"></i> CSV ফাইল আপলোড</h5>
+                    <div class="format-card">
+                        <div class="format-icon">
+                            <i class="fas fa-file-csv"></i>
                         </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="csv-file" class="form-label">CSV ফাইল নির্বাচন করুন</label>
-                                <input type="file" class="form-control" id="csv-file" accept=".csv">
-                                <div class="form-text">ফাইল ফরমেট: প্রশ্ন, ধরন, অপশন, উত্তর, পরীক্ষা, বছর, মার্কস</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="csv-subject" class="form-label">বিষয় নির্বাচন করুন</label>
-                                <select class="form-select" id="csv-subject">
-                                    <option value="">বিষয় নির্বাচন করুন</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="csv-exam" class="form-label">পরীক্ষার নাম (ঐচ্ছিক)</label>
-                                <input type="text" class="form-control" id="csv-exam" placeholder="যেমন: ঢাবি এডমিশন ২০২৩">
-                            </div>
-                            <button class="btn btn-primary w-100" id="upload-csv-btn">
-                                <i class="fas fa-upload me-2"></i>CSV আপলোড করুন
-                            </button>
+                        <div class="format-title">CSV ফাইল ফরম্যাট</div>
+                        <div class="type-tabs">
+                            <button class="type-tab active" data-type="mcq">MCQ ফরম্যাট</button>
+                            <button class="type-tab" data-type="written">Written ফরম্যাট</button>
                         </div>
+                        <div id="csv-format-mcq">
+                            <table class="format-table">
+                                <thead>
+                                    <tr>
+                                        <th>কলাম নাম</th>
+                                        <th>উদাহরণ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>প্রশ্ন</td>
+                                        <td>বাংলাদেশের রাজধানী কী?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ১</td>
+                                        <td>ঢাকা</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ২</td>
+                                        <td>চট্টগ্রাম</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ৩</td>
+                                        <td>সিলেট</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ৪</td>
+                                        <td>রাজশাহী</td>
+                                    </tr>
+                                    <tr>
+                                        <td>সঠিক উত্তর অপশন</td>
+                                        <td>1 (অপশন ১ এর জন্য)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>নোট</td>
+                                        <td>ঢাবি এডমিশন ২০২৩</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="csv-format-written" style="display: none;">
+                            <table class="format-table">
+                                <thead>
+                                    <tr>
+                                        <th>কলাম নাম</th>
+                                        <th>উদাহরণ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>প্রশ্ন</td>
+                                        <td>মুক্তিযুদ্ধ কত সালে হয়েছিল?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>উত্তর</td>
+                                        <td>১৯৭১ সালে বাংলাদেশের মুক্তিযুদ্ধ হয়েছিল</td>
+                                    </tr>
+                                    <tr>
+                                        <td>নোট</td>
+                                        <td>জাতীয় বিষয়</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3" onclick="downloadCSVTemplate()">
+                            <i class="fas fa-download me-2"></i>CSV টেমপ্লেট ডাউনলোড
+                        </button>
                     </div>
                 </div>
                 
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-file-excel me-2"></i> Excel ফাইল আপলোড</h5>
+                    <div class="format-card">
+                        <div class="format-icon">
+                            <i class="fas fa-file-excel"></i>
                         </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="excel-file" class="form-label">Excel ফাইল নির্বাচন করুন</label>
-                                <input type="file" class="form-control" id="excel-file" accept=".xlsx,.xls">
-                                <div class="form-text">ফাইল ফরমেট: প্রশ্ন, ধরন, অপশন, উত্তর, পরীক্ষা, বছর, মার্কস</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="excel-subject" class="form-label">বিষয় নির্বাচন করুন</label>
-                                <select class="form-select" id="excel-subject">
-                                    <option value="">বিষয় নির্বাচন করুন</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="excel-exam" class="form-label">পরীক্ষার নাম (ঐচ্ছিক)</label>
-                                <input type="text" class="form-control" id="excel-exam" placeholder="যেমন: ঢাবি এডমিশন ২০২৩">
-                            </div>
-                            <button class="btn btn-primary w-100" id="upload-excel-btn">
-                                <i class="fas fa-upload me-2"></i>Excel আপলোড করুন
-                            </button>
+                        <div class="format-title">Excel ফাইল ফরম্যাট</div>
+                        <div class="type-tabs">
+                            <button class="type-tab active" data-type="mcq-excel">MCQ ফরম্যাট</button>
+                            <button class="type-tab" data-type="written-excel">Written ফরম্যাট</button>
                         </div>
+                        <div id="excel-format-mcq">
+                            <table class="format-table">
+                                <thead>
+                                    <tr>
+                                        <th>কলাম নাম</th>
+                                        <th>উদাহরণ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>প্রশ্ন</td>
+                                        <td>বাংলাদেশের জাতীয় ফুল কী?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ১</td>
+                                        <td>শাপলা</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ২</td>
+                                        <td>গোলাপ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ৩</td>
+                                        <td>কমল</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপশন ৪</td>
+                                        <td>বেলি</td>
+                                    </tr>
+                                    <tr>
+                                        <td>সঠিক উত্তর অপশন</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>নোট</td>
+                                        <td>সাধারণ জ্ঞান</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="excel-format-written" style="display: none;">
+                            <table class="format-table">
+                                <thead>
+                                    <tr>
+                                        <th>কলাম নাম</th>
+                                        <th>উদাহরণ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>প্রশ্ন</td>
+                                        <td>পদ্মা সেতুর দৈর্ঘ্য কত?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>উত্তর</td>
+                                        <td>৬.১৫ কিলোমিটার</td>
+                                    </tr>
+                                    <tr>
+                                        <td>নোট</td>
+                                        <td>সাম্প্রতিক তথ্য</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3" onclick="downloadExcelTemplate()">
+                            <i class="fas fa-download me-2"></i>Excel টেমপ্লেট ডাউনলোড
+                        </button>
                     </div>
                 </div>
             </div>
             
-            <!-- Upload Progress -->
-            <div class="card mt-4 d-none" id="upload-progress-card">
-                <div class="card-header">
-                    <h5 class="mb-0">আপলোড প্রোগ্রেস</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <span id="progress-status">আপলোড শুরু হচ্ছে...</span>
-                            <span id="progress-percentage">0%</span>
-                        </div>
-                        <div class="progress mt-2">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                                 id="progress-bar" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div id="upload-results" class="mt-3"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Export Section -->
-        <section id="export-section" class="d-none">
-            <div class="header">
-                <h2><i class="fas fa-file-download me-2"></i> ডাউনলোড</h2>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-file-csv me-2"></i> CSV ফরম্যাটে ডাউনলোড</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="export-subject-csv" class="form-label">বিষয় নির্বাচন করুন</label>
-                                <select class="form-select" id="export-subject-csv">
-                                    <option value="">সকল বিষয়</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="export-type-csv" class="form-label">প্রশ্নের ধরন</label>
-                                <select class="form-select" id="export-type-csv">
-                                    <option value="">সকল ধরন</option>
-                                    <option value="mcq">MCQ</option>
-                                    <option value="written">Written</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="export-exam-csv" class="form-label">পরীক্ষার নাম (ঐচ্ছিক)</label>
-                                <input type="text" class="form-control" id="export-exam-csv" placeholder="পরীক্ষার নাম">
-                            </div>
-                            <button class="btn btn-success w-100" id="export-csv-btn">
-                                <i class="fas fa-download me-2"></i>CSV ডাউনলোড করুন
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-file-excel me-2"></i> Excel ফরম্যাটে ডাউনলোড</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="export-subject-excel" class="form-label">বিষয় নির্বাচন করুন</label>
-                                <select class="form-select" id="export-subject-excel">
-                                    <option value="">সকল বিষয়</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="export-type-excel" class="form-label">প্রশ্নের ধরন</label>
-                                <select class="form-select" id="export-type-excel">
-                                    <option value="">সকল ধরন</option>
-                                    <option value="mcq">MCQ</option>
-                                    <option value="written">Written</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="export-exam-excel" class="form-label">পরীক্ষার নাম (ঐচ্ছিক)</label>
-                                <input type="text" class="form-control" id="export-exam-excel" placeholder="পরীক্ষার নাম">
-                            </div>
-                            <button class="btn btn-success w-100" id="export-excel-btn">
-                                <i class="fas fa-download me-2"></i>Excel ডাউনলোড করুন
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- Upload Form -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">ডাউনলোড হিস্ট্রি</h5>
+                    <h5 class="mb-0">ফাইল আপলোড করুন</h5>
                 </div>
                 <div class="card-body">
-                    <div id="export-history">
-                        <div class="empty-state">
-                            <i class="fas fa-history"></i>
-                            <p>কোনো ডাউনলোড হিস্ট্রি নেই</p>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-file-csv me-2"></i> CSV ফাইল আপলোড</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="csv-file" class="form-label">CSV ফাইল নির্বাচন করুন</label>
+                                        <input type="file" class="form-control" id="csv-file" accept=".csv">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="csv-subject" class="form-label">বিষয় নির্বাচন করুন</label>
+                                        <select class="form-select" id="csv-subject">
+                                            <option value="">বিষয় নির্বাচন করুন</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="csv-type" class="form-label">প্রশ্নের ধরন</label>
+                                        <select class="form-select" id="csv-type">
+                                            <option value="">ধরন নির্বাচন করুন</option>
+                                            <option value="mcq">MCQ</option>
+                                            <option value="written">Written</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary w-100" id="upload-csv-btn">
+                                        <i class="fas fa-upload me-2"></i>CSV আপলোড করুন
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-file-excel me-2"></i> Excel ফাইল আপলোড</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="excel-file" class="form-label">Excel ফাইল নির্বাচন করুন</label>
+                                        <input type="file" class="form-control" id="excel-file" accept=".xlsx,.xls">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="excel-subject" class="form-label">বিষয় নির্বাচন করুন</label>
+                                        <select class="form-select" id="excel-subject">
+                                            <option value="">বিষয় নির্বাচন করুন</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="excel-type" class="form-label">প্রশ্নের ধরন</label>
+                                        <select class="form-select" id="excel-type">
+                                            <option value="">ধরন নির্বাচন করুন</option>
+                                            <option value="mcq">MCQ</option>
+                                            <option value="written">Written</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary w-100" id="upload-excel-btn">
+                                        <i class="fas fa-upload me-2"></i>Excel আপলোড করুন
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Progress -->
+                    <div class="card mt-4 d-none" id="upload-progress-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">আপলোড প্রোগ্রেস</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span id="progress-status">আপলোড শুরু হচ্ছে...</span>
+                                    <span id="progress-percentage">0%</span>
+                                </div>
+                                <div class="progress mt-2">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         id="progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div id="upload-results" class="mt-3"></div>
                         </div>
                     </div>
                 </div>
@@ -934,10 +1227,6 @@
                         <div class="mb-3">
                             <label for="subject-name" class="form-label">বিষয়ের নাম *</label>
                             <input type="text" class="form-control" id="subject-name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subject-code" class="form-label">বিষয় কোড (ঐচ্ছিক)</label>
-                            <input type="text" class="form-control" id="subject-code">
                         </div>
                         <div class="mb-3">
                             <label for="subject-description" class="form-label">বিবরণ (ঐচ্ছিক)</label>
@@ -990,38 +1279,38 @@
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">A</span>
-                                            <input type="text" class="form-control" id="option-a" placeholder="বিকল্প A">
+                                            <span class="input-group-text">1</span>
+                                            <input type="text" class="form-control" id="option-1" placeholder="অপশন ১">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">B</span>
-                                            <input type="text" class="form-control" id="option-b" placeholder="বিকল্প B">
+                                            <span class="input-group-text">2</span>
+                                            <input type="text" class="form-control" id="option-2" placeholder="অপশন ২">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">C</span>
-                                            <input type="text" class="form-control" id="option-c" placeholder="বিকল্প C">
+                                            <span class="input-group-text">3</span>
+                                            <input type="text" class="form-control" id="option-3" placeholder="অপশন ৩">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">D</span>
-                                            <input type="text" class="form-control" id="option-d" placeholder="বিকল্প D">
+                                            <span class="input-group-text">4</span>
+                                            <input type="text" class="form-control" id="option-4" placeholder="অপশন ৪">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="correct-answer" class="form-label">সঠিক উত্তর *</label>
+                                <label for="correct-answer" class="form-label">সঠিক উত্তর অপশন *</label>
                                 <select class="form-select" id="correct-answer">
                                     <option value="">সঠিক উত্তর নির্বাচন করুন</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
+                                    <option value="1">অপশন ১</option>
+                                    <option value="2">অপশন ২</option>
+                                    <option value="3">অপশন ৩</option>
+                                    <option value="4">অপশন ৪</option>
                                 </select>
                             </div>
                         </div>
@@ -1033,16 +1322,11 @@
                             </div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="question-exam" class="form-label">পরীক্ষার নাম</label>
-                                <input type="text" class="form-control" id="question-exam" placeholder="যেমন: ঢাবি এডমিশন ২০২৩">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="question-year" class="form-label">বছর</label>
-                                <input type="number" class="form-control" id="question-year" min="2000" max="2030" placeholder="যেমন: ২০২৩">
-                            </div>
+                        <div class="mb-3">
+                            <label for="question-note" class="form-label">নোট / পরীক্ষার নাম (ঐচ্ছিক)</label>
+                            <input type="text" class="form-control" id="question-note" placeholder="যেকোনো নোট বা পরীক্ষার নাম">
                         </div>
+                        
                         <div class="mb-3">
                             <label for="question-marks" class="form-label">মার্কস</label>
                             <input type="number" class="form-control" id="question-marks" min="1" value="1">
@@ -1086,67 +1370,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Template Modal -->
-    <div class="modal fade" id="templateModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">CSV/Excel ফাইল টেমপ্লেট</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>আপনার CSV বা Excel ফাইল নিচের ফরমেট অনুসরণ করবে:</p>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>প্রশ্ন</th>
-                                    <th>ধরন</th>
-                                    <th>অপশন</th>
-                                    <th>উত্তর</th>
-                                    <th>পরীক্ষা</th>
-                                    <th>বছর</th>
-                                    <th>মার্কস</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>বাংলাদেশের রাজধানীর নাম কী?</td>
-                                    <td>mcq</td>
-                                    <td>{"A": "ঢাকা", "B": "চট্টগ্রাম", "C": "সিলেট", "D": "রাজশাহী"}</td>
-                                    <td>A</td>
-                                    <td>ঢাবি এডমিশন</td>
-                                    <td>2023</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>মুক্তিযুদ্ধ কত সালে হয়েছিল?</td>
-                                    <td>written</td>
-                                    <td></td>
-                                    <td>১৯৭১ সালে</td>
-                                    <td>রাবি এডমিশন</td>
-                                    <td>2022</td>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="alert alert-info">
-                        <strong>দ্রষ্টব্য:</strong> MCQ প্রশ্নের জন্য অপশন অবশ্যই JSON ফরমেটে হতে হবে।
-                    </div>
-                    <div class="text-center mt-3">
-                        <button class="btn btn-success" id="download-template-csv">
-                            <i class="fas fa-download me-2"></i>CSV টেমপ্লেট ডাউনলোড
-                        </button>
-                        <button class="btn btn-primary ms-2" id="download-template-excel">
-                            <i class="fas fa-download me-2"></i>Excel টেমপ্লেট ডাউনলোড
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Firebase & Libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -1185,6 +1408,7 @@
         let selectedQuestionIds = new Set();
         let currentPage = 1;
         const questionsPerPage = 10;
+        let questionsChart = null;
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1203,6 +1427,9 @@
             
             // Initialize mobile menu
             setupMobileMenu();
+            
+            // Setup format tabs
+            setupFormatTabs();
         }
 
         function setupNavigation() {
@@ -1243,9 +1470,6 @@
                                 break;
                             case 'upload-section':
                                 loadUploadData();
-                                break;
-                            case 'export-section':
-                                loadExportData();
                                 break;
                         }
                     }
@@ -1296,22 +1520,14 @@
             document.getElementById('upload-csv-btn').addEventListener('click', uploadCSV);
             document.getElementById('upload-excel-btn').addEventListener('click', uploadExcel);
             
-            // Export buttons
-            document.getElementById('export-csv-btn').addEventListener('click', exportToCSV);
-            document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
-            
             // Global search
             document.getElementById('global-search').addEventListener('input', function(e) {
                 if (e.target.value.length >= 2) {
                     searchQuestions(e.target.value);
                 } else if (e.target.value.length === 0) {
-                    loadRecentQuestions();
+                    loadDashboardData();
                 }
             });
-            
-            // Download template buttons
-            document.getElementById('download-template-csv').addEventListener('click', downloadCSVTemplate);
-            document.getElementById('download-template-excel').addEventListener('click', downloadExcelTemplate);
         }
 
         function setupMobileMenu() {
@@ -1336,6 +1552,36 @@
             });
         }
 
+        function setupFormatTabs() {
+            // CSV format tabs
+            document.querySelectorAll('#upload-section .type-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    
+                    // Remove active class from all tabs in this group
+                    this.parentElement.querySelectorAll('.type-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding format
+                    if (type === 'mcq' || type === 'mcq-excel') {
+                        document.getElementById('csv-format-mcq').style.display = 'block';
+                        document.getElementById('csv-format-written').style.display = 'none';
+                        document.getElementById('excel-format-mcq').style.display = 'block';
+                        document.getElementById('excel-format-written').style.display = 'none';
+                    } else {
+                        document.getElementById('csv-format-mcq').style.display = 'none';
+                        document.getElementById('csv-format-written').style.display = 'block';
+                        document.getElementById('excel-format-mcq').style.display = 'none';
+                        document.getElementById('excel-format-written').style.display = 'block';
+                    }
+                });
+            });
+        }
+
         function checkAuth() {
             auth.onAuthStateChanged(function(user) {
                 currentUser = user;
@@ -1354,7 +1600,9 @@
         // Dashboard Functions
         async function loadDashboardData() {
             await loadDashboardStats();
-            await loadRecentQuestions();
+            await loadRecentActivity();
+            await loadSubjectStats();
+            await loadQuestionsChart();
         }
 
         async function loadDashboardStats() {
@@ -1385,49 +1633,185 @@
             }
         }
 
-        async function loadRecentQuestions() {
-            const container = document.getElementById('recent-questions');
-            container.innerHTML = '<div class="spinner"><div class="spinner"></div></div>';
+        async function loadRecentActivity() {
+            const container = document.getElementById('recent-activity');
+            container.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
             
             try {
-                const snapshot = await questionsCollection
+                // Get recent questions and subjects
+                const recentQuestions = await questionsCollection
                     .orderBy('createdAt', 'desc')
                     .limit(5)
                     .get();
                 
-                if (snapshot.empty) {
+                const recentSubjects = await subjectsCollection
+                    .orderBy('createdAt', 'desc')
+                    .limit(3)
+                    .get();
+                
+                if (recentQuestions.empty && recentSubjects.empty) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <i class="fas fa-question-circle"></i>
-                            <p>কোনো প্রশ্ন পাওয়া যায়নি</p>
+                            <i class="fas fa-history"></i>
+                            <p>কোনো সাম্প্রতিক কার্যক্রম নেই</p>
                         </div>
                     `;
                     return;
                 }
                 
-                let html = '';
-                snapshot.forEach(doc => {
+                let activities = [];
+                
+                // Add question activities
+                recentQuestions.forEach(doc => {
                     const data = doc.data();
+                    activities.push({
+                        type: 'add',
+                        icon: 'add',
+                        content: `নতুন প্রশ্ন যোগ করেছেন: ${data.subjectName}`,
+                        time: data.createdAt?.toDate(),
+                        detail: data.question.substring(0, 50) + '...'
+                    });
+                });
+                
+                // Add subject activities
+                recentSubjects.forEach(doc => {
+                    const data = doc.data();
+                    activities.push({
+                        type: 'add',
+                        icon: 'add',
+                        content: `নতুন বিষয় যোগ করেছেন: ${data.name}`,
+                        time: data.createdAt?.toDate(),
+                        detail: ''
+                    });
+                });
+                
+                // Sort by time
+                activities.sort((a, b) => b.time - a.time);
+                
+                // Display activities
+                let html = '';
+                activities.slice(0, 6).forEach(activity => {
+                    const timeAgo = getTimeAgo(activity.time);
+                    
                     html += `
-                        <div class="question-item">
-                            <div class="question-header">
-                                <div>
-                                    <span class="badge ${data.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
-                                        ${data.type === 'mcq' ? 'MCQ' : 'Written'}
-                                    </span>
-                                    <strong class="ms-2">${data.subjectName || 'Unknown Subject'}</strong>
+                        <div class="activity-item">
+                            <div class="activity-icon ${activity.icon}">
+                                <i class="fas fa-${activity.icon === 'add' ? 'plus' : activity.icon === 'update' ? 'edit' : 'trash'}"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="mb-1">${activity.content}</div>
+                                ${activity.detail ? `<small class="text-muted">${activity.detail}</small>` : ''}
+                            </div>
+                            <div class="activity-time">${timeAgo}</div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading recent activity:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        কার্যক্রম লোড করতে সমস্যা হয়েছে
+                    </div>
+                `;
+            }
+        }
+
+        function getTimeAgo(date) {
+            if (!date) return 'কিছুক্ষণ আগে';
+            
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'এখুনি';
+            if (diffMins < 60) return `${diffMins} মিনিট আগে`;
+            if (diffHours < 24) return `${diffHours} ঘন্টা আগে`;
+            if (diffDays < 7) return `${diffDays} দিন আগে`;
+            
+            return date.toLocaleDateString('bn-BD');
+        }
+
+        async function loadSubjectStats() {
+            const container = document.getElementById('subject-stats');
+            container.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+            
+            try {
+                // Get all subjects
+                const subjectsSnapshot = await subjectsCollection.get();
+                
+                if (subjectsSnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-book"></i>
+                            <p>কোনো বিষয় পাওয়া যায়নি</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Get question counts for each subject
+                const subjectStats = [];
+                
+                for (const subjectDoc of subjectsSnapshot.docs) {
+                    const subjectData = subjectDoc.data();
+                    
+                    // Get MCQ questions count
+                    const mcqSnapshot = await questionsCollection
+                        .where('subjectId', '==', subjectDoc.id)
+                        .where('type', '==', 'mcq')
+                        .get();
+                    
+                    // Get Written questions count
+                    const writtenSnapshot = await questionsCollection
+                        .where('subjectId', '==', subjectDoc.id)
+                        .where('type', '==', 'written')
+                        .get();
+                    
+                    const totalQuestions = mcqSnapshot.size + writtenSnapshot.size;
+                    
+                    subjectStats.push({
+                        id: subjectDoc.id,
+                        name: subjectData.name,
+                        total: totalQuestions,
+                        mcq: mcqSnapshot.size,
+                        written: writtenSnapshot.size
+                    });
+                }
+                
+                // Sort by total questions (descending)
+                subjectStats.sort((a, b) => b.total - a.total);
+                
+                // Display subject stats
+                let html = '';
+                subjectStats.forEach(stat => {
+                    const mcqPercent = stat.total > 0 ? Math.round((stat.mcq / stat.total) * 100) : 0;
+                    const writtenPercent = stat.total > 0 ? Math.round((stat.written / stat.total) * 100) : 0;
+                    
+                    html += `
+                        <div class="subject-stat-card">
+                            <div class="subject-stat-header">
+                                <div class="subject-name">${stat.name}</div>
+                                <div class="badge bg-primary">${stat.total} প্রশ্ন</div>
+                            </div>
+                            <div class="subject-stats">
+                                <div class="subject-stat-item">
+                                    <div class="subject-stat-value">${stat.mcq}</div>
+                                    <div class="subject-stat-label">MCQ</div>
+                                    <div class="progress mt-1" style="height: 5px;">
+                                        <div class="progress-bar bg-success" style="width: ${mcqPercent}%"></div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">
-                                    ${new Date(data.createdAt?.toDate()).toLocaleDateString('bn-BD')}
-                                </small>
-                            </div>
-                            <div class="question-text">
-                                ${data.question.substring(0, 150)}${data.question.length > 150 ? '...' : ''}
-                            </div>
-                            <div class="question-meta">
-                                ${data.exam ? `<span><i class="fas fa-university me-1"></i>${data.exam}</span>` : ''}
-                                ${data.year ? `<span><i class="fas fa-calendar me-1"></i>${data.year}</span>` : ''}
-                                <span><i class="fas fa-star me-1"></i>${data.marks || 1} মার্কস</span>
+                                <div class="subject-stat-item">
+                                    <div class="subject-stat-value">${stat.written}</div>
+                                    <div class="subject-stat-label">Written</div>
+                                    <div class="progress mt-1" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" style="width: ${writtenPercent}%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -1435,12 +1819,119 @@
                 
                 container.innerHTML = html;
             } catch (error) {
-                console.error('Error loading recent questions:', error);
+                console.error('Error loading subject stats:', error);
                 container.innerHTML = `
                     <div class="alert alert-danger">
-                        প্রশ্ন লোড করতে সমস্যা হয়েছে
+                        বিষয় পরিসংখ্যান লোড করতে সমস্যা হয়েছে
                     </div>
                 `;
+            }
+        }
+
+        async function loadQuestionsChart() {
+            try {
+                // Get all questions
+                const questionsSnapshot = await questionsCollection.get();
+                
+                // Group by subject
+                const subjectCounts = {};
+                const typeCounts = {
+                    mcq: 0,
+                    written: 0
+                };
+                
+                questionsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    
+                    // Count by type
+                    typeCounts[data.type]++;
+                    
+                    // Count by subject
+                    if (!subjectCounts[data.subjectName]) {
+                        subjectCounts[data.subjectName] = 0;
+                    }
+                    subjectCounts[data.subjectName]++;
+                });
+                
+                // Prepare chart data
+                const ctx = document.getElementById('questionsChart').getContext('2d');
+                
+                // Destroy previous chart if exists
+                if (questionsChart) {
+                    questionsChart.destroy();
+                }
+                
+                // Get top 5 subjects by question count
+                const subjectEntries = Object.entries(subjectCounts);
+                subjectEntries.sort((a, b) => b[1] - a[1]);
+                const topSubjects = subjectEntries.slice(0, 5);
+                
+                questionsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: topSubjects.map(s => s[0]),
+                        datasets: [{
+                            label: 'প্রশ্ন সংখ্যা',
+                            data: topSubjects.map(s => s[1]),
+                            backgroundColor: [
+                                'rgba(67, 97, 238, 0.7)',
+                                'rgba(76, 201, 240, 0.7)',
+                                'rgba(247, 37, 133, 0.7)',
+                                'rgba(119, 221, 119, 0.7)',
+                                'rgba(255, 193, 7, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(67, 97, 238, 1)',
+                                'rgba(76, 201, 240, 1)',
+                                'rgba(247, 37, 133, 1)',
+                                'rgba(119, 221, 119, 1)',
+                                'rgba(255, 193, 7, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        family: "'Noto Sans Bengali', 'Segoe UI', sans-serif"
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `প্রশ্ন: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    font: {
+                                        family: "'Noto Sans Bengali', 'Segoe UI', sans-serif"
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        family: "'Noto Sans Bengali', 'Segoe UI', sans-serif"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading questions chart:', error);
             }
         }
 
@@ -1469,9 +1960,7 @@
                 'question-subject',
                 'filter-subject',
                 'csv-subject',
-                'excel-subject',
-                'export-subject-csv',
-                'export-subject-excel'
+                'excel-subject'
             ];
             
             dropdowns.forEach(dropdownId => {
@@ -1516,32 +2005,45 @@
                 
                 let html = '';
                 let index = 1;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const date = data.createdAt?.toDate();
+                
+                for (const subjectDoc of snapshot.docs) {
+                    const data = subjectDoc.data();
+                    
+                    // Get MCQ questions count
+                    const mcqSnapshot = await questionsCollection
+                        .where('subjectId', '==', subjectDoc.id)
+                        .where('type', '==', 'mcq')
+                        .get();
+                    
+                    // Get Written questions count
+                    const writtenSnapshot = await questionsCollection
+                        .where('subjectId', '==', subjectDoc.id)
+                        .where('type', '==', 'written')
+                        .get();
+                    
+                    const totalQuestions = mcqSnapshot.size + writtenSnapshot.size;
                     
                     html += `
                         <tr>
                             <td>${index++}</td>
                             <td>
                                 <strong>${data.name}</strong>
-                                ${data.code ? `<br><small class="text-muted">${data.code}</small>` : ''}
                                 ${data.description ? `<br><small>${data.description.substring(0, 50)}${data.description.length > 50 ? '...' : ''}</small>` : ''}
                             </td>
-                            <td>${data.code || '-'}</td>
-                            <td><span class="badge bg-primary">${data.questionCount || 0}</span></td>
-                            <td>${date ? date.toLocaleDateString('bn-BD') : '-'}</td>
+                            <td><span class="badge bg-primary">${totalQuestions}</span></td>
+                            <td><span class="badge badge-mcq">${mcqSnapshot.size}</span></td>
+                            <td><span class="badge badge-written">${writtenSnapshot.size}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editSubject('${doc.id}')">
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editSubject('${subjectDoc.id}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('${doc.id}')">
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('${subjectDoc.id}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
                     `;
-                });
+                }
                 
                 tableBody.innerHTML = html;
             } catch (error) {
@@ -1559,7 +2061,6 @@
 
         async function saveSubject() {
             const name = document.getElementById('subject-name').value.trim();
-            const code = document.getElementById('subject-code').value.trim();
             const description = document.getElementById('subject-description').value.trim();
             
             if (!name) {
@@ -1570,7 +2071,6 @@
             try {
                 const subjectData = {
                     name: name,
-                    code: code || null,
                     description: description || null,
                     questionCount: 0,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -1590,6 +2090,8 @@
                 await loadSubjects();
                 await loadSubjectsTable();
                 await loadDashboardStats();
+                await loadSubjectStats();
+                await loadQuestionsChart();
                 
             } catch (error) {
                 console.error('Error saving subject:', error);
@@ -1624,8 +2126,7 @@
         function applyFilters() {
             const subjectId = document.getElementById('filter-subject').value;
             const type = document.getElementById('filter-type').value;
-            const exam = document.getElementById('filter-exam').value.toLowerCase();
-            const year = document.getElementById('filter-year').value;
+            const note = document.getElementById('filter-note').value.toLowerCase();
             const searchText = document.getElementById('search-questions').value.toLowerCase();
             
             filteredQuestions = questions.filter(question => {
@@ -1635,23 +2136,20 @@
                 // Filter by type
                 if (type && question.type !== type) return false;
                 
-                // Filter by exam
-                if (exam && (!question.exam || !question.exam.toLowerCase().includes(exam))) return false;
-                
-                // Filter by year
-                if (year && question.year != year) return false;
+                // Filter by note
+                if (note && (!question.note || !question.note.toLowerCase().includes(note))) return false;
                 
                 // Filter by search text
                 if (searchText) {
                     const questionText = question.question.toLowerCase();
                     const answerText = question.answer ? question.answer.toLowerCase() : '';
                     const subjectName = question.subjectName ? question.subjectName.toLowerCase() : '';
-                    const examName = question.exam ? question.exam.toLowerCase() : '';
+                    const noteText = question.note ? question.note.toLowerCase() : '';
                     
                     if (!questionText.includes(searchText) && 
                         !answerText.includes(searchText) && 
                         !subjectName.includes(searchText) && 
-                        !examName.includes(searchText)) {
+                        !noteText.includes(searchText)) {
                         return false;
                     }
                 }
@@ -1738,8 +2236,7 @@
                             </div>
                         `}
                         <div class="question-meta">
-                            ${question.exam ? `<span><i class="fas fa-university me-1"></i>${question.exam}</span>` : ''}
-                            ${question.year ? `<span><i class="fas fa-calendar me-1"></i>${question.year}</span>` : ''}
+                            ${question.note ? `<span><i class="fas fa-sticky-note me-1"></i>${question.note}</span>` : ''}
                             <span><i class="fas fa-star me-1"></i>${question.marks || 1} মার্কস</span>
                             <span><i class="fas fa-clock me-1"></i>${new Date(question.createdAt?.toDate()).toLocaleDateString('bn-BD')}</span>
                         </div>
@@ -1829,25 +2326,7 @@
 
         // Upload Functions
         async function loadUploadData() {
-            // Show template modal button
-            const templateBtn = document.createElement('button');
-            templateBtn.className = 'btn btn-info';
-            templateBtn.innerHTML = '<i class="fas fa-file-download me-2"></i>টেমপ্লেট ডাউনলোড';
-            templateBtn.onclick = () => {
-                const modal = new bootstrap.Modal(document.getElementById('templateModal'));
-                modal.show();
-            };
-            
-            const headerActions = document.querySelector('#upload-section .header-actions');
-            if (headerActions) {
-                headerActions.innerHTML = '';
-                headerActions.appendChild(templateBtn);
-            }
-        }
-
-        // Export Functions
-        async function loadExportData() {
-            // Implementation for export section
+            // Nothing specific to load here
         }
 
         // Modal Functions
@@ -1906,10 +2385,6 @@
                             <input type="text" class="form-control" id="edit-subject-name" value="${data.name}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">বিষয় কোড</label>
-                            <input type="text" class="form-control" id="edit-subject-code" value="${data.code || ''}">
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">বিবরণ</label>
                             <textarea class="form-control" id="edit-subject-description" rows="3">${data.description || ''}</textarea>
                         </div>
@@ -1930,7 +2405,6 @@
 
         window.updateSubject = async function(subjectId) {
             const name = document.getElementById('edit-subject-name').value.trim();
-            const code = document.getElementById('edit-subject-code').value.trim();
             const description = document.getElementById('edit-subject-description').value.trim();
             
             if (!name) {
@@ -1941,7 +2415,6 @@
             try {
                 await subjectsCollection.doc(subjectId).update({
                     name: name,
-                    code: code || null,
                     description: description || null,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -1955,6 +2428,8 @@
                 // Refresh data
                 await loadSubjects();
                 await loadSubjectsTable();
+                await loadSubjectStats();
+                await loadQuestionsChart();
             } catch (error) {
                 console.error('Error updating subject:', error);
                 showAlert('বিষয় আপডেট করতে সমস্যা হয়েছে', 'danger');
@@ -1986,7 +2461,9 @@
                 await loadSubjects();
                 await loadSubjectsTable();
                 await loadDashboardStats();
-                await loadRecentQuestions();
+                await loadSubjectStats();
+                await loadQuestionsChart();
+                await loadRecentActivity();
                 await loadQuestionsData();
             } catch (error) {
                 console.error('Error deleting subject:', error);
@@ -2049,39 +2526,39 @@
                                     ${optionsHtml || `
                                         <div class="col-md-6">
                                             <div class="input-group mb-2">
-                                                <span class="input-group-text">A</span>
-                                                <input type="text" class="form-control edit-option" data-key="A">
+                                                <span class="input-group-text">1</span>
+                                                <input type="text" class="form-control edit-option" data-key="1">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-2">
-                                                <span class="input-group-text">B</span>
-                                                <input type="text" class="form-control edit-option" data-key="B">
+                                                <span class="input-group-text">2</span>
+                                                <input type="text" class="form-control edit-option" data-key="2">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-2">
-                                                <span class="input-group-text">C</span>
-                                                <input type="text" class="form-control edit-option" data-key="C">
+                                                <span class="input-group-text">3</span>
+                                                <input type="text" class="form-control edit-option" data-key="3">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-2">
-                                                <span class="input-group-text">D</span>
-                                                <input type="text" class="form-control edit-option" data-key="D">
+                                                <span class="input-group-text">4</span>
+                                                <input type="text" class="form-control edit-option" data-key="4">
                                             </div>
                                         </div>
                                     `}
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">সঠিক উত্তর *</label>
+                                <label class="form-label">সঠিক উত্তর অপশন *</label>
                                 <select class="form-select" id="edit-correct-answer">
                                     <option value="">সঠিক উত্তর নির্বাচন করুন</option>
-                                    <option value="A" ${data.answer === 'A' ? 'selected' : ''}>A</option>
-                                    <option value="B" ${data.answer === 'B' ? 'selected' : ''}>B</option>
-                                    <option value="C" ${data.answer === 'C' ? 'selected' : ''}>C</option>
-                                    <option value="D" ${data.answer === 'D' ? 'selected' : ''}>D</option>
+                                    <option value="1" ${data.answer === '1' ? 'selected' : ''}>অপশন ১</option>
+                                    <option value="2" ${data.answer === '2' ? 'selected' : ''}>অপশন ২</option>
+                                    <option value="3" ${data.answer === '3' ? 'selected' : ''}>অপশন ৩</option>
+                                    <option value="4" ${data.answer === '4' ? 'selected' : ''}>অপশন ৪</option>
                                 </select>
                             </div>
                         </div>
@@ -2093,16 +2570,11 @@
                             </div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">পরীক্ষার নাম</label>
-                                <input type="text" class="form-control" id="edit-question-exam" value="${data.exam || ''}">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">বছর</label>
-                                <input type="number" class="form-control" id="edit-question-year" value="${data.year || ''}">
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">নোট / পরীক্ষার নাম</label>
+                            <input type="text" class="form-control" id="edit-question-note" value="${data.note || ''}">
                         </div>
+                        
                         <div class="mb-3">
                             <label class="form-label">মার্কস</label>
                             <input type="number" class="form-control" id="edit-question-marks" value="${data.marks || 1}">
@@ -2133,8 +2605,7 @@
             const subjectId = document.getElementById('edit-question-subject').value;
             const type = document.getElementById('edit-question-type').value;
             const questionText = document.getElementById('edit-question-text').value.trim();
-            const exam = document.getElementById('edit-question-exam').value.trim();
-            const year = document.getElementById('edit-question-year').value;
+            const note = document.getElementById('edit-question-note').value.trim();
             const marks = document.getElementById('edit-question-marks').value || 1;
             
             if (!subjectId || !type || !questionText) {
@@ -2153,8 +2624,7 @@
                 subjectName: subject.name,
                 type: type,
                 question: questionText,
-                exam: exam || null,
-                year: year ? parseInt(year) : null,
+                note: note || null,
                 marks: parseInt(marks),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -2198,7 +2668,9 @@
                 await loadQuestions();
                 displayQuestions();
                 await loadDashboardStats();
-                await loadRecentQuestions();
+                await loadSubjectStats();
+                await loadQuestionsChart();
+                await loadRecentActivity();
             } catch (error) {
                 console.error('Error updating question:', error);
                 showAlert('প্রশ্ন আপডেট করতে সমস্যা হয়েছে', 'danger');
@@ -2239,7 +2711,9 @@
                 await loadQuestions();
                 displayQuestions();
                 await loadDashboardStats();
-                await loadRecentQuestions();
+                await loadSubjectStats();
+                await loadQuestionsChart();
+                await loadRecentActivity();
             } catch (error) {
                 console.error('Error deleting question:', error);
                 showAlert('প্রশ্ন মুছতে সমস্যা হয়েছে', 'danger');
@@ -2267,7 +2741,6 @@
                     
                     // We need to get each question to update subject counts
                     // For simplicity, we'll update subjects after deletion
-                    // In production, you might want to fetch all questions first
                 }
                 
                 await batch.commit();
@@ -2283,7 +2756,9 @@
                 await loadQuestions();
                 displayQuestions();
                 await loadDashboardStats();
-                await loadRecentQuestions();
+                await loadSubjectStats();
+                await loadQuestionsChart();
+                await loadRecentActivity();
             } catch (error) {
                 console.error('Error deleting selected questions:', error);
                 showAlert('প্রশ্নগুলো মুছতে সমস্যা হয়েছে', 'danger');
@@ -2294,8 +2769,7 @@
             const subjectId = document.getElementById('question-subject').value;
             const type = document.getElementById('question-type').value;
             const questionText = document.getElementById('question-text').value.trim();
-            const exam = document.getElementById('question-exam').value.trim();
-            const year = document.getElementById('question-year').value;
+            const note = document.getElementById('question-note').value.trim();
             const marks = document.getElementById('question-marks').value || 1;
             
             if (!subjectId || !type || !questionText) {
@@ -2314,30 +2788,29 @@
                 subjectName: subject.name,
                 type: type,
                 question: questionText,
-                exam: exam || null,
-                year: year ? parseInt(year) : null,
+                note: note || null,
                 marks: parseInt(marks),
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
             
             if (type === 'mcq') {
-                const optionA = document.getElementById('option-a').value.trim();
-                const optionB = document.getElementById('option-b').value.trim();
-                const optionC = document.getElementById('option-c').value.trim();
-                const optionD = document.getElementById('option-d').value.trim();
+                const option1 = document.getElementById('option-1').value.trim();
+                const option2 = document.getElementById('option-2').value.trim();
+                const option3 = document.getElementById('option-3').value.trim();
+                const option4 = document.getElementById('option-4').value.trim();
                 const answer = document.getElementById('correct-answer').value;
                 
-                if (!optionA || !optionB || !optionC || !optionD || !answer) {
+                if (!option1 || !option2 || !option3 || !option4 || !answer) {
                     showAlert('MCQ প্রশ্নের জন্য সকল বিকল্প এবং সঠিক উত্তর প্রয়োজন', 'warning');
                     return;
                 }
                 
                 questionData.options = {
-                    A: optionA,
-                    B: optionB,
-                    C: optionC,
-                    D: optionD
+                    '1': option1,
+                    '2': option2,
+                    '3': option3,
+                    '4': option4
                 };
                 questionData.answer = answer;
             } else if (type === 'written') {
@@ -2376,7 +2849,9 @@
                     displayQuestions();
                 }
                 await loadDashboardStats();
-                await loadRecentQuestions();
+                await loadSubjectStats();
+                await loadQuestionsChart();
+                await loadRecentActivity();
             } catch (error) {
                 console.error('Error saving question:', error);
                 showAlert('প্রশ্ন সংরক্ষণ করতে সমস্যা হয়েছে', 'danger');
@@ -2394,7 +2869,7 @@
                         question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         (question.answer && question.answer.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (question.subjectName && question.subjectName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (question.exam && question.exam.toLowerCase().includes(searchTerm.toLowerCase()))
+                        (question.note && question.note.toLowerCase().includes(searchTerm.toLowerCase()))
                     );
                 });
                 
@@ -2405,13 +2880,17 @@
         }
 
         function displaySearchResults(results) {
-            const container = document.getElementById('recent-questions');
+            const container = document.getElementById('subject-stats').parentElement.parentElement;
+            const originalContent = container.innerHTML;
             
             if (results.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-search"></i>
                         <p>"${document.getElementById('global-search').value}" এর জন্য কোনো ফলাফল পাওয়া যায়নি</p>
+                        <button class="btn btn-sm btn-outline-secondary mt-3" onclick="loadDashboardData()">
+                            <i class="fas fa-times me-1"></i>সরিয়ে ফেলুন
+                        </button>
                     </div>
                 `;
                 return;
@@ -2420,7 +2899,7 @@
             let html = `
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6>"${document.getElementById('global-search').value}" - ${results.length}টি ফলাফল</h6>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="loadRecentQuestions()">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="loadDashboardData()">
                         <i class="fas fa-times me-1"></i>সরিয়ে ফেলুন
                     </button>
                 </div>
@@ -2428,7 +2907,7 @@
             
             results.slice(0, 10).forEach(question => {
                 html += `
-                    <div class="question-item">
+                    <div class="question-item mb-3">
                         <div class="question-header">
                             <div>
                                 <span class="badge ${question.type === 'mcq' ? 'badge-mcq' : 'badge-written'}">
@@ -2436,17 +2915,14 @@
                                 </span>
                                 <strong class="ms-2">${question.subjectName || 'Unknown Subject'}</strong>
                             </div>
-                            <small class="text-muted">
-                                ${new Date(question.createdAt?.toDate()).toLocaleDateString('bn-BD')}
-                            </small>
                         </div>
                         <div class="question-text">
                             ${highlightText(question.question, document.getElementById('global-search').value)}
                         </div>
                         <div class="question-meta">
-                            ${question.exam ? `<span><i class="fas fa-university me-1"></i>${question.exam}</span>` : ''}
-                            ${question.year ? `<span><i class="fas fa-calendar me-1"></i>${question.year}</span>` : ''}
+                            ${question.note ? `<span><i class="fas fa-sticky-note me-1"></i>${question.note}</span>` : ''}
                             <span><i class="fas fa-star me-1"></i>${question.marks || 1} মার্কস</span>
+                            <span><i class="fas fa-clock me-1"></i>${new Date(question.createdAt?.toDate()).toLocaleDateString('bn-BD')}</span>
                         </div>
                     </div>
                 `;
@@ -2463,6 +2939,9 @@
             }
             
             container.innerHTML = html;
+            
+            // Store original content for restoration
+            container.setAttribute('data-original-content', originalContent);
         }
 
         function highlightText(text, searchTerm) {
@@ -2476,6 +2955,7 @@
         async function uploadCSV() {
             const fileInput = document.getElementById('csv-file');
             const subjectId = document.getElementById('csv-subject').value;
+            const type = document.getElementById('csv-type').value;
             
             if (!fileInput.files[0]) {
                 showAlert('দয়া করে একটি CSV ফাইল নির্বাচন করুন', 'warning');
@@ -2484,6 +2964,11 @@
             
             if (!subjectId) {
                 showAlert('দয়া করে একটি বিষয় নির্বাচন করুন', 'warning');
+                return;
+            }
+            
+            if (!type) {
+                showAlert('দয়া করে প্রশ্নের ধরন নির্বাচন করুন', 'warning');
                 return;
             }
             
@@ -2502,7 +2987,7 @@
                 header: true,
                 skipEmptyLines: true,
                 complete: async function(results) {
-                    await processUploadData(results.data, subject, 'CSV');
+                    await processUploadData(results.data, subject, type, 'CSV');
                     fileInput.value = '';
                 },
                 error: function(error) {
@@ -2516,6 +3001,7 @@
         async function uploadExcel() {
             const fileInput = document.getElementById('excel-file');
             const subjectId = document.getElementById('excel-subject').value;
+            const type = document.getElementById('excel-type').value;
             
             if (!fileInput.files[0]) {
                 showAlert('দয়া করে একটি Excel ফাইল নির্বাচন করুন', 'warning');
@@ -2524,6 +3010,11 @@
             
             if (!subjectId) {
                 showAlert('দয়া করে একটি বিষয় নির্বাচন করুন', 'warning');
+                return;
+            }
+            
+            if (!type) {
+                showAlert('দয়া করে প্রশ্নের ধরন নির্বাচন করুন', 'warning');
                 return;
             }
             
@@ -2546,7 +3037,7 @@
                     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                     const jsonData = XLSX.utils.sheet_to_json(firstSheet);
                     
-                    await processUploadData(jsonData, subject, 'Excel');
+                    await processUploadData(jsonData, subject, type, 'Excel');
                     fileInput.value = '';
                 } catch (error) {
                     console.error('Excel parsing error:', error);
@@ -2595,7 +3086,7 @@
             }, 3000);
         }
 
-        async function processUploadData(data, subject, source) {
+        async function processUploadData(data, subject, questionType, source) {
             let successCount = 0;
             let errorCount = 0;
             const totalItems = data.length;
@@ -2604,54 +3095,60 @@
                 const item = data[i];
                 
                 try {
-                    // Parse question data
-                    const questionText = item.question || item.প্রশ্ন || '';
-                    const type = (item.type || item.ধরন || '').toLowerCase();
-                    const options = item.options || item.অপশন || '';
-                    const answer = item.answer || item.উত্তর || '';
-                    const exam = item.exam || item.পরীক্ষা || document.getElementById(`${source.toLowerCase()}-exam`).value || '';
-                    const year = item.year || item.বছর || '';
-                    const marks = item.marks || item.মার্কস || 1;
+                    // Parse question data based on format
+                    let questionText, answer, note, options = {};
                     
-                    if (!questionText || !type) {
-                        errorCount++;
-                        continue;
+                    if (questionType === 'mcq') {
+                        // Parse MCQ format
+                        questionText = item.প্রশ্ন || item.question || '';
+                        note = item.নোট || item.note || '';
+                        
+                        // Get options
+                        const option1 = item['অপশন ১'] || item['option1'] || item['option 1'] || '';
+                        const option2 = item['অপশন ২'] || item['option2'] || item['option 2'] || '';
+                        const option3 = item['অপশন ৩'] || item['option3'] || item['option 3'] || '';
+                        const option4 = item['অপশন ৪'] || item['option4'] || item['option 4'] || '';
+                        
+                        // Get correct answer (1, 2, 3, or 4)
+                        const correctAnswer = item['সঠিক উত্তর অপশন'] || item['correct answer'] || item['answer'] || '';
+                        
+                        if (!questionText || !option1 || !option2 || !option3 || !option4 || !correctAnswer) {
+                            errorCount++;
+                            continue;
+                        }
+                        
+                        options = {
+                            '1': option1,
+                            '2': option2,
+                            '3': option3,
+                            '4': option4
+                        };
+                        answer = correctAnswer.toString();
+                    } else {
+                        // Parse Written format
+                        questionText = item.প্রশ্ন || item.question || '';
+                        answer = item.উত্তর || item.answer || '';
+                        note = item.নোট || item.note || '';
+                        
+                        if (!questionText || !answer) {
+                            errorCount++;
+                            continue;
+                        }
                     }
                     
                     const questionData = {
                         subjectId: subject.id,
                         subjectName: subject.name,
-                        type: type === 'mcq' ? 'mcq' : 'written',
+                        type: questionType,
                         question: questionText,
-                        exam: exam || null,
-                        year: year ? parseInt(year) : null,
-                        marks: marks ? parseInt(marks) : 1,
+                        note: note || null,
+                        marks: 1, // Default marks
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     };
                     
-                    if (type === 'mcq') {
-                        let parsedOptions = {};
-                        
-                        if (typeof options === 'string') {
-                            try {
-                                parsedOptions = JSON.parse(options);
-                            } catch {
-                                // If not JSON, try to parse as simple string
-                                const optionLetters = ['A', 'B', 'C', 'D'];
-                                const optionValues = options.split(',').map(v => v.trim());
-                                
-                                optionLetters.forEach((letter, index) => {
-                                    if (optionValues[index]) {
-                                        parsedOptions[letter] = optionValues[index];
-                                    }
-                                });
-                            }
-                        } else if (typeof options === 'object') {
-                            parsedOptions = options;
-                        }
-                        
-                        questionData.options = parsedOptions;
+                    if (questionType === 'mcq') {
+                        questionData.options = options;
                         questionData.answer = answer;
                     } else {
                         questionData.answer = answer;
@@ -2688,93 +3185,78 @@
                 loadSubjects();
                 loadQuestions();
                 loadDashboardStats();
-                loadRecentQuestions();
+                loadSubjectStats();
+                loadQuestionsChart();
+                loadRecentActivity();
                 
                 // Hide progress after delay
                 hideUploadProgress();
             }, 1000);
         }
 
-        // Export functions
-        async function exportToCSV() {
-            const subjectId = document.getElementById('export-subject-csv').value;
-            const type = document.getElementById('export-type-csv').value;
-            const exam = document.getElementById('export-exam-csv').value;
+        // Template download functions
+        function downloadCSVTemplate() {
+            const templateData = [
+                {
+                    প্রশ্ন: "বাংলাদেশের রাজধানী কী?",
+                    "অপশন ১": "ঢাকা",
+                    "অপশন ২": "চট্টগ্রাম",
+                    "অপশন ৩": "সিলেট",
+                    "অপশন ৪": "রাজশাহী",
+                    "সঠিক উত্তর অপশন": "1",
+                    নোট: "সাধারণ জ্ঞান"
+                },
+                {
+                    প্রশ্ন: "বাংলাদেশের জাতীয় ফুল কী?",
+                    "অপশন ১": "শাপলা",
+                    "অপশন ২": "গোলাপ",
+                    "অপশন ৩": "কমল",
+                    "অপশন ৪": "বেলি",
+                    "সঠিক উত্তর অপশন": "1",
+                    নোট: "সাধারণ জ্ঞান"
+                }
+            ];
             
-            await exportData('csv', subjectId, type, exam);
+            const csv = Papa.unparse(templateData);
+            downloadFile(csv, 'mcq_template.csv', 'text/csv;charset=utf-8;');
+            
+            // Also create written template
+            const writtenTemplate = [
+                {
+                    প্রশ্ন: "মুক্তিযুদ্ধ কত সালে হয়েছিল?",
+                    উত্তর: "১৯৭১ সালে বাংলাদেশের মুক্তিযুদ্ধ হয়েছিল",
+                    নোট: "জাতীয় বিষয়"
+                }
+            ];
+            
+            // Show alert with options
+            showAlert('MCQ টেমপ্লেট ডাউনলোড হয়েছে। Written টেমপ্লেটের জন্য নিচের ট্যাব ব্যবহার করুন।', 'success');
         }
 
-        async function exportToExcel() {
-            const subjectId = document.getElementById('export-subject-excel').value;
-            const type = document.getElementById('export-type-excel').value;
-            const exam = document.getElementById('export-exam-excel').value;
+        function downloadExcelTemplate() {
+            // Create MCQ template workbook
+            const mcqData = [
+                ["প্রশ্ন", "অপশন ১", "অপশন ২", "অপশন ৩", "অপশন ৪", "সঠিক উত্তর অপশন", "নোট"],
+                ["বাংলাদেশের রাজধানী কী?", "ঢাকা", "চট্টগ্রাম", "সিলেট", "রাজশাহী", "1", "সাধারণ জ্ঞান"],
+                ["বাংলাদেশের জাতীয় ফুল কী?", "শাপলা", "গোলাপ", "কমল", "বেলি", "1", "সাধারণ জ্ঞান"]
+            ];
             
-            await exportData('excel', subjectId, type, exam);
-        }
-
-        async function exportData(format, subjectId, questionType, examFilter) {
-            try {
-                let query = questionsCollection;
-                
-                // Apply filters
-                if (subjectId) {
-                    query = query.where('subjectId', '==', subjectId);
-                }
-                if (questionType) {
-                    query = query.where('type', '==', questionType);
-                }
-                
-                const snapshot = await query.get();
-                const data = [];
-                
-                snapshot.forEach(doc => {
-                    const item = doc.data();
-                    
-                    // Apply exam filter if specified
-                    if (examFilter && (!item.exam || !item.exam.toLowerCase().includes(examFilter.toLowerCase()))) {
-                        return;
-                    }
-                    
-                    const exportItem = {
-                        subject: item.subjectName,
-                        type: item.type,
-                        question: item.question,
-                        exam: item.exam || '',
-                        year: item.year || '',
-                        marks: item.marks || 1,
-                        createdAt: item.createdAt?.toDate().toISOString().split('T')[0]
-                    };
-                    
-                    if (item.type === 'mcq') {
-                        exportItem.options = item.options ? JSON.stringify(item.options) : '';
-                        exportItem.answer = item.answer || '';
-                    } else {
-                        exportItem.answer = item.answer || '';
-                    }
-                    
-                    data.push(exportItem);
-                });
-                
-                if (data.length === 0) {
-                    showAlert('ডাউনলোড করার জন্য কোন ডেটা নেই', 'warning');
-                    return;
-                }
-                
-                if (format === 'csv') {
-                    const csv = Papa.unparse(data);
-                    downloadFile(csv, `questions_${new Date().getTime()}.csv`, 'text/csv;charset=utf-8;');
-                } else if (format === 'excel') {
-                    const worksheet = XLSX.utils.json_to_sheet(data);
-                    const workbook = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
-                    XLSX.writeFile(workbook, `questions_${new Date().getTime()}.xlsx`);
-                }
-                
-                showAlert(`${data.length}টি প্রশ্ন ${format.toUpperCase()} ফরম্যাটে ডাউনলোড করা হয়েছে`, 'success');
-            } catch (error) {
-                console.error('Error exporting data:', error);
-                showAlert('ডেটা ডাউনলোড করতে সমস্যা হয়েছে', 'danger');
-            }
+            const mcqWorksheet = XLSX.utils.aoa_to_sheet(mcqData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, mcqWorksheet, 'MCQ Template');
+            
+            // Create Written template sheet
+            const writtenData = [
+                ["প্রশ্ন", "উত্তর", "নোট"],
+                ["মুক্তিযুদ্ধ কত সালে হয়েছিল?", "১৯৭১ সালে বাংলাদেশের মুক্তিযুদ্ধ হয়েছিল", "জাতীয় বিষয়"]
+            ];
+            
+            const writtenWorksheet = XLSX.utils.aoa_to_sheet(writtenData);
+            XLSX.utils.book_append_sheet(workbook, writtenWorksheet, 'Written Template');
+            
+            XLSX.writeFile(workbook, 'question_templates.xlsx');
+            
+            showAlert('টেমপ্লেট ডাউনলোড হয়েছে। দুটি শীট আছে: MCQ এবং Written', 'success');
         }
 
         function downloadFile(content, filename, mimeType) {
@@ -2787,67 +3269,6 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-
-        // Template download functions
-        function downloadCSVTemplate() {
-            const templateData = [
-                {
-                    question: "বাংলাদেশের রাজধানীর নাম কী?",
-                    type: "mcq",
-                    options: '{"A": "ঢাকা", "B": "চট্টগ্রাম", "C": "সিলেট", "D": "রাজশাহী"}',
-                    answer: "A",
-                    exam: "ঢাবি এডমিশন",
-                    year: "2023",
-                    marks: "1"
-                },
-                {
-                    question: "মুক্তিযুদ্ধ কত সালে হয়েছিল?",
-                    type: "written",
-                    options: "",
-                    answer: "১৯৭১ সালে",
-                    exam: "রাবি এডমিশন",
-                    year: "2022",
-                    marks: "5"
-                }
-            ];
-            
-            const csv = Papa.unparse(templateData);
-            downloadFile(csv, 'question_template.csv', 'text/csv;charset=utf-8;');
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('templateModal'));
-            modal.hide();
-        }
-
-        function downloadExcelTemplate() {
-            const templateData = [
-                {
-                    question: "বাংলাদেশের রাজধানীর নাম কী?",
-                    type: "mcq",
-                    options: '{"A": "ঢাকা", "B": "চট্টগ্রাম", "C": "সিলেট", "D": "রাজশাহী"}',
-                    answer: "A",
-                    exam: "ঢাবি এডমিশন",
-                    year: "2023",
-                    marks: "1"
-                },
-                {
-                    question: "মুক্তিযুদ্ধ কত সালে হয়েছিল?",
-                    type: "written",
-                    options: "",
-                    answer: "১৯৭১ সালে",
-                    exam: "রাবি এডমিশন",
-                    year: "2022",
-                    marks: "5"
-                }
-            ];
-            
-            const worksheet = XLSX.utils.json_to_sheet(templateData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
-            XLSX.writeFile(workbook, 'question_template.xlsx');
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('templateModal'));
-            modal.hide();
         }
     </script>
 </body>
