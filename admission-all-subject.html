@@ -3,30 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eProstutiBD - বাংলাদেশের #১ প্রশ্ন ব্যাংক প্ল্যাটফর্ম</title>
+    <title>eProstutiBD - বাংলাদেশের #১ প্রশ্ন ব্যাংক</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় ভর্তি পরীক্ষার প্রশ্ন সমাধান।">
-    <meta name="keywords" content="প্রশ্ন ব্যাংক, এডমিশন প্রশ্ন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় প্রশ্ন, MCQ প্রশ্ন, Written প্রশ্ন">
+    <meta name="description" content="বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম। এডমিশন, চাকরি, IELTS প্রস্তুতির জন্য হাজার হাজার MCQ ও Written প্রশ্ন।">
+    <meta name="keywords" content="প্রশ্ন ব্যাংক, এডমিশন প্রশ্ন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় প্রশ্ন, MCQ, Written, বাংলাদেশ প্রশ্ন">
     <meta name="author" content="eProstutiBD">
-    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph Tags -->
+    <!-- Open Graph -->
     <meta property="og:title" content="eProstutiBD - প্রশ্ন ব্যাংক">
     <meta property="og:description" content="বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://eprostutibd.com">
-    <meta property="og:image" content="https://eprostutibd.com/logo.png">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://eprostutibd.com">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Kalpurush&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -45,7 +40,7 @@
         }
         
         body {
-            font-family: 'Hind Siliguri', 'Kalpurush', sans-serif;
+            font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
             background-color: #f8fafc;
             color: #1f2937;
             line-height: 1.6;
@@ -58,12 +53,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
         }
         
         .logo {
@@ -100,7 +89,7 @@
         }
         
         /* Navigation */
-        .main-nav .nav-link {
+        .nav-link {
             color: var(--dark) !important;
             font-weight: 500;
             padding: 12px 20px !important;
@@ -109,12 +98,12 @@
             margin: 0 5px;
         }
         
-        .main-nav .nav-link:hover {
+        .nav-link:hover {
             background: rgba(37, 99, 235, 0.1);
             color: var(--primary) !important;
         }
         
-        .main-nav .nav-link.active {
+        .nav-link.active {
             background: var(--primary);
             color: white !important;
         }
@@ -128,93 +117,98 @@
             color: var(--dark);
         }
         
-        /* Hero Section */
+        /* Hero Section - আগের মতো */
         .hero-section {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
             background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            margin-bottom: 40px;
         }
         
         .hero-title {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.2;
         }
         
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.9;
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 700px;
         }
         
-        .hero-search {
+        .hero-search-box {
             max-width: 600px;
             margin-top: 30px;
         }
         
-        .hero-search input {
-            padding: 15px 20px;
-            border-radius: 10px;
+        .hero-search-box input {
+            padding: 15px 50px 15px 20px;
+            border-radius: 30px;
             border: none;
             font-size: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         
-        .hero-search button {
+        .hero-search-box button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             background: var(--secondary);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .hero-search button:hover {
-            background: #0da271;
-            transform: translateY(-2px);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Quick Links Section */
         .quick-links-section {
-            padding: 40px 0;
+            padding: 60px 0;
             background: white;
         }
         
         .section-title {
             color: var(--dark);
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             text-align: center;
+            position: relative;
+            padding-bottom: 15px;
         }
         
-        .quick-links-container {
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .quick-links-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
         
         .quick-link-card {
             background: var(--light);
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
             text-decoration: none;
             color: var(--dark);
@@ -223,51 +217,56 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
         }
         
         .quick-link-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
             text-decoration: none;
             color: var(--primary);
         }
         
         .quick-link-icon {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, var(--primary), #3b82f6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 32px;
+            margin-bottom: 25px;
         }
         
         .quick-link-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .quick-link-desc {
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.6;
         }
         
         /* Subjects Section */
         .subjects-section {
-            padding: 60px 0;
+            padding: 80px 0;
+            background: #f8fafc;
         }
         
         .subjects-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
         
         .subjects-filter {
@@ -277,7 +276,7 @@
         }
         
         .filter-btn {
-            padding: 10px 20px;
+            padding: 10px 25px;
             background: white;
             border: 2px solid #e5e7eb;
             border-radius: 25px;
@@ -292,21 +291,22 @@
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            transform: translateY(-2px);
         }
         
         /* Subjects Grid */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
             margin-top: 30px;
         }
         
         .subject-card {
             background: white;
             border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             transition: all 0.3s;
             text-decoration: none;
             color: inherit;
@@ -317,8 +317,8 @@
         }
         
         .subject-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             text-decoration: none;
             color: inherit;
             border-color: var(--primary);
@@ -335,38 +335,38 @@
         }
         
         .subject-icon {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, var(--primary), #3b82f6);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 28px;
+            margin-bottom: 25px;
         }
         
         .subject-name {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: var(--dark);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             line-height: 1.3;
         }
         
         .subject-description {
             color: var(--gray);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
+            font-size: 1rem;
+            margin-bottom: 25px;
             min-height: 40px;
         }
         
         .subject-stats {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            padding-top: 20px;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 25px;
             border-top: 1px solid #e5e7eb;
         }
         
@@ -378,13 +378,13 @@
         }
         
         .stat-count {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--dark);
         }
         
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--gray);
             margin-top: 5px;
         }
@@ -399,26 +399,41 @@
         
         /* Stats Section */
         .stats-section {
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            background: linear-gradient(135deg, var(--primary), #1e40af);
             color: white;
-            padding: 80px 0;
-            margin: 60px 0;
+            padding: 100px 0;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
         }
         
         .stat-box {
             text-align: center;
             padding: 30px;
+            position: relative;
+            z-index: 1;
         }
         
         .stat-number {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: white;
         }
         
         .stat-text {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.9;
         }
         
@@ -426,7 +441,7 @@
         .main-footer {
             background: var(--dark);
             color: white;
-            padding: 60px 0 20px;
+            padding: 80px 0 30px;
         }
         
         .footer-logo {
@@ -441,7 +456,7 @@
         .footer-section h4 {
             color: white;
             margin-bottom: 25px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             position: relative;
             padding-bottom: 10px;
         }
@@ -462,27 +477,27 @@
         }
         
         .footer-links li {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .footer-links a {
             color: #d1d5db;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
         }
         
         .footer-links a:hover {
             color: white;
-            padding-left: 5px;
+            padding-left: 8px;
         }
         
         .copyright {
             text-align: center;
-            padding-top: 30px;
-            margin-top: 30px;
+            padding-top: 40px;
+            margin-top: 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #9ca3af;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         /* Loading */
@@ -490,13 +505,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 300px;
+            min-height: 400px;
         }
         
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(37, 99, 235, 0.2);
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(37, 99, 235, 0.2);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -509,17 +524,27 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: var(--gray);
         }
         
         .empty-state i {
-            font-size: 4rem;
+            font-size: 5rem;
             color: #e5e7eb;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         /* Responsive */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .quick-links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         @media (max-width: 768px) {
             .mobile-menu-btn {
                 display: block;
@@ -551,6 +576,10 @@
                 font-size: 2rem;
             }
             
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
             .subjects-grid {
                 grid-template-columns: 1fr;
             }
@@ -562,7 +591,7 @@
             }
             
             .stat-number {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
         }
         
@@ -572,11 +601,11 @@
             }
             
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             
-            .quick-links-container {
-                grid-template-columns: 1fr;
+            .quick-link-card {
+                padding: 30px 20px;
             }
         }
         
@@ -594,17 +623,15 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-4 col-6">
-                    <div class="logo-container">
-                        <a href="/" class="logo">
-                            <div class="logo-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="logo-text">
-                                <h3>eProstutiBD</h3>
-                                <p>প্রশ্নের বিশ্বস্ত ভাণ্ডার</p>
-                            </div>
-                        </a>
-                    </div>
+                    <a href="/" class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h3>eProstutiBD</h3>
+                            <p>প্রশ্নের বিশ্বস্ত ভাণ্ডার</p>
+                        </div>
+                    </a>
                 </div>
                 
                 <div class="col-lg-9 col-md-8 col-6 text-end">
@@ -612,111 +639,120 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     
-                    <nav class="main-nav" id="mainNav">
-                        <ul class="nav nav-menu">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/">
-                                    <i class="fas fa-home me-2"></i> হোম
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admission-assistant">
-                                    <i class="fas fa-university me-2"></i> এডমিশন অ্যাসিস্ট্যান্ট
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/job-assistant">
-                                    <i class="fas fa-briefcase me-2"></i> জব অ্যাসিস্ট্যান্ট
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/ielts-assistant">
-                                    <i class="fas fa-language me-2"></i> IELTS অ্যাসিস্ট্যান্ট
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/current-affairs">
-                                    <i class="fas fa-newspaper me-2"></i> কারেন্ট অ্যাফেয়ার্স
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/notice">
-                                    <i class="fas fa-bullhorn me-2"></i> নোটিশ
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/career">
-                                    <i class="fas fa-chart-line me-2"></i> ক্যারিয়ার
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/blog">
-                                    <i class="fas fa-blog me-2"></i> ব্লগ
-                                </a>
-                            </li>
-                        </ul>
+                    <nav class="navbar navbar-expand-lg p-0" id="mainNav">
+                        <div class="navbar-collapse">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/">
+                                        <i class="fas fa-home me-2"></i> হোম
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admission-assistant">
+                                        <i class="fas fa-university me-2"></i> এডমিশন অ্যাসিস্ট্যান্ট
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/job-assistant">
+                                        <i class="fas fa-briefcase me-2"></i> জব অ্যাসিস্ট্যান্ট
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/ielts-assistant">
+                                        <i class="fas fa-language me-2"></i> IELTS অ্যাসিস্ট্যান্ট
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/current-affairs">
+                                        <i class="fas fa-newspaper me-2"></i> কারেন্ট অ্যাফেয়ার্স
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/notice">
+                                        <i class="fas fa-bullhorn me-2"></i> নোটিশ
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/career">
+                                        <i class="fas fa-chart-line me-2"></i> ক্যারিয়ার
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/blog">
+                                        <i class="fas fa-blog me-2"></i> ব্লগ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section - আগের মতো -->
     <section class="hero-section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="hero-title">বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম</h1>
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="hero-title">বাংলাদেশের #১ প্রশ্ন ব্যাংক প্ল্যাটফর্ম</h1>
                     <p class="hero-subtitle">
-                        এডমিশন, চাকরি প্রস্তুতি, বিশ্ববিদ্যালয় ভর্তি পরীক্ষার জন্য হাজার হাজার প্রশ্নের সংগ্রহ। 
-                        একই স্থানে পাবেন সব ধরনের MCQ ও Written প্রশ্ন।
+                        এডমিশন প্রস্তুতি, চাকরি প্রস্তুতি, IELTS প্রস্তুতি এবং কারেন্ট অ্যাফেয়ার্সের জন্য সেরা প্রশ্ন সংগ্রহ। 
+                        হাজার হাজার MCQ ও Written প্রশ্নের বিশাল সংগ্রহ।
                     </p>
                     
-                    <div class="hero-search d-flex gap-2">
-                        <input type="text" class="form-control flex-grow-1" id="searchInput" 
+                    <div class="hero-search-box position-relative">
+                        <input type="text" class="form-control w-100" id="searchInput" 
                                placeholder="আপনি কোন বিষয়ে প্রশ্ন খুঁজছেন?">
                         <button class="btn" id="searchBtn">
-                            <i class="fas fa-search me-2"></i> খুঁজুন
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
-                </div>
-                
-                <div class="col-lg-6 text-center">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 400'%3E%3Crect width='500' height='400' fill='%233b82f6'/%3E%3Ctext x='250' y='200' font-family='Arial' font-size='40' fill='white' text-anchor='middle'%3E📚 Question Bank%3C/text%3E%3C/svg%3E" 
-                         alt="Question Bank Illustration" style="max-width: 100%; border-radius: 10px;">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Quick Links Section -->
+    <!-- Quick Links Section - উন্নত করা -->
     <section class="quick-links-section">
         <div class="container">
             <h2 class="section-title">দ্রুত অ্যাক্সেস</h2>
             
-            <div class="quick-links-container">
+            <div class="quick-links-grid">
+                <!-- বিষয় ভিত্তিক প্রশ্ন -->
                 <a href="#subjects" class="quick-link-card">
                     <div class="quick-link-icon">
-                        <i class="fas fa-book"></i>
+                        <i class="fas fa-book-open"></i>
                     </div>
                     <h3 class="quick-link-title">বিষয় ভিত্তিক প্রশ্ন</h3>
-                    <p class="quick-link-desc">বিভিন্ন বিষয়ের উপর MCQ ও Written প্রশ্ন</p>
+                    <p class="quick-link-desc">
+                        বিভিন্ন বিষয়ের উপর হাজার হাজার MCQ ও Written প্রশ্নের সংগ্রহ। 
+                        গণিত, ইংরেজি, বাংলা, সাধারণ জ্ঞান সহ সকল বিষয়ের প্রশ্ন।
+                    </p>
                 </a>
                 
-                <a href="/all-questions" class="quick-link-card">
+                <!-- সকল প্রশ্ন ব্যাংক -->
+                <a href="/all-questions.html" class="quick-link-card">
                     <div class="quick-link-icon">
-                        <i class="fas fa-question-circle"></i>
+                        <i class="fas fa-database"></i>
                     </div>
                     <h3 class="quick-link-title">সকল প্রশ্ন ব্যাংক</h3>
-                    <p class="quick-link-desc">সব ধরনের প্রশ্নের সম্পূর্ণ সংগ্রহ</p>
+                    <p class="quick-link-desc">
+                        আমাদের সম্পূর্ণ প্রশ্ন ব্যাংক একসাথে দেখুন। 
+                        ১০,০০০+ প্রশ্নের বিশাল সংগ্রহ থেকে আপনার প্রয়োজনীয় প্রশ্ন খুঁজে নিন।
+                    </p>
                 </a>
                 
-                <a href="/university-questions" class="quick-link-card">
+                <!-- বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন -->
+                <a href="/university-questions.html" class="quick-link-card">
                     <div class="quick-link-icon">
                         <i class="fas fa-university"></i>
                     </div>
                     <h3 class="quick-link-title">বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন</h3>
-                    <p class="quick-link-desc">বিভিন্ন বিশ্ববিদ্যালয়ের প্রশ্নপত্র</p>
+                    <p class="quick-link-desc">
+                        ঢাবি, রাবি, জাবি, কুয়েট সহ বিভিন্ন বিশ্ববিদ্যালয়ের ভর্তি পরীক্ষার প্রশ্ন। 
+                        বিগত বছরের প্রশ্নপত্র এবং সমাধান।
+                    </p>
                 </a>
             </div>
         </div>
@@ -731,7 +767,7 @@
                 <div class="subjects-filter">
                     <button class="filter-btn active" data-filter="all">সকল</button>
                     <button class="filter-btn" data-filter="popular">জনপ্রিয়</button>
-                    <button class="filter-btn" data-filter="recent">সাম্প্রতিক</button>
+                    <button class="filter-btn" data-filter="new">সাম্প্রতিক</button>
                 </div>
             </div>
             
@@ -788,10 +824,9 @@
                     </p>
                     
                     <div class="mt-4">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 
@@ -812,11 +847,11 @@
                     <div class="footer-section">
                         <h4>সেবাসমূহ</h4>
                         <ul class="footer-links">
-                            <li><a href="/admission">এডমিশন প্রস্তুতি</a></li>
-                            <li><a href="/job">চাকরি প্রস্তুতি</a></li>
-                            <li><a href="/ielts">IELTS প্রস্তুতি</a></li>
-                            <li><a href="/university">বিশ্ববিদ্যালয়</a></li>
-                            <li><a href="/model-test">মডেল টেস্ট</a></li>
+                            <li><a href="/admission-assistant">এডমিশন প্রস্তুতি</a></li>
+                            <li><a href="/job-assistant">চাকরি প্রস্তুতি</a></li>
+                            <li><a href="/ielts-assistant">IELTS প্রস্তুতি</a></li>
+                            <li><a href="/university-questions">বিশ্ববিদ্যালয়</a></li>
+                            <li><a href="/model-tests">মডেল টেস্ট</a></li>
                         </ul>
                     </div>
                 </div>
@@ -886,13 +921,13 @@
             // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                mainNav.classList.toggle('active');
+                mainNav.classList.toggle('show');
             });
 
             // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (!mobileMenuBtn.contains(e.target) && !mainNav.contains(e.target)) {
-                    mainNav.classList.remove('active');
+                    mainNav.classList.remove('show');
                 }
             });
 
@@ -919,7 +954,7 @@
                 // Clear container and show loading
                 subjectsContainer.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 
-                // Get subjects from Firestore - একবারই লোড হবে
+                // Get subjects from Firestore - শুধু একবার
                 const subjectsSnapshot = await db.collection('admission_subjects').get();
                 
                 if (subjectsSnapshot.empty) {
@@ -928,23 +963,22 @@
                 }
 
                 subjects = [];
-                const subjectIds = new Set(); // Duplicate চেক করার জন্য
+                const processedIds = new Set(); // Duplicate প্রতিরোধ
                 
-                // Process each subject
+                // Process subjects one by one
                 for (const doc of subjectsSnapshot.docs) {
                     const subjectId = doc.id;
                     
-                    // Duplicate চেক করুন
-                    if (subjectIds.has(subjectId)) {
-                        console.log('Duplicate subject skipped:', subjectId);
+                    // Check if already processed
+                    if (processedIds.has(subjectId)) {
+                        console.log('Skipping duplicate:', subjectId);
                         continue;
                     }
                     
-                    subjectIds.add(subjectId);
-                    
+                    processedIds.add(subjectId);
                     const subjectData = doc.data();
                     
-                    // Get question counts
+                    // Get question counts for this subject
                     const counts = await getQuestionCounts(subjectId);
                     
                     // Add subject to array
@@ -959,8 +993,10 @@
                     });
                 }
                 
-                // Sort by total questions (descending)
-                subjects.sort((a, b) => b.totalCount - a.totalCount);
+                console.log('Loaded subjects:', subjects.length, subjects);
+                
+                // Sort by name (alphabetically)
+                subjects.sort((a, b) => a.name.localeCompare(b.name));
                 
                 // Display subjects
                 displayedSubjects = [...subjects];
@@ -972,9 +1008,9 @@
             } catch (error) {
                 console.error('Error loading subjects:', error);
                 subjectsContainer.innerHTML = `
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger p-4">
                         <i class="fas fa-exclamation-triangle me-2"></i>
-                        বিষয় লোড করতে সমস্যা হয়েছে
+                        বিষয় লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন।
                     </div>
                 `;
             }
@@ -1011,9 +1047,13 @@
                 return;
             }
 
+            console.log('Displaying subjects:', subjectsToDisplay.length);
+            
             let html = '<div class="subjects-grid">';
             
-            subjectsToDisplay.forEach(subject => {
+            subjectsToDisplay.forEach((subject, index) => {
+                console.log(`Subject ${index + 1}:`, subject.name, 'ID:', subject.id);
+                
                 const icon = getSubjectIcon(subject.name);
                 
                 html += `
@@ -1098,7 +1138,7 @@
                 // Sort by total questions and take top 6
                 filtered.sort((a, b) => b.totalCount - a.totalCount);
                 filtered = filtered.slice(0, 6);
-            } else if (filterType === 'recent') {
+            } else if (filterType === 'new') {
                 // Sort by creation date
                 filtered.sort((a, b) => b.createdAt - a.createdAt);
                 filtered = filtered.slice(0, 6);
@@ -1159,7 +1199,7 @@
                 totalWritten += subject.writtenCount;
             });
             
-            // Animate numbers
+            // Update numbers with animation
             animateNumber('totalQuestions', totalQuestions);
             animateNumber('totalMCQ', totalMCQ);
             animateNumber('totalWritten', totalWritten);
@@ -1187,15 +1227,9 @@
 
         function trackSubjectClick(subjectId, subjectName) {
             // For analytics
-            console.log(`Subject clicked: ${subjectName}`);
+            console.log(`Subject clicked: ${subjectName} (ID: ${subjectId})`);
             
-            // You can add Google Analytics or other tracking here
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'subject_click', {
-                    'event_category': 'engagement',
-                    'event_label': subjectName
-                });
-            }
+            // Open in new tab already handled by target="_blank"
         }
 
         function setupRealtimeUpdates() {
@@ -1203,53 +1237,16 @@
             db.collection('admission_subjects').onSnapshot((snapshot) => {
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === 'added') {
-                        console.log('New subject added:', change.doc.data().name);
-                        // Reload subjects
-                        loadSubjects();
-                    }
-                    if (change.type === 'modified') {
-                        console.log('Subject updated:', change.doc.data().name);
-                        // Reload subjects
-                        loadSubjects();
+                        console.log('New subject added from Firebase:', change.doc.data().name);
+                        loadSubjects(); // Reload subjects
                     }
                 });
             });
             
             // Listen for new questions
             db.collection('admission_questions').onSnapshot(() => {
-                // Update when new questions are added
-                loadSubjects();
-            });
-        }
-
-        // Schema.org structured data
-        const structuredData = {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "eProstutiBD",
-            "description": "বাংলাদেশের বৃহত্তম প্রশ্ন ব্যাংক প্ল্যাটফর্ম",
-            "url": "https://eprostutibd.com",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://eprostutibd.com/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-            }
-        };
-
-        // Add structured data to page
-        const script = document.createElement('script');
-        script.type = 'application/ld+json';
-        script.textContent = JSON.stringify(structuredData);
-        document.head.appendChild(script);
-
-        // Service Worker for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(() => {
-                    console.log('Service Worker registered');
-                }).catch(err => {
-                    console.log('Service Worker registration failed:', err);
-                });
+                console.log('Questions updated in Firebase');
+                loadSubjects(); // Reload to update counts
             });
         }
 
