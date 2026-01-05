@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সাবজেক্ট ডিটেইলস - eProstutiBD</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            color: #1a1a1a;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-top {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4361ee;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .subject-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .header-action-btn {
+            background: none;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4361ee;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        .nav-scroll {
+            display: inline-flex;
+            gap: 12px;
+        }
+        
+        .nav-item {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            text-decoration: none;
+            border: 1px solid #dee2e6;
+        }
+        
+        .nav-item.active {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        /* Main Content */
+        .container {
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        
+        /* Subject Info */
+        .subject-info {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .subject-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4361ee;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        /* Question Type Tabs */
+        .type-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .type-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .type-tab.active {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        /* Model Test Button */
+        .model-test-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* Questions Container */
+        .questions-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        /* Question Item */
+        .question-item {
+            padding: 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .question-item:last-child {
+            border-bottom: none;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .question-number {
+            width: 28px;
+            height: 28px;
+            background: #4361ee;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .question-text {
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.4;
+            color: #2c3e50;
+        }
+        
+        /* MCQ Options */
+        .mcq-options {
+            margin-top: 12px;
+            padding-left: 40px;
+        }
+        
+        .option-item {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .option-item.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .option-letter {
+            width: 24px;
+            height: 24px;
+            background: #6c757d;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .option-item.correct .option-letter {
+            background: #28a745;
+        }
+        
+        /* Answer Section */
+        .answer-section {
+            margin-top: 12px;
+            padding: 12px;
+            background: #eef2ff;
+            border-radius: 8px;
+            border-left: 4px solid #4361ee;
+        }
+        
+        .answer-label {
+            font-size: 12px;
+            color: #4361ee;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .answer-text {
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        
+        .exam-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        .page-btn.active {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Loading State */
+        .loading-container {
+            padding: 40px 16px;
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #f0f2f5;
+            border-top-color: #4361ee;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 16px;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        .empty-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f2f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 20px;
+            margin: 0 auto 12px;
+        }
+        
+        /* Bottom Tab Bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .tab-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 8px;
+        }
+        
+        .tab-item {
+            text-align: center;
+            text-decoration: none;
+            color: #6c757d;
+            padding: 6px 0;
+            border-radius: 8px;
+        }
+        
+        .tab-item.active {
+            color: #4361ee;
+        }
+        
+        .tab-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+            display: block;
+        }
+        
+        .tab-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* Model Test Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 16px;
+        }
+        
+        .test-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .test-option {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-option:hover {
+            border-color: #4361ee;
+            background: #eef2ff;
+        }
+        
+        .option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        
+        .option-desc {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        
+        .start-test-btn {
+            width: 100%;
+            padding: 14px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Test Interface */
+        .test-interface {
+            display: none;
+        }
+        
+        .test-header {
+            padding: 16px;
+            background: #4361ee;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .test-timer {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .test-question {
+            padding: 20px;
+        }
+        
+        .test-question-text {
+            font-size: 16px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        .test-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .test-option-btn {
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-option-btn.selected {
+            background: #eef2ff;
+            border-color: #4361ee;
+        }
+        
+        .test-navigation {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Test Result */
+        .test-result {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .result-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #4361ee;
+            margin-bottom: 8px;
+        }
+        
+        .result-label {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .result-stat {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .result-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+        }
+        
+        .result-text {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        /* Utility */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="header-title">
+                <div class="subject-name" id="subjectName">লোড হচ্ছে...</div>
+            </div>
+            <div class="header-actions">
+                <button class="header-action-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="header-action-btn">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="nav-scroll">
+                <a href="academy.html" class="nav-item">একাডেমী</a>
+                <a href="admission.html" class="nav-item active">এডমিশন</a>
+                <a href="job.html" class="nav-item">জব</a>
+                <a href="ielts.html" class="nav-item">IELTS</a>
+                <a href="current-affairs.html" class="nav-item">কারেন্ট এফেয়ার্স</a>
+                <a href="career.html" class="nav-item">ক্যারিয়ার</a>
+                <a href="notice.html" class="nav-item">নোটিশ</a>
+                <a href="blog.html" class="nav-item">ব্লগ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Subject Info -->
+        <div class="subject-info" id="subjectInfo">
+            <div class="subject-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="mcqCount">0</span>
+                    <span class="stat-label">MCQ প্রশ্ন</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="writtenCount">0</span>
+                    <span class="stat-label">Written প্রশ্ন</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCount">0</span>
+                    <span class="stat-label">মোট প্রশ্ন</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Type Tabs -->
+        <div class="type-tabs">
+            <button class="type-tab active" data-type="mcq">MCQ প্রশ্ন</button>
+            <button class="type-tab" data-type="written">Written প্রশ্ন</button>
+        </div>
+
+        <!-- Model Test Button -->
+        <button class="model-test-btn" id="modelTestBtn">
+            <i class="fas fa-clipboard-check"></i> মডেল টেস্ট দিন
+        </button>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer" class="questions-container">
+            <!-- Questions will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>প্রশ্ন লোড হচ্ছে...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h3>কোনো প্রশ্ন পাওয়া যায়নি</h3>
+            <p>এই সাবজেক্টে এখনো কোনো প্রশ্ন যোগ করা হয়নি</p>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination hidden">
+            <!-- Pagination buttons will be added here -->
+        </div>
+    </main>
+
+    <!-- Bottom Tab Bar -->
+    <nav class="tab-bar">
+        <div class="tab-container">
+            <a href="index.html" class="tab-item">
+                <i class="fas fa-home tab-icon"></i>
+                <span class="tab-label">হোম</span>
+            </a>
+            <a href="admission.html" class="tab-item active">
+                <i class="fas fa-book-open tab-icon"></i>
+                <span class="tab-label">এডমিশন</span>
+            </a>
+            <a href="test.html" class="tab-item">
+                <i class="fas fa-clipboard-list tab-icon"></i>
+                <span class="tab-label">টেস্ট</span>
+            </a>
+            <a href="profile.html" class="tab-item">
+                <i class="fas fa-user tab-icon"></i>
+                <span class="tab-label">প্রোফাইল</span>
+            </a>
+            <a href="more.html" class="tab-item">
+                <i class="fas fa-ellipsis-h tab-icon"></i>
+                <span class="tab-label">আরো</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Model Test Modal -->
+    <div class="modal-overlay" id="modelTestModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">মডেল টেস্ট সেটিংস</div>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="test-options">
+                    <div class="test-option" data-time="30" data-questions="10">
+                        <div class="option-title">কুইক টেস্ট</div>
+                        <div class="option-desc">১০ প্রশ্ন - ৩০ মিনিট</div>
+                    </div>
+                    <div class="test-option" data-time="60" data-questions="20">
+                        <div class="option-title">স্ট্যান্ডার্ড টেস্ট</div>
+                        <div class="option-desc">২০ প্রশ্ন - ৬০ মিনিট</div>
+                    </div>
+                    <div class="test-option" data-time="120" data-questions="50">
+                        <div class="option-title">ফুল টেস্ট</div>
+                        <div class="option-desc">৫০ প্রশ্ন - ২ ঘণ্টা</div>
+                    </div>
+                </div>
+                <button class="start-test-btn" id="startTestBtn">টেস্ট শুরু করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Interface -->
+    <div id="testInterface" class="test-interface">
+        <div class="test-header">
+            <div class="test-timer" id="timer">00:00</div>
+            <div id="questionCounter">প্রশ্ন ১/১০</div>
+        </div>
+        
+        <div class="test-question">
+            <div class="test-question-text" id="testQuestionText"></div>
+            <div class="test-options-list" id="testOptionsList"></div>
+        </div>
+        
+        <div class="test-navigation">
+            <button class="nav-btn" id="prevQuestionBtn">পূর্ববর্তী</button>
+            <button class="nav-btn" id="nextQuestionBtn">পরবর্তী</button>
+            <button class="nav-btn" id="submitTestBtn" style="background: #4CAF50;">সাবমিট</button>
+        </div>
+    </div>
+
+    <!-- Test Result Modal -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">টেস্ট রেজাল্ট</div>
+                <button class="close-modal" id="closeResultModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="test-result">
+                    <div class="result-score" id="finalScore">0</div>
+                    <div class="result-label">আপনার স্কোর</div>
+                    
+                    <div class="result-stats">
+                        <div class="result-stat">
+                            <span class="result-number" id="correctCount">0</span>
+                            <span class="result-text">সঠিক উত্তর</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="result-number" id="wrongCount">0</span>
+                            <span class="result-text">ভুল উত্তর</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="result-number" id="totalQuestions">0</span>
+                            <span class="result-text">মোট প্রশ্ন</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="result-number" id="percentage">0%</span>
+                            <span class="result-text">সাফল্য হার</span>
+                        </div>
+                    </div>
+                    
+                    <button class="start-test-btn" onclick="closeResultModal()">ঠিক আছে</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAwkPaGN08b-vA5S_R6XIus9rEuh7U0pY",
+            authDomain: "eprostutibd-9ec31.firebaseapp.com",
+            projectId: "eprostutibd-9ec31",
+            storageBucket: "eprostutibd-9ec31.firebasestorage.app",
+            messagingSenderId: "441646770166",
+            appId: "1:441646770166:web:ba244b681de6e6b1bb49d7",
+            measurementId: "G-E5XHV46Z6B"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global variables
+        let currentSubject = null;
+        let currentType = 'mcq';
+        let currentPage = 1;
+        let questionsPerPage = 20;
+        let allQuestions = [];
+        let filteredQuestions = [];
+        let totalPages = 1;
+        
+        // Model Test variables
+        let testQuestions = [];
+        let currentTestQuestion = 0;
+        let userAnswers = [];
+        let testTimer = null;
+        let testTime = 0;
+
+        // Get subject ID from URL
+        function getSubjectIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('subject');
+        }
+
+        // Load subject details
+        async function loadSubjectDetails() {
+            const subjectId = getSubjectIdFromUrl();
+            if (!subjectId) {
+                window.location.href = 'admission-all-subjects.html';
+                return;
+            }
+
+            try {
+                // Load subject info
+                const subjectDoc = await db.collection('admission_subjects').doc(subjectId).get();
+                if (!subjectDoc.exists) {
+                    window.location.href = 'admission-all-subjects.html';
+                    return;
+                }
+
+                currentSubject = { id: subjectDoc.id, ...subjectDoc.data() };
+                document.getElementById('subjectName').textContent = currentSubject.name;
+
+                // Load questions for this subject
+                await loadQuestions();
+
+            } catch (error) {
+                console.error('Error loading subject:', error);
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('hidden');
+            }
+        }
+
+        // Load questions
+        async function loadQuestions() {
+            try {
+                const subjectId = getSubjectIdFromUrl();
+                
+                // Fetch questions for this subject
+                const snapshot = await db.collection('admission_questions')
+                    .where('subjectId', '==', subjectId)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                allQuestions = [];
+                snapshot.forEach(doc => {
+                    allQuestions.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Calculate counts
+                const mcqCount = allQuestions.filter(q => q.type === 'mcq').length;
+                const writtenCount = allQuestions.filter(q => q.type === 'written').length;
+                const totalCount = allQuestions.length;
+
+                // Update stats
+                document.getElementById('mcqCount').textContent = mcqCount;
+                document.getElementById('writtenCount').textContent = writtenCount;
+                document.getElementById('totalCount').textContent = totalCount;
+
+                // Filter questions by type
+                filterQuestionsByType(currentType);
+
+                // Show/hide empty state
+                if (filteredQuestions.length === 0) {
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('emptyState').classList.remove('hidden');
+                } else {
+                    document.getElementById('loadingState').classList.add('hidden');
+                    displayCurrentPage();
+                }
+
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('hidden');
+            }
+        }
+
+        // Filter questions by type
+        function filterQuestionsByType(type) {
+            currentType = type;
+            filteredQuestions = allQuestions.filter(q => q.type === type);
+            totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
+            currentPage = 1;
+            
+            // Update active tab
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.type === type) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        // Display current page questions
+        function displayCurrentPage() {
+            const startIndex = (currentPage - 1) * questionsPerPage;
+            const endIndex = startIndex + questionsPerPage;
+            const pageQuestions = filteredQuestions.slice(startIndex, endIndex);
+
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            pageQuestions.forEach((question, index) => {
+                const questionNumber = startIndex + index + 1;
+                container.appendChild(createQuestionElement(question, questionNumber));
+            });
+
+            updatePagination();
+        }
+
+        // Create question element
+        function createQuestionElement(question, number) {
+            const div = document.createElement('div');
+            div.className = 'question-item';
+
+            let questionHtml = `
+                <div class="question-header">
+                    <div class="question-number">${number}</div>
+                    <div class="question-text">${question.question}</div>
+                </div>
+            `;
+
+            if (question.type === 'mcq' && question.options && question.options.length > 0) {
+                questionHtml += `<div class="mcq-options">`;
+                const letters = ['ক', 'খ', 'গ', 'ঘ'];
+                
+                question.options.forEach((option, i) => {
+                    const isCorrect = option === question.answer;
+                    const optionClass = isCorrect ? 'option-item correct' : 'option-item';
+                    
+                    questionHtml += `
+                        <div class="${optionClass}">
+                            <div class="option-letter">${letters[i]}</div>
+                            <div>${option}</div>
+                        </div>
+                    `;
+                });
+                questionHtml += `</div>`;
+            }
+
+            questionHtml += `
+                <div class="answer-section">
+                    <div class="answer-label">সঠিক উত্তর:</div>
+                    <div class="answer-text">${question.answer}</div>
+                    ${question.examHistory && question.examHistory.length > 0 ? 
+                        `<div class="exam-info">${question.examHistory.join(', ')}</div>` : ''}
+                </div>
+            `;
+
+            div.innerHTML = questionHtml;
+            return div;
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) {
+                pagination.classList.add('hidden');
+                return;
+            }
+
+            pagination.classList.remove('hidden');
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayCurrentPage();
+                }
+            };
+            pagination.appendChild(prevBtn);
+
+            // Page numbers
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    currentPage = i;
+                    displayCurrentPage();
+                };
+                pagination.appendChild(pageBtn);
+            }
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayCurrentPage();
+                }
+            };
+            pagination.appendChild(nextBtn);
+        }
+
+        // Model Test Functions
+        function openModelTestModal() {
+            document.getElementById('modelTestModal').classList.add('active');
+        }
+
+        function closeModelTestModal() {
+            document.getElementById('modelTestModal').classList.remove('active');
+        }
+
+        function startModelTest(time, questionCount) {
+            closeModelTestModal();
+            
+            // Get random questions for test
+            const mcqQuestions = allQuestions.filter(q => q.type === 'mcq');
+            testQuestions = getRandomQuestions(mcqQuestions, questionCount);
+            
+            if (testQuestions.length === 0) {
+                alert('এই সাবজেক্টে পর্যাপ্ত MCQ প্রশ্ন নেই।');
+                return;
+            }
+
+            // Initialize test
+            currentTestQuestion = 0;
+            userAnswers = new Array(testQuestions.length).fill(null);
+            testTime = time * 60; // Convert to seconds
+            
+            // Show test interface
+            document.getElementById('testInterface').style.display = 'block';
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.tab-bar').style.display = 'none';
+            
+            // Start timer
+            startTimer();
+            
+            // Display first question
+            displayTestQuestion();
+        }
+
+        function getRandomQuestions(questions, count) {
+            const shuffled = [...questions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, Math.min(count, questions.length));
+        }
+
+        function startTimer() {
+            clearInterval(testTimer);
+            
+            testTimer = setInterval(() => {
+                testTime--;
+                
+                const minutes = Math.floor(testTime / 60);
+                const seconds = testTime % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (testTime <= 0) {
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function displayTestQuestion() {
+            const question = testQuestions[currentTestQuestion];
+            
+            document.getElementById('testQuestionText').textContent = question.question;
+            document.getElementById('questionCounter').textContent = 
+                `প্রশ্ন ${currentTestQuestion + 1}/${testQuestions.length}`;
+            
+            const optionsList = document.getElementById('testOptionsList');
+            optionsList.innerHTML = '';
+            
+            if (question.options && question.options.length > 0) {
+                const letters = ['ক', 'খ', 'গ', 'ঘ'];
+                
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = `test-option-btn ${userAnswers[currentTestQuestion] === index ? 'selected' : ''}`;
+                    button.innerHTML = `<strong>${letters[index]}.</strong> ${option}`;
+                    button.onclick = () => selectAnswer(index);
+                    optionsList.appendChild(button);
+                });
+            }
+            
+            // Update navigation buttons
+            document.getElementById('prevQuestionBtn').disabled = currentTestQuestion === 0;
+            document.getElementById('nextQuestionBtn').disabled = currentTestQuestion === testQuestions.length - 1;
+            document.getElementById('submitTestBtn').style.display = 
+                currentTestQuestion === testQuestions.length - 1 ? 'block' : 'none';
+        }
+
+        function selectAnswer(answerIndex) {
+            userAnswers[currentTestQuestion] = answerIndex;
+            
+            // Update UI
+            const buttons = document.querySelectorAll('.test-option-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('selected', index === answerIndex);
+            });
+        }
+
+        function nextQuestion() {
+            if (currentTestQuestion < testQuestions.length - 1) {
+                currentTestQuestion++;
+                displayTestQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentTestQuestion > 0) {
+                currentTestQuestion--;
+                displayTestQuestion();
+            }
+        }
+
+        function submitTest() {
+            clearInterval(testTimer);
+            
+            // Calculate score
+            let correct = 0;
+            let wrong = 0;
+            
+            testQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const correctAnswerIndex = question.options ? question.options.indexOf(question.answer) : -1;
+                
+                if (userAnswer === correctAnswerIndex) {
+                    correct++;
+                } else if (userAnswer !== null) {
+                    wrong++;
+                }
+            });
+            
+            const total = testQuestions.length;
+            const unattempted = total - correct - wrong;
+            const percentage = Math.round((correct / total) * 100);
+            
+            // Display result
+            document.getElementById('testInterface').style.display = 'none';
+            document.getElementById('resultModal').classList.add('active');
+            
+            document.getElementById('finalScore').textContent = correct;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('totalQuestions').textContent = total;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.remove('active');
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.tab-bar').style.display = 'block';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSubjectDetails();
+            
+            // Type tab click handlers
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    filterQuestionsByType(type);
+                    displayCurrentPage();
+                });
+            });
+            
+            // Model test button
+            document.getElementById('modelTestBtn').addEventListener('click', openModelTestModal);
+            
+            // Close modal buttons
+            document.getElementById('closeModal').addEventListener('click', closeModelTestModal);
+            document.getElementById('closeResultModal').addEventListener('click', closeResultModal);
+            
+            // Test option selection
+            document.querySelectorAll('.test-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.test-option').forEach(opt => {
+                        opt.style.borderColor = '#dee2e6';
+                    });
+                    this.style.borderColor = '#4361ee';
+                    
+                    const time = parseInt(this.dataset.time);
+                    const questions = parseInt(this.dataset.questions);
+                    
+                    document.getElementById('startTestBtn').onclick = () => startModelTest(time, questions);
+                });
+            });
+            
+            // Test navigation
+            document.getElementById('nextQuestionBtn').addEventListener('click', nextQuestion);
+            document.getElementById('prevQuestionBtn').addEventListener('click', prevQuestion);
+            document.getElementById('submitTestBtn').addEventListener('click', submitTest);
+            
+            // Close modal on overlay click
+            document.getElementById('modelTestModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModelTestModal();
+            });
+            
+            document.getElementById('resultModal').addEventListener('click', function(e) {
+                if (e.target === this) closeResultModal();
+            });
+        });
+    </script>
+</body>
+</html>
