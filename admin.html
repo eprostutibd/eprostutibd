@@ -9,68 +9,32 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
     .hidden{display:none}
-
     .center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
     .w420{width:420px;max-width:100%}
-
     .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 26px rgba(0,0,0,.07)}
-    .form label{display:block;margin:10px 0 6px;font-weight:700}
-    .form input{
-      width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:12px;outline:none
-    }
-
-    .btn{
-      margin-top:12px;padding:10px 14px;border:0;border-radius:12px;cursor:pointer;
-      background:#2563eb;color:#fff;font-weight:800
-    }
+    .btn{margin-top:12px;padding:10px 14px;border:0;border-radius:12px;cursor:pointer;background:#2563eb;color:#fff;font-weight:800}
     .btn.danger{background:#e53935}
-    .btn.ghost{background:#f3f4f6;color:#111}
     .msg{margin-top:10px;color:#d32f2f}
     .muted{color:#6b7280;font-size:12px}
 
     .app{min-height:100vh;display:flex;flex-direction:column}
-
-    .topbar{
-      height:64px;background:#fff;display:flex;align-items:center;justify-content:space-between;
-      padding:0 16px;border-bottom:1px solid #eee
-    }
+    .topbar{height:64px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #eee}
     .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:40px;height:40px;display:grid;place-items:center;border-radius:12px;
-      background:#111827;color:#fff;font-weight:900
-    }
+    .logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#111827;color:#fff;font-weight:900}
     .title{font-weight:900}
     .subtitle{font-size:12px;color:#6b7280}
-
     .top-actions{display:flex;align-items:center;gap:10px}
-    .pill{
-      font-size:12px;background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;
-      border:1px solid #e0e7ff
-    }
+    .pill{font-size:12px;background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;border:1px solid #e0e7ff}
 
     .layout{flex:1;display:flex;min-height:calc(100vh - 64px)}
     .sidebar{width:270px;background:#fff;border-right:1px solid #eee;padding:14px}
     .nav{display:flex;flex-direction:column;gap:8px}
-    .nav-link{
-      display:block;padding:10px 12px;border-radius:12px;border:1px solid #eee;text-decoration:none;
-      color:#111;font-weight:800;background:#fff
-    }
+    .nav-link{display:block;padding:10px 12px;border-radius:12px;border:1px solid #eee;text-decoration:none;color:#111;font-weight:800;background:#fff}
     .nav-link:hover{background:#f3f4f6}
     .nav-link.active{background:#111827;color:#fff;border-color:#111827}
 
     .content{flex:1;padding:18px}
     .view{max-width:1100px;margin:0 auto}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
-    .kpi{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px;border:1px solid #eee;border-radius:14px;background:#fff
-    }
-    .kpi b{font-size:18px}
-
-    @media (max-width:900px){
-      .sidebar{width:220px}
-      .grid{grid-template-columns:1fr}
-    }
   </style>
 </head>
 
@@ -88,7 +52,7 @@
 
       <hr style="border:0;border-top:1px solid #eee;margin:14px 0;">
       <p class="muted">
-        শুধুমাত্র <b>eprostutibd@gmail.com</b> এই Gmail দিয়ে login করা যাবে।
+        শুধু <b>eprostutibd@gmail.com</b> এই Gmail দিয়ে admin login করা যাবে।
       </p>
     </div>
   </section>
@@ -114,8 +78,6 @@
       <aside class="sidebar">
         <nav class="nav">
           <a class="nav-link active" href="./admin.html">Dashboard</a>
-
-          <!-- Placeholder links (later you can change href) -->
           <a class="nav-link" href="#" data-link="academy">একাডেমী</a>
           <a class="nav-link" href="#" data-link="job">জব অ্যাসিস্ট্যান্ট</a>
           <a class="nav-link" href="#" data-link="admission">এডমিশন অ্যাসিস্ট্যান্ট</a>
@@ -128,9 +90,9 @@
         </nav>
 
         <div style="margin-top:14px" class="card">
-          <b>How to use</b>
+          <b>Info</b>
           <p class="muted" style="margin:8px 0 0">
-            এখন সবগুলো অপশন placeholder। তুমি পরে যেই module বানাবে, ওই link বসিয়ে দিবে।
+            এখন placeholder। পরে module page/section link বসাবো।
           </p>
         </div>
       </aside>
@@ -138,42 +100,14 @@
       <main class="content">
         <div class="view">
           <h2>Dashboard</h2>
-          <p class="muted">এটা main admin page. এখন থেকে আমরা module গুলো এক এক করে যোগ করবো।</p>
+          <p class="muted">Login OK হলে এই dashboard দেখাবে।</p>
 
-          <div class="grid">
-            <div class="kpi">
-              <div>
-                <div class="muted">Login Method</div>
-                <b>Google ✅</b>
-              </div>
-              <div class="muted">No password</div>
-            </div>
-
-            <div class="kpi">
-              <div>
-                <div class="muted">Admin Email</div>
-                <b>Fixed ✅</b>
-              </div>
-              <div class="muted">eprostutibd@gmail.com</div>
-            </div>
-
-            <div class="card">
-              <h3>Next Step</h3>
-              <ol>
-                <li>একটা module নির্বাচন করবো (জব অ্যাসিস্ট্যান্ট suggested)</li>
-                <li>সেই module-এর Admin CRUD complete করবো</li>
-                <li>তারপর visitor page বানাবো</li>
-              </ol>
-            </div>
-
-            <div class="card">
-              <h3>Quick Notes</h3>
-              <ul>
-                <li>Google login enable করতে হবে Firebase Console এ</li>
-                <li>শুধু অনুমোদিত Gmail ঢুকতে পারবে</li>
-                <li>পরে link গুলোতে real page/section যোগ করবো</li>
-              </ul>
-            </div>
+          <div class="card">
+            <h3>Next</h3>
+            <ol>
+              <li>Job Assistant admin CRUD</li>
+              <li>Visitor pages</li>
+            </ol>
           </div>
         </div>
       </main>
@@ -181,12 +115,12 @@
   </div>
 
   <script type="module">
-    // Firebase (same file)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import {
       getAuth,
       onAuthStateChanged,
-      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
       GoogleAuthProvider,
       signOut
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -201,14 +135,14 @@
       measurementId: "G-T2G55NMDQT"
     };
 
-    // ✅ Only this gmail can access admin
     const ADMIN_EMAIL = "eprostutibd@gmail.com";
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
 
-    // Elements
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
     const loginScreen = document.getElementById("loginScreen");
     const adminApp = document.getElementById("adminApp");
     const loginMsg = document.getElementById("loginMsg");
@@ -219,17 +153,19 @@
     const show = (el)=>el.classList.remove("hidden");
     const hide = (el)=>el.classList.add("hidden");
 
-    // Google Login
-    googleLoginBtn.addEventListener("click", async () => {
-      loginMsg.textContent = "Google login হচ্ছে...";
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        loginMsg.textContent = err?.message || "Google login failed";
-      }
+    // 1) Redirect result handle (IMPORTANT)
+    getRedirectResult(auth).catch((err)=>{
+      // যদি redirect fail হয়, এখানে error দেখাবে
+      if (err) loginMsg.textContent = err?.message || "Redirect login failed";
     });
 
-    // Auth Guard
+    // 2) Start redirect login
+    googleLoginBtn.addEventListener("click", async () => {
+      loginMsg.textContent = "Google login হচ্ছে... (redirect)";
+      await signInWithRedirect(auth, provider);
+    });
+
+    // 3) Auth guard
     onAuthStateChanged(auth, async (user) => {
       loginMsg.textContent = "";
 
@@ -239,8 +175,7 @@
         return;
       }
 
-      // ❌ Not allowed email
-      if (user.email !== ADMIN_EMAIL) {
+      if ((user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
         await signOut(auth);
         show(loginScreen);
         hide(adminApp);
@@ -248,22 +183,19 @@
         return;
       }
 
-      // ✅ Admin verified
       adminEmail.textContent = user.email;
       hide(loginScreen);
       show(adminApp);
     });
 
-    // Logout
-    logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-    });
+    // logout
+    logoutBtn.addEventListener("click", async ()=>{ await signOut(auth); });
 
-    // Placeholder click (just prevents jumping)
+    // placeholder menu
     document.querySelectorAll("[data-link]").forEach(a=>{
       a.addEventListener("click",(e)=>{
         e.preventDefault();
-        alert("এখন placeholder। পরে আমরা এই module-এর admin page বানিয়ে link বসাবো ✅");
+        alert("এখন placeholder। পরে module link বসাবো ✅");
       });
     });
   </script>
