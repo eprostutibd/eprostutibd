@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin • Job Assistant</title>
+
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:42px;height:42px;border-radius:12px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:900}
+    .title{font-weight:900}
+    .sub{font-size:12px;color:#6b7280}
+
+    .card{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:1000px){ .grid{grid-template-columns: 420px 1fr;} }
+
+    .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+    .tab{border:1px solid #e5e7eb;background:#fff;padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:800}
+    .tab.active{background:#111827;color:#fff;border-color:#111827}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+    label{display:block;font-size:12px;color:#6b7280;margin-bottom:6px}
+    input,select,textarea{
+      width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:12px;outline:none;background:#fff
+    }
+    textarea{min-height:90px;resize:vertical}
+    .col{flex:1;min-width:220px}
+    .btn{padding:10px 12px;border:0;border-radius:12px;cursor:pointer;font-weight:900}
+    .btn.primary{background:#2563eb;color:#fff}
+    .btn.danger{background:#e53935;color:#fff}
+    .btn.gray{background:#f3f4f6;color:#111;border:1px solid #e5e7eb}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+
+    .muted{font-size:12px;color:#6b7280}
+    .msg{font-size:12px;white-space:pre-wrap}
+    .msg.ok{color:#0f766e}
+    .msg.err{color:#b91c1c}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #eee;padding:10px;text-align:left;font-size:14px;vertical-align:top}
+    th{font-size:12px;color:#6b7280;font-weight:900}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb}
+    .help{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:10px;font-size:12px}
+    .hr{height:1px;background:#eee;margin:12px 0}
+  </style>
+
+  <!-- SheetJS for Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">EP</div>
+        <div>
+          <div class="title">Job Assistant • Admin</div>
+          <div class="sub">Subject / Exam / Questions Upload (CSV/Excel) / Model Test</div>
+        </div>
+      </div>
+      <div class="muted">
+        Firebase: <span class="pill">Firestore</span> <span class="pill">CSV/Excel Upload</span>
+      </div>
+    </div>
+
+    <div class="help">
+      <b>তোমার নিয়ম অনুযায়ী:</b>
+      <ul style="margin:6px 0 0 18px;padding:0">
+        <li><b>Upload শুধু MCQ / Written / Model Test Questions</b> (CSV/Excel) ✅</li>
+        <li>Subject / Exam Name / Model Test Name — <b>ম্যানুয়াল</b> ✅</li>
+        <li>Model Test: <b>৩০ প্রশ্ন</b>, <b>৫০ মিনিট</b> (fixed), Written = ২ মার্ক/প্রশ্ন, Monthly = ১ মার্ক/প্রশ্ন ✅</li>
+      </ul>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-view="subjects">Subjects</button>
+      <button class="tab" data-view="exams">Exam Names</button>
+      <button class="tab" data-view="upload">MCQ/Written Upload</button>
+      <button class="tab" data-view="modeltests">Model Tests</button>
+    </div>
+
+    <div class="grid">
+      <!-- Left: Forms -->
+      <div class="card" id="leftCard">
+        <!-- dynamic -->
+      </div>
+
+      <!-- Right: Lists -->
+      <div class="card" id="rightCard">
+        <!-- dynamic -->
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:10px">
+      টিপ: CSV/Excel কলাম নাম ঠিক রাখলে upload খুব সহজ হবে। নিচে প্রত্যেক upload tab-এ কলাম example দেয়া আছে।
+    </p>
+  </div>
+
+  <script type="module">
+    // Firebase modular SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
+      onSnapshot, query, orderBy, serverTimestamp, getDocs, writeBatch
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // --- Your Firebase config (provided by you) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // --- Collections (Job Assistant) ---
+    const colSubjects = collection(db, "job_subjects");
+    const colExams = collection(db, "job_exams");
+    const colQuestions = collection(db, "job_questions"); // normal questions (subject-based)
+    const colModelTests = collection(db, "job_model_tests"); // model test metadata
+    // model test questions: job_model_tests/{id}/questions (subcollection)
+
+    // --- UI refs ---
+    const leftCard = document.getElementById("leftCard");
+    const rightCard = document.getElementById("rightCard");
+    const tabs = document.querySelectorAll(".tab");
+
+    let currentView = "subjects";
+    let subjectsCache = [];
+    let examsCache = [];
+    let modelTestsCache = [];
+
+    // ---------- Helpers ----------
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+
+    function setActiveTab(view){
+      currentView = view;
+      tabs.forEach(t => t.classList.toggle("active", t.dataset.view === view));
+      render();
+    }
+    tabs.forEach(t => t.addEventListener("click", () => setActiveTab(t.dataset.view)));
+
+    function fmtTS(ts){
+      if(!ts?.toDate) return "";
+      return ts.toDate().toLocaleString();
+    }
+
+    async function confirmDelete(name){
+      return confirm(`ডিলিট করতে চান?\n\n${name}`);
+    }
+
+    // ---------- CSV/Excel parsing ----------
+    function readFileToRows(file){
+      const ext = (file.name.split(".").pop() || "").toLowerCase();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("File read failed"));
+
+        if(ext === "csv"){
+          reader.onload = () => {
+            const text = reader.result;
+            const rows = csvToJson(text);
+            resolve(rows);
+          };
+          reader.readAsText(file);
+        } else if(ext === "xlsx" || ext === "xls"){
+          reader.onload = () => {
+            try{
+              const data = new Uint8Array(reader.result);
+              const wb = XLSX.read(data, { type: "array" });
+              const ws = wb.Sheets[wb.SheetNames[0]];
+              const rows = XLSX.utils.sheet_to_json(ws, { defval: "" });
+              resolve(rows);
+            }catch(e){ reject(e); }
+          };
+          reader.readAsArrayBuffer(file);
+        } else {
+          reject(new Error("Only CSV/XLSX supported"));
+        }
+      });
+    }
+
+    function csvToJson(text){
+      // Simple CSV parser (handles quotes)
+      const lines = text.replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n").filter(l=>l.trim().length);
+      if(lines.length === 0) return [];
+      const headers = parseCsvLine(lines[0]).map(h=>h.trim());
+      const out = [];
+      for(let i=1;i<lines.length;i++){
+        const vals = parseCsvLine(lines[i]);
+        const obj = {};
+        headers.forEach((h, idx) => obj[h] = (vals[idx] ?? "").trim());
+        out.push(obj);
+      }
+      return out;
+    }
+
+    function parseCsvLine(line){
+      const res = [];
+      let cur = "", inQ = false;
+      for(let i=0;i<line.length;i++){
+        const ch = line[i];
+        if(ch === '"'){
+          if(inQ && line[i+1] === '"'){ cur += '"'; i++; }
+          else inQ = !inQ;
+        } else if(ch === "," && !inQ){
+          res.push(cur); cur = "";
+        } else {
+          cur += ch;
+        }
+      }
+      res.push(cur);
+      return res;
+    }
+
+    async function batchInsertDocs(docsArray, toCollectionOrSubcollection){
+      // Firestore batch limit 500 writes
+      const chunkSize = 450;
+      let total = 0;
+      for(let i=0;i<docsArray.length;i+=chunkSize){
+        const chunk = docsArray.slice(i, i+chunkSize);
+        const batch = writeBatch(db);
+        chunk.forEach(d => {
+          const ref = doc(toCollectionOrSubcollection); // auto id
+          batch.set(ref, d);
+        });
+        await batch.commit();
+        total += chunk.length;
+      }
+      return total;
+    }
+
+    // ---------- Live data subscriptions ----------
+    onSnapshot(query(colSubjects, orderBy("createdAt","desc")), (snap)=>{
+      subjectsCache = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      if(currentView === "subjects" || currentView === "upload" || currentView === "modeltests") render();
+    });
+
+    onSnapshot(query(colExams, orderBy("createdAt","desc")), (snap)=>{
+      examsCache = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      if(currentView === "exams" || currentView === "upload" || currentView === "modeltests") render();
+    });
+
+    onSnapshot(query(colModelTests, orderBy("createdAt","desc")), (snap)=>{
+      modelTestsCache = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      if(currentView === "modeltests") render();
+    });
+
+    // ---------- Views ----------
+    function render(){
+      if(currentView === "subjects") renderSubjects();
+      if(currentView === "exams") renderExams();
+      if(currentView === "upload") renderUpload();
+      if(currentView === "modeltests") renderModelTests();
+    }
+
+    // ===== SUBJECTS =====
+    function renderSubjects(){
+      leftCard.innerHTML = `
+        <h3>Subject Add</h3>
+        <div class="row">
+          <div class="col">
+            <label>Subject Name</label>
+            <input id="subName" placeholder="যেমন: বাংলা / ইংরেজি / সাধারণ জ্ঞান" />
+          </div>
+          <button id="subAddBtn" class="btn primary">Add</button>
+        </div>
+        <p id="subMsg" class="msg muted" style="margin-top:10px"></p>
+      `;
+
+      rightCard.innerHTML = `
+        <h3>All Subjects <span class="pill">${subjectsCache.length}</span></h3>
+        <div class="muted">Add/Edit/Delete — ম্যানুয়াল</div>
+        <table>
+          <thead><tr><th>Name</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody>
+            ${subjectsCache.map(s => `
+              <tr>
+                <td><b>${esc(s.name)}</b></td>
+                <td class="muted">${fmtTS(s.createdAt)}</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn gray" data-edit-sub="${s.id}">Edit</button>
+                    <button class="btn danger" data-del-sub="${s.id}">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("") || `<tr><td colspan="3" class="muted">No subjects yet.</td></tr>`}
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById("subAddBtn").onclick = async () => {
+        const name = document.getElementById("subName").value.trim();
+        const msg = document.getElementById("subMsg");
+        msg.className = "msg muted";
+        if(!name){ msg.textContent = "Subject নাম দিন"; return; }
+        msg.textContent = "Saving...";
+        try{
+          await addDoc(colSubjects, { name, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          document.getElementById("subName").value = "";
+          msg.className = "msg ok";
+          msg.textContent = "✅ Added";
+        }catch(e){
+          msg.className = "msg err";
+          msg.textContent = e.message || "Failed";
+        }
+      };
+
+      rightCard.querySelectorAll("[data-edit-sub]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.editSub;
+          const item = subjectsCache.find(x=>x.id===id);
+          const newName = prompt("New subject name:", item?.name || "");
+          if(!newName) return;
+          await updateDoc(doc(db,"job_subjects",id), { name: newName.trim(), updatedAt: serverTimestamp() });
+        };
+      });
+      rightCard.querySelectorAll("[data-del-sub]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.delSub;
+          const item = subjectsCache.find(x=>x.id===id);
+          if(!(await confirmDelete(item?.name || id))) return;
+          await deleteDoc(doc(db,"job_subjects",id));
+        };
+      });
+    }
+
+    // ===== EXAMS =====
+    function renderExams(){
+      leftCard.innerHTML = `
+        <h3>Exam Name Add</h3>
+        <div class="row">
+          <div class="col">
+            <label>Exam Name</label>
+            <input id="examName" placeholder="যেমন: ব্যাংক জব / প্রাইমারি / এনটিআরসি" />
+          </div>
+          <button id="examAddBtn" class="btn primary">Add</button>
+        </div>
+        <p id="examMsg" class="msg muted" style="margin-top:10px"></p>
+      `;
+
+      rightCard.innerHTML = `
+        <h3>All Exam Names <span class="pill">${examsCache.length}</span></h3>
+        <div class="muted">Add/Edit/Delete — ম্যানুয়াল (তোমার নিয়ম অনুযায়ী)</div>
+        <table>
+          <thead><tr><th>Name</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody>
+            ${examsCache.map(s => `
+              <tr>
+                <td><b>${esc(s.name)}</b></td>
+                <td class="muted">${fmtTS(s.createdAt)}</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn gray" data-edit-exam="${s.id}">Edit</button>
+                    <button class="btn danger" data-del-exam="${s.id}">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("") || `<tr><td colspan="3" class="muted">No exams yet.</td></tr>`}
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById("examAddBtn").onclick = async () => {
+        const name = document.getElementById("examName").value.trim();
+        const msg = document.getElementById("examMsg");
+        msg.className = "msg muted";
+        if(!name){ msg.textContent = "Exam নাম দিন"; return; }
+        msg.textContent = "Saving...";
+        try{
+          await addDoc(colExams, { name, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+          document.getElementById("examName").value = "";
+          msg.className = "msg ok";
+          msg.textContent = "✅ Added";
+        }catch(e){
+          msg.className = "msg err";
+          msg.textContent = e.message || "Failed";
+        }
+      };
+
+      rightCard.querySelectorAll("[data-edit-exam]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.editExam;
+          const item = examsCache.find(x=>x.id===id);
+          const newName = prompt("New exam name:", item?.name || "");
+          if(!newName) return;
+          await updateDoc(doc(db,"job_exams",id), { name: newName.trim(), updatedAt: serverTimestamp() });
+        };
+      });
+      rightCard.querySelectorAll("[data-del-exam]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.delExam;
+          const item = examsCache.find(x=>x.id===id);
+          if(!(await confirmDelete(item?.name || id))) return;
+          await deleteDoc(doc(db,"job_exams",id));
+        };
+      });
+    }
+
+    // ===== UPLOAD (MCQ/Written) =====
+    function renderUpload(){
+      const subjectOptions = subjectsCache.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+      const examOptions = `<option value="">(Optional) No exam</option>` + examsCache.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join("");
+
+      leftCard.innerHTML = `
+        <h3>MCQ/Written Upload (CSV/Excel)</h3>
+
+        <div class="row">
+          <div class="col">
+            <label>Select Subject</label>
+            <select id="uplSubject">
+              <option value="">-- select --</option>
+              ${subjectOptions}
+            </select>
+          </div>
+          <div class="col">
+            <label>Question Type</label>
+            <select id="uplType">
+              <option value="mcq">MCQ</option>
+              <option value="written">Written</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>Exam (optional)</label>
+            <select id="uplExam">
+              ${examOptions}
+            </select>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <div class="col">
+            <label>Upload File (CSV / XLSX)</label>
+            <input id="uplFile" type="file" accept=".csv,.xlsx,.xls" />
+            <div class="muted" style="margin-top:6px">
+              Upload only MCQ/Written ✅
+            </div>
+          </div>
+          <button id="uplBtn" class="btn primary">Upload</button>
+        </div>
+
+        <p id="uplMsg" class="msg muted" style="margin-top:10px"></p>
+
+        <div class="help" style="margin-top:12px">
+          <b>CSV/Excel কলাম (MCQ):</b><br/>
+          <span class="muted">question, optionA, optionB, optionC, optionD, answer, explanation</span>
+          <div class="hr"></div>
+          <b>CSV/Excel কলাম (Written):</b><br/>
+          <span class="muted">question, answer, explanation</span>
+        </div>
+      `;
+
+      rightCard.innerHTML = `
+        <h3>Quick Info</h3>
+        <p class="muted">এই tab শুধু bulk upload-এর জন্য। প্রশ্ন Edit/Delete আমরা পরের ধাপে “Questions Manager” হিসেবে add করবো (তুমি বলেছিলে edit/delete লাগবে ✅)।</p>
+        <div class="card" style="border:none;box-shadow:none;background:#f9fafb">
+          <b>Next we will add:</b>
+          <ul>
+            <li>Questions list (filter by subject/type)</li>
+            <li>Edit / Delete single question</li>
+            <li>Question bank / Exam-based views</li>
+          </ul>
+        </div>
+      `;
+
+      document.getElementById("uplBtn").onclick = async () => {
+        const msg = document.getElementById("uplMsg");
+        msg.className = "msg muted";
+        const subjectId = document.getElementById("uplSubject").value;
+        const type = document.getElementById("uplType").value; // mcq/written
+        const examId = document.getElementById("uplExam").value || "";
+        const file = document.getElementById("uplFile").files?.[0];
+
+        if(!subjectId){ msg.textContent = "Subject select করুন"; return; }
+        if(!file){ msg.textContent = "File select করুন"; return; }
+
+        msg.textContent = "Reading file...";
+        try{
+          const rows = await readFileToRows(file);
+          if(rows.length === 0){ msg.textContent = "No rows found"; return; }
+
+          // Normalize to docs
+          const docs = [];
+          for(const r of rows){
+            const q = String(r.question ?? r.Question ?? "").trim();
+            if(!q) continue;
+
+            if(type === "mcq"){
+              const A = String(r.optionA ?? r.A ?? "").trim();
+              const B = String(r.optionB ?? r.B ?? "").trim();
+              const C = String(r.optionC ?? r.C ?? "").trim();
+              const D = String(r.optionD ?? r.D ?? "").trim();
+              const ans = String(r.answer ?? r.Answer ?? "").trim(); // A/B/C/D or text
+              const exp = String(r.explanation ?? r.Explanation ?? "").trim();
+
+              docs.push({
+                subjectId,
+                examId,
+                type: "mcq",
+                question: q,
+                options: [A,B,C,D],
+                answer: ans,
+                explanation: exp,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            } else {
+              const ans = String(r.answer ?? r.Answer ?? "").trim();
+              const exp = String(r.explanation ?? r.Explanation ?? "").trim();
+
+              docs.push({
+                subjectId,
+                examId,
+                type: "written",
+                question: q,
+                answer: ans,
+                explanation: exp,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            }
+          }
+
+          if(docs.length === 0){
+            msg.className = "msg err";
+            msg.textContent = "Valid question row পাওয়া যায়নি। কলাম নাম ঠিক আছে তো?";
+            return;
+          }
+
+          msg.textContent = `Uploading ${docs.length} rows...`;
+          const inserted = await batchInsertDocs(docs, colQuestions);
+
+          msg.className = "msg ok";
+          msg.textContent = `✅ Uploaded: ${inserted} questions`;
+          document.getElementById("uplFile").value = "";
+        }catch(e){
+          msg.className = "msg err";
+          msg.textContent = e?.message || "Upload failed";
+        }
+      };
+    }
+
+    // ===== MODEL TESTS =====
+    function renderModelTests(){
+      const mtOptions = modelTestsCache.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join("");
+
+      leftCard.innerHTML = `
+        <h3>Model Test Create (Manual Name)</h3>
+
+        <div class="row">
+          <div class="col">
+            <label>Model Test Name (manual)</label>
+            <input id="mtName" placeholder="যেমন: ব্যাংক মডেল টেস্ট - ১" />
+          </div>
+          <div class="col">
+            <label>Type</label>
+            <select id="mtType">
+              <option value="written">Written (2 mark per question)</option>
+              <option value="monthly">Monthly (1 mark per question)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div class="col">
+            <label>Question Count (fixed)</label>
+            <input value="30" disabled />
+          </div>
+          <div class="col">
+            <label>Duration Minutes (fixed)</label>
+            <input value="50" disabled />
+          </div>
+          <div class="col">
+            <label>Total Marks (auto)</label>
+            <input id="mtTotal" value="60" disabled />
+          </div>
+          <button id="mtAddBtn" class="btn primary">Add</button>
+        </div>
+
+        <p id="mtMsg" class="msg muted" style="margin-top:10px"></p>
+
+        <div class="hr"></div>
+
+        <h3>Upload Model Test Questions (CSV/Excel)</h3>
+        <div class="row">
+          <div class="col">
+            <label>Select Model Test</label>
+            <select id="mtPick">
+              <option value="">-- select --</option>
+              ${mtOptions}
+            </select>
+          </div>
+          <div class="col">
+            <label>Upload File (CSV/XLSX)</label>
+            <input id="mtFile" type="file" accept=".csv,.xlsx,.xls" />
+          </div>
+          <button id="mtUplBtn" class="btn primary">Upload</button>
+        </div>
+        <p id="mtUplMsg" class="msg muted" style="margin-top:10px"></p>
+
+        <div class="help" style="margin-top:12px">
+          <b>Model Test Questions CSV/Excel কলাম:</b><br/>
+          <span class="muted">
+            type, question, optionA, optionB, optionC, optionD, answer, explanation
+          </span>
+          <div class="muted" style="margin-top:6px">
+            type = mcq / written (একই ফাইলে mix করা যাবে)
+          </div>
+        </div>
+      `;
+
+      rightCard.innerHTML = `
+        <h3>All Model Tests <span class="pill">${modelTestsCache.length}</span></h3>
+        <div class="muted">Add/Edit/Delete — ম্যানুয়াল name + auto rules</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Type</th><th>Q</th><th>Time</th><th>Total</th><th>Created</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${modelTestsCache.map(m => `
+              <tr>
+                <td><b>${esc(m.name)}</b></td>
+                <td><span class="pill">${esc(m.type)}</span></td>
+                <td>${m.questionCount ?? 30}</td>
+                <td>${m.durationMinutes ?? 50} min</td>
+                <td>${m.totalMarks ?? ""}</td>
+                <td class="muted">${fmtTS(m.createdAt)}</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn gray" data-edit-mt="${m.id}">Edit</button>
+                    <button class="btn danger" data-del-mt="${m.id}">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("") || `<tr><td colspan="7" class="muted">No model tests yet.</td></tr>`}
+          </tbody>
+        </table>
+
+        <div class="hr"></div>
+        <div class="muted">
+          Note: Model test questions list/edit/delete আমরা পরের ধাপে add করবো (তোমার চাহিদা অনুযায়ী) ✅
+        </div>
+      `;
+
+      // auto marks
+      const mtType = document.getElementById("mtType");
+      const mtTotal = document.getElementById("mtTotal");
+      mtType.onchange = () => {
+        const per = mtType.value === "written" ? 2 : 1;
+        mtTotal.value = String(30 * per);
+      };
+
+      document.getElementById("mtAddBtn").onclick = async () => {
+        const msg = document.getElementById("mtMsg");
+        msg.className = "msg muted";
+        const name = document.getElementById("mtName").value.trim();
+        const type = document.getElementById("mtType").value; // written/monthly
+        if(!name){ msg.textContent = "Model test নাম দিন"; return; }
+
+        const questionCount = 30;
+        const durationMinutes = 50;
+        const perQuestionMark = type === "written" ? 2 : 1;
+        const totalMarks = questionCount * perQuestionMark;
+
+        msg.textContent = "Saving...";
+        try{
+          await addDoc(colModelTests, {
+            name,
+            type,
+            questionCount,
+            durationMinutes,
+            perQuestionMark,
+            totalMarks,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+          document.getElementById("mtName").value = "";
+          msg.className = "msg ok";
+          msg.textContent = "✅ Added";
+        }catch(e){
+          msg.className = "msg err";
+          msg.textContent = e.message || "Failed";
+        }
+      };
+
+      // Edit/Delete model tests
+      rightCard.querySelectorAll("[data-edit-mt]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.editMt;
+          const item = modelTestsCache.find(x=>x.id===id);
+          const newName = prompt("New model test name:", item?.name || "");
+          if(!newName) return;
+
+          // type change allowed? you said edit allowed -> we'll allow type change too
+          const newType = prompt('Type লিখুন: written / monthly', item?.type || "written");
+          const type = (newType || item?.type || "written").toLowerCase() === "monthly" ? "monthly" : "written";
+          const perQuestionMark = type === "written" ? 2 : 1;
+          const totalMarks = 30 * perQuestionMark;
+
+          await updateDoc(doc(db,"job_model_tests",id), {
+            name: newName.trim(),
+            type,
+            perQuestionMark,
+            totalMarks,
+            updatedAt: serverTimestamp()
+          });
+        };
+      });
+
+      rightCard.querySelectorAll("[data-del-mt]").forEach(btn=>{
+        btn.onclick = async () => {
+          const id = btn.dataset.delMt;
+          const item = modelTestsCache.find(x=>x.id===id);
+          if(!(await confirmDelete(item?.name || id))) return;
+          await deleteDoc(doc(db,"job_model_tests",id));
+          // Note: subcollection questions will remain unless we delete via backend—later we can add cleanup.
+        };
+      });
+
+      // Upload model test questions
+      document.getElementById("mtUplBtn").onclick = async () => {
+        const msg = document.getElementById("mtUplMsg");
+        msg.className = "msg muted";
+
+        const mtId = document.getElementById("mtPick").value;
+        const file = document.getElementById("mtFile").files?.[0];
+        if(!mtId){ msg.textContent = "Model test select করুন"; return; }
+        if(!file){ msg.textContent = "File select করুন"; return; }
+
+        msg.textContent = "Reading file...";
+        try{
+          const rows = await readFileToRows(file);
+          if(rows.length === 0){ msg.textContent = "No rows found"; return; }
+
+          const subCol = collection(db, "job_model_tests", mtId, "questions");
+
+          const docs = [];
+          let order = 1;
+          for(const r of rows){
+            const typeRaw = String(r.type ?? r.Type ?? "mcq").trim().toLowerCase();
+            const type = (typeRaw === "written") ? "written" : "mcq";
+            const q = String(r.question ?? r.Question ?? "").trim();
+            if(!q) continue;
+
+            if(type === "mcq"){
+              const A = String(r.optionA ?? r.A ?? "").trim();
+              const B = String(r.optionB ?? r.B ?? "").trim();
+              const C = String(r.optionC ?? r.C ?? "").trim();
+              const D = String(r.optionD ?? r.D ?? "").trim();
+              const ans = String(r.answer ?? r.Answer ?? "").trim();
+              const exp = String(r.explanation ?? r.Explanation ?? "").trim();
+
+              docs.push({
+                order: order++,
+                type: "mcq",
+                question: q,
+                options: [A,B,C,D],
+                answer: ans,
+                explanation: exp,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            } else {
+              const ans = String(r.answer ?? r.Answer ?? "").trim();
+              const exp = String(r.explanation ?? r.Explanation ?? "").trim();
+              docs.push({
+                order: order++,
+                type: "written",
+                question: q,
+                answer: ans,
+                explanation: exp,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            }
+          }
+
+          if(docs.length === 0){
+            msg.className = "msg err";
+            msg.textContent = "Valid row পাওয়া যায়নি। কলাম নাম ঠিক আছে তো?";
+            return;
+          }
+
+          msg.textContent = `Uploading ${docs.length} rows...`;
+          const inserted = await batchInsertDocs(docs, subCol);
+
+          msg.className = "msg ok";
+          msg.textContent = `✅ Uploaded: ${inserted} questions`;
+          document.getElementById("mtFile").value = "";
+        }catch(e){
+          msg.className = "msg err";
+          msg.textContent = e?.message || "Upload failed";
+        }
+      };
+    }
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
