@@ -12,7 +12,9 @@
     .center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
     .w420{width:420px;max-width:100%}
     .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 26px rgba(0,0,0,.07)}
-    .btn{margin-top:12px;padding:10px 14px;border:0;border-radius:12px;cursor:pointer;background:#2563eb;color:#fff;font-weight:800}
+    .form label{display:block;margin:10px 0 6px;font-weight:800}
+    .form input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:12px;outline:none}
+    .btn{margin-top:12px;padding:10px 14px;border:0;border-radius:12px;cursor:pointer;background:#2563eb;color:#fff;font-weight:900}
     .btn.danger{background:#e53935}
     .msg{margin-top:10px;color:#d32f2f}
     .muted{color:#6b7280;font-size:12px}
@@ -29,7 +31,7 @@
     .layout{flex:1;display:flex;min-height:calc(100vh - 64px)}
     .sidebar{width:270px;background:#fff;border-right:1px solid #eee;padding:14px}
     .nav{display:flex;flex-direction:column;gap:8px}
-    .nav-link{display:block;padding:10px 12px;border-radius:12px;border:1px solid #eee;text-decoration:none;color:#111;font-weight:800;background:#fff}
+    .nav-link{display:block;padding:10px 12px;border-radius:12px;border:1px solid #eee;text-decoration:none;color:#111;font-weight:900;background:#fff}
     .nav-link:hover{background:#f3f4f6}
     .nav-link.active{background:#111827;color:#fff;border-color:#111827}
 
@@ -44,15 +46,21 @@
     <div class="card w420">
       <h1>Admin Login</h1>
 
-      <button id="googleLoginBtn" class="btn" style="width:100%">
-        🔐 Login with Google
-      </button>
+      <form id="loginForm" class="form">
+        <label>Admin Email</label>
+        <input id="email" type="email" value="eprostutibd@gmail.com" required />
+
+        <label>Password</label>
+        <input id="password" type="password" required placeholder="Enter password" />
+
+        <button class="btn" type="submit" style="width:100%">Login</button>
+      </form>
 
       <p id="loginMsg" class="msg"></p>
 
       <hr style="border:0;border-top:1px solid #eee;margin:14px 0;">
       <p class="muted">
-        শুধু <b>eprostutibd@gmail.com</b> এই Gmail দিয়ে admin login করা যাবে।
+        শুধু <b>eprostutibd@gmail.com</b> এই email দিয়ে login করা যাবে।
       </p>
     </div>
   </section>
@@ -88,19 +96,12 @@
           <a class="nav-link" href="#" data-link="notice">নোটিশ</a>
           <a class="nav-link" href="#" data-link="blog">ব্লগ</a>
         </nav>
-
-        <div style="margin-top:14px" class="card">
-          <b>Info</b>
-          <p class="muted" style="margin:8px 0 0">
-            এখন placeholder। পরে module link বসাবো।
-          </p>
-        </div>
       </aside>
 
       <main class="content">
         <div class="view">
           <h2>Dashboard</h2>
-          <p class="muted">Login OK হলে এই dashboard দেখাবে।</p>
+          <p class="muted">Email/Password login OK হলে এই dashboard দেখাবে।</p>
 
           <div class="card">
             <h3>Next</h3>
@@ -119,12 +120,8 @@
     import {
       getAuth,
       onAuthStateChanged,
-      signInWithRedirect,
-      getRedirectResult,
-      GoogleAuthProvider,
-      signOut,
-      setPersistence,
-      browserLocalPersistence
+      signInWithEmailAndPassword,
+      signOut
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -142,62 +139,58 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // ✅ Fix: ensure session persists after redirect (prevents login loop)
-    await setPersistence(auth, browserLocalPersistence);
-
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-
     const loginScreen = document.getElementById("loginScreen");
     const adminApp = document.getElementById("adminApp");
+    const loginForm = document.getElementById("loginForm");
     const loginMsg = document.getElementById("loginMsg");
-    const googleLoginBtn = document.getElementById("googleLoginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const adminEmail = document.getElementById("adminEmail");
 
     const show = (el)=>el.classList.remove("hidden");
     const hide = (el)=>el.classList.add("hidden");
 
-    // Handle redirect result (IMPORTANT)
-    try {
-      await getRedirectResult(auth);
-    } catch (err) {
-      if (err) loginMsg.textContent = err?.message || "Redirect login failed";
-    }
+    onAuthStateChanged(auth, async (user)=>{
+      loginMsg.textContent = "";
 
-    // Start redirect login
-    googleLoginBtn.addEventListener("click", async () => {
-      loginMsg.textContent = "Google login হচ্ছে... (redirect)";
-      await signInWithRedirect(auth, provider);
-    });
-
-    // Auth guard
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        show(loginScreen);
-        hide(adminApp);
+      if(!user){
+        show(loginScreen); hide(adminApp);
         return;
       }
 
-      const email = (user.email || "").toLowerCase();
-      if (email !== ADMIN_EMAIL.toLowerCase()) {
+      // Only allow this email
+      if((user.email||"").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
         await signOut(auth);
-        show(loginScreen);
-        hide(adminApp);
-        loginMsg.textContent = "শুধু eprostutibd@gmail.com admin ✅";
+        show(loginScreen); hide(adminApp);
+        loginMsg.textContent = "এই account admin নয় ❌";
         return;
       }
 
       adminEmail.textContent = user.email;
-      hide(loginScreen);
-      show(adminApp);
-      loginMsg.textContent = "";
+      hide(loginScreen); show(adminApp);
     });
 
-    // Logout
+    loginForm.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      loginMsg.textContent = "Logging in...";
+
+      const email = document.getElementById("email").value.trim();
+      const pass = document.getElementById("password").value;
+
+      if(email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
+        loginMsg.textContent = "শুধু eprostutibd@gmail.com দিয়ে login করা যাবে ❌";
+        return;
+      }
+
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        loginMsg.textContent = "";
+      }catch(err){
+        loginMsg.textContent = err?.message || "Login failed";
+      }
+    });
+
     logoutBtn.addEventListener("click", async ()=>{ await signOut(auth); });
 
-    // placeholder menu
     document.querySelectorAll("[data-link]").forEach(a=>{
       a.addEventListener("click",(e)=>{
         e.preventDefault();
