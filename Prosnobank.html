@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
 
-  <!-- ✅ SEO -->
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
@@ -37,7 +36,16 @@
       min-height:100vh;
     }
     a{color:inherit}
-    .container{max-width:1180px;margin:0 auto;padding:10px 12px}
+
+    /* ✅ Side gap reduce (almost full width) */
+    .container{
+      max-width: 1440px;    /* bigger than before */
+      margin:0 auto;
+      padding: 10px 8px;    /* ✅ left/right gap small */
+    }
+    @media (min-width: 1200px){
+      .container{ padding-left: 10px; padding-right: 10px; } /* ~ 1/2 inch-ish */
+    }
 
     /* ===== Header ===== */
     header{
@@ -47,14 +55,13 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width:1180px;
+      max-width: 1440px;
       margin:0 auto;
-      padding:10px 12px;
+      padding:10px 8px;
       display:flex;
       align-items:center;
       gap:10px;
     }
-    /* ✅ brand 2 lines */
     .brand{
       display:flex;
       flex-direction:column;
@@ -77,7 +84,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 260px;
+      max-width: 320px;
     }
 
     .nav{
@@ -121,7 +128,7 @@
     }
 
     .mobileMenu{display:none}
-    .mobileMenu .panel{max-width:1180px;margin:0 auto;padding:0 12px 12px}
+    .mobileMenu .panel{max-width:1440px;margin:0 auto;padding:0 8px 12px}
     .mobileMenu .panelInner{
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -196,10 +203,10 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Main layout ===== */
+    /* ===== Main layout (wider content) ===== */
     .grid{
       display:grid;
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: 1fr 320px; /* slightly bigger sidebar */
       gap: 10px;
       align-items:start;
       margin-top: 12px;
@@ -229,7 +236,7 @@
     .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
-      width: 220px;
+      width: 210px;
       max-width: 70vw;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
@@ -327,7 +334,7 @@
       font-size:12px;
     }
 
-    /* ===== Latest model tests ===== */
+    /* Latest model tests */
     .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px;}
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
@@ -349,7 +356,7 @@
     .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px;}
 
-    /* ===== Sidebar (sticky) ===== */
+    /* Sidebar sticky */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -382,7 +389,7 @@
       color: var(--muted);
     }
 
-    /* ===== Footer (logo + new social icons) ===== */
+    /* ===== Footer (4 columns: Logo + 3 sections) ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -392,16 +399,17 @@
         linear-gradient(180deg, var(--footerA), var(--footerB));
       color: rgba(255,255,255,.92);
     }
+
     .foot{
-      max-width:1180px;
+      max-width: 1440px;
       margin:0 auto;
-      padding: 16px 12px 10px;
+      padding: 16px 8px 10px;
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1.1fr 1fr 1fr .9fr; /* ✅ logo first */
       gap: 14px;
       align-items:start;
     }
-    @media (max-width: 780px){ .foot{grid-template-columns: 1fr 1fr;} }
+    @media (max-width: 980px){ .foot{grid-template-columns: 1fr 1fr;} }
     @media (max-width: 560px){ .foot{grid-template-columns: 1fr;} }
 
     .foot b{font-size:13px}
@@ -414,62 +422,66 @@
     }
     .foot a:hover{color:#fff}
 
-    .footBrand{
+    .footerLogo{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
       margin-bottom: 8px;
     }
-    .footBrand .logoBox{
-      width: 40px; height: 40px;
-      border-radius: 14px;
+    .logoBox{
+      width: 46px; height: 46px;
+      border-radius: 16px;
       background: rgba(255,255,255,.10);
       border: 1px solid rgba(255,255,255,.18);
       display:grid;
       place-items:center;
-      box-shadow: 0 10px 20px rgba(0,0,0,.18);
+      box-shadow: 0 14px 26px rgba(0,0,0,.20);
     }
-    .footBrand .logoBox svg{width:22px;height:22px;fill: rgba(255,255,255,.92)}
-    .footBrand .t1{font-weight:1000;line-height:1}
-    .footBrand .t2{font-size:12px;color: rgba(255,255,255,.75);margin-top: 3px}
+    .logoBox svg{width:24px;height:24px;fill: rgba(255,255,255,.92)}
+    .logoText .t1{font-weight:1000;line-height:1}
+    .logoText .t2{font-size:12px;color: rgba(255,255,255,.75);margin-top: 4px}
 
-    .social{
+    /* ✅ Follow icons: NO BOX, vertical */
+    .followCol{display:flex;flex-direction:column;gap:12px;margin-top: 10px;}
+    .followIcon{
       display:flex;
+      align-items:center;
       gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
+      text-decoration:none;
+      color: rgba(255,255,255,.88);
+      font-weight:900;
+      font-size:12px;
     }
-    /* ✅ new icon style */
-    .iconBtn{
-      width: 44px; height: 44px;
-      border-radius: 16px;
+    .followIcon .dot{
+      width: 42px; height: 42px;
+      border-radius: 18px;
       display:grid;
       place-items:center;
-      text-decoration:none;
       position:relative;
       background: rgba(255,255,255,.08);
       box-shadow: 0 16px 30px rgba(0,0,0,.20);
       transition: transform .15s, background .15s;
     }
-    .iconBtn::before{
+    .followIcon .dot::before{
       content:"";
       position:absolute; inset:-1px;
-      border-radius: 16px;
+      border-radius: 18px;
       padding:1px;
       background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(34,197,94,.8));
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-      pointer-events:none;
       opacity:.9;
+      pointer-events:none;
     }
-    .iconBtn:hover{transform: translateY(-2px); background: rgba(255,255,255,.12)}
-    .iconBtn svg{width:18px;height:18px; fill: rgba(255,255,255,.90)}
+    .followIcon:hover .dot{transform: translateY(-2px); background: rgba(255,255,255,.12)}
+    .followIcon svg{width:18px;height:18px; fill: rgba(255,255,255,.92)}
+    .followIcon span{opacity:.95}
 
     .copy{
-      max-width:1180px;
+      max-width:1440px;
       margin:0 auto;
-      padding: 0 12px 14px;
+      padding: 0 8px 14px;
       color: rgba(255,255,255,.72);
       font-size:12px;
       text-align:center;
@@ -626,19 +638,23 @@
 
   <footer>
     <div class="foot">
+      <!-- ✅ 1) Logo first -->
       <div>
-        <div class="footBrand">
+        <div class="footerLogo">
           <div class="logoBox" aria-hidden="true">
-            <!-- simple logo svg -->
             <svg viewBox="0 0 24 24">
               <path d="M12 2c4.97 0 9 4.03 9 9 0 4.97-4.03 9-9 9-1.73 0-3.35-.49-4.73-1.34l-3.1 1.02 1.02-3.1A8.93 8.93 0 0 1 3 11c0-4.97 4.03-9 9-9Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"/>
             </svg>
           </div>
-          <div>
+          <div class="logoText">
             <div class="t1">eProstutiBD</div>
             <div class="t2">সকল প্রস্তুতি হোক গভীর থেকে</div>
           </div>
         </div>
+      </div>
+
+      <!-- ✅ 2) দরকারি পেজ -->
+      <div>
         <b>দরকারি পেজ</b>
         <a href="#">About</a>
         <a href="#">Privacy Policy</a>
@@ -646,6 +662,7 @@
         <a href="#">Contact</a>
       </div>
 
+      <!-- ✅ 3) অন্যান্য -->
       <div>
         <b>অন্যান্য</b>
         <a href="#">Notice</a>
@@ -654,20 +671,36 @@
         <a href="#">Help</a>
       </div>
 
+      <!-- ✅ 4) Follow (vertical, no icon boxes around the group) -->
       <div>
         <b>Follow</b>
-        <div class="social" aria-label="Social media">
-          <a class="iconBtn" href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+        <div class="followCol" aria-label="Social media">
+          <a class="followIcon" href="#" aria-label="Facebook">
+            <div class="dot">
+              <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+            </div>
+            <span>Facebook</span>
           </a>
-          <a class="iconBtn" href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+
+          <a class="followIcon" href="#" aria-label="YouTube">
+            <div class="dot">
+              <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+            </div>
+            <span>YouTube</span>
           </a>
-          <a class="iconBtn" href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+
+          <a class="followIcon" href="#" aria-label="Telegram">
+            <div class="dot">
+              <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+            </div>
+            <span>Telegram</span>
           </a>
-          <a class="iconBtn" href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+
+          <a class="followIcon" href="#" aria-label="Instagram">
+            <div class="dot">
+              <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+            </div>
+            <span>Instagram</span>
           </a>
         </div>
       </div>
@@ -693,7 +726,7 @@
 
     const COL_SUBJECTS = "subjects";
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODELTEST_QUESTIONS = "modeltest_questions"; // change if needed
+    const COL_MODELTEST_QUESTIONS = "modeltest_questions";
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
@@ -712,7 +745,6 @@
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    /* Search (related) */
     function normalize(s){
       return String(s||"").toLowerCase()
         .replace(/[^\p{L}\p{N}\s]+/gu, " ")
@@ -845,7 +877,7 @@
           <div class="counts">
             <span class="countPill">MCQ <b>${mcq}</b></span>
             <span class="countPill">Written <b>${written}</b></span>
-            <span class="countPill">Model <b>${mtCount}</b></span>
+            <span class="countPill">Model test <b>${mtCount}</b></span> <!-- ✅ fixed -->
           </div>
         `;
         wrap.appendChild(el);
@@ -885,14 +917,12 @@
         if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
         return t;
       }
-      // fallback
       try{ return JSON.stringify(v); }catch(e){ return String(v); }
     }
 
     function getTimeField(data){
-      // ✅ YOUR REAL FIELD: totalTimeMin
       const keys = [
-        "totalTimeMin",
+        "totalTimeMin", /* ✅ your real field */
         "totalTime", "total_time",
         "duration", "time", "examTime", "exam_time",
         "minutes", "totalMinutes", "total_minutes",
@@ -903,27 +933,17 @@
       }
       return "-";
     }
-
     function getMarkField(data){
-      // ✅ YOUR REAL FIELD: totalMarks
-      const keys = [
-        "totalMarks",
-        "totalMark", "total_mark", "totalMarks",
-        "mark", "marks"
-      ];
+      const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
       }
       return "-";
     }
-
     function getTitleField(data){
-      // ✅ YOUR REAL FIELD: title
-      return data?.title ?? data?.name ?? data?.titleText ?? "Subject Model Test";
+      return data?.title ?? data?.name ?? "Subject Model Test";
     }
-
     function getPreQCount(data){
-      // If you later store question count in model test doc, support it:
       const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
@@ -945,7 +965,6 @@
         });
       qCountUnsubs.set(mtId, unsub);
     }
-
     function cleanupQuestionCountListeners(activeIds){
       for(const [id, unsub] of qCountUnsubs.entries()){
         if(!activeIds.has(id)){
@@ -974,7 +993,6 @@
       docs.forEach(d=>{
         const data = d.data() || {};
         const title = getTitleField(data);
-
         const timeVal = formatTimeMin(getTimeField(data));
         const markVal = getMarkField(data);
 
