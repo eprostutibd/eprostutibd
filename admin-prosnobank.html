@@ -52,7 +52,7 @@
       padding:8px 10px; border-radius:999px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.03);
-      min-width: 210px;
+      min-width: 230px;
       justify-content:center;
     }
     .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
@@ -118,7 +118,7 @@
     .row{display:flex; gap:10px; flex-wrap:wrap}
     .row > *{flex:1}
     .field label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px 2px;}
-    input, select{
+    input, select, textarea{
       width:100%;
       border:1px solid var(--line);
       background: rgba(255,255,255,.04);
@@ -127,7 +127,8 @@
       border-radius:14px;
       outline:none;
     }
-    input:focus, select:focus{border-color: rgba(106,166,255,.55)}
+    textarea{min-height:92px; resize:vertical}
+    input:focus, select:focus, textarea:focus{border-color: rgba(106,166,255,.55)}
     .btn{
       border:1px solid var(--line);
       background: rgba(255,255,255,.05);
@@ -181,7 +182,7 @@
     }
     .modalback.show{display:flex}
     .modal{
-      width:min(920px, 100%);
+      width:min(980px, 100%);
       background: rgba(18,26,43,.98);
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -207,7 +208,7 @@
       border-radius: 16px;
       box-shadow: var(--shadow);
       padding: 12px 12px;
-      max-width: 520px;
+      max-width: 560px;
       display:none;
       z-index: 90;
     }
@@ -255,7 +256,8 @@
     </div>
     <div class="divider"></div>
     <div class="note">
-      Import না হলে: CSV header / 500 batch limit / rules issue হতে পারে—এই কোডে সব handle করা আছে।
+      Import/Search/Edit/Delete সব এখানেই আছে।  
+      যদি error হয়, Console(F12) এও দেখো।
     </div>
   </div>
 </div>
@@ -267,7 +269,7 @@
         <div class="logo"></div>
         <div>
           <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
-          <div class="sub">Subjects + Subject Model Tests • CSV/XLSX Import • Chunked batch • Stable login</div>
+          <div class="sub">Subjects + Subject Model Tests • Import • Cascade delete • Question Manager (Search/Edit/Delete)</div>
         </div>
       </div>
       <div class="pill">
@@ -298,10 +300,10 @@
 
         <div class="tabs">
           <button id="tabSubjects" class="tabbtn active" onclick="showTab('subjects')">
-            <span>Subjects</span><span class="small">Add / Import / Delete</span>
+            <span>Subjects</span><span class="small">Add / Import / Search</span>
           </button>
           <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
-            <span>Subject Model Tests</span><span class="small">Add / Import / Delete</span>
+            <span>Subject Model Tests</span><span class="small">Add / Import / Search</span>
           </button>
         </div>
 
@@ -317,7 +319,7 @@
         <div class="note">
           ✅ MCQ header: <b>question, option1..4, right ans, note</b><br/>
           ✅ Written header: <b>question, right ans, note</b><br/>
-          ✅ Model test collection: <b>subject_model_tests</b>
+          ✅ Edit/Delete: Subject & Model test → <b>Questions</b> button
         </div>
       </div>
     </div>
@@ -477,6 +479,40 @@
         ✅ <b>right ans</b> = A/B/C/D অথবা 1/2/3/4 অথবা option text<br/>
         ✅ <b>note</b> explanation হিসেবে save হবে।
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTION MANAGER MODAL -->
+<div id="qmBack" class="modalback" onclick="closeQM(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <b id="qmTitle">Manage Questions</b>
+      <button class="btn" onclick="closeQM()">Close</button>
+    </div>
+    <div class="mbd">
+      <div class="row">
+        <div class="field">
+          <label>Search Question (related match supported)</label>
+          <input id="qmSearch" placeholder="কিছু শব্দ লিখুন..." oninput="renderQMResults()" />
+        </div>
+        <div class="field" style="flex:0 0 230px">
+          <label>Filter Type</label>
+          <select id="qmType" onchange="renderQMResults()">
+            <option value="all">All</option>
+            <option value="mcq">MCQ</option>
+            <option value="written">Written</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="note" id="qmHint">Loading...</div>
+      <div class="divider"></div>
+
+      <div id="qmList" class="list"></div>
+      <div id="qmEmpty" class="note" style="display:none">No questions found.</div>
     </div>
   </div>
 </div>
@@ -669,7 +705,6 @@
       return;
     }
 
-    // ✅ no orderBy (prevents “appears then disappears” issues)
     unsubModelTests = db.collection(COL_SUBJECT_MODEL_TESTS)
       .where("subjectId","==",subjectId)
       .onSnapshot((snap)=>{
@@ -756,6 +791,7 @@
 
     filtered.forEach(s=>{
       const counts = s.counts || { mcq:0, written:0 };
+      const safeName = (s.name||"").replace(/'/g,"\\'");
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
@@ -767,13 +803,14 @@
             <span class="chip">ID: ${s.id}</span>
           </div>
           <div class="note" style="margin-top:8px">
-            Import করলে <b>${COL_SUBJECT_QUESTIONS}</b> এ যাবে।
+            Import/Search/Edit/Delete → <b>Questions</b>
           </div>
         </div>
         <div class="actions">
           <button class="btn" onclick="editSubjectPrompt('${s.id}')">Edit</button>
           <button class="btn danger" onclick="deleteSubjectCascade('${s.id}')">Delete (Cascade)</button>
           <button class="btn ok" onclick="openSubjectImport('${s.id}')">Import</button>
+          <button class="btn" onclick="openQMForSubject('${s.id}','${safeName}')">Questions</button>
         </div>
       `;
       list.appendChild(el);
@@ -793,6 +830,7 @@
 
     filtered.forEach(m=>{
       const counts = m.counts || { mcq:0, written:0 };
+      const safeTitle = (m.title||"").replace(/'/g,"\\'");
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
@@ -805,11 +843,15 @@
             <span class="chip">Written: <b>${counts.written||0}</b></span>
             <span class="chip">ID: ${m.id}</span>
           </div>
+          <div class="note" style="margin-top:8px">
+            Import/Search/Edit/Delete → <b>Questions</b>
+          </div>
         </div>
         <div class="actions">
           <button class="btn" onclick="editModelTestPrompt('${m.id}')">Edit</button>
           <button class="btn danger" onclick="deleteModelTestCascade('${m.id}')">Delete (Cascade)</button>
           <button class="btn ok" onclick="openModelTestImport('${m.id}')">Import</button>
+          <button class="btn" onclick="openQMForModelTest('${m.id}','${safeTitle}')">Questions</button>
         </div>
       `;
       list.appendChild(el);
@@ -1121,18 +1163,7 @@
       logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
     }
 
-    // update counts once
-    const sref = db.collection(COL_SUBJECTS).doc(subjectId);
-    const ssnap = await sref.get();
-    const sdata = ssnap.data() || {};
-    const counts = sdata.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + total };
-
-    await sref.update({
-      counts: newCounts,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
+    await recomputeSubjectCounts(subjectId);
     return total;
   }
 
@@ -1171,18 +1202,7 @@
       logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
     }
 
-    // update counts once
-    const mtRef = db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId);
-    const mtSnap = await mtRef.get();
-    const mtData = mtSnap.data() || {};
-    const counts = mtData.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + total };
-
-    await mtRef.update({
-      counts: newCounts,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
+    await recomputeModelTestCounts(modelTestId);
     return total;
   }
 
@@ -1222,20 +1242,16 @@
     if(!ok) return;
 
     try{
-      // delete subject questions
       await deleteByQueryInBatches(COL_SUBJECT_QUESTIONS,"subjectId",subjectId);
 
-      // load model tests for subject
       const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).where("subjectId","==",subjectId).get();
       const mtIds = mtSnap.docs.map(d=>d.id);
 
-      // delete each model test's questions + model test doc
       for(const mtId of mtIds){
         await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",mtId);
         await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).delete();
       }
 
-      // delete subject doc
       await db.collection(COL_SUBJECTS).doc(subjectId).delete();
       toast("Done","Subject deleted (cascade)");
     }catch(err){
@@ -1245,10 +1261,315 @@
   }
   window.deleteSubjectCascade = deleteSubjectCascade;
 
-  // ===== IMPORT MODAL close =====
-  window.closeImport = closeImport;
+  // ===========================
+  // Question Manager (Search/Edit/Delete)
+  // ===========================
+  let QM = {
+    mode: null,          // "subject" | "modeltest"
+    subjectId: null,
+    modelTestId: null,
+    title: "",
+    unsub: null,
+    data: []            // [{id, ...docData}]
+  };
 
-  // ===== Enable buttons after auth =====
+  function closeQM(e){
+    if(e && e.target && e.target.id !== "qmBack") return;
+    if(QM.unsub){ QM.unsub(); QM.unsub = null; }
+    QM.data = [];
+    $("qmBack").classList.remove("show");
+  }
+  window.closeQM = closeQM;
+
+  function openQMForSubject(subjectId, subjectName){
+    if(QM.unsub){ QM.unsub(); QM.unsub = null; }
+    QM.mode = "subject";
+    QM.subjectId = subjectId;
+    QM.modelTestId = null;
+    QM.title = `Subject: ${subjectName}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value = "";
+    $("qmType").value = "all";
+    $("qmHint").textContent = "Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_SUBJECT_QUESTIONS)
+      .where("subjectId", "==", subjectId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent = "Failed to load questions (check rules).";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForSubject = openQMForSubject;
+
+  function openQMForModelTest(modelTestId, modelTestTitle){
+    if(QM.unsub){ QM.unsub(); QM.unsub = null; }
+    QM.mode = "modeltest";
+    QM.modelTestId = modelTestId;
+    QM.subjectId = null;
+    QM.title = `Model Test: ${modelTestTitle}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value = "";
+    $("qmType").value = "all";
+    $("qmHint").textContent = "Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_MODEL_TEST_QUESTIONS)
+      .where("modelTestId", "==", modelTestId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent = "Failed to load questions (check rules).";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForModelTest = openQMForModelTest;
+
+  function normText(s){
+    return String(s||"")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  function tokens(s){
+    const t = normText(s);
+    if(!t) return [];
+    return t.split(" ").filter(Boolean);
+  }
+  function scoreRelated(query, text){
+    const q = tokens(query);
+    const t = normText(text);
+    if(!q.length) return 1;
+
+    const qnorm = normText(query);
+    if(qnorm && t.includes(qnorm)) return 100;
+
+    const tt = new Set(tokens(t));
+    let hit = 0;
+    q.forEach(w=>{ if(tt.has(w)) hit++; });
+
+    const overlap = (hit / q.length) * 10;
+    let partial = 0;
+    q.forEach(w=>{
+      if(w.length >= 3){
+        for(const tw of tt){
+          if(tw.startsWith(w) || w.startsWith(tw)) { partial += 0.3; break; }
+        }
+      }
+    });
+
+    return overlap + partial;
+  }
+
+  function renderMCQPreview(it){
+    const opts = Array.isArray(it.options) ? it.options : [];
+    if(!opts.length) return `<div class="note" style="margin-top:8px">No options found.</div>`;
+    const letters = ["A","B","C","D"];
+    const lines = opts.slice(0,4).map((o,i)=>{
+      const mark = (it.correctIndex===i) ? " ✅" : "";
+      return `<div class="note">${letters[i]}. ${esc(o||"")}${mark}</div>`;
+    }).join("");
+    return `<div style="margin-top:8px">${lines}</div>`;
+  }
+  function renderWrittenPreview(it){
+    const ans = it.rightAns ? esc(it.rightAns) : "";
+    return ans ? `<div class="note" style="margin-top:8px"><b>Right Ans:</b> ${ans}</div>` : `<div class="note" style="margin-top:8px">No right ans.</div>`;
+  }
+
+  function renderQMResults(){
+    const q = $("qmSearch").value || "";
+    const type = $("qmType").value;
+    const list = $("qmList");
+    list.innerHTML = "";
+
+    let items = QM.data.slice();
+    if(type !== "all") items = items.filter(x => (x.type||"") === type);
+
+    const scored = items.map(it=>{
+      const s = scoreRelated(q, it.question || "");
+      return { ...it, __score: s };
+    }).filter(it=>{
+      if(!normText(q)) return true;
+      return it.__score >= 1.2;
+    }).sort((a,b)=> b.__score - a.__score);
+
+    $("qmEmpty").style.display = scored.length ? "none" : "block";
+    if(!scored.length){
+      $("qmHint").textContent = QM.data.length ? "No related match found." : "No questions in this section yet.";
+      return;
+    }
+    $("qmHint").textContent = `Showing ${scored.length} / ${QM.data.length} (related match enabled)`;
+
+    scored.slice(0, 200).forEach(it=>{
+      const isMCQ = it.type === "mcq";
+      const subtitle = isMCQ
+        ? `MCQ • correct: ${(it.correctIndex>=0 && it.correctIndex<=3) ? ["A","B","C","D"][it.correctIndex] : "?"}`
+        : `Written`;
+
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(it.question || "(no question)")}</p>
+          <div class="meta2">
+            <span class="chip">${subtitle}</span>
+            <span class="chip">score: ${it.__score.toFixed(1)}</span>
+            <span class="chip">id: ${it.id}</span>
+          </div>
+          ${isMCQ ? renderMCQPreview(it) : renderWrittenPreview(it)}
+          ${it.note ? `<div class="note" style="margin-top:8px"><b>Note:</b> ${esc(it.note)}</div>` : ``}
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editQuestionPrompt('${it.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteQuestion('${it.id}')">Delete</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    if(scored.length > 200){
+      const more = document.createElement("div");
+      more.className = "note";
+      more.textContent = "Too many results—showing first 200. Please refine search.";
+      list.appendChild(more);
+    }
+  }
+  window.renderQMResults = renderQMResults;
+
+  async function deleteQuestion(qid){
+    const ok = confirm("Delete this question?");
+    if(!ok) return;
+
+    try{
+      if(QM.mode === "subject"){
+        await db.collection(COL_SUBJECT_QUESTIONS).doc(qid).delete();
+        await recomputeSubjectCounts(QM.subjectId);
+      }else{
+        await db.collection(COL_MODEL_TEST_QUESTIONS).doc(qid).delete();
+        await recomputeModelTestCounts(QM.modelTestId);
+      }
+      toast("Done", "Question deleted");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Delete failed");
+    }
+  }
+  window.deleteQuestion = deleteQuestion;
+
+  async function editQuestionPrompt(qid){
+    const it = QM.data.find(x=>x.id===qid);
+    if(!it) return;
+
+    if(it.type === "mcq"){
+      const q = prompt("Question:", it.question || "");
+      if(q===null) return;
+
+      const o1 = prompt("Option1:", (it.options||[])[0] || "");
+      if(o1===null) return;
+      const o2 = prompt("Option2:", (it.options||[])[1] || "");
+      if(o2===null) return;
+      const o3 = prompt("Option3:", (it.options||[])[2] || "");
+      if(o3===null) return;
+      const o4 = prompt("Option4:", (it.options||[])[3] || "");
+      if(o4===null) return;
+
+      const ci = prompt("Correct (A/B/C/D or 1/2/3/4):", (it.correctIndex>=0) ? ["A","B","C","D"][it.correctIndex] : "");
+      if(ci===null) return;
+
+      const note = prompt("Note (optional):", it.note || "");
+      if(note===null) return;
+
+      const options = [o1,o2,o3,o4].map(x=>String(x||"").trim());
+      const correctIndex = resolveCorrectIndex(String(ci||"").trim(), options, "auto");
+      if(!String(q||"").trim() || options.some(x=>!x) || correctIndex<0 || correctIndex>3){
+        return toast("Validation", "Question/Options/Correct invalid");
+      }
+
+      try{
+        const col = (QM.mode==="subject") ? COL_SUBJECT_QUESTIONS : COL_MODEL_TEST_QUESTIONS;
+        await db.collection(col).doc(qid).update({
+          question: String(q).trim(),
+          options,
+          correctIndex,
+          note: String(note||"").trim()
+        });
+        toast("Done", "MCQ updated");
+      }catch(err){
+        console.error(err);
+        toast("Error", err?.message || "Update failed");
+      }
+      return;
+    }
+
+    const q = prompt("Question:", it.question || "");
+    if(q===null) return;
+    const ans = prompt("Right Ans:", it.rightAns || "");
+    if(ans===null) return;
+    const note = prompt("Note (optional):", it.note || "");
+    if(note===null) return;
+
+    if(!String(q||"").trim()){
+      return toast("Validation","Question empty not allowed");
+    }
+
+    try{
+      const col = (QM.mode==="subject") ? COL_SUBJECT_QUESTIONS : COL_MODEL_TEST_QUESTIONS;
+      await db.collection(col).doc(qid).update({
+        question: String(q).trim(),
+        rightAns: String(ans||"").trim(),
+        note: String(note||"").trim()
+      });
+      toast("Done", "Written updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editQuestionPrompt = editQuestionPrompt;
+
+  // ---- Recompute counts (keeps counts accurate) ----
+  async function recomputeSubjectCounts(subjectId){
+    try{
+      const snap = await db.collection(COL_SUBJECT_QUESTIONS).where("subjectId","==",subjectId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_SUBJECTS).doc(subjectId).update({
+        counts: { mcq, written },
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  async function recomputeModelTestCounts(modelTestId){
+    try{
+      const snap = await db.collection(COL_MODEL_TEST_QUESTIONS).where("modelTestId","==",modelTestId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
+        counts: { mcq, written },
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  // ===== Buttons enable after auth =====
   function enableAdminButtons(){
     $("btnRefresh").disabled = false;
     $("btnAddSubject").disabled = false;
@@ -1256,7 +1577,7 @@
     $("btnDoImport").disabled = false;
   }
 
-  // initial gate
+  // ===== Gate close initial =====
   showGate("Checking login...");
 </script>
 </body>
