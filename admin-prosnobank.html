@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>প্রশ্নব্যাংক - Visitor</title>
+  <style>
+    :root{
+      --bg:#07101e; --card:#0f1a2f; --muted:#9aa7c2; --text:#e9eefb;
+      --line:rgba(255,255,255,.10); --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(106,166,255,.14), transparent 50%),
+                  radial-gradient(1000px 700px at 90% 20%, rgba(92,227,164,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    header{position:sticky; top:0; z-index:10; backdrop-filter: blur(10px); background: rgba(7,16,30,.75); border-bottom:1px solid var(--line);}
+    .wrap{max-width:1100px; margin:0 auto; padding:16px;}
+    h1{margin:0; font-size:18px}
+    .sub{font-size:12px; color:var(--muted); margin-top:4px}
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; padding: 14px 0;}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
+    .card{background: rgba(15,26,47,.85); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);}
+    .hd{padding:14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+    .bd{padding:14px}
+    .note{font-size:12px; color:var(--muted); line-height:1.5}
+    .list{display:flex; flex-direction:column; gap:10px;}
+    .item{border:1px solid var(--line); border-radius: 14px; padding:12px; background: rgba(255,255,255,.03); display:flex; justify-content:space-between; gap:10px; cursor:pointer;}
+    .title{margin:0; font-weight:800; font-size:15px;}
+    .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+    .chip{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted);}
+    .btn{border:1px solid var(--line); background: rgba(255,255,255,.05); color:var(--text); padding:8px 10px; border-radius:12px; cursor:pointer; font-weight:700;}
+    .row{display:flex; gap:10px; flex-wrap:wrap;}
+    input{width:100%; background: rgba(255,255,255,.04); border:1px solid var(--line); color:var(--text); padding:10px 12px; border-radius: 12px; outline:none;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h1>প্রশ্নব্যাংক</h1>
+        <div class="sub">Realtime visitor page (subjects + model tests)</div>
+      </div>
+      <div class="note" id="conn">Connecting...</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <!-- Subjects -->
+    <div class="card">
+      <div class="hd">
+        <b>Subjects</b>
+        <div style="width:280px;">
+          <input id="subSearch" placeholder="Search subject..." />
+        </div>
+      </div>
+      <div class="bd">
+        <div class="note">Subject নামের নিচে MCQ/Written count + Model Test count দেখাবে।</div>
+        <div style="height:10px"></div>
+        <div id="subjectsList" class="list"></div>
+        <div id="subjectsEmpty" class="note" style="display:none">No subjects yet.</div>
+      </div>
+    </div>
+
+    <!-- Model tests for selected subject -->
+    <div class="card">
+      <div class="hd">
+        <b id="mtTitle">Model Tests</b>
+        <button class="btn" id="clearBtn">Clear</button>
+      </div>
+      <div class="bd">
+        <div class="note" id="mtHint">Select a subject to see model tests.</div>
+        <div style="height:10px"></div>
+        <div id="modelTestsList" class="list"></div>
+        <div id="modelTestsEmpty" class="note" style="display:none">No model tests.</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getFirestore, collection, query, orderBy, where, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const $ = (id)=>document.getElementById(id);
+
+  let SUBJECTS = [];
+  let MODEL_TESTS_ALL = []; // all model tests for counting
+  let selectedSubjectId = null;
+
+  // realtime: subjects
+  const qSubjects = query(collection(db,"subjects"), orderBy("createdAt","desc"));
+  onSnapshot(qSubjects, (snap)=>{
+    SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    $("conn").textContent = "Connected ✅";
+    renderSubjects();
+    renderModelTestsPanel();
+  }, (err)=>{
+    console.error(err);
+    $("conn").textContent = "Error (rules?)";
+  });
+
+  // realtime: all model_tests (for counts per subject)
+  const qAllMT = query(collection(db,"model_tests"), orderBy("createdAt","desc"));
+  onSnapshot(qAllMT, (snap)=>{
+    MODEL_TESTS_ALL = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    renderSubjects(); // update model test counts on cards
+    renderModelTestsPanel();
+  });
+
+  // search
+  $("subSearch").addEventListener("input", renderSubjects);
+
+  // clear selection
+  $("clearBtn").addEventListener("click", ()=>{
+    selectedSubjectId = null;
+    renderModelTestsPanel();
+  });
+
+  function renderSubjects(){
+    const q = ($("subSearch").value||"").trim().toLowerCase();
+    const list = $("subjectsList");
+    list.innerHTML = "";
+
+    const filtered = SUBJECTS.filter(s=>(s.name||"").toLowerCase().includes(q));
+    $("subjectsEmpty").style.display = filtered.length ? "none" : "block";
+
+    // build model test count map
+    const mtCount = {};
+    for(const mt of MODEL_TESTS_ALL){
+      if(!mt.subjectId) continue;
+      mtCount[mt.subjectId] = (mtCount[mt.subjectId]||0) + 1;
+    }
+
+    for(const s of filtered){
+      const counts = s.counts || { mcq:0, written:0 };
+      const modelCount = mtCount[s.id] || 0;
+
+      const div = document.createElement("div");
+      div.className = "item";
+      div.onclick = ()=>{ selectedSubjectId = s.id; renderModelTestsPanel(); };
+      div.innerHTML = `
+        <div>
+          <p class="title">${esc(s.name||"(no name)")}</p>
+          <div class="meta">
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">Model Tests: <b>${modelCount}</b></span>
+          </div>
+        </div>
+        <div class="note" style="min-width:120px; text-align:right">
+          ${selectedSubjectId===s.id ? "Selected ✅" : "Click"}
+        </div>
+      `;
+      list.appendChild(div);
+    }
+  }
+
+  function renderModelTestsPanel(){
+    const list = $("modelTestsList");
+    list.innerHTML = "";
+
+    if(!selectedSubjectId){
+      $("mtTitle").textContent = "Model Tests";
+      $("mtHint").textContent = "Select a subject to see model tests.";
+      $("modelTestsEmpty").style.display = "none";
+      return;
+    }
+
+    const subj = SUBJECTS.find(s=>s.id===selectedSubjectId);
+    $("mtTitle").textContent = `Model Tests: ${subj ? subj.name : ""}`;
+    $("mtHint").textContent = "Realtime list (admin update করলে সাথে সাথে দেখাবে)।";
+
+    const mts = MODEL_TESTS_ALL.filter(m=>m.subjectId===selectedSubjectId);
+
+    $("modelTestsEmpty").style.display = mts.length ? "none" : "block";
+
+    mts.forEach(m=>{
+      const counts = m.counts || { mcq:0, written:0 };
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <div>
+          <p class="title">${esc(m.title||"(no title)")}</p>
+          <div class="meta">
+            <span class="chip">Time: <b>${m.totalTimeMin||0}</b> min</span>
+            <span class="chip">Marks: <b>${m.totalMarks||0}</b></span>
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+          </div>
+        </div>
+        <div class="note" style="min-width:120px; text-align:right">
+          ${m.id}
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function esc(str){
+    return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+</script>
+</body>
+</html>
