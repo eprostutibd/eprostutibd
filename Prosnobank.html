@@ -12,29 +12,6 @@
   <meta name="theme-color" content="#1d4ed8" />
   <link rel="canonical" href="#" />
 
-  <!-- ✅ Open Graph -->
-  <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক" />
-  <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test — সকল প্রস্তুতি হোক গভীর থেকে।" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="#" />
-  <meta property="og:image" content="#" />
-
-  <!-- ✅ Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"eProstutiBD প্রশ্নব্যাংক",
-    "url":"#",
-    "description":"বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।",
-    "potentialAction":{
-      "@type":"SearchAction",
-      "target":"#?q={search_term_string}",
-      "query-input":"required name=search_term_string"
-    }
-  }
-  </script>
-
   <style>
     :root{
       --bg1:#f6f8ff;
@@ -67,7 +44,7 @@
     a{color:inherit}
     .container{max-width:1180px;margin:0 auto;padding:12px}
 
-    /* ===== Header (new layout) ===== */
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -106,12 +83,7 @@
       max-width: 56vw;
     }
 
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:0 0 auto;
-    }
+    .actions{display:flex;align-items:center;gap:10px}
     .pillBtn{
       border: 1px solid rgba(255,255,255,.24);
       background: rgba(255,255,255,.14);
@@ -128,7 +100,6 @@
     }
     .pillBtn:active{transform: translateY(1px)}
 
-    /* Desktop nav as “dock” (no scroll bar look) */
     .dock{
       max-width:1180px;
       margin: 0 auto;
@@ -166,7 +137,6 @@
       border-color: rgba(255,255,255,.28);
     }
 
-    /* Mobile: menu panel */
     .mobileMenu{display:none}
     .mobileMenu .panel{
       max-width:1180px;
@@ -207,7 +177,7 @@
       .pillBtn.menu{display:none}
     }
 
-    /* ===== Notice ticker (new style) ===== */
+    /* ===== Notice ===== */
     .noticeBar{
       margin-top: 10px;
       border: 1px solid var(--line);
@@ -313,6 +283,7 @@
       display:flex;
       gap:10px;
       flex-wrap:wrap;
+      align-items:end;
     }
     .searchRow .field{flex:1}
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
@@ -332,13 +303,12 @@
       background: rgba(255,255,255,.86);
       color: var(--text);
       border-radius: 14px;
-      padding: 8px 10px; /* small */
+      padding: 8px 10px;
       height: 40px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
       white-space:nowrap;
-      align-self:flex-end;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
@@ -394,7 +364,6 @@
       min-height: 38px;
     }
 
-    /* counts as “soft tabs” */
     .counts{
       position:relative;
       margin-top: 10px;
@@ -415,6 +384,64 @@
       color: var(--muted);
     }
     .countPill b{color: var(--text)}
+
+    /* ✅ Latest model tests section */
+    .mtSection{
+      margin-top: 14px;
+      border-top: 1px solid rgba(18,28,55,.10);
+      padding-top: 12px;
+    }
+    .mtTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .mtTitle b{font-size:13px}
+    .mtGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
+    .mtCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      transition:.15s;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      position:relative;
+      overflow:hidden;
+    }
+    .mtCard:hover{transform: translateY(-1px)}
+    .mtCard h4{
+      margin:0;
+      font-size: 13px;
+      line-height: 1.25;
+      font-weight:1000;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 34px;
+    }
+    .mtMeta{
+      margin-top: 8px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
 
     /* inline ad after 6 cards */
     .inlineAd{
@@ -452,7 +479,7 @@
       font-size:12px;
     }
 
-    /* sidebar cards */
+    /* sidebar */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 22px;
@@ -471,10 +498,7 @@
       color: var(--muted);
     }
     .sidePanel .head b{color:var(--text);font-size:13px}
-    .sidePanel .body{
-      padding: 12px;
-      color: var(--muted);
-    }
+    .sidePanel .body{padding: 12px;color: var(--muted)}
     .sideAdBox{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -513,6 +537,13 @@
       padding: 5px 0;
     }
     .foot a:hover{color:var(--text)}
+
+    /* ✅ social icons on another line (separate block) */
+    .socialWrap{
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(18,28,55,.14);
+    }
     .social{
       display:flex;
       gap:10px;
@@ -662,6 +693,15 @@
           <div style="display:flex;justify-content:center;margin-top:12px;">
             <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
           </div>
+
+          <!-- ✅ Latest Model Tests (shown under subject section) -->
+          <div class="mtSection" aria-label="Latest model tests">
+            <div class="mtTitle">
+              <b>Latest Model Tests</b>
+              <span class="muted" id="mtHint">Loading…</span>
+            </div>
+            <div id="latestMT" class="mtGrid"></div>
+          </div>
         </div>
       </section>
 
@@ -711,19 +751,23 @@
         <a href="#">Career</a>
         <a href="#">Help</a>
 
-        <div class="social" aria-label="Social media">
-          <a class="iconBtn" href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-          </a>
-          <a class="iconBtn" href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-          </a>
-          <a class="iconBtn" href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
-          </a>
-          <a class="iconBtn" href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-          </a>
+        <!-- ✅ icons moved to another line -->
+        <div class="socialWrap">
+          <b style="font-size:12px;color:var(--muted)">Follow</b>
+          <div class="social" aria-label="Social media">
+            <a class="iconBtn" href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+            </a>
+            <a class="iconBtn" href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+            </a>
+            <a class="iconBtn" href="#" aria-label="Telegram">
+              <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+            </a>
+            <a class="iconBtn" href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -731,7 +775,7 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
-  <!-- Firebase compat (visitor: no auth) -->
+  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
@@ -843,6 +887,12 @@
       window.open(url, "_blank", "noopener");
     }
 
+    // ✅ model test details page redirect
+    function openModelTest(mtId){
+      const url = `modeltest-details.html?modelTestId=${encodeURIComponent(mtId)}`;
+      window.open(url, "_blank", "noopener");
+    }
+
     function renderSkeleton(){
       const wrap = $("subjects");
       wrap.innerHTML = "";
@@ -940,8 +990,81 @@
       $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
     }
 
+    // ✅ Latest model tests (global latest)
+    function watchLatestModelTests(){
+      const wrap = $("latestMT");
+      wrap.innerHTML = "";
+      $("mtHint").textContent = "Loading…";
+
+      // If your model tests have createdAt, this will be perfect.
+      // If not, it will still work (Firestore requires index for orderBy on missing field).
+      // So we use safe fallback: try orderBy('createdAt'), if it errors, use plain limit.
+
+      const render = (docs)=>{
+        wrap.innerHTML = "";
+        if(!docs.length){
+          $("mtHint").textContent = "0";
+          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+        $("mtHint").textContent = `${docs.length}`;
+        docs.forEach(d=>{
+          const data = d.data() || {};
+          const title = data.name || data.title || "Subject Model Test";
+          const time = data.totalTime ?? data.time ?? "-";
+          const mark = data.totalMark ?? data.mark ?? "-";
+
+          const card = document.createElement("div");
+          card.className = "mtCard";
+          card.setAttribute("role","button");
+          card.setAttribute("tabindex","0");
+          card.onclick = ()=>openModelTest(d.id);
+          card.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openModelTest(d.id);} };
+
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMeta">
+              <span>Time: ${esc(time)}</span>
+              <span>Mark: ${esc(mark)}</span>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      };
+
+      // Try with createdAt order
+      try{
+        db.collection(COL_SUBJECT_MODEL_TESTS)
+          .orderBy("createdAt", "desc")
+          .limit(6)
+          .onSnapshot((snap)=>{
+            render(snap.docs);
+          }, (err)=>{
+            console.warn("createdAt order failed, fallback:", err);
+            // fallback: no order
+            db.collection(COL_SUBJECT_MODEL_TESTS)
+              .limit(6)
+              .onSnapshot((s2)=>render(s2.docs), (e2)=>{
+                console.error(e2);
+                $("mtHint").textContent = "Failed";
+              });
+          });
+      }catch(e){
+        // fallback
+        db.collection(COL_SUBJECT_MODEL_TESTS)
+          .limit(6)
+          .onSnapshot((s2)=>render(s2.docs), (e2)=>{
+            console.error(e2);
+            $("mtHint").textContent = "Failed";
+          });
+      }
+    }
+
+    // Start realtime
     renderSkeleton();
-    db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+    watchLatestModelTests();
+
+    db.collection("subjects").onSnapshot((snap)=>{
       SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
       syncModelTestListeners();
       renderSubjects();
