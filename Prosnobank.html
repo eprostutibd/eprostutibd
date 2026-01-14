@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
 
+  <!-- ✅ SEO -->
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
@@ -13,11 +14,16 @@
   <style>
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
-      --header1:#1d4ed8; --header2:#0ea5e9;
       --line: rgba(18, 28, 55, .10);
       --text:#0f1730; --muted:#5a6685;
+
       --shadow: 0 16px 44px rgba(15,23,48,.12);
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --footerA:#0b1b45;
+      --footerB:#071635;
+      --ring1:#60a5fa;
+      --ring2:#22c55e;
     }
     *{box-sizing:border-box}
     body{
@@ -33,6 +39,7 @@
     a{color:inherit}
     .container{max-width:1180px;margin:0 auto;padding:10px 12px}
 
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -47,8 +54,7 @@
       align-items:center;
       gap:10px;
     }
-
-    /* ✅ Brand back to 2 lines */
+    /* ✅ brand 2 lines */
     .brand{
       display:flex;
       flex-direction:column;
@@ -144,6 +150,7 @@
       .brand .tag{max-width: 55vw;}
     }
 
+    /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top: 10px;
       border: 1px solid var(--line);
@@ -189,6 +196,7 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
+    /* ===== Main layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 1fr 300px;
@@ -217,11 +225,11 @@
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding: 12px 14px}
 
-    /* Search small */
+    /* ✅ Search small */
     .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
-      width: 220px; /* ✅ smaller than before */
+      width: 220px;
       max-width: 70vw;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
@@ -253,6 +261,7 @@
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
+    /* ✅ Subject cards */
     .subjects{display:grid;grid-template-columns: repeat(4, 1fr);gap: 10px;}
     @media (max-width: 1100px){ .subjects{grid-template-columns: repeat(3, 1fr);} }
     @media (max-width: 900px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
@@ -318,7 +327,7 @@
       font-size:12px;
     }
 
-    /* Latest model tests */
+    /* ===== Latest model tests ===== */
     .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px;}
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
@@ -340,7 +349,7 @@
     .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px;}
 
-    /* Sidebar sticky no scroll */
+    /* ===== Sidebar (sticky) ===== */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -373,13 +382,14 @@
       color: var(--muted);
     }
 
+    /* ===== Footer (logo + new social icons) ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
       background:
-        radial-gradient(700px 240px at 20% 0%, rgba(29,78,216,.22), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(14,165,233,.18), transparent 60%),
-        linear-gradient(180deg, #0b1b45, #071635);
+        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
+        linear-gradient(180deg, var(--footerA), var(--footerB));
       color: rgba(255,255,255,.92);
     }
     .foot{
@@ -395,22 +405,66 @@
     @media (max-width: 560px){ .foot{grid-template-columns: 1fr;} }
 
     .foot b{font-size:13px}
-    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
+    .foot a{
+      display:block;
+      text-decoration:none;
+      color: rgba(255,255,255,.78);
+      font-size:12px;
+      padding: 6px 0;
+    }
     .foot a:hover{color:#fff}
 
-    .social{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .iconBtn{
+    .footBrand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .footBrand .logoBox{
       width: 40px; height: 40px;
       border-radius: 14px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
       display:grid;
       place-items:center;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      transition:.15s;
-      text-decoration:none;
+      box-shadow: 0 10px 20px rgba(0,0,0,.18);
     }
-    .iconBtn:hover{transform: translateY(-1px); background: rgba(255,255,255,.14)}
-    .iconBtn svg{width:18px;height:18px; fill: rgba(255,255,255,.88)}
+    .footBrand .logoBox svg{width:22px;height:22px;fill: rgba(255,255,255,.92)}
+    .footBrand .t1{font-weight:1000;line-height:1}
+    .footBrand .t2{font-size:12px;color: rgba(255,255,255,.75);margin-top: 3px}
+
+    .social{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    /* ✅ new icon style */
+    .iconBtn{
+      width: 44px; height: 44px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      text-decoration:none;
+      position:relative;
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 16px 30px rgba(0,0,0,.20);
+      transition: transform .15s, background .15s;
+    }
+    .iconBtn::before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius: 16px;
+      padding:1px;
+      background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(34,197,94,.8));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .iconBtn:hover{transform: translateY(-2px); background: rgba(255,255,255,.12)}
+    .iconBtn svg{width:18px;height:18px; fill: rgba(255,255,255,.90)}
 
     .copy{
       max-width:1180px;
@@ -530,7 +584,6 @@
           <div id="subjects" class="subjects" aria-live="polite"></div>
           <div id="empty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
 
-          <!-- ✅ More button back to bottom -->
           <div style="display:flex;justify-content:center;margin-top:12px;">
             <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
           </div>
@@ -574,6 +627,18 @@
   <footer>
     <div class="foot">
       <div>
+        <div class="footBrand">
+          <div class="logoBox" aria-hidden="true">
+            <!-- simple logo svg -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2c4.97 0 9 4.03 9 9 0 4.97-4.03 9-9 9-1.73 0-3.35-.49-4.73-1.34l-3.1 1.02 1.02-3.1A8.93 8.93 0 0 1 3 11c0-4.97 4.03-9 9-9Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="t1">eProstutiBD</div>
+            <div class="t2">সকল প্রস্তুতি হোক গভীর থেকে</div>
+          </div>
+        </div>
         <b>দরকারি পেজ</b>
         <a href="#">About</a>
         <a href="#">Privacy Policy</a>
@@ -611,6 +676,7 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
+  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
@@ -633,9 +699,6 @@
     const db = firebase.firestore();
     const $ = (id)=>document.getElementById(id);
 
-    // ✅ Turn this to false if you don't want console debug
-    const DEBUG_TIME = true;
-
     function toggleMenu(){
       const menu = $("mobileMenu");
       const btn = $("menuBtn");
@@ -649,6 +712,7 @@
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
+    /* Search (related) */
     function normalize(s){
       return String(s||"").toLowerCase()
         .replace(/[^\p{L}\p{N}\s]+/gu, " ")
@@ -807,67 +871,59 @@
     }
     window.loadMore = loadMore;
 
-    /* Latest Model Tests (max 8) + time fix */
+    /* Latest Model Tests (max 8) */
     const qCountUnsubs = new Map();
     const qCountMap = new Map();
     let latestMTDocsCache = [];
 
-    function formatTimeValue(v){
+    function formatTimeMin(v){
       if(v === undefined || v === null || v === "") return "-";
-
-      // Firestore Timestamp
-      if(v && typeof v === "object" && typeof v.toDate === "function"){
-        // timestamp -> show minutes from date? not meaningful, fallback to string
-        return v.toDate().toLocaleString();
-      }
-
-      // If object {value: 60} etc
-      if(v && typeof v === "object"){
-        if(typeof v.value === "number") return `${v.value} min`;
-        if(typeof v.minutes === "number") return `${v.minutes} min`;
-        if(typeof v.time === "number") return `${v.time} min`;
-        // last fallback
-        try{ return JSON.stringify(v); }catch(e){ return String(v); }
-      }
-
-      // number => minutes
       if(typeof v === "number") return `${v} min`;
-
-      // numeric string => minutes
       if(typeof v === "string"){
-        const t = v.trim();
-        if(!t) return "-";
-        const num = Number(t);
-        if(!Number.isNaN(num) && t.match(/^\d+(\.\d+)?$/)) return `${num} min`;
+        const t=v.trim(); if(!t) return "-";
+        const n=Number(t);
+        if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
         return t;
       }
-
-      return String(v);
+      // fallback
+      try{ return JSON.stringify(v); }catch(e){ return String(v); }
     }
 
     function getTimeField(data){
-      // ✅ MOST COMMON KEYS (add more here if needed)
+      // ✅ YOUR REAL FIELD: totalTimeMin
       const keys = [
-        "totalTime","total_time","duration","time","examTime","exam_time",
-        "minutes","totalMinutes","total_minutes","totaltime","exam_duration",
-        "total_duration","testTime","test_time"
+        "totalTimeMin",
+        "totalTime", "total_time",
+        "duration", "time", "examTime", "exam_time",
+        "minutes", "totalMinutes", "total_minutes",
+        "totaltime", "testTime", "test_time"
       ];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
       }
       return "-";
     }
+
     function getMarkField(data){
-      const keys = ["totalMark","total_mark","totalMarks","mark","marks"];
+      // ✅ YOUR REAL FIELD: totalMarks
+      const keys = [
+        "totalMarks",
+        "totalMark", "total_mark", "totalMarks",
+        "mark", "marks"
+      ];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
       }
       return "-";
     }
+
     function getTitleField(data){
-      return data?.name ?? data?.title ?? "Subject Model Test";
+      // ✅ YOUR REAL FIELD: title
+      return data?.title ?? data?.name ?? data?.titleText ?? "Subject Model Test";
     }
+
     function getPreQCount(data){
+      // If you later store question count in model test doc, support it:
       const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
@@ -901,33 +957,25 @@
     }
 
     function renderLatestModelTests(docs){
-      const wrap = document.getElementById("latestMT");
+      const wrap = $("latestMT");
       latestMTDocsCache = docs;
       wrap.innerHTML = "";
 
       if(!docs.length){
-        document.getElementById("mtHint").textContent = "0";
+        $("mtHint").textContent = "0";
         wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
         return;
       }
-
-      document.getElementById("mtHint").textContent = `${docs.length}`;
+      $("mtHint").textContent = `${docs.length}`;
 
       const active = new Set(docs.map(d=>d.id));
       cleanupQuestionCountListeners(active);
 
       docs.forEach(d=>{
         const data = d.data() || {};
-
-        if(DEBUG_TIME){
-          console.log("MODEL TEST DOC:", d.id, data); // ✅ time field check
-        }
-
         const title = getTitleField(data);
 
-        const timeRaw = getTimeField(data);
-        const timeVal = formatTimeValue(timeRaw);
-
+        const timeVal = formatTimeMin(getTimeField(data));
         const markVal = getMarkField(data);
 
         const preQ = getPreQCount(data);
@@ -954,21 +1002,19 @@
     }
 
     function watchLatestModelTests(){
-      document.getElementById("mtHint").textContent = "Loading…";
+      $("mtHint").textContent = "Loading…";
       const LIMIT = 8;
 
       db.collection(COL_SUBJECT_MODEL_TESTS)
         .orderBy("createdAt", "desc")
         .limit(LIMIT)
-        .onSnapshot((snap)=>{
-          renderLatestModelTests(snap.docs);
-        }, (err)=>{
+        .onSnapshot((snap)=>renderLatestModelTests(snap.docs), (err)=>{
           console.warn("createdAt order failed, fallback:", err);
           db.collection(COL_SUBJECT_MODEL_TESTS)
             .limit(LIMIT)
             .onSnapshot((s2)=>renderLatestModelTests(s2.docs), (e2)=>{
               console.error(e2);
-              document.getElementById("mtHint").textContent = "Failed";
+              $("mtHint").textContent = "Failed";
             });
         });
     }
@@ -983,10 +1029,10 @@
       renderSubjects();
     }, (err)=>{
       console.error(err);
-      document.getElementById("countHint").textContent = "Failed to load";
-      document.getElementById("subjects").innerHTML = "";
-      document.getElementById("empty").style.display = "block";
-      document.getElementById("btnMore").style.display = "none";
+      $("countHint").textContent = "Failed to load";
+      $("subjects").innerHTML = "";
+      $("empty").style.display = "block";
+      $("btnMore").style.display = "none";
     });
   </script>
 </body>
