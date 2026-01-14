@@ -140,32 +140,32 @@
       padding-bottom: 12px;
     }
     .mobileMenu .panelInner{
-      border:1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.14);
-      border-radius: 16px;
-      padding: 10px;
-      box-shadow: 0 14px 30px rgba(0,0,0,.18);
-    }
+  border: none;
+  background: transparent;     /* ✅ no background */
+  border-radius: 0;
+  padding: 6px 0;
+  box-shadow: none;            /* ✅ no shadow */
+}
     .mobileMenu a{
-      display:block;
-      text-decoration:none;
-      color:#fff;
-      font-weight:1000;
-      font-size:12px;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      margin-bottom: 8px;
-      white-space:nowrap;
-    }
-    .mobileMenu a:last-child{margin-bottom:0}
-    .mobileMenu a.active{background: rgba(255,255,255,.18)}
-    @media (max-width: 860px){
-      .nav{display:none;}
-      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
-      .brand .tag{max-width: 55vw;}
-    }
+  display:block;
+  text-decoration:none;
+  color:#fff;
+  font-weight:1000;
+  font-size:12px;
+
+  padding: 12px 12px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.18);
+  background: transparent;     /* ✅ no background */
+  margin-bottom: 8px;
+  white-space:nowrap;
+}
+
+.mobileMenu a.active{
+  background: transparent;     /* ✅ active also no background */
+  border-color: rgba(255,255,255,.32);
+}
 
     /* ===== Notice + Header Ad ===== */
     .noticeBar{
