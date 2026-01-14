@@ -10,7 +10,6 @@
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#1d4ed8" />
-  <link rel="canonical" href="#" />
 
   <style>
     :root{
@@ -20,15 +19,13 @@
       --header1:#1d4ed8;
       --header2:#0ea5e9;
 
-      --card:#ffffff;
-      --glass: rgba(255,255,255,.72);
       --line: rgba(18, 28, 55, .10);
 
       --text:#0f1730;
       --muted:#5a6685;
+
       --shadow: 0 16px 44px rgba(15,23,48,.12);
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
-      --radius: 18px;
     }
     *{box-sizing:border-box}
     body{
@@ -42,141 +39,177 @@
       min-height:100vh;
     }
     a{color:inherit}
-    .container{max-width:1180px;margin:0 auto;padding:12px}
+    .container{max-width:1180px;margin:0 auto;padding:10px 12px}
 
-    /* ===== Header ===== */
+    /* =========================
+       ✅ HEADER (single line)
+    ========================== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
       border-bottom: 1px solid rgba(255,255,255,.22);
-      box-shadow: 0 16px 40px rgba(29,78,216,.18);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
-    .headerWrap{
+    .topbar{
       max-width:1180px;
       margin:0 auto;
-      padding: 12px;
+      padding:10px 12px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      gap:10px;
     }
+
     .brand{
       display:flex;
-      flex-direction:column;
-      gap:3px;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
       min-width:0;
+      white-space:nowrap;
     }
     .brand .name{
       color:#fff;
       font-weight:1000;
-      letter-spacing:.3px;
-      font-size:16px;
+      letter-spacing:.2px;
+      font-size:15px;
       line-height:1;
-      white-space:nowrap;
     }
     .brand .tag{
-      color:rgba(255,255,255,.92);
+      color:rgba(255,255,255,.88);
       font-size:12px;
-      white-space:nowrap;
+      line-height:1;
+      max-width: 260px;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 56vw;
+      white-space:nowrap;
     }
-    .actions{display:flex;align-items:center;gap:10px}
-    .pillBtn{
-      border: 1px solid rgba(255,255,255,.24);
-      background: rgba(255,255,255,.14);
-      color:#fff;
-      border-radius: 999px;
-      padding: 9px 12px;
-      font-weight: 1000;
-      font-size:12px;
-      cursor:pointer;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+    @media (max-width: 980px){
+      .brand .tag{display:none;} /* ✅ header ছোট */
     }
-    .dock{
-      max-width:1180px;
-      margin: 0 auto;
-      padding: 0 12px 12px;
-    }
-    .dockInner{
+
+    .nav{
       display:flex;
       gap:8px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width:none;
-      padding: 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.12);
-      box-shadow: 0 12px 28px rgba(0,0,0,.14);
+      padding-bottom: 2px;
+      flex:1;
     }
-    .dockInner::-webkit-scrollbar{display:none}
-    .dockInner a{
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{
       flex:0 0 auto;
       text-decoration:none;
       color:#fff;
       font-size:12px;
       font-weight:1000;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.10);
       white-space:nowrap;
       transition:.15s;
     }
-    .dockInner a.active{background: rgba(255,255,255,.22);border-color: rgba(255,255,255,.28)}
+    .nav a:hover{background: rgba(255,255,255,.16)}
+    .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
+
+    .menuBtn{
+      flex:0 0 auto;
+      display:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
+      color:#fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight:1000;
+      font-size:12px;
+      cursor:pointer;
+      line-height:1;
+    }
+
     .mobileMenu{display:none}
-    .mobileMenu .panel{max-width:1180px;margin:0 auto 12px;padding:0 12px 12px}
+    .mobileMenu .panel{
+      max-width:1180px;
+      margin:0 auto;
+      padding: 0 12px 12px;
+    }
     .mobileMenu .panelInner{
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.12);
-      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
+      border-radius: 16px;
       padding: 10px;
       box-shadow: 0 14px 30px rgba(0,0,0,.18);
     }
     .mobileMenu a{
-      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:12px;
-      padding: 11px 12px;border-radius: 14px;border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);margin-bottom: 8px;white-space:nowrap;
+      display:block;
+      text-decoration:none;
+      color:#fff;
+      font-weight:1000;
+      font-size:12px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      margin-bottom: 8px;
+      white-space:nowrap;
     }
     .mobileMenu a:last-child{margin-bottom:0}
+    .mobileMenu a.active{background: rgba(255,255,255,.18)}
+
     @media (max-width: 860px){
-      .dock{display:none}
-      .pillBtn.menu{display:inline-flex}
-    }
-    @media (min-width: 861px){
-      .pillBtn.menu{display:none}
+      .nav{display:none;}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
     }
 
-    /* ===== Notice ===== */
+    /* =========================
+       Notice + Header Ad
+    ========================== */
     .noticeBar{
       margin-top: 10px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,.72);
-      border-radius: 18px;
+      border-radius: 16px;
       overflow:hidden;
       box-shadow: var(--shadow2);
     }
-    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px}
+    .noticeRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+    }
     .noticeTag{
       flex:0 0 auto;
-      font-size:12px;font-weight:1000;padding: 6px 10px;border-radius: 999px;
-      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);
-      color: var(--text);white-space:nowrap;
+      font-size:12px;
+      font-weight:1000;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(29,78,216,.10);
+      border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);
+      white-space:nowrap;
     }
-    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px}
-    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite}
-    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
+    .marq{
+      flex:1;
+      overflow:hidden;
+      white-space:nowrap;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .marq span{
+      display:inline-block;
+      padding-left: 100%;
+      animation: ticker 18s linear infinite;
+    }
+    @keyframes ticker{
+      0%{transform: translateX(0)}
+      100%{transform: translateX(-100%)}
+    }
 
-    /* ===== Ads ===== */
     .adBox{
       margin-top: 10px;
       border: 1px dashed rgba(18,28,55,.22);
-      border-radius: 18px;
+      border-radius: 16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
@@ -184,51 +217,87 @@
     .adHead{
       padding: 10px 12px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      font-size:12px;color: var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+      color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted)}
+    .adBody{
+      min-height: 110px;
+      display:grid;
+      place-items:center;
+      padding: 10px;
+      text-align:center;
+      color: var(--muted);
+    }
 
-    /* ===== Main layout ===== */
+    /* =========================
+       ✅ MAIN GRID (less side gap)
+       - wider main area
+       - sidebar sticky, no inner scroll
+    ========================== */
     .grid{
       display:grid;
-      grid-template-columns: 1fr 320px;
-      gap: 14px;
+      grid-template-columns: 1fr 300px;
+      gap: 10px;              /* ✅ gap কম */
       align-items:start;
-      margin-top: 14px;
+      margin-top: 12px;
     }
-    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+    }
 
     .panel{
       border: 1px solid var(--line);
-      border-radius: 22px;
+      border-radius: 20px;
       background: rgba(255,255,255,.70);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
     .panelHead{
-      padding: 14px;
+      padding: 12px 14px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
     .panelHead b{font-size:14px}
     .panelHead .muted{font-size:12px;color:var(--muted)}
-    .panelBody{padding:14px}
+    .panelBody{padding: 12px 14px}
 
-    /* Search row */
-    .searchRow{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
-    .searchRow .field{flex:1}
-    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
-    input{
-      width:100%;
+    /* ✅ Search bar smaller */
+    .searchRow{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .searchMini{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:nowrap;
+    }
+    .searchMini input{
+      width: 280px;            /* ✅ ছোট */
+      max-width: 72vw;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
       color: var(--text);
-      padding: 12px 12px;
-      border-radius: 16px;
+      padding: 10px 12px;      /* ✅ ছোট height */
+      border-radius: 14px;
       outline:none;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-size: 13px;
+    }
+    @media (max-width: 560px){
+      .searchMini input{width: 100%;}
+      .searchMini{width:100%;}
     }
     .btn{
       border:1px solid rgba(18,28,55,.12);
@@ -236,7 +305,7 @@
       color: var(--text);
       border-radius: 14px;
       padding: 8px 10px;
-      height: 40px;
+      height: 38px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
@@ -244,19 +313,27 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10)}
+    .btn.primary{
+      border-color: rgba(29,78,216,.22);
+      background: rgba(29,78,216,.10);
+    }
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0}
 
-    /* Subjects */
-    .subjects{display:grid;grid-template-columns: repeat(3, 1fr);gap: 12px}
-    @media (max-width: 980px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
+    /* ✅ Subjects grid: need 4 cards per row if needed */
+    .subjects{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr); /* ✅ 4 per row desktop */
+      gap: 10px;
+    }
+    @media (max-width: 1100px){ .subjects{grid-template-columns: repeat(3, 1fr);} }
+    @media (max-width: 900px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 560px){ .subjects{grid-template-columns: 1fr;} }
 
     .subCard{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
-      border-radius: 20px;
-      padding: 14px;
+      border-radius: 18px;
+      padding: 12px;
       cursor:pointer;
       transition:.15s;
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
@@ -267,29 +344,97 @@
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(600px 150px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
-        radial-gradient(600px 150px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
+        radial-gradient(560px 140px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
+        radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
       opacity:.9;
       pointer-events:none;
     }
     .subCard h3{
-      position:relative;margin:0;font-size: 15px;font-weight:1000;line-height: 1.2;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 38px;
+      position:relative;
+      margin:0;
+      font-size:14px;
+      font-weight:1000;
+      line-height: 1.2;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 34px;
     }
-    .counts{position:relative;margin-top: 10px;display:flex;gap:8px;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;align-items:center}
+    .counts{
+      position:relative;
+      margin-top: 8px;
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
     .countPill{
-      flex:0 0 auto;font-size:12px;padding: 7px 10px;border-radius:999px;
+      font-size:12px;
+      padding: 6px 9px;
+      border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);color: var(--muted);
+      background: rgba(255,255,255,.78);
+      color: var(--muted);
     }
     .countPill b{color: var(--text)}
 
+    /* inline ad after every 6 cards */
+    .inlineAd{
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 90px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color: var(--muted);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .inlineAd .tag{
+      display:inline-block;
+      font-weight:1000;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      margin-bottom: 6px;
+      font-size:12px;
+    }
+    .empty{
+      display:none;
+      border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-size:12px;
+    }
+
     /* Latest model tests */
-    .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px}
-    .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px}
+    .mtSection{
+      margin-top: 14px;
+      border-top: 1px solid rgba(18,28,55,.10);
+      padding-top: 12px;
+    }
+    .mtTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
     .mtTitle b{font-size:13px}
-    .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap: 10px}
+    .mtGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
+
     .mtCard{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
@@ -300,109 +445,124 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
     .mtCard h4{
-      margin:0;font-size: 13px;line-height: 1.25;font-weight:1000;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
+      margin:0;
+      font-size: 13px;
+      line-height: 1.25;
+      font-weight:1000;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 34px;
     }
-    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px}
-    .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px}
-
-    .inlineAd{
-      border: 1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.78);
-      border-radius: 20px;
-      padding: 12px;
-      min-height: 96px;
-      display:grid;
-      place-items:center;
-      text-align:center;
+    .mtMeta{
+      margin-top: 8px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
       color: var(--muted);
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      font-size:12px;
     }
-    .inlineAd .tag{
-      display:inline-block;font-weight:1000;color: var(--text);
-      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
-    }
-    .empty{
-      display:none;border:1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.70);border-radius: 18px;padding: 12px;
-      color: var(--muted);margin-top: 12px;font-size:12px;
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 6px 10px;
     }
 
-    /* sidebar */
+    /* ✅ Sidebar: sticky, no internal scroll */
     .sidePanel{
       border: 1px solid var(--line);
-      border-radius: 22px;
+      border-radius: 20px;
       background: rgba(255,255,255,.70);
       box-shadow: var(--shadow);
       overflow:hidden;
       height: fit-content;
+      position: sticky;
+      top: 86px;     /* ✅ header height approx */
+    }
+    @media (max-width: 980px){
+      .sidePanel{position: static; top:auto;}
     }
     .sidePanel .head{
-      padding: 14px;border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;font-size:12px;color: var(--muted);
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:12px;
+      color: var(--muted);
     }
     .sidePanel .head b{color:var(--text);font-size:13px}
-    .sidePanel .body{padding: 12px;color: var(--muted)}
+    .sidePanel .body{padding: 12px}
     .sideAdBox{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
-      border-radius: 18px;
-      min-height: 240px;
+      border-radius: 16px;
+      min-height: 230px;
       display:grid;
       place-items:center;
       text-align:center;
       padding: 10px;
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      color: var(--muted);
     }
 
-    /* footer ✅ 3 sections */
+    /* =========================
+       ✅ FOOTER color change
+       + 3 columns
+    ========================== */
     footer{
       margin-top: 14px;
-      border-top: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.72);
-      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(700px 240px at 20% 0%, rgba(29,78,216,.22), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(14,165,233,.18), transparent 60%),
+        linear-gradient(180deg, #0b1b45, #071635);
+      color: rgba(255,255,255,.92);
     }
     .foot{
       max-width:1180px;
       margin:0 auto;
-      padding: 14px 12px;
+      padding: 16px 12px 10px;
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr; /* ✅ three columns */
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 14px;
       align-items:start;
     }
-    @media (max-width: 780px){
-      .foot{grid-template-columns: 1fr 1fr;}
-    }
-    @media (max-width: 560px){
-      .foot{grid-template-columns: 1fr;}
-    }
+    @media (max-width: 780px){ .foot{grid-template-columns: 1fr 1fr;} }
+    @media (max-width: 560px){ .foot{grid-template-columns: 1fr;} }
+
     .foot b{font-size:13px}
-    .foot a{display:block;text-decoration:none;color: var(--muted);font-size:12px;padding: 5px 0}
-    .foot a:hover{color:var(--text)}
-    .social{
-      display:flex;gap:10px;flex-wrap:wrap;margin-top: 10px;
+    .foot a{
+      display:block;
+      text-decoration:none;
+      color: rgba(255,255,255,.78);
+      font-size:12px;
+      padding: 6px 0;
     }
+    .foot a:hover{color:#fff}
+
+    .social{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .iconBtn{
       width: 40px; height: 40px;
       border-radius: 14px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
       transition:.15s;
       text-decoration:none;
     }
-    .iconBtn:hover{transform: translateY(-1px)}
-    .iconBtn svg{width:18px;height:18px; fill: rgba(15,23,48,.72)}
+    .iconBtn:hover{transform: translateY(-1px); background: rgba(255,255,255,.14)}
+    .iconBtn svg{width:18px;height:18px; fill: rgba(255,255,255,.88)}
+
     .copy{
       max-width:1180px;
       margin:0 auto;
       padding: 0 12px 14px;
-      color: var(--muted);
-      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
       text-align:center;
       white-space:nowrap;
     }
@@ -411,9 +571,9 @@
     .skeleton{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.78);
-      border-radius: 20px;
-      padding: 14px;
-      min-height: 110px;
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 100px;
       position: relative;
       overflow:hidden;
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
@@ -430,19 +590,13 @@
 
 <body>
   <header>
-    <div class="headerWrap">
-      <div class="brand">
+    <div class="topbar">
+      <div class="brand" aria-label="Brand">
         <div class="name">eProstutiBD</div>
         <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
 
-      <div class="actions">
-        <button class="pillBtn menu" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰ মেনু</button>
-      </div>
-    </div>
-
-    <div class="dock" aria-label="Main navigation">
-      <div class="dockInner">
+      <nav class="nav" aria-label="Main navigation">
         <a class="active" href="#">একাডেমী</a>
         <a href="#">প্রশ্ন ব্যাঙ্ক</a>
         <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
@@ -454,7 +608,9 @@
         <a href="#">নোটিশ</a>
         <a href="#">ব্লগ</a>
         <a href="#">ক্যারিয়ার</a>
-      </div>
+      </nav>
+
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
     </div>
 
     <div class="mobileMenu" id="mobileMenu">
@@ -512,21 +668,19 @@
 
         <div class="panelBody">
           <div class="searchRow">
-            <div class="field">
-              <label>Search Subject</label>
-              <input id="search" placeholder="যেমন: গণিত / Physics / Biology" oninput="onSearch()" />
+            <div class="searchMini">
+              <input id="search" placeholder="Search subject…" oninput="onSearch()" />
+              <button class="btn" onclick="onSearch()">Search</button>
             </div>
-            <button class="btn" onclick="onSearch()">Search</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
+            </div>
           </div>
 
           <div class="divider"></div>
 
           <div id="subjects" class="subjects" aria-live="polite"></div>
           <div id="empty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
-
-          <div style="display:flex;justify-content:center;margin-top:12px;">
-            <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
-          </div>
 
           <!-- Latest Model Tests -->
           <div class="mtSection" aria-label="Latest model tests">
@@ -540,10 +694,10 @@
       </section>
 
       <!-- Sidebar -->
-      <aside class="sidePanel">
+      <aside class="sidePanel" aria-label="Sidebar ads">
         <div class="head">
           <b>Sponsored</b>
-          <span>Sidebar Ads</span>
+          <span>Ads</span>
         </div>
         <div class="body">
           <div class="sideAdBox">
@@ -554,9 +708,9 @@
             </div>
           </div>
 
-          <div style="height:12px"></div>
+          <div style="height:10px"></div>
 
-          <div class="sideAdBox" style="min-height: 190px">
+          <div class="sideAdBox" style="min-height: 180px">
             <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
             <div>
               <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Bottom Ad</div>
@@ -613,6 +767,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
+    /* =========================
+       Firebase
+    ========================== */
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -625,14 +782,16 @@
 
     const COL_SUBJECTS = "subjects";
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODELTEST_QUESTIONS = "modeltest_questions"; 
-    // ✅ NOTE: If your model test questions are stored elsewhere, change this collection name.
+    const COL_MODELTEST_QUESTIONS = "modeltest_questions"; // change if needed
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
     const $ = (id)=>document.getElementById(id);
 
-    // mobile menu
+    /* =========================
+       Mobile Menu
+    ========================== */
     function toggleMenu(){
       const menu = $("mobileMenu");
       const btn = $("menuBtn");
@@ -646,7 +805,9 @@
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    // related search
+    /* =========================
+       Search (related)
+    ========================== */
     function normalize(s){
       return String(s||"")
         .toLowerCase()
@@ -679,18 +840,32 @@
       return (hit/qt.length)*10 + partial;
     }
 
-    // data
+    /* =========================
+       Subjects
+    ========================== */
     let SUBJECTS = [];
     const modelTestCountMap = new Map();
     const modelTestUnsubs = new Map();
 
-    // paging
     const PAGE_SIZE = 6;
     let visibleCount = 6;
     let currentQuery = "";
 
+    function openSubjectDetails(subjectId){
+      // আগের মতো subject → details-prosnobank.html
+      const url = `details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`;
+      window.open(url, "_blank", "noopener");
+    }
+
+    // ✅ Model test card → details-prosnobank.htm (as you requested)
+    function openModelTestDetails(modelTestId){
+      const url = `details-prosnobank.htm?modelTestId=${encodeURIComponent(modelTestId)}`;
+      window.open(url, "_blank", "noopener");
+    }
+
     function syncModelTestListeners(){
       const alive = new Set(SUBJECTS.map(s=>s.id));
+
       for(const [sid, unsub] of modelTestUnsubs.entries()){
         if(!alive.has(sid)){
           try{ unsub(); }catch(e){}
@@ -698,8 +873,10 @@
           modelTestCountMap.delete(sid);
         }
       }
+
       SUBJECTS.forEach(s=>{
         if(modelTestUnsubs.has(s.id)) return;
+
         const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
           .where("subjectId","==", s.id)
           .onSnapshot((snap)=>{
@@ -709,15 +886,9 @@
             console.error(err);
             modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
           });
+
         modelTestUnsubs.set(s.id, unsub);
       });
-    }
-
-    function openDetails(subjectId){
-      window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
-    }
-    function openModelTest(mtId){
-      window.open(`modeltest-details.html?modelTestId=${encodeURIComponent(mtId)}`, "_blank", "noopener");
     }
 
     function renderSkeleton(){
@@ -732,19 +903,6 @@
       $("empty").style.display = "none";
       $("btnMore").style.display = "none";
     }
-
-    function onSearch(){
-      currentQuery = ($("search").value || "").trim();
-      visibleCount = PAGE_SIZE;
-      renderSubjects();
-    }
-    window.onSearch = onSearch;
-
-    function loadMore(){
-      visibleCount += PAGE_SIZE;
-      renderSubjects();
-    }
-    window.loadMore = loadMore;
 
     function makeInlineAdCard(){
       const ad = document.createElement("div");
@@ -795,8 +953,8 @@
         el.className = "subCard";
         el.setAttribute("role","button");
         el.setAttribute("tabindex","0");
-        el.onclick = ()=>openDetails(s.id);
-        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openDetails(s.id);} };
+        el.onclick = ()=>openSubjectDetails(s.id);
+        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
 
         el.innerHTML = `
           <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
@@ -816,18 +974,77 @@
       $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
     }
 
-    /* =========================
-       ✅ Latest Model Tests
-       - Time: totalTime (or time)
-       - Mark: totalMark (or mark)
-       - Total questions:
-         1) if model test doc has fields: totalQuestions / totalQ / questionCount -> use it
-         2) else count from modeltest_questions where modelTestId == doc.id
-            (change COL_MODELTEST_QUESTIONS if needed)
-    ========================== */
+    function onSearch(){
+      currentQuery = ($("search").value || "").trim();
+      visibleCount = PAGE_SIZE;
+      renderSubjects();
+    }
+    window.onSearch = onSearch;
 
-    const qCountUnsubs = new Map();       // mtId -> unsubscribe
-    const qCountMap = new Map();          // mtId -> count
+    function loadMore(){
+      visibleCount += PAGE_SIZE;
+      renderSubjects();
+    }
+    window.loadMore = loadMore;
+
+    /* =========================
+       ✅ Latest Model Tests (max 8)
+       - time not showing → support many field names + format
+       - question count:
+         1) model test doc has totalQuestions/totalQ/questionCount
+         2) else count from modeltest_questions where modelTestId == doc.id
+    ========================== */
+    const qCountUnsubs = new Map(); // mtId -> unsubscribe
+    const qCountMap = new Map();    // mtId -> count
+    let latestMTDocsCache = [];     // keep docs so we can re-render when counts arrive
+
+    function formatTimeValue(v){
+      if(v === undefined || v === null || v === "") return "-";
+      // number => assume minutes
+      if(typeof v === "number"){
+        return `${v} min`;
+      }
+      // numeric string
+      if(typeof v === "string"){
+        const t = v.trim();
+        if(t === "") return "-";
+        const num = Number(t);
+        if(!Number.isNaN(num) && t.match(/^\d+(\.\d+)?$/)) return `${num} min`;
+        return t; // already formatted e.g. "60 min"
+      }
+      return String(v);
+    }
+
+    function getTimeField(data){
+      // ✅ support multiple time field names
+      return (
+        data.totalTime ??
+        data.total_time ??
+        data.duration ??
+        data.time ??
+        data.examTime ??
+        data.exam_time ??
+        data.minutes ??
+        data.totalMinutes ??
+        "-"
+      );
+    }
+    function getMarkField(data){
+      return (
+        data.totalMark ??
+        data.total_mark ??
+        data.totalMarks ??
+        data.mark ??
+        data.marks ??
+        "-"
+      );
+    }
+    function getTitleField(data){
+      return data.name ?? data.title ?? "Subject Model Test";
+    }
+    function getPreQCount(data){
+      return (data.totalQuestions ?? data.total_questions ?? data.totalQ ?? data.questionCount ?? data.questionsCount);
+    }
 
     function ensureQuestionCountListener(mtId){
       if(qCountUnsubs.has(mtId)) return;
@@ -835,11 +1052,12 @@
         .where("modelTestId","==", mtId)
         .onSnapshot((snap)=>{
           qCountMap.set(mtId, snap.size || 0);
-          // re-render latest model tests quickly
-          // (we only update the badges, but simple re-render is ok)
+          // re-render latest tests when count updates
+          renderLatestModelTests(latestMTDocsCache);
         }, (err)=>{
           console.error(err);
           qCountMap.set(mtId, 0);
+          renderLatestModelTests(latestMTDocsCache);
         });
       qCountUnsubs.set(mtId, unsub);
     }
@@ -854,73 +1072,78 @@
       }
     }
 
-    function watchLatestModelTests(){
+    function renderLatestModelTests(docs){
       const wrap = $("latestMT");
+      latestMTDocsCache = docs;
+
+      wrap.innerHTML = "";
+
+      if(!docs.length){
+        $("mtHint").textContent = "0";
+        wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      $("mtHint").textContent = `${docs.length}`;
+
+      const active = new Set(docs.map(d=>d.id));
+      cleanupQuestionCountListeners(active);
+
+      docs.forEach(d=>{
+        const data = d.data() || {};
+        const title = getTitleField(data);
+
+        const timeVal = formatTimeValue(getTimeField(data));
+        const markVal = getMarkField(data);
+
+        const preQ = getPreQCount(data);
+        if(preQ == null) ensureQuestionCountListener(d.id);
+        const qCount = (preQ != null) ? preQ : (qCountMap.get(d.id) ?? 0);
+
+        const card = document.createElement("div");
+        card.className = "mtCard";
+        card.setAttribute("role","button");
+        card.setAttribute("tabindex","0");
+        card.onclick = ()=>openModelTestDetails(d.id);
+        card.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openModelTestDetails(d.id);} };
+
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="mtMeta">
+            <span>Time: ${esc(timeVal)}</span>
+            <span>Mark: ${esc(markVal)}</span>
+            <span>Q: ${esc(qCount)}</span>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function watchLatestModelTests(){
       $("mtHint").textContent = "Loading…";
 
-      const render = (docs)=>{
-        wrap.innerHTML = "";
-        const active = new Set(docs.map(d=>d.id));
-        cleanupQuestionCountListeners(active);
+      // ✅ max 8
+      const LIMIT = 8;
 
-        if(!docs.length){
-          $("mtHint").textContent = "0";
-          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
-          return;
-        }
-        $("mtHint").textContent = `${docs.length}`;
-
-        docs.forEach(d=>{
-          const data = d.data() || {};
-          const title = data.name || data.title || "Subject Model Test";
-
-          // ✅ time + mark fields (support multiple keys)
-          const time = (data.totalTime ?? data.time ?? data.duration ?? "-");
-          const mark = (data.totalMark ?? data.mark ?? data.totalMarks ?? "-");
-
-          // ✅ questions count:
-          // prefer precomputed field if exists, else live-count from modeltest_questions
-          const preCount = (data.totalQuestions ?? data.totalQ ?? data.questionCount);
-          if(preCount == null){
-            ensureQuestionCountListener(d.id);
-          }
-          const qCount = (preCount != null) ? preCount : (qCountMap.get(d.id) ?? 0);
-
-          const card = document.createElement("div");
-          card.className = "mtCard";
-          card.setAttribute("role","button");
-          card.setAttribute("tabindex","0");
-          card.onclick = ()=>openModelTest(d.id);
-          card.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openModelTest(d.id);} };
-
-          card.innerHTML = `
-            <h4 title="${esc(title)}">${esc(title)}</h4>
-            <div class="mtMeta">
-              <span>Time: ${esc(time)}</span>
-              <span>Mark: ${esc(mark)}</span>
-              <span>Q: ${esc(qCount)}</span>
-            </div>
-          `;
-          wrap.appendChild(card);
-        });
-      };
-
-      // ✅ Try orderBy createdAt; fallback limit only
       db.collection(COL_SUBJECT_MODEL_TESTS)
         .orderBy("createdAt", "desc")
-        .limit(6)
-        .onSnapshot((snap)=>render(snap.docs), (err)=>{
+        .limit(LIMIT)
+        .onSnapshot((snap)=>{
+          renderLatestModelTests(snap.docs);
+        }, (err)=>{
           console.warn("createdAt order failed, fallback:", err);
           db.collection(COL_SUBJECT_MODEL_TESTS)
-            .limit(6)
-            .onSnapshot((s2)=>render(s2.docs), (e2)=>{
+            .limit(LIMIT)
+            .onSnapshot((s2)=>renderLatestModelTests(s2.docs), (e2)=>{
               console.error(e2);
               $("mtHint").textContent = "Failed";
             });
         });
     }
 
-    // Start realtime
+    /* =========================
+       Start realtime
+    ========================== */
     renderSkeleton();
     watchLatestModelTests();
 
