@@ -9,162 +9,191 @@
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক" />
+  <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test — সকল প্রস্তুতি হোক গভীর থেকে।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="#" />
+  <meta property="og:image" content="#" />
+
+  <!-- ✅ Website structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"eProstutiBD প্রশ্নব্যাংক",
+    "url":"#",
+    "description":"বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।"
+  }
+  </script>
 
   <style>
     :root{
-      --bg1:#f7f9ff;
-      --bg2:#eef7ff;
+      /* Dark + Neon modern app theme */
+      --bg:#0b1220;
+      --panel:#0f1830;
+      --panel2:#101c36;
+      --line:rgba(255,255,255,.08);
 
-      --header1:#1d4ed8;
-      --header2:#0ea5e9;
+      --text:#eaf1ff;
+      --muted:rgba(234,241,255,.70);
 
-      --card: rgba(255,255,255,.82);
-      --line: rgba(18, 28, 55, .10);
+      --accent:#7c3aed;   /* violet */
+      --accent2:#06b6d4;  /* cyan */
+      --accent3:#22c55e;  /* green */
+      --warn:#f59e0b;
 
-      --text:#0f1730;
-      --muted:#5a6685;
-      --shadow: 0 16px 40px rgba(15,23,48,.12);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
       --radius: 18px;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
       color:var(--text);
       background:
-        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
-        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      min-height:100vh;
+        radial-gradient(1000px 700px at 15% 10%, rgba(124,58,237,.22), transparent 55%),
+        radial-gradient(900px 650px at 90% 15%, rgba(6,182,212,.18), transparent 55%),
+        radial-gradient(900px 650px at 60% 100%, rgba(34,197,94,.10), transparent 60%),
+        var(--bg);
     }
-    .app{max-width:1180px;margin:0 auto;padding:12px;}
+
+    .app{max-width:1180px;margin:0 auto;padding:14px}
 
     /* ===== HEADER ===== */
     header{
-      position:sticky; top:0; z-index:30;
-      background: linear-gradient(135deg, rgba(29,78,216,.95), rgba(14,165,233,.92));
-      border-bottom: 1px solid rgba(255,255,255,.20);
-      box-shadow: 0 18px 40px rgba(29,78,216,.20);
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(180deg, rgba(11,18,32,.92), rgba(11,18,32,.70));
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
     }
     .topbar{
       max-width:1180px;
       margin:0 auto;
-      padding:10px 12px;
+      padding: 12px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
     }
-    .brandname{
-      color:#fff;
-      font-weight: 1000;
-      letter-spacing: .3px;
-      font-size: 16px;
-      line-height: 1;
-      white-space: nowrap;
+    .brand{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      min-width:0;
     }
-    .tagline{
-      color: rgba(255,255,255,.92);
-      font-size:12px;
-      margin-top:4px;
+    .brand b{
+      font-size:16px;
+      font-weight:1000;
+      letter-spacing:.3px;
       white-space:nowrap;
     }
-    .brandwrap{display:flex; flex-direction:column; gap:2px; min-width:0}
-    .rightwrap{display:flex; align-items:center; gap:10px; flex:0 0 auto}
+    .brand span{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 48vw;
+    }
 
+    /* desktop nav */
     .navDesktop{
-      display:flex;
-      gap:8px;
+      display:flex; gap:8px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width:none;
+      padding-bottom:2px;
     }
     .navDesktop::-webkit-scrollbar{display:none}
     .navDesktop a{
       flex:0 0 auto;
       text-decoration:none;
-      color:#fff;
+      color:var(--text);
       font-size:12px;
-      font-weight:800;
+      font-weight:900;
       padding:9px 12px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      white-space:nowrap;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
       transition:.15s;
+      white-space:nowrap;
     }
-    .navDesktop a:hover{background: rgba(255,255,255,.16)}
+    .navDesktop a:hover{border-color: rgba(255,255,255,.18)}
     .navDesktop a.active{
-      background: rgba(255,255,255,.22);
-      border-color: rgba(255,255,255,.28);
+      background: linear-gradient(135deg, rgba(124,58,237,.22), rgba(6,182,212,.18));
+      border-color: rgba(124,58,237,.35);
     }
 
-    /* Mobile menu */
+    /* mobile menu */
     .menuBtn{
       display:none;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.14);
-      color:#fff;
-      border-radius: 12px;
-      padding: 9px 10px;
-      font-weight: 900;
-      cursor:pointer;
-      line-height: 1;
-    }
-    .mobileMenu{
-      display:none;
-      max-width:1180px;
-      margin: 0 auto;
-      padding: 0 12px 12px;
-    }
-    .mobileMenu .box{
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.12);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
       border-radius: 14px;
+      padding: 9px 10px;
+      font-weight: 1000;
+      cursor:pointer;
+      line-height:1;
+    }
+    .mobileMenu{display:none}
+    .mobileMenu .box{
+      max-width:1180px;
+      margin: 0 auto 10px;
+      padding: 0 14px;
+    }
+    .mobileMenu .panel{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
       padding: 10px;
-      box-shadow: 0 14px 30px rgba(0,0,0,.18);
+      box-shadow: var(--shadow);
     }
     .mobileMenu a{
       display:block;
       text-decoration:none;
-      color:#fff;
+      color:var(--text);
       font-weight:900;
       font-size:12px;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+      padding: 11px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(0,0,0,.10);
       margin-bottom: 8px;
-      white-space:nowrap;
     }
     .mobileMenu a:last-child{margin-bottom:0}
     .mobileMenu a.active{
-      background: rgba(255,255,255,.18);
-      border-color: rgba(255,255,255,.22);
-    }
-    @media (max-width: 820px){
-      .navDesktop{display:none;}
-      .menuBtn{display:inline-flex; align-items:center; gap:8px;}
+      background: linear-gradient(135deg, rgba(124,58,237,.22), rgba(6,182,212,.18));
+      border-color: rgba(124,58,237,.35);
     }
 
-    /* ===== NOTICE ticker ===== */
+    @media (max-width: 860px){
+      .navDesktop{display:none}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px}
+    }
+
+    /* ===== Notice (compact) ===== */
     .tickerWrap{
       max-width:1180px;
       margin: 10px auto 0;
-      padding: 0 12px;
+      padding: 0 14px;
     }
     .ticker{
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.75);
-      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
       overflow:hidden;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      box-shadow: var(--shadow);
     }
     .tickerRow{
       display:flex;
       align-items:center;
-      gap: 10px;
+      gap:10px;
       padding: 10px 12px;
     }
     .badge{
@@ -173,9 +202,9 @@
       font-weight:1000;
       padding: 6px 10px;
       border-radius:999px;
-      color:#0f1730;
-      background: rgba(14,165,233,.16);
-      border: 1px solid rgba(14,165,233,.22);
+      background: rgba(245,158,11,.14);
+      border:1px solid rgba(245,158,11,.22);
+      color: var(--text);
       white-space:nowrap;
     }
     .marq{
@@ -188,7 +217,7 @@
     .marq span{
       display:inline-block;
       padding-left: 100%;
-      animation: ticker 18s linear infinite;
+      animation: ticker 16s linear infinite;
     }
     @keyframes ticker{
       0%{transform: translateX(0)}
@@ -199,102 +228,105 @@
     .topAdWrap{
       max-width:1180px;
       margin: 10px auto 0;
-      padding: 0 12px;
+      padding: 0 14px;
     }
     .ad{
-      border: 1px dashed rgba(18,28,55,.22);
-      border-radius: 16px;
-      padding: 12px;
-      background: rgba(255,255,255,.72);
-      color: var(--muted);
-      font-size: 12px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.05);
-    }
-    .ad .label{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .ad b{color: var(--text)}
-    .adbox{
-      border: 1px solid rgba(18,28,55,.12);
-      border-radius: 14px;
-      background: rgba(255,255,255,.60);
-      min-height: 140px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      padding: 10px;
-    }
-
-    /* ===== layout ===== */
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap: 14px;
-      padding: 12px 0 0;
-      align-items: start; /* ✅ FIX: remove big empty gap (no stretching) */
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr;}
-    }
-
-    .card{
       border:1px solid var(--line);
-      background: var(--card);
-      border-radius: var(--radius);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .hd{
-      padding:14px;
+    .adHead{
+      padding: 10px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .adHead b{color:var(--text)}
+    .adBox{
+      min-height: 120px;
+      display:grid;
+      place-items:center;
+      padding: 10px;
+      color: var(--muted);
+      text-align:center;
+    }
+
+    /* ===== Layout ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap: 14px;
+      align-items:start;
+      margin-top: 14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 14px;
       border-bottom:1px solid var(--line);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
     }
-    .bd{padding:14px}
-    .note{font-size:12px;color:var(--muted);line-height:1.6}
-    .divider{height:1px;background:var(--line);margin:12px 0}
+    .panelHead b{font-size:14px}
+    .panelHead .muted{color:var(--muted);font-size:12px}
+    .panelBody{padding:14px}
 
     /* search */
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .row > *{flex:1}
-    .field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
+    .searchRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .searchRow .field{flex:1}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
     input{
       width:100%;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.03);
       color: var(--text);
-      padding: 11px 12px;
-      border-radius: 14px;
+      padding: 12px 12px;
+      border-radius: 16px;
       outline:none;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
-    input:focus{border-color: rgba(29,78,216,.30)}
+    input:focus{border-color: rgba(124,58,237,.45)}
     .btn{
       border:1px solid var(--line);
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.04);
       color: var(--text);
+      border-radius: 14px;
       padding: 9px 10px;
-      border-radius: 12px;
+      height: 40px;
+      font-size:12px;
+      font-weight:1000;
       cursor:pointer;
-      font-weight: 1000;
       white-space:nowrap;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      align-self:flex-end;
       transition:.15s;
-      font-size: 12px;
-      line-height: 1;
-      height: 38px;
-      align-self: flex-end;
     }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(0)}
+    .btn:hover{border-color: rgba(255,255,255,.18)}
     .btn.primary{
-      border-color: rgba(29,78,216,.18);
-      background: rgba(29,78,216,.10);
+      border-color: rgba(124,58,237,.35);
+      background: linear-gradient(135deg, rgba(124,58,237,.20), rgba(6,182,212,.14));
     }
+
+    .divider{height:1px;background:var(--line);margin: 12px 0}
 
     /* subjects */
     .subjects{
@@ -303,46 +335,46 @@
       gap: 12px;
     }
     @media (max-width: 980px){
-      .subjects{grid-template-columns: repeat(2, 1fr);}
+      .subjects{grid-template-columns: repeat(2, 1fr)}
     }
     @media (max-width: 560px){
-      .subjects{grid-template-columns: 1fr;}
+      .subjects{grid-template-columns: 1fr}
     }
 
-    .subj{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.86);
-      border-radius: 18px;
+    .subCard{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: 20px;
       padding: 14px;
       cursor:pointer;
       transition:.15s;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
       position:relative;
       overflow:hidden;
     }
-    .subj::before{
+    .subCard::before{
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(600px 140px at 15% 0%, rgba(29,78,216,.10), transparent 55%),
-        radial-gradient(600px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
+        radial-gradient(540px 140px at 20% 0%, rgba(124,58,237,.20), transparent 55%),
+        radial-gradient(540px 140px at 100% 0%, rgba(6,182,212,.16), transparent 55%);
       opacity:.9;
       pointer-events:none;
     }
-    .subj:hover{transform: translateY(-1px)}
-    .subj:active{transform: translateY(0)}
-    .subj h3{
+    .subCard:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.18)}
+    .subCard:active{transform: translateY(0)}
+    .subCard h3{
       position:relative;
       margin:0;
       font-size: 15px;
-      line-height: 1.22;
-      letter-spacing:.15px;
+      font-weight: 1000;
+      line-height: 1.2;
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
       min-height: 38px;
     }
+
     .counts{
       position:relative;
       margin-top: 10px;
@@ -353,123 +385,131 @@
       white-space:nowrap;
       align-items:center;
     }
-    .pill2{
+    .chip{
+      flex:0 0 auto;
       font-size:12px;
       padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.74);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
       color: var(--muted);
-      flex:0 0 auto;
     }
-    .pill2 b{color: var(--text)}
+    .chip b{color:var(--text)}
 
-    /* ✅ inline ad card (compact) */
-    .adCard{
-      border:1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.75);
-      border-radius: 18px;
+    /* inline ad after every 6 cards - compact */
+    .inlineAd{
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+      border-radius: 20px;
       padding: 12px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      min-height: 96px;
       display:grid;
       place-items:center;
       text-align:center;
-      min-height: 96px; /* ✅ smaller */
+      color: var(--muted);
     }
-    .adCard .mini{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-    .adCard .tag{
+    .inlineAd .tag{
+      display:inline-block;
       font-weight:1000;
       color: var(--text);
       padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.72);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      margin-bottom: 6px;
       font-size:12px;
     }
 
     .empty{
       display:none;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
       padding: 12px;
-      border:1px dashed rgba(18,28,55,.22);
-      border-radius: 16px;
-      background: rgba(255,255,255,.65);
       color: var(--muted);
-      font-size: 12px;
       margin-top: 12px;
+      font-size:12px;
     }
-    .moreWrap{display:flex;justify-content:center;margin-top: 12px;}
 
-    /* sidebar ad */
-    .sidebar{
+    /* sidebar ads */
+    .sideAd{
       border:1px solid var(--line);
-      background: rgba(255,255,255,.82);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: 22px;
       overflow:hidden;
-      height: fit-content;
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow);
+    }
+    .sideAd .head{
+      padding: 12px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .sideAd .head b{color:var(--text)}
+    .sideAd .box{
+      min-height: 260px;
+      display:grid;
+      place-items:center;
+      padding: 10px;
+      color: var(--muted);
+      text-align:center;
     }
 
     /* footer */
     footer{
       margin-top: 14px;
-      border-top: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.70);
-      backdrop-filter: blur(14px);
+      border-top:1px solid var(--line);
+      background: rgba(0,0,0,.20);
     }
     .foot{
       max-width:1180px;
       margin:0 auto;
-      padding: 14px 12px 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
-      flex-wrap:wrap;
+      align-items:start;
     }
-    .fcol{min-width: 180px;}
+    @media (max-width: 720px){
+      .foot{grid-template-columns: 1fr}
+    }
+    .foot b{font-size:13px}
     .foot a{
-      color: var(--muted);
+      display:block;
       text-decoration:none;
+      color: var(--muted);
       font-size:12px;
-      display:inline-block;
-      padding:4px 0;
+      padding: 5px 0;
     }
-    .foot a:hover{color: var(--text)}
-
-    /* ✅ social icons */
+    .foot a:hover{color:var(--text)}
     .social{
       display:flex;
       gap:10px;
-      align-items:center;
       flex-wrap:wrap;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .iconBtn{
-      width: 38px; height: 38px;
-      border-radius: 12px;
+      width: 40px; height: 40px;
+      border-radius: 14px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.75);
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
-      transition: .15s;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      transition:.15s;
       text-decoration:none;
     }
-    .iconBtn:hover{transform: translateY(-1px)}
-    .iconBtn svg{width:18px;height:18px; fill: rgba(15,23,48,.72)}
+    .iconBtn:hover{border-color: rgba(255,255,255,.18); transform: translateY(-1px)}
+    .iconBtn svg{width:18px;height:18px; fill: rgba(234,241,255,.78)}
 
     .copy{
       max-width:1180px;
       margin:0 auto;
-      padding: 0 12px 14px;
-      color: var(--muted);
-      font-size: 12px;
+      padding: 0 14px 14px;
+      color: rgba(234,241,255,.65);
+      font-size:12px;
       text-align:center;
       white-space:nowrap;
       overflow:hidden;
@@ -478,38 +518,34 @@
 
     /* skeleton */
     .skeleton{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.80);
-      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 20px;
       padding: 14px;
       min-height: 110px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.05);
       position: relative;
       overflow:hidden;
     }
     .shimmer{
       position:absolute; inset:0;
-      background: linear-gradient(110deg, transparent 0%, rgba(0,0,0,.04) 20%, transparent 40%);
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.06) 20%, transparent 40%);
       transform: translateX(-100%);
       animation: sh 1.15s infinite;
     }
     @keyframes sh{to{transform: translateX(100%)}}
+
   </style>
 </head>
 
 <body>
   <header>
     <div class="topbar">
-      <div class="brandwrap">
-        <div class="brandname">eProstutiBD</div>
-        <div class="tagline">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      <div class="brand">
+        <b>eProstutiBD</b>
+        <span>সকল প্রস্তুতি হোক গভীর থেকে</span>
       </div>
 
-      <div class="rightwrap">
-        <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">
-          ☰ মেনু
-        </button>
-      </div>
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰ মেনু</button>
 
       <nav class="navDesktop" aria-label="Main navigation">
         <a class="active" href="#">একাডেমী</a>
@@ -528,17 +564,19 @@
 
     <div class="mobileMenu" id="mobileMenu">
       <div class="box">
-        <a class="active" href="#">একাডেমী</a>
-        <a href="#">প্রশ্ন ব্যাঙ্ক</a>
-        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
-        <a href="#">মডেল টেস্ট</a>
-        <a href="#">কারেন্ট এফেয়ার্স</a>
-        <a href="#">IELTS</a>
-        <a href="#">BCS</a>
-        <a href="#">নোটিশ</a>
-        <a href="#">ব্লগ</a>
-        <a href="#">ক্যারিয়ার</a>
+        <div class="panel">
+          <a class="active" href="#">একাডেমী</a>
+          <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+          <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+          <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+          <a href="#">মডেল টেস্ট</a>
+          <a href="#">কারেন্ট এফেয়ার্স</a>
+          <a href="#">IELTS</a>
+          <a href="#">BCS</a>
+          <a href="#">নোটিশ</a>
+          <a href="#">ব্লগ</a>
+          <a href="#">ক্যারিয়ার</a>
+        </div>
       </div>
     </div>
   </header>
@@ -555,18 +593,18 @@
     </div>
   </div>
 
-  <!-- Header ad -->
+  <!-- Header Ad -->
   <div class="topAdWrap">
     <div class="ad">
-      <div class="label">
+      <div class="adHead">
         <b>Ad Slot</b>
         <span>Header নিচে • Responsive</span>
       </div>
-      <div class="adbox">
+      <div class="adBox">
         <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
         <div>
-          <div style="font-weight:1000; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
-          <div class="note">Paste ad code here</div>
+          <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Responsive Ad</div>
+          <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
         </div>
       </div>
     </div>
@@ -575,14 +613,14 @@
   <main class="app">
     <div class="grid">
       <!-- Main -->
-      <section class="card">
-        <div class="hd">
+      <section class="panel">
+        <div class="panelHead">
           <b>Subjects</b>
-          <span class="note" id="countHint">Loading…</span>
+          <span class="muted" id="countHint">Loading…</span>
         </div>
 
-        <div class="bd">
-          <div class="row">
+        <div class="panelBody">
+          <div class="searchRow">
             <div class="field">
               <label>Search Subject</label>
               <input id="search" placeholder="যেমন: গণিত / Physics / Biology" oninput="onSearch()" />
@@ -595,46 +633,40 @@
           <div id="subjects" class="subjects" aria-live="polite"></div>
           <div id="empty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
 
-          <div class="moreWrap">
+          <div style="display:flex;justify-content:center;margin-top:12px;">
             <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
           </div>
         </div>
       </section>
 
-      <!-- Sidebar ads -->
-      <aside class="sidebar">
-        <div class="hd">
-          <b>Sponsored</b>
-          <span class="note">Ads</span>
-        </div>
-        <div class="bd">
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot</b>
-              <span>Sidebar • 300x250</span>
-            </div>
-            <div class="adbox" style="min-height: 280px">
-              <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:1000; color:var(--text); margin-bottom:6px;">Sidebar Ad</div>
-                <div class="note">Paste ad code here</div>
-              </div>
+      <!-- Sidebar -->
+      <aside>
+        <div class="sideAd">
+          <div class="head">
+            <b>Sponsored</b>
+            <span>Sidebar • 300x250</span>
+          </div>
+          <div class="box">
+            <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
+            <div>
+              <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Sidebar Ad</div>
+              <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
             </div>
           </div>
+        </div>
 
-          <div class="divider"></div>
+        <div style="height:12px"></div>
 
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot</b>
-              <span>Bottom • Responsive</span>
-            </div>
-            <div class="adbox" style="min-height: 210px">
-              <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:1000; color:var(--text); margin-bottom:6px;">Bottom Ad</div>
-                <div class="note">Paste ad code here</div>
-              </div>
+        <div class="sideAd">
+          <div class="head">
+            <b>Ad Slot</b>
+            <span>Bottom • Responsive</span>
+          </div>
+          <div class="box" style="min-height: 200px">
+            <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
+            <div>
+              <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Bottom Ad</div>
+              <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
             </div>
           </div>
         </div>
@@ -644,23 +676,22 @@
 
   <footer>
     <div class="foot">
-      <div class="fcol">
-        <b>দরকারি পেজ</b><br/>
-        <a href="#">About</a><br/>
-        <a href="#">Privacy Policy</a><br/>
-        <a href="#">Terms</a><br/>
-        <a href="#">Contact</a><br/>
+      <div>
+        <b>দরকারি পেজ</b>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
       </div>
 
-      <div class="fcol">
-        <b>অন্যান্য</b><br/>
-        <a href="#">Notice</a><br/>
-        <a href="#">Blog</a><br/>
-        <a href="#">Career</a><br/>
-        <a href="#">Help</a><br/>
+      <div>
+        <b>অন্যান্য</b>
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
 
         <div class="social" aria-label="Social media">
-          <!-- ✅ links will be #, you will replace later -->
           <a class="iconBtn" href="#" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
           </a>
@@ -680,7 +711,7 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
-  <!-- Firebase compat (visitor: no auth) -->
+  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
@@ -703,19 +734,19 @@
 
     const $ = (id)=>document.getElementById(id);
 
-    function esc(str){
-      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-
     // mobile menu
     function toggleMenu(){
-      const box = $("mobileMenu");
+      const menu = $("mobileMenu");
       const btn = $("menuBtn");
-      const open = box.style.display === "block";
-      box.style.display = open ? "none" : "block";
+      const open = menu.style.display === "block";
+      menu.style.display = open ? "none" : "block";
       btn.setAttribute("aria-expanded", open ? "false" : "true");
     }
     window.toggleMenu = toggleMenu;
+
+    function esc(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
 
     // related search
     function normalize(s){
@@ -755,7 +786,7 @@
     const modelTestCountMap = new Map();
     const modelTestUnsubs = new Map();
 
-    // paging + search
+    // paging
     const PAGE_SIZE = 6;
     let visibleCount = 6;
     let currentQuery = "";
@@ -773,7 +804,6 @@
 
       SUBJECTS.forEach(s=>{
         if(modelTestUnsubs.has(s.id)) return;
-
         const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
           .where("subjectId","==", s.id)
           .onSnapshot((snap)=>{
@@ -819,15 +849,14 @@
     }
     window.loadMore = loadMore;
 
-    // ✅ inline ad after every 6 subject cards (compact)
+    // ✅ inline ad after every 6 cards (compact)
     function makeInlineAdCard(){
       const ad = document.createElement("div");
-      ad.className = "adCard";
-      ad.setAttribute("aria-label", "Ad slot");
+      ad.className = "inlineAd";
       ad.innerHTML = `
-        <div class="mini">
-          <span class="tag">Ad Slot</span>
-          <span class="note">এখানে AdSense/Adstra কোড বসবে</span>
+        <div>
+          <div class="tag">Ad Slot</div>
+          <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
         </div>
       `;
       return ad;
@@ -845,7 +874,7 @@
         });
 
       const total = scored.length;
-      const shownItems = scored.slice(0, visibleCount);
+      const shown = scored.slice(0, visibleCount);
 
       $("countHint").textContent = `Total: ${total}`;
 
@@ -860,15 +889,14 @@
       $("empty").style.display = "none";
 
       let cardCount = 0;
-      shownItems.forEach((s, idx)=>{
+      shown.forEach((s, idx)=>{
         cardCount++;
-
         const mcq = s.counts?.mcq || 0;
         const written = s.counts?.written || 0;
         const mtCount = modelTestCountMap.get(s.id) ?? 0;
 
         const el = document.createElement("article");
-        el.className = "subj";
+        el.className = "subCard";
         el.setAttribute("role","button");
         el.setAttribute("tabindex","0");
         el.setAttribute("aria-label", (s.name||"Subject") + " খুলুন");
@@ -877,26 +905,24 @@
 
         el.innerHTML = `
           <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
-          <div class="counts" aria-label="Counts">
-            <span class="pill2">MCQ <b>${mcq}</b></span>
-            <span class="pill2">Written <b>${written}</b></span>
-            <span class="pill2">Model <b>${mtCount}</b></span>
+          <div class="counts">
+            <span class="chip">MCQ <b>${mcq}</b></span>
+            <span class="chip">Written <b>${written}</b></span>
+            <span class="chip">Model <b>${mtCount}</b></span>
           </div>
         `;
         wrap.appendChild(el);
 
-        // ✅ after every 6 cards, insert inline ad card (if more items remain)
-        if(cardCount % 6 === 0 && idx < shownItems.length - 1){
+        if(cardCount % 6 === 0 && idx < shown.length - 1){
           wrap.appendChild(makeInlineAdCard());
         }
       });
 
-      $("btnMore").style.display = (total > shownItems.length) ? "inline-flex" : "none";
+      $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
     }
 
-    // start realtime
+    // start
     renderSkeleton();
-
     db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
       SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
       syncModelTestListeners();
