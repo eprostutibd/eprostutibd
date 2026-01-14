@@ -52,7 +52,7 @@
       padding:8px 10px; border-radius:999px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.03);
-      min-width: 190px;
+      min-width: 210px;
       justify-content:center;
     }
     .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
@@ -207,7 +207,7 @@
       border-radius: 16px;
       box-shadow: var(--shadow);
       padding: 12px 12px;
-      max-width: 460px;
+      max-width: 520px;
       display:none;
       z-index: 90;
     }
@@ -255,7 +255,7 @@
     </div>
     <div class="divider"></div>
     <div class="note">
-      যদি error হয়: <b>Console (F12)</b> এ দেখাবে + এখানে message আসবে।
+      Import না হলে: CSV header / 500 batch limit / rules issue হতে পারে—এই কোডে সব handle করা আছে।
     </div>
   </div>
 </div>
@@ -267,7 +267,7 @@
         <div class="logo"></div>
         <div>
           <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
-          <div class="sub">Compat Firebase (no module) • Stable login • Marks removed</div>
+          <div class="sub">Subjects + Subject Model Tests • CSV/XLSX Import • Chunked batch • Stable login</div>
         </div>
       </div>
       <div class="pill">
@@ -290,7 +290,7 @@
       <div class="bd">
         <div class="stats">
           <div class="stat"><b id="statSubjects">0</b><span>Total Subjects</span></div>
-          <div class="stat"><b id="statModelTests">0</b><span>Total Model Tests (selected subject)</span></div>
+          <div class="stat"><b id="statModelTests">0</b><span>Total Subject Model Tests (selected subject)</span></div>
           <div class="stat"><b id="statQuestions">0</b><span>Total Questions (from subject counts)</span></div>
         </div>
 
@@ -301,7 +301,7 @@
             <span>Subjects</span><span class="small">Add / Import / Delete</span>
           </button>
           <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
-            <span>Model Tests</span><span class="small">Add / Import / Delete</span>
+            <span>Subject Model Tests</span><span class="small">Add / Import / Delete</span>
           </button>
         </div>
 
@@ -317,7 +317,7 @@
         <div class="note">
           ✅ MCQ header: <b>question, option1..4, right ans, note</b><br/>
           ✅ Written header: <b>question, right ans, note</b><br/>
-          ✅ Only admin email can write
+          ✅ Model test collection: <b>subject_model_tests</b>
         </div>
       </div>
     </div>
@@ -358,7 +358,7 @@
           <div id="subjectsEmpty" class="note" style="display:none">এখনও কোনো Subject নেই।</div>
         </section>
 
-        <!-- MODEL TESTS -->
+        <!-- SUBJECT MODEL TESTS -->
         <section id="modelTestsSection" style="display:none">
           <div class="row">
             <div class="field">
@@ -366,7 +366,7 @@
               <select id="mtSubjectSelect" onchange="onMtSubjectChange()"></select>
             </div>
             <div class="field">
-              <label>Model Test Title</label>
+              <label>Subject Model Test Title</label>
               <input id="mtTitle" placeholder="যেমন: Model Test 1" />
             </div>
           </div>
@@ -445,7 +445,7 @@
       </div>
 
       <div class="divider"></div>
-      <div class="note">Import করলে Firestore এ প্রশ্ন add হবে এবং counts auto update হবে।</div>
+      <div class="note">Import করলে Firestore এ প্রশ্ন add হবে এবং counts auto update হবে। (বড় ফাইল chunk করে upload হবে)</div>
       <div class="divider"></div>
       <div class="kbd" id="importLog">Ready.</div>
     </div>
@@ -460,7 +460,7 @@
       <button class="btn" onclick="closeHelp()">Close</button>
     </div>
     <div class="mbd">
-      <div class="note">প্রথম row এ header থাকবে। Excel এও একই header রাখবে।</div>
+      <div class="note">প্রথম row এ header থাকবে। Excel এও একই header রাখবে। Header spelling ঠিক রাখতে হবে।</div>
       <div class="divider"></div>
 
       <b>MCQ</b>
@@ -475,8 +475,7 @@
 
       <div class="note">
         ✅ <b>right ans</b> = A/B/C/D অথবা 1/2/3/4 অথবা option text<br/>
-        ✅ <b>note</b> explanation হিসেবে save হবে।<br/>
-        ✅ marks নেই।
+        ✅ <b>note</b> explanation হিসেবে save হবে।
       </div>
     </div>
   </div>
@@ -511,10 +510,15 @@
   };
   const ADMIN_EMAIL = "eprostutibd@gmail.com";
 
+  // Collections (final names)
+  const COL_SUBJECTS = "subjects";
+  const COL_SUBJECT_QUESTIONS = "subject_questions";
+  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+  const COL_MODEL_TEST_QUESTIONS = "model_test_questions";
+
   // ===== INIT =====
   firebase.initializeApp(firebaseConfig);
   try { firebase.analytics(); } catch(e){}
-
   const auth = firebase.auth();
   const db = firebase.firestore();
 
@@ -527,7 +531,7 @@
     const t = $("toast");
     t.classList.add("show");
     clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 2800);
+    window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 3200);
   }
   function setConn(ok, text){
     $("connDot").classList.toggle("ok", !!ok);
@@ -581,7 +585,7 @@
       provider.setCustomParameters({ prompt: "select_account" });
 
       const res = await auth.signInWithPopup(provider);
-      await res.user.getIdToken(true); // refresh token (rules)
+      await res.user.getIdToken(true);
 
       const email = (res.user.email || "").toLowerCase();
       if(email !== ADMIN_EMAIL.toLowerCase()){
@@ -596,7 +600,6 @@
       $("authStatus").textContent = "Login failed: " + msg;
       toast("Login failed", msg);
 
-      // Common helpful hint:
       if((err?.code||"") === "auth/unauthorized-domain"){
         toast("Fix needed", "Firebase Console → Auth → Authorized domains এ আপনার domain add করুন।");
       }
@@ -639,7 +642,7 @@
   function attachSubjectsSnapshot(){
     if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
 
-    unsubSubjects = db.collection("subjects")
+    unsubSubjects = db.collection(COL_SUBJECTS)
       .onSnapshot((snap)=>{
         SUBJECTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
         SUBJECTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
@@ -667,7 +670,7 @@
     }
 
     // ✅ no orderBy (prevents “appears then disappears” issues)
-    unsubModelTests = db.collection("subject_model_tests")
+    unsubModelTests = db.collection(COL_SUBJECT_MODEL_TESTS)
       .where("subjectId","==",subjectId)
       .onSnapshot((snap)=>{
         MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
@@ -690,10 +693,10 @@
     $("subjectsSection").style.display = tab==="subjects" ? "block" : "none";
     $("modelTestsSection").style.display = tab==="modeltests" ? "block" : "none";
 
-    $("pageTitle").textContent = tab==="subjects" ? "Subjects" : "Model Tests";
+    $("pageTitle").textContent = tab==="subjects" ? "Subjects" : "Subject Model Tests";
     $("pageHint").textContent = tab==="subjects"
       ? "Manage subjects & import questions"
-      : "Manage model tests & import questions";
+      : "Manage subject model tests & import questions";
 
     if(tab==="modeltests") attachModelTestsSnapshot();
     else if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
@@ -764,7 +767,7 @@
             <span class="chip">ID: ${s.id}</span>
           </div>
           <div class="note" style="margin-top:8px">
-            Import করলে <b>subject_questions</b> এ যাবে।
+            Import করলে <b>${COL_SUBJECT_QUESTIONS}</b> এ যাবে।
           </div>
         </div>
         <div class="actions">
@@ -821,7 +824,7 @@
     const name = ($("subjectName").value||"").trim();
     if(!name) return toast("Validation","Subject নাম দিন।");
     try{
-      await db.collection("subjects").add({
+      await db.collection(COL_SUBJECTS).add({
         name,
         counts:{ mcq:0, written:0 },
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -844,7 +847,7 @@
     const name = newName.trim();
     if(!name) return toast("Validation","Empty not allowed");
     try{
-      await db.collection("subjects").doc(subjectId).update({
+      await db.collection(COL_SUBJECTS).doc(subjectId).update({
         name,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -856,7 +859,7 @@
   }
   window.editSubjectPrompt = editSubjectPrompt;
 
-  // ===== CRUD: MODEL TESTS =====
+  // ===== CRUD: SUBJECT MODEL TESTS =====
   async function addModelTest(){
     const subjectId = $("mtSubjectSelect").value;
     if(!subjectId) return toast("Validation","Subject select করুন।");
@@ -866,7 +869,7 @@
     const totalMarks = Number($("mtMarks").value||0) || 0;
 
     try{
-      await db.collection("subject_model_tests").add({
+      await db.collection(COL_SUBJECT_MODEL_TESTS).add({
         subjectId, title, totalTimeMin, totalMarks,
         counts:{ mcq:0, written:0 },
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -896,7 +899,7 @@
     if(newMarks===null) return;
 
     try{
-      await db.collection("subject_model_tests").doc(modelTestId).update({
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
         title: t,
         totalTimeMin: Number(newTime)||0,
         totalMarks: Number(newMarks)||0,
@@ -944,20 +947,45 @@
   window.openSubjectImport = openSubjectImport;
   window.openModelTestImport = openModelTestImport;
 
+  // ===== File parsing + header normalization =====
   async function parseQuestionsFile(file){
     const ext = file.name.split(".").pop().toLowerCase();
+
+    const normalizeKey = (k)=> String(k || "")
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+
+    const normalizeRowKeys = (row)=>{
+      const out = {};
+      Object.keys(row || {}).forEach((k)=>{
+        out[normalizeKey(k)] = row[k];
+      });
+      return out;
+    };
+
     if(ext==="csv"){
       const text = await file.text();
       return new Promise((resolve,reject)=>{
-        Papa.parse(text,{ header:true, skipEmptyLines:true, complete:(res)=>resolve(res.data||[]), error:reject });
+        Papa.parse(text,{
+          header:true,
+          skipEmptyLines:true,
+          transformHeader: (h)=> normalizeKey(h),
+          complete:(res)=> resolve((res.data||[]).map(normalizeRowKeys)),
+          error:reject
+        });
       });
     }
+
     if(ext==="xlsx"||ext==="xls"){
       const buf = await file.arrayBuffer();
       const wb = XLSX.read(buf);
       const ws = wb.Sheets[wb.SheetNames[0]];
-      return XLSX.utils.sheet_to_json(ws);
+      const rows = XLSX.utils.sheet_to_json(ws);
+      return (rows||[]).map(normalizeRowKeys);
     }
+
     throw new Error("Only CSV/XLSX supported");
   }
 
@@ -980,19 +1008,19 @@
       return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
     }
 
-    // auto:
     if(letterIndex !== -1) return letterIndex;
     if(Number.isFinite(n) && n>=1 && n<=4) return n-1;
     return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
   }
 
+  // MCQ: question, option1..4, right ans, note
   function normalizeMCQ(row, ansMode){
-    const question = toStr(row.question).trim();
+    const question = toStr(row["question"]).trim();
     const options = [
-      toStr(row.option1).trim(),
-      toStr(row.option2).trim(),
-      toStr(row.option3).trim(),
-      toStr(row.option4).trim()
+      toStr(row["option1"]).trim(),
+      toStr(row["option2"]).trim(),
+      toStr(row["option3"]).trim(),
+      toStr(row["option4"]).trim()
     ];
     const note = toStr(row["note"]).trim();
     const ansRaw = toStr(row["right ans"]).trim();
@@ -1000,9 +1028,10 @@
     return { question, options, correctIndex, note };
   }
 
+  // Written: question, right ans, note
   function normalizeWritten(row){
     return {
-      question: toStr(row.question).trim(),
+      question: toStr(row["question"]).trim(),
       rightAns: toStr(row["right ans"]).trim(),
       note: toStr(row["note"]).trim()
     };
@@ -1010,6 +1039,7 @@
 
   async function doImport(){
     if(!importTarget) return;
+
     const type = $("importType").value; // mcq/written
     const ansMode = $("answerFormat").value;
     const file = $("importFile").files?.[0];
@@ -1026,9 +1056,17 @@
       }else{
         items = rows.map(r=>normalizeWritten(r)).filter(q => q.question);
       }
-      if(!items.length) return logImport("No valid rows found. Check headers/values.");
 
-      logImport(`Valid rows: ${items.length}. Uploading...`);
+      if(!items.length){
+        return logImport(
+          "No valid rows found.\n" +
+          "Check headers exactly:\n" +
+          "MCQ: question, option1, option2, option3, option4, right ans, note\n" +
+          "Written: question, right ans, note"
+        );
+      }
+
+      logImport(`Valid rows: ${items.length}. Uploading in chunks...`);
 
       if(importTarget.mode==="subject"){
         const n = await importToSubject(importTarget.subjectId, type, items);
@@ -1047,86 +1085,105 @@
   }
   window.doImport = doImport;
 
+  // Chunked import to avoid 500 batch limit
   async function importToSubject(subjectId, type, items){
-    const batch = db.batch();
-    const qcol = db.collection("subject_questions");
+    const CHUNK = 450;
+    const total = items.length;
 
-    items.forEach(q=>{
-      const ref = qcol.doc();
-      if(type==="mcq"){
-        batch.set(ref, {
-          subjectId, type,
-          question: q.question,
-          options: q.options,
-          correctIndex: q.correctIndex,
-          note: q.note,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }else{
-        batch.set(ref, {
-          subjectId, type,
-          question: q.question,
-          rightAns: q.rightAns,
-          note: q.note,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-    });
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_SUBJECT_QUESTIONS);
 
-    const sref = db.collection("subjects").doc(subjectId);
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            subjectId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            subjectId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    // update counts once
+    const sref = db.collection(COL_SUBJECTS).doc(subjectId);
     const ssnap = await sref.get();
     const sdata = ssnap.data() || {};
     const counts = sdata.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
+    const newCounts = { ...counts, [type]: (counts[type]||0) + total };
 
-    batch.update(sref, {
+    await sref.update({
       counts: newCounts,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    await batch.commit();
-    return items.length;
+    return total;
   }
 
   async function importToModelTest(modelTestId, subjectId, type, items){
-    const batch = db.batch();
-    const qcol = db.collection("model_test_questions");
+    const CHUNK = 450;
+    const total = items.length;
 
-    items.forEach(q=>{
-      const ref = qcol.doc();
-      if(type==="mcq"){
-        batch.set(ref, {
-          modelTestId, subjectId, type,
-          question: q.question,
-          options: q.options,
-          correctIndex: q.correctIndex,
-          note: q.note,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }else{
-        batch.set(ref, {
-          modelTestId, subjectId, type,
-          question: q.question,
-          rightAns: q.rightAns,
-          note: q.note,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-    });
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_MODEL_TEST_QUESTIONS);
 
-    const mtRef = db.collection("subject_model_tests").doc(modelTestId);
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            modelTestId, subjectId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            modelTestId, subjectId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    // update counts once
+    const mtRef = db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId);
     const mtSnap = await mtRef.get();
     const mtData = mtSnap.data() || {};
     const counts = mtData.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
+    const newCounts = { ...counts, [type]: (counts[type]||0) + total };
 
-    batch.update(mtRef, {
+    await mtRef.update({
       counts: newCounts,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    await batch.commit();
-    return items.length;
+    return total;
   }
 
   // ===== CASCADE DELETE =====
@@ -1147,8 +1204,8 @@
     if(!ok) return;
 
     try{
-      await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
-      await db.collection("subject_model_tests").doc(modelTestId).delete();
+      await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",modelTestId);
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).delete();
       toast("Done","Model test deleted (cascade)");
     }catch(err){
       console.error(err);
@@ -1161,21 +1218,25 @@
     const s = SUBJECTS.find(x=>x.id===subjectId);
     if(!s) return;
 
-    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- subject_questions\n- এই subject এর model_tests\n- সেই model_tests এর model_test_questions\nসব ডিলিট হবে।`);
+    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- ${COL_SUBJECT_QUESTIONS}\n- ${COL_SUBJECT_MODEL_TESTS}\n- ${COL_MODEL_TEST_QUESTIONS}\nসব ডিলিট হবে।`);
     if(!ok) return;
 
     try{
-      await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
+      // delete subject questions
+      await deleteByQueryInBatches(COL_SUBJECT_QUESTIONS,"subjectId",subjectId);
 
-      const mtSnap = await db.collection("subject_model_tests").where("subjectId","==",subjectId).get();
+      // load model tests for subject
+      const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).where("subjectId","==",subjectId).get();
       const mtIds = mtSnap.docs.map(d=>d.id);
 
+      // delete each model test's questions + model test doc
       for(const mtId of mtIds){
-        await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
-        await db.collection("subject_model_tests").doc(mtId).delete();
+        await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",mtId);
+        await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).delete();
       }
 
-      await db.collection("subjects").doc(subjectId).delete();
+      // delete subject doc
+      await db.collection(COL_SUBJECTS).doc(subjectId).delete();
       toast("Done","Subject deleted (cascade)");
     }catch(err){
       console.error(err);
@@ -1184,16 +1245,10 @@
   }
   window.deleteSubjectCascade = deleteSubjectCascade;
 
-  // ===== HELPERS =====
-  function openHelp(){ $("helpBack").classList.add("show"); }
-  function closeHelp(e){ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
-  window.openHelp = openHelp;
-  window.closeHelp = closeHelp;
-
-  // expose import close
+  // ===== IMPORT MODAL close =====
   window.closeImport = closeImport;
 
-  // ===== Enable buttons when authorized =====
+  // ===== Enable buttons after auth =====
   function enableAdminButtons(){
     $("btnRefresh").disabled = false;
     $("btnAddSubject").disabled = false;
@@ -1201,15 +1256,7 @@
     $("btnDoImport").disabled = false;
   }
 
-  // when authorized ui state changes
-  // (called inside auth handler via setAuthorizedUI)
-  const _origSetAuthorizedUI = setAuthorizedUI;
-  setAuthorizedUI = function(isAuthorized, email){
-    _origSetAuthorizedUI(isAuthorized, email);
-    if(isAuthorized) enableAdminButtons();
-  }
-
-  // initial
+  // initial gate
   showGate("Checking login...");
 </script>
 </body>
