@@ -64,6 +64,7 @@
       padding: 14px 0;
     }
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
     .card{
       background: var(--panel);
       border:1px solid var(--line);
@@ -206,7 +207,7 @@
       border-radius: 16px;
       box-shadow: var(--shadow);
       padding: 12px 12px;
-      max-width: 440px;
+      max-width: 460px;
       display:none;
       z-index: 90;
     }
@@ -236,15 +237,14 @@
 
 <body>
 
+<!-- AUTH GATE -->
 <div id="authGate">
   <div class="authCard">
     <div style="display:flex; gap:12px; align-items:center;">
       <div class="logo"></div>
       <div>
         <h2>Admin Access Required</h2>
-        <div class="note">
-          শুধু <b>eprostutibd@gmail.com</b> দিয়ে লগইন করলে admin পেজ ব্যবহার করা যাবে।
-        </div>
+        <div class="note">শুধু <b>eprostutibd@gmail.com</b> দিয়ে লগইন করলে admin পেজ ব্যবহার করা যাবে।</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -254,7 +254,9 @@
       <button class="btn" id="btnLogout" disabled>Logout</button>
     </div>
     <div class="divider"></div>
-    <div class="note">Firestore Rules অবশ্যই admin-email-only write হতে হবে।</div>
+    <div class="note">
+      যদি error হয়: <b>Console (F12)</b> এ দেখাবে + এখানে message আসবে।
+    </div>
   </div>
 </div>
 
@@ -265,7 +267,7 @@
         <div class="logo"></div>
         <div>
           <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
-          <div class="sub">Marks removed • CSV headers updated (right ans)</div>
+          <div class="sub">Compat Firebase (no module) • Stable login • Marks removed</div>
         </div>
       </div>
       <div class="pill">
@@ -279,6 +281,7 @@
 <main class="wrap">
   <div class="grid">
 
+    <!-- LEFT -->
     <div class="card">
       <div class="hd">
         <b>Admin Menu</b>
@@ -286,18 +289,9 @@
       </div>
       <div class="bd">
         <div class="stats">
-          <div class="stat">
-            <b id="statSubjects">0</b>
-            <span>Total Subjects</span>
-          </div>
-          <div class="stat">
-            <b id="statModelTests">0</b>
-            <span>Total Model Tests (selected subject)</span>
-          </div>
-          <div class="stat">
-            <b id="statQuestions">0</b>
-            <span>Total Questions (from subject counts)</span>
-          </div>
+          <div class="stat"><b id="statSubjects">0</b><span>Total Subjects</span></div>
+          <div class="stat"><b id="statModelTests">0</b><span>Total Model Tests (selected subject)</span></div>
+          <div class="stat"><b id="statQuestions">0</b><span>Total Questions (from subject counts)</span></div>
         </div>
 
         <div class="divider"></div>
@@ -323,11 +317,12 @@
         <div class="note">
           ✅ MCQ header: <b>question, option1..4, right ans, note</b><br/>
           ✅ Written header: <b>question, right ans, note</b><br/>
-          ✅ marks পুরোপুরি বাদ (save হবে না)
+          ✅ Only admin email can write
         </div>
       </div>
     </div>
 
+    <!-- RIGHT -->
     <div class="card">
       <div class="hd">
         <b id="pageTitle">Subjects</b>
@@ -335,6 +330,7 @@
       </div>
 
       <div class="bd">
+        <!-- SUBJECTS -->
         <section id="subjectsSection">
           <div class="row">
             <div class="field">
@@ -362,6 +358,7 @@
           <div id="subjectsEmpty" class="note" style="display:none">এখনও কোনো Subject নেই।</div>
         </section>
 
+        <!-- MODEL TESTS -->
         <section id="modelTestsSection" style="display:none">
           <div class="row">
             <div class="field">
@@ -409,6 +406,7 @@
   </div>
 </main>
 
+<!-- IMPORT MODAL -->
 <div id="importBack" class="modalback" onclick="closeImport(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mhd">
@@ -454,6 +452,7 @@
   </div>
 </div>
 
+<!-- HELP MODAL -->
 <div id="helpBack" class="modalback" onclick="closeHelp(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mhd">
@@ -475,7 +474,7 @@
       <div class="divider"></div>
 
       <div class="note">
-        ✅ <b>right ans</b> এ A/B/C/D অথবা 1/2/3/4 অথবা option text দিতে পারবে।<br/>
+        ✅ <b>right ans</b> = A/B/C/D অথবা 1/2/3/4 অথবা option text<br/>
         ✅ <b>note</b> explanation হিসেবে save হবে।<br/>
         ✅ marks নেই।
       </div>
@@ -483,24 +482,24 @@
   </div>
 </div>
 
+<!-- TOAST -->
 <div id="toast" class="toast">
   <b id="toastTitle">Message</b>
   <div id="toastMsg" class="tmuted"></div>
 </div>
 
+<!-- CSV / XLSX libs -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
-    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-  import {
-    getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
-    getDocs, getDoc, query, where, serverTimestamp, writeBatch, onSnapshot, limit
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+<!-- Firebase compat (NO module) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
 
+<script>
+  // ===== CONFIG =====
   const firebaseConfig = {
     apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
     authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -512,16 +511,16 @@
   };
   const ADMIN_EMAIL = "eprostutibd@gmail.com";
 
-  const app = initializeApp(firebaseConfig);
-  try { getAnalytics(app); } catch(e) {}
-  const db = getFirestore(app);
+  // ===== INIT =====
+  firebase.initializeApp(firebaseConfig);
+  try { firebase.analytics(); } catch(e){}
 
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
   const $ = (id)=>document.getElementById(id);
 
+  // ===== UI helpers =====
   function toast(title, msg){
     $("toastTitle").textContent = title;
     $("toastMsg").textContent = msg;
@@ -546,28 +545,6 @@
     $("whoami").textContent = isAuthorized ? ("Admin: " + (userEmail || "")) : "Admin (blocked)";
     setConn(isAuthorized, isAuthorized ? "Connected (admin)" : "Login required");
   }
-
-  async function login(){
-    try{
-      $("authStatus").textContent = "Opening Google login...";
-      const res = await signInWithPopup(auth, provider);
-      await res.user.getIdToken(true);
-      const email = (res.user?.email || "").toLowerCase();
-      if(email !== ADMIN_EMAIL.toLowerCase()){
-        $("authStatus").textContent = "❌ Not authorized. Signing out...";
-        await signOut(auth);
-        toast("Not authorized", "শুধু eprostutibd@gmail.com admin access পাবে।");
-      }
-    }catch(err){
-      console.error(err);
-      $("authStatus").textContent = "Login failed: " + (err.message || err);
-      toast("Login failed", err.message || "Error");
-    }
-  }
-  async function logout(){ await signOut(auth); }
-  $("btnLogin").onclick = login;
-  $("btnLogout").onclick = logout;
-
   function showGate(msg){
     $("authGate").style.display = "flex";
     $("authStatus").textContent = msg || "Please login with eprostutibd@gmail.com";
@@ -575,67 +552,163 @@
   }
   function hideGate(){ $("authGate").style.display = "none"; }
 
-  window.openHelp = ()=>$("helpBack").classList.add("show");
-  window.closeHelp = (e)=>{ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
-  window.closeImport = (e)=>{ if(!e || e.target.id==="importBack") $("importBack").classList.remove("show"); }
-  window.manualRefresh = ()=>{ populateSubjectSelect(); renderSubjects(); if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot(); toast("Refreshed","UI updated"); }
+  function esc(str){
+    return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
 
+  // ===== STATE =====
   let SUBJECTS = [];
   let MODEL_TESTS = [];
   let CURRENT_TAB = "subjects";
   let importTarget = null;
+
   let unsubSubjects = null;
   let unsubModelTests = null;
 
-  function timeMs(ts){
+  function toMs(ts){
     try{
       if(!ts) return 0;
-      if(typeof ts.toMillis === "function") return ts.toMillis();
+      if(typeof ts.toDate === "function") return ts.toDate().getTime();
       return 0;
     }catch{ return 0; }
   }
 
-  function detachSubjectsSnapshot(){ if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; } }
-  function detachModelTestsSnapshot(){ if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; } }
+  // ===== AUTH =====
+  async function login(){
+    try{
+      $("authStatus").textContent = "Opening Google login...";
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+
+      const res = await auth.signInWithPopup(provider);
+      await res.user.getIdToken(true); // refresh token (rules)
+
+      const email = (res.user.email || "").toLowerCase();
+      if(email !== ADMIN_EMAIL.toLowerCase()){
+        $("authStatus").textContent = "❌ Not authorized. Signing out...";
+        await auth.signOut();
+        toast("Not authorized", "শুধু eprostutibd@gmail.com admin access পাবে।");
+        return;
+      }
+    }catch(err){
+      console.error(err);
+      const msg = err?.message || String(err);
+      $("authStatus").textContent = "Login failed: " + msg;
+      toast("Login failed", msg);
+
+      // Common helpful hint:
+      if((err?.code||"") === "auth/unauthorized-domain"){
+        toast("Fix needed", "Firebase Console → Auth → Authorized domains এ আপনার domain add করুন।");
+      }
+    }
+  }
+  async function logout(){ await auth.signOut(); }
+
+  $("btnLogin").onclick = login;
+  $("btnLogout").onclick = logout;
+
+  auth.onAuthStateChanged(async (user)=>{
+    if(!user){
+      detachAll();
+      showGate("Please login with eprostutibd@gmail.com");
+      return;
+    }
+    try{ await user.getIdToken(true); }catch(e){}
+
+    const email = (user.email || "").toLowerCase();
+    if(email !== ADMIN_EMAIL.toLowerCase()){
+      detachAll();
+      $("authStatus").textContent = "❌ Only admin allowed. Signing out...";
+      await auth.signOut();
+      showGate("❌ Only eprostutibd@gmail.com is allowed.");
+      return;
+    }
+
+    hideGate();
+    setAuthorizedUI(true, user.email);
+    attachSubjectsSnapshot();
+    toast("Welcome", "Admin access granted");
+  });
+
+  // ===== SNAPSHOTS =====
+  function detachAll(){
+    if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
+    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+  }
 
   function attachSubjectsSnapshot(){
-    detachSubjectsSnapshot();
-    unsubSubjects = onSnapshot(query(collection(db,"subjects")), (snap)=>{
-      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
-      SUBJECTS.sort((a,b)=> (timeMs(b.createdAt)||timeMs(b.updatedAt)||0) - (timeMs(a.createdAt)||timeMs(a.updatedAt)||0));
-      populateSubjectSelect();
-      renderSubjects();
-      refreshStats();
-      if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
-    });
+    if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
+
+    unsubSubjects = db.collection("subjects")
+      .onSnapshot((snap)=>{
+        SUBJECTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        SUBJECTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+        populateSubjectSelect();
+        renderSubjects();
+        refreshStats();
+
+        if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
+      }, (err)=>{
+        console.error(err);
+        toast("Firestore error", err?.message || "Subjects snapshot failed");
+        setConn(false, "Rules/Auth error?");
+      });
   }
 
   function attachModelTestsSnapshot(){
-    detachModelTestsSnapshot();
+    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+
     const subjectId = $("mtSubjectSelect").value;
-    if(!subjectId){ MODEL_TESTS=[]; renderModelTests(); refreshStats(); return; }
-    unsubModelTests = onSnapshot(query(collection(db,"model_tests"), where("subjectId","==",subjectId)), (snap)=>{
-      MODEL_TESTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
-      MODEL_TESTS.sort((a,b)=> (timeMs(b.createdAt)||timeMs(b.updatedAt)||0) - (timeMs(a.createdAt)||timeMs(a.updatedAt)||0));
+    if(!subjectId){
+      MODEL_TESTS = [];
       renderModelTests();
       refreshStats();
-    });
+      return;
+    }
+
+    // ✅ no orderBy (prevents “appears then disappears” issues)
+    unsubModelTests = db.collection("model_tests")
+      .where("subjectId","==",subjectId)
+      .onSnapshot((snap)=>{
+        MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        MODEL_TESTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+        renderModelTests();
+        refreshStats();
+      }, (err)=>{
+        console.error(err);
+        toast("Firestore error", err?.message || "Model tests snapshot failed");
+      });
   }
 
-  window.showTab = function(tab){
+  // ===== TABS =====
+  function showTab(tab){
     CURRENT_TAB = tab;
+
     $("tabSubjects").classList.toggle("active", tab==="subjects");
     $("tabModelTests").classList.toggle("active", tab==="modeltests");
+
     $("subjectsSection").style.display = tab==="subjects" ? "block" : "none";
     $("modelTestsSection").style.display = tab==="modeltests" ? "block" : "none";
+
     $("pageTitle").textContent = tab==="subjects" ? "Subjects" : "Model Tests";
     $("pageHint").textContent = tab==="subjects"
       ? "Manage subjects & import questions"
       : "Manage model tests & import questions";
 
-    if(tab==="modeltests") attachModelTestsSnapshot(); else detachModelTestsSnapshot();
+    if(tab==="modeltests") attachModelTestsSnapshot();
+    else if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
   }
+  window.showTab = showTab;
 
+  function manualRefresh(){
+    populateSubjectSelect();
+    renderSubjects();
+    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+    toast("Refreshed", "UI updated");
+  }
+  window.manualRefresh = manualRefresh;
+
+  // ===== STATS =====
   function refreshStats(){
     $("statSubjects").textContent = String(SUBJECTS.length);
     $("statModelTests").textContent = String(MODEL_TESTS.length);
@@ -643,10 +716,12 @@
     $("statQuestions").textContent = String(approxQ);
   }
 
+  // ===== SUBJECT SELECT =====
   function populateSubjectSelect(){
     const sel = $("mtSubjectSelect");
     const prev = sel.value;
     sel.innerHTML = "";
+
     const opt0 = document.createElement("option");
     opt0.value = "";
     opt0.textContent = SUBJECTS.length ? "Select subject..." : "No subjects yet";
@@ -662,17 +737,22 @@
     if(prev) sel.value = prev;
     if(!sel.value && SUBJECTS.length) sel.value = SUBJECTS[0].id;
   }
-  window.onMtSubjectChange = ()=>{ if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot(); }
+  function onMtSubjectChange(){
+    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+  }
+  window.onMtSubjectChange = onMtSubjectChange;
 
-  window.renderSubjects = function(){
+  // ===== RENDER =====
+  function renderSubjects(){
     const q = ($("subjectSearch").value||"").trim().toLowerCase();
     const list = $("subjectsList");
     list.innerHTML = "";
+
     const filtered = SUBJECTS.filter(s=>(s.name||"").toLowerCase().includes(q));
     $("subjectsEmpty").style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(s=>{
-      const counts = s.counts || {mcq:0, written:0};
+      const counts = s.counts || { mcq:0, written:0 };
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
@@ -684,13 +764,13 @@
             <span class="chip">ID: ${s.id}</span>
           </div>
           <div class="note" style="margin-top:8px">
-            MCQ/Written Import করলে subject_questions এ যাবে।
+            Import করলে <b>subject_questions</b> এ যাবে।
           </div>
         </div>
         <div class="actions">
           <button class="btn" onclick="editSubjectPrompt('${s.id}')">Edit</button>
           <button class="btn danger" onclick="deleteSubjectCascade('${s.id}')">Delete (Cascade)</button>
-          <button class="btn ok" onclick="openSubjectImport('${s.id}')">Import Questions</button>
+          <button class="btn ok" onclick="openSubjectImport('${s.id}')">Import</button>
         </div>
       `;
       list.appendChild(el);
@@ -698,16 +778,18 @@
 
     refreshStats();
   }
+  window.renderSubjects = renderSubjects;
 
-  window.renderModelTests = function(){
+  function renderModelTests(){
     const q = ($("mtSearch").value||"").trim().toLowerCase();
     const list = $("modelTestsList");
     list.innerHTML = "";
+
     const filtered = MODEL_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
     $("modelTestsEmpty").style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(m=>{
-      const counts = m.counts || {mcq:0, written:0};
+      const counts = m.counts || { mcq:0, written:0 };
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
@@ -718,12 +800,13 @@
             <span class="chip">Marks: <b>${m.totalMarks||0}</b></span>
             <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
             <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">ID: ${m.id}</span>
           </div>
         </div>
         <div class="actions">
           <button class="btn" onclick="editModelTestPrompt('${m.id}')">Edit</button>
           <button class="btn danger" onclick="deleteModelTestCascade('${m.id}')">Delete (Cascade)</button>
-          <button class="btn ok" onclick="openModelTestImport('${m.id}')">Import Questions</button>
+          <button class="btn ok" onclick="openModelTestImport('${m.id}')">Import</button>
         </div>
       `;
       list.appendChild(el);
@@ -731,31 +814,50 @@
 
     refreshStats();
   }
+  window.renderModelTests = renderModelTests;
 
-  window.addSubject = async function(){
+  // ===== CRUD: SUBJECTS =====
+  async function addSubject(){
     const name = ($("subjectName").value||"").trim();
     if(!name) return toast("Validation","Subject নাম দিন।");
-    await addDoc(collection(db,"subjects"), {
-      name, counts:{mcq:0, written:0},
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    $("subjectName").value="";
-    toast("Done","Subject added");
+    try{
+      await db.collection("subjects").add({
+        name,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("subjectName").value="";
+      toast("Done","Subject added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add subject failed");
+    }
   }
+  window.addSubject = addSubject;
 
-  window.editSubjectPrompt = async function(subjectId){
+  async function editSubjectPrompt(subjectId){
     const s = SUBJECTS.find(x=>x.id===subjectId);
     if(!s) return;
     const newName = prompt("Subject নাম:", s.name||"");
     if(newName===null) return;
     const name = newName.trim();
     if(!name) return toast("Validation","Empty not allowed");
-    await updateDoc(doc(db,"subjects",subjectId), { name, updatedAt: serverTimestamp() });
-    toast("Done","Subject updated");
+    try{
+      await db.collection("subjects").doc(subjectId).update({
+        name,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","Subject updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
   }
+  window.editSubjectPrompt = editSubjectPrompt;
 
-  window.addModelTest = async function(){
+  // ===== CRUD: MODEL TESTS =====
+  async function addModelTest(){
     const subjectId = $("mtSubjectSelect").value;
     if(!subjectId) return toast("Validation","Subject select করুন।");
     const title = ($("mtTitle").value||"").trim();
@@ -763,18 +865,23 @@
     const totalTimeMin = Number($("mtTime").value||0) || 0;
     const totalMarks = Number($("mtMarks").value||0) || 0;
 
-    await addDoc(collection(db,"model_tests"), {
-      subjectId, title, totalTimeMin, totalMarks,
-      counts:{mcq:0, written:0},
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
-    toast("Done","Model test added");
+    try{
+      await db.collection("model_tests").add({
+        subjectId, title, totalTimeMin, totalMarks,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
+      toast("Done","Model test added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add model test failed");
+    }
   }
+  window.addModelTest = addModelTest;
 
-  window.editModelTestPrompt = async function(modelTestId){
+  async function editModelTestPrompt(modelTestId){
     const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
     if(!mt) return;
 
@@ -788,34 +895,54 @@
     const newMarks = prompt("Total Marks:", String(mt.totalMarks ?? 0));
     if(newMarks===null) return;
 
-    await updateDoc(doc(db,"model_tests",modelTestId), {
-      title:t,
-      totalTimeMin: Number(newTime)||0,
-      totalMarks: Number(newMarks)||0,
-      updatedAt: serverTimestamp()
-    });
-    toast("Done","Model test updated");
+    try{
+      await db.collection("model_tests").doc(modelTestId).update({
+        title: t,
+        totalTimeMin: Number(newTime)||0,
+        totalMarks: Number(newMarks)||0,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","Model test updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
   }
+  window.editModelTestPrompt = editModelTestPrompt;
+
+  // ===== IMPORT MODAL =====
+  function openHelp(){ $("helpBack").classList.add("show"); }
+  function closeHelp(e){ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
+  window.openHelp = openHelp;
+  window.closeHelp = closeHelp;
+
+  function closeImport(e){ if(!e || e.target.id==="importBack") $("importBack").classList.remove("show"); }
+  window.closeImport = closeImport;
+
+  function logImport(msg){ $("importLog").textContent = msg; }
 
   function openImportModal(target){
     importTarget = target;
     $("importTitle").textContent = `Import Questions → ${target.title}`;
-    $("importLog").textContent = "Ready.";
     $("importFile").value = "";
     $("importType").value = "mcq";
     $("answerFormat").value = "auto";
+    logImport("Ready.");
     $("importBack").classList.add("show");
   }
-  window.openSubjectImport = (subjectId)=>{
+
+  function openSubjectImport(subjectId){
     const s = SUBJECTS.find(x=>x.id===subjectId);
     if(!s) return;
     openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
   }
-  window.openModelTestImport = (modelTestId)=>{
+  function openModelTestImport(modelTestId){
     const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
     if(!mt) return;
     openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
   }
+  window.openSubjectImport = openSubjectImport;
+  window.openModelTestImport = openModelTestImport;
 
   async function parseQuestionsFile(file){
     const ext = file.name.split(".").pop().toLowerCase();
@@ -833,32 +960,8 @@
     }
     throw new Error("Only CSV/XLSX supported");
   }
+
   function toStr(v){ return (v===undefined||v===null) ? "" : String(v); }
-
-  // ✅ MARKS REMOVED, right ans + note
-  function normalizeMCQ(row, ansMode){
-    const question = toStr(row.question).trim();
-    const o1 = toStr(row.option1).trim();
-    const o2 = toStr(row.option2).trim();
-    const o3 = toStr(row.option3).trim();
-    const o4 = toStr(row.option4).trim();
-    const options = [o1,o2,o3,o4];
-
-    const note = toStr(row["note"]).trim();
-    const ansRaw = toStr(row["right ans"]).trim();
-    const correctIndex = resolveCorrectIndex(ansRaw, options, ansMode);
-
-    return { question, options, correctIndex, note };
-  }
-
-  // ✅ Written: question, right ans, note
-  function normalizeWritten(row){
-    return {
-      question: toStr(row.question).trim(),
-      rightAns: toStr(row["right ans"]).trim(),
-      note: toStr(row["note"]).trim()
-    };
-  }
 
   function resolveCorrectIndex(ansRaw, options, ansMode){
     const a = (ansRaw||"").trim();
@@ -866,7 +969,6 @@
 
     const upper = a.toUpperCase();
     const letterIndex = ["A","B","C","D"].indexOf(upper);
-
     const n = Number(a);
 
     if(ansMode === "letter") return letterIndex;
@@ -884,26 +986,46 @@
     return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
   }
 
-  window.doImport = async function(){
+  function normalizeMCQ(row, ansMode){
+    const question = toStr(row.question).trim();
+    const options = [
+      toStr(row.option1).trim(),
+      toStr(row.option2).trim(),
+      toStr(row.option3).trim(),
+      toStr(row.option4).trim()
+    ];
+    const note = toStr(row["note"]).trim();
+    const ansRaw = toStr(row["right ans"]).trim();
+    const correctIndex = resolveCorrectIndex(ansRaw, options, ansMode);
+    return { question, options, correctIndex, note };
+  }
+
+  function normalizeWritten(row){
+    return {
+      question: toStr(row.question).trim(),
+      rightAns: toStr(row["right ans"]).trim(),
+      note: toStr(row["note"]).trim()
+    };
+  }
+
+  async function doImport(){
     if(!importTarget) return;
-    const type = $("importType").value;
+    const type = $("importType").value; // mcq/written
     const ansMode = $("answerFormat").value;
     const file = $("importFile").files?.[0];
     if(!file) return logImport("Please select a CSV/XLSX file.");
 
     try{
-      logImport(`Parsing: ${file.name}`);
+      logImport("Parsing: " + file.name);
       const rows = await parseQuestionsFile(file);
-      let items = [];
 
+      let items = [];
       if(type==="mcq"){
         items = rows.map(r=>normalizeMCQ(r, ansMode))
           .filter(q => q.question && q.options.every(Boolean) && q.correctIndex>=0 && q.correctIndex<=3);
-      } else {
-        items = rows.map(r=>normalizeWritten(r))
-          .filter(q => q.question);
+      }else{
+        items = rows.map(r=>normalizeWritten(r)).filter(q => q.question);
       }
-
       if(!items.length) return logImport("No valid rows found. Check headers/values.");
 
       logImport(`Valid rows: ${items.length}. Uploading...`);
@@ -912,153 +1034,179 @@
         const n = await importToSubject(importTarget.subjectId, type, items);
         logImport(`✅ Imported ${n} to Subject`);
         toast("Import done", `${n} questions added`);
-      } else {
+      }else{
         const n = await importToModelTest(importTarget.modelTestId, importTarget.subjectId, type, items);
         logImport(`✅ Imported ${n} to Model Test`);
         toast("Import done", `${n} questions added`);
       }
     }catch(err){
       console.error(err);
-      logImport(`❌ Error: ${err.message||err}`);
-      toast("Import error", err.message||"Failed");
+      logImport("❌ Error: " + (err?.message || String(err)));
+      toast("Import error", err?.message || "Failed");
     }
   }
-  function logImport(msg){ $("importLog").textContent = msg; }
+  window.doImport = doImport;
 
-  // ✅ Save fields WITHOUT marks
   async function importToSubject(subjectId, type, items){
-    const batch = writeBatch(db);
-    const qcol = collection(db,"subject_questions");
-    for(const q of items){
-      const ref = doc(qcol);
-      if(type==="mcq"){
-        batch.set(ref, { subjectId, type, question:q.question, options:q.options, correctIndex:q.correctIndex, note:q.note, createdAt: serverTimestamp() });
-      }else{
-        batch.set(ref, { subjectId, type, question:q.question, rightAns:q.rightAns, note:q.note, createdAt: serverTimestamp() });
-      }
-    }
+    const batch = db.batch();
+    const qcol = db.collection("subject_questions");
 
-    const sref = doc(db,"subjects",subjectId);
-    const ssnap = await getDoc(sref);
+    items.forEach(q=>{
+      const ref = qcol.doc();
+      if(type==="mcq"){
+        batch.set(ref, {
+          subjectId, type,
+          question: q.question,
+          options: q.options,
+          correctIndex: q.correctIndex,
+          note: q.note,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }else{
+        batch.set(ref, {
+          subjectId, type,
+          question: q.question,
+          rightAns: q.rightAns,
+          note: q.note,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    });
+
+    const sref = db.collection("subjects").doc(subjectId);
+    const ssnap = await sref.get();
     const sdata = ssnap.data() || {};
     const counts = sdata.counts || { mcq:0, written:0 };
     const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
 
-    batch.update(sref, { counts: newCounts, updatedAt: serverTimestamp() });
+    batch.update(sref, {
+      counts: newCounts,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
     await batch.commit();
     return items.length;
   }
 
   async function importToModelTest(modelTestId, subjectId, type, items){
-    const batch = writeBatch(db);
-    const qcol = collection(db,"model_test_questions");
-    for(const q of items){
-      const ref = doc(qcol);
-      if(type==="mcq"){
-        batch.set(ref, { modelTestId, subjectId, type, question:q.question, options:q.options, correctIndex:q.correctIndex, note:q.note, createdAt: serverTimestamp() });
-      }else{
-        batch.set(ref, { modelTestId, subjectId, type, question:q.question, rightAns:q.rightAns, note:q.note, createdAt: serverTimestamp() });
-      }
-    }
+    const batch = db.batch();
+    const qcol = db.collection("model_test_questions");
 
-    const mtRef = doc(db,"model_tests",modelTestId);
-    const mtSnap = await getDoc(mtRef);
+    items.forEach(q=>{
+      const ref = qcol.doc();
+      if(type==="mcq"){
+        batch.set(ref, {
+          modelTestId, subjectId, type,
+          question: q.question,
+          options: q.options,
+          correctIndex: q.correctIndex,
+          note: q.note,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }else{
+        batch.set(ref, {
+          modelTestId, subjectId, type,
+          question: q.question,
+          rightAns: q.rightAns,
+          note: q.note,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    });
+
+    const mtRef = db.collection("model_tests").doc(modelTestId);
+    const mtSnap = await mtRef.get();
     const mtData = mtSnap.data() || {};
     const counts = mtData.counts || { mcq:0, written:0 };
     const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
 
-    batch.update(mtRef, { counts: newCounts, updatedAt: serverTimestamp() });
+    batch.update(mtRef, {
+      counts: newCounts,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
     await batch.commit();
     return items.length;
   }
 
+  // ===== CASCADE DELETE =====
   async function deleteByQueryInBatches(colName, field, value){
     while(true){
-      const qDel = query(collection(db, colName), where(field,"==",value), limit(450));
-      const snap = await getDocs(qDel);
+      const snap = await db.collection(colName).where(field,"==",value).limit(450).get();
       if(snap.empty) break;
-      const batch = writeBatch(db);
+      const batch = db.batch();
       snap.docs.forEach(d=>batch.delete(d.ref));
       await batch.commit();
     }
   }
 
-  window.deleteModelTestCascade = async function(modelTestId){
-    const ok = confirm("Delete model test? সব প্রশ্নও ডিলিট হবে।");
-    if(!ok) return;
-    await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
-    await deleteDoc(doc(db,"model_tests",modelTestId));
-    toast("Done","Model test deleted (cascade)");
-  }
-
-  window.deleteSubjectCascade = async function(subjectId){
-    const ok = confirm("Delete subject? সব প্রশ্ন+model tests+model test questions ডিলিট হবে।");
+  async function deleteModelTestCascade(modelTestId){
+    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+    if(!mt) return;
+    const ok = confirm(`Delete model test "${mt.title}"?\nসব প্রশ্নও ডিলিট হবে।`);
     if(!ok) return;
 
-    await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
-    const mtSnap = await getDocs(query(collection(db,"model_tests"), where("subjectId","==",subjectId)));
-    const mtIds = mtSnap.docs.map(d=>d.id);
-    for(const mtId of mtIds){
-      await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
-      await deleteDoc(doc(db,"model_tests",mtId));
+    try{
+      await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
+      await db.collection("model_tests").doc(modelTestId).delete();
+      toast("Done","Model test deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
     }
-    await deleteDoc(doc(db,"subjects",subjectId));
-    toast("Done","Subject deleted (cascade)");
   }
+  window.deleteModelTestCascade = deleteModelTestCascade;
 
-  function esc(str){
-    return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  async function deleteSubjectCascade(subjectId){
+    const s = SUBJECTS.find(x=>x.id===subjectId);
+    if(!s) return;
+
+    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- subject_questions\n- এই subject এর model_tests\n- সেই model_tests এর model_test_questions\nসব ডিলিট হবে।`);
+    if(!ok) return;
+
+    try{
+      await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
+
+      const mtSnap = await db.collection("model_tests").where("subjectId","==",subjectId).get();
+      const mtIds = mtSnap.docs.map(d=>d.id);
+
+      for(const mtId of mtIds){
+        await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
+        await db.collection("model_tests").doc(mtId).delete();
+      }
+
+      await db.collection("subjects").doc(subjectId).delete();
+      toast("Done","Subject deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
+    }
   }
+  window.deleteSubjectCascade = deleteSubjectCascade;
 
-  // ===== AUTH STATE =====
-  onAuthStateChanged(auth, async (user)=>{
-    if(!user){
-      detachSubjectsSnapshot(); detachModelTestsSnapshot();
-      showGate("Please login with eprostutibd@gmail.com");
-      return;
-    }
-    try{ await user.getIdToken(true); }catch(e){}
-    const email = (user.email || "").toLowerCase();
-    if(email !== ADMIN_EMAIL.toLowerCase()){
-      detachSubjectsSnapshot(); detachModelTestsSnapshot();
-      $("authStatus").textContent = "❌ Not authorized. Signing out...";
-      await signOut(auth);
-      showGate("❌ Only eprostutibd@gmail.com is allowed.");
-      toast("Not authorized","Only admin email allowed");
-      return;
-    }
+  // ===== HELPERS =====
+  function openHelp(){ $("helpBack").classList.add("show"); }
+  function closeHelp(e){ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
+  window.openHelp = openHelp;
+  window.closeHelp = closeHelp;
 
-    hideGate();
-    setAuthorizedUI(true, user.email);
+  // expose import close
+  window.closeImport = closeImport;
 
+  // ===== Enable buttons when authorized =====
+  function enableAdminButtons(){
     $("btnRefresh").disabled = false;
     $("btnAddSubject").disabled = false;
     $("btnAddModelTest").disabled = false;
     $("btnDoImport").disabled = false;
-
-    attachSubjectsSnapshot();
-    toast("Welcome","Admin access granted");
-  });
-
-  // ===== Import modal open =====
-  function openImportModal(target){
-    importTarget = target;
-    $("importTitle").textContent = `Import Questions → ${target.title}`;
-    $("importLog").textContent = "Ready.";
-    $("importFile").value = "";
-    $("importType").value = "mcq";
-    $("answerFormat").value = "auto";
-    $("importBack").classList.add("show");
   }
-  window.openSubjectImport = (subjectId)=>{
-    const s = SUBJECTS.find(x=>x.id===subjectId);
-    if(!s) return;
-    openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
-  }
-  window.openModelTestImport = (modelTestId)=>{
-    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
-    if(!mt) return;
-    openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
+
+  // when authorized ui state changes
+  // (called inside auth handler via setAuthorizedUI)
+  const _origSetAuthorizedUI = setAuthorizedUI;
+  setAuthorizedUI = function(isAuthorized, email){
+    _origSetAuthorizedUI(isAuthorized, email);
+    if(isAuthorized) enableAdminButtons();
   }
 
   // initial
