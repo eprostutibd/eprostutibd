@@ -35,7 +35,12 @@
     }
     a{color:inherit}
 
-    .container{max-width:1180px;margin:0 auto;padding:10px 12px}
+    /* ✅ side gap = max ~ 1/2 inch */
+    .container{
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 10px 12px;
+    }
 
     /* ===== Header ===== */
     header{
@@ -45,7 +50,7 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width:1180px;
+      max-width: 1600px;
       margin:0 auto;
       padding:10px 12px;
       display:flex;
@@ -120,7 +125,7 @@
     }
 
     .mobileMenu{display:none}
-    .mobileMenu .panel{max-width:1180px;margin:0 auto;padding:0 12px 12px}
+    .mobileMenu .panel{max-width:1600px;margin:0 auto;padding:0 12px 12px}
     .mobileMenu .panelInner{
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -388,7 +393,7 @@
       color: rgba(255,255,255,.92);
     }
     .foot{
-      max-width:1180px;
+      max-width: 1600px;
       margin:0 auto;
       padding: 16px 12px 10px;
       display:grid;
@@ -397,21 +402,20 @@
       align-items:start;
     }
 
-    /* ✅ Mobile footer: 2 columns for links (দরকারি পেজ + অন্যান্য) */
+    /* ✅ Mobile footer: 2 columns for links */
     @media (max-width: 560px){
       .foot{
         grid-template-columns: 1fr 1fr;
         gap: 12px;
       }
-      .footLogo{grid-column: 1 / -1;}      /* logo full width */
-      .footFollow{grid-column: 1 / -1;}    /* follow full width */
+      .footLogo{grid-column: 1 / -1;}
+      .footFollow{grid-column: 1 / -1;}
     }
 
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
 
-    /* Footer logo like header */
     .footBrand{
       display:flex;
       flex-direction:column;
@@ -459,7 +463,7 @@
     }
 
     .copy{
-      max-width:1180px;
+      max-width: 1600px;
       margin:0 auto;
       padding: 0 12px 14px;
       color: rgba(255,255,255,.72);
