@@ -82,7 +82,6 @@
       text-overflow:ellipsis;
       max-width: 56vw;
     }
-
     .actions{display:flex;align-items:center;gap:10px}
     .pillBtn{
       border: 1px solid rgba(255,255,255,.24);
@@ -98,8 +97,6 @@
       align-items:center;
       gap:8px;
     }
-    .pillBtn:active{transform: translateY(1px)}
-
     .dock{
       max-width:1180px;
       margin: 0 auto;
@@ -131,18 +128,9 @@
       white-space:nowrap;
       transition:.15s;
     }
-    .dockInner a:hover{background: rgba(255,255,255,.16)}
-    .dockInner a.active{
-      background: rgba(255,255,255,.22);
-      border-color: rgba(255,255,255,.28);
-    }
-
+    .dockInner a.active{background: rgba(255,255,255,.22);border-color: rgba(255,255,255,.28)}
     .mobileMenu{display:none}
-    .mobileMenu .panel{
-      max-width:1180px;
-      margin: 0 auto 12px;
-      padding: 0 12px 12px;
-    }
+    .mobileMenu .panel{max-width:1180px;margin:0 auto 12px;padding:0 12px 12px}
     .mobileMenu .panelInner{
       border: 1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.12);
@@ -151,24 +139,11 @@
       box-shadow: 0 14px 30px rgba(0,0,0,.18);
     }
     .mobileMenu a{
-      display:block;
-      text-decoration:none;
-      color:#fff;
-      font-weight:1000;
-      font-size:12px;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      margin-bottom: 8px;
-      white-space:nowrap;
+      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:12px;
+      padding: 11px 12px;border-radius: 14px;border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);margin-bottom: 8px;white-space:nowrap;
     }
     .mobileMenu a:last-child{margin-bottom:0}
-    .mobileMenu a.active{
-      background: rgba(255,255,255,.18);
-      border-color: rgba(255,255,255,.22);
-    }
-
     @media (max-width: 860px){
       .dock{display:none}
       .pillBtn.menu{display:inline-flex}
@@ -186,39 +161,16 @@
       overflow:hidden;
       box-shadow: var(--shadow2);
     }
-    .noticeRow{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-    }
+    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px}
     .noticeTag{
       flex:0 0 auto;
-      font-size:12px;
-      font-weight:1000;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(29,78,216,.10);
-      border: 1px solid rgba(29,78,216,.18);
-      color: var(--text);
-      white-space:nowrap;
+      font-size:12px;font-weight:1000;padding: 6px 10px;border-radius: 999px;
+      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);white-space:nowrap;
     }
-    .marq{
-      flex:1;
-      overflow:hidden;
-      white-space:nowrap;
-      color: var(--muted);
-      font-size:12px;
-    }
-    .marq span{
-      display:inline-block;
-      padding-left: 100%;
-      animation: ticker 18s linear infinite;
-    }
-    @keyframes ticker{
-      0%{transform: translateX(0)}
-      100%{transform: translateX(-100%)}
-    }
+    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px}
+    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite}
+    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
     /* ===== Ads ===== */
     .adBox{
@@ -232,22 +184,11 @@
     .adHead{
       padding: 10px 12px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:12px;
-      color: var(--muted);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{
-      min-height: 110px;
-      display:grid;
-      place-items:center;
-      padding: 10px;
-      text-align:center;
-      color: var(--muted);
-    }
+    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted)}
 
     /* ===== Main layout ===== */
     .grid{
@@ -269,22 +210,14 @@
     .panelHead{
       padding: 14px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
     .panelHead b{font-size:14px}
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding:14px}
 
     /* Search row */
-    .searchRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:end;
-    }
+    .searchRow{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
     .searchRow .field{flex:1}
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
     input{
@@ -297,7 +230,6 @@
       outline:none;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
-    input:focus{border-color: rgba(29,78,216,.28)}
     .btn{
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
@@ -312,21 +244,11 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(0)}
-    .btn.primary{
-      border-color: rgba(29,78,216,.22);
-      background: rgba(29,78,216,.10);
-    }
-
+    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10)}
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0}
 
-    /* Subjects grid */
-    .subjects{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
+    /* Subjects */
+    .subjects{display:grid;grid-template-columns: repeat(3, 1fr);gap: 12px}
     @media (max-width: 980px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 560px){ .subjects{grid-template-columns: 1fr;} }
 
@@ -350,60 +272,23 @@
       opacity:.9;
       pointer-events:none;
     }
-    .subCard:hover{transform: translateY(-1px)}
     .subCard h3{
-      position:relative;
-      margin:0;
-      font-size: 15px;
-      font-weight:1000;
-      line-height: 1.2;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height: 38px;
+      position:relative;margin:0;font-size: 15px;font-weight:1000;line-height: 1.2;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 38px;
     }
-
-    .counts{
-      position:relative;
-      margin-top: 10px;
-      display:flex;
-      gap:8px;
-      flex-wrap:nowrap;
-      overflow:hidden;
-      white-space:nowrap;
-      align-items:center;
-    }
+    .counts{position:relative;margin-top: 10px;display:flex;gap:8px;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;align-items:center}
     .countPill{
-      flex:0 0 auto;
-      font-size:12px;
-      padding: 7px 10px;
-      border-radius:999px;
+      flex:0 0 auto;font-size:12px;padding: 7px 10px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);
-      color: var(--muted);
+      background: rgba(255,255,255,.78);color: var(--muted);
     }
     .countPill b{color: var(--text)}
 
-    /* ✅ Latest model tests section */
-    .mtSection{
-      margin-top: 14px;
-      border-top: 1px solid rgba(18,28,55,.10);
-      padding-top: 12px;
-    }
-    .mtTitle{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
+    /* Latest model tests */
+    .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px}
+    .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px}
     .mtTitle b{font-size:13px}
-    .mtGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+    .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap: 10px}
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
     .mtCard{
       border: 1px solid rgba(18,28,55,.10);
@@ -413,37 +298,14 @@
       cursor:pointer;
       transition:.15s;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      position:relative;
-      overflow:hidden;
     }
-    .mtCard:hover{transform: translateY(-1px)}
     .mtCard h4{
-      margin:0;
-      font-size: 13px;
-      line-height: 1.25;
-      font-weight:1000;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height: 34px;
+      margin:0;font-size: 13px;line-height: 1.25;font-weight:1000;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
     }
-    .mtMeta{
-      margin-top: 8px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      color: var(--muted);
-      font-size:12px;
-    }
-    .mtMeta span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.78);
-      border-radius: 999px;
-      padding: 6px 10px;
-    }
+    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px}
+    .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px}
 
-    /* inline ad after 6 cards */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -457,26 +319,14 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
     .inlineAd .tag{
-      display:inline-block;
-      font-weight:1000;
-      color: var(--text);
-      padding: 6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      margin-bottom: 6px;
-      font-size:12px;
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
-
     .empty{
-      display:none;
-      border:1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.70);
-      border-radius: 18px;
-      padding: 12px;
-      color: var(--muted);
-      margin-top: 12px;
-      font-size:12px;
+      display:none;border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);border-radius: 18px;padding: 12px;
+      color: var(--muted);margin-top: 12px;font-size:12px;
     }
 
     /* sidebar */
@@ -489,13 +339,8 @@
       height: fit-content;
     }
     .sidePanel .head{
-      padding: 14px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:12px;
-      color: var(--muted);
+      padding: 14px;border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;font-size:12px;color: var(--muted);
     }
     .sidePanel .head b{color:var(--text);font-size:13px}
     .sidePanel .body{padding: 12px;color: var(--muted)}
@@ -511,7 +356,7 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
 
-    /* footer */
+    /* footer ✅ 3 sections */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(18,28,55,.10);
@@ -523,32 +368,21 @@
       margin:0 auto;
       padding: 14px 12px;
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr; /* ✅ three columns */
       gap: 14px;
       align-items:start;
     }
-    @media (max-width: 720px){ .foot{grid-template-columns: 1fr;} }
+    @media (max-width: 780px){
+      .foot{grid-template-columns: 1fr 1fr;}
+    }
+    @media (max-width: 560px){
+      .foot{grid-template-columns: 1fr;}
+    }
     .foot b{font-size:13px}
-    .foot a{
-      display:block;
-      text-decoration:none;
-      color: var(--muted);
-      font-size:12px;
-      padding: 5px 0;
-    }
+    .foot a{display:block;text-decoration:none;color: var(--muted);font-size:12px;padding: 5px 0}
     .foot a:hover{color:var(--text)}
-
-    /* ✅ social icons on another line (separate block) */
-    .socialWrap{
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(18,28,55,.14);
-    }
     .social{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
+      display:flex;gap:10px;flex-wrap:wrap;margin-top: 10px;
     }
     .iconBtn{
       width: 40px; height: 40px;
@@ -694,7 +528,7 @@
             <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
           </div>
 
-          <!-- ✅ Latest Model Tests (shown under subject section) -->
+          <!-- Latest Model Tests -->
           <div class="mtSection" aria-label="Latest model tests">
             <div class="mtTitle">
               <b>Latest Model Tests</b>
@@ -750,24 +584,23 @@
         <a href="#">Blog</a>
         <a href="#">Career</a>
         <a href="#">Help</a>
+      </div>
 
-        <!-- ✅ icons moved to another line -->
-        <div class="socialWrap">
-          <b style="font-size:12px;color:var(--muted)">Follow</b>
-          <div class="social" aria-label="Social media">
-            <a class="iconBtn" href="#" aria-label="Facebook">
-              <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-            </a>
-            <a class="iconBtn" href="#" aria-label="YouTube">
-              <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-            </a>
-            <a class="iconBtn" href="#" aria-label="Telegram">
-              <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
-            </a>
-            <a class="iconBtn" href="#" aria-label="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-            </a>
-          </div>
+      <div>
+        <b>Follow</b>
+        <div class="social" aria-label="Social media">
+          <a class="iconBtn" href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -792,10 +625,11 @@
 
     const COL_SUBJECTS = "subjects";
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_MODELTEST_QUESTIONS = "modeltest_questions"; 
+    // ✅ NOTE: If your model test questions are stored elsewhere, change this collection name.
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     const $ = (id)=>document.getElementById(id);
 
     // mobile menu
@@ -857,7 +691,6 @@
 
     function syncModelTestListeners(){
       const alive = new Set(SUBJECTS.map(s=>s.id));
-
       for(const [sid, unsub] of modelTestUnsubs.entries()){
         if(!alive.has(sid)){
           try{ unsub(); }catch(e){}
@@ -865,7 +698,6 @@
           modelTestCountMap.delete(sid);
         }
       }
-
       SUBJECTS.forEach(s=>{
         if(modelTestUnsubs.has(s.id)) return;
         const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
@@ -877,20 +709,15 @@
             console.error(err);
             modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
           });
-
         modelTestUnsubs.set(s.id, unsub);
       });
     }
 
     function openDetails(subjectId){
-      const url = `details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`;
-      window.open(url, "_blank", "noopener");
+      window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
     }
-
-    // ✅ model test details page redirect
     function openModelTest(mtId){
-      const url = `modeltest-details.html?modelTestId=${encodeURIComponent(mtId)}`;
-      window.open(url, "_blank", "noopener");
+      window.open(`modeltest-details.html?modelTestId=${encodeURIComponent(mtId)}`, "_blank", "noopener");
     }
 
     function renderSkeleton(){
@@ -968,7 +795,6 @@
         el.className = "subCard";
         el.setAttribute("role","button");
         el.setAttribute("tabindex","0");
-        el.setAttribute("aria-label", (s.name||"Subject") + " খুলুন");
         el.onclick = ()=>openDetails(s.id);
         el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openDetails(s.id);} };
 
@@ -990,29 +816,75 @@
       $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
     }
 
-    // ✅ Latest model tests (global latest)
+    /* =========================
+       ✅ Latest Model Tests
+       - Time: totalTime (or time)
+       - Mark: totalMark (or mark)
+       - Total questions:
+         1) if model test doc has fields: totalQuestions / totalQ / questionCount -> use it
+         2) else count from modeltest_questions where modelTestId == doc.id
+            (change COL_MODELTEST_QUESTIONS if needed)
+    ========================== */
+
+    const qCountUnsubs = new Map();       // mtId -> unsubscribe
+    const qCountMap = new Map();          // mtId -> count
+
+    function ensureQuestionCountListener(mtId){
+      if(qCountUnsubs.has(mtId)) return;
+      const unsub = db.collection(COL_MODELTEST_QUESTIONS)
+        .where("modelTestId","==", mtId)
+        .onSnapshot((snap)=>{
+          qCountMap.set(mtId, snap.size || 0);
+          // re-render latest model tests quickly
+          // (we only update the badges, but simple re-render is ok)
+        }, (err)=>{
+          console.error(err);
+          qCountMap.set(mtId, 0);
+        });
+      qCountUnsubs.set(mtId, unsub);
+    }
+
+    function cleanupQuestionCountListeners(activeIds){
+      for(const [id, unsub] of qCountUnsubs.entries()){
+        if(!activeIds.has(id)){
+          try{ unsub(); }catch(e){}
+          qCountUnsubs.delete(id);
+          qCountMap.delete(id);
+        }
+      }
+    }
+
     function watchLatestModelTests(){
       const wrap = $("latestMT");
-      wrap.innerHTML = "";
       $("mtHint").textContent = "Loading…";
-
-      // If your model tests have createdAt, this will be perfect.
-      // If not, it will still work (Firestore requires index for orderBy on missing field).
-      // So we use safe fallback: try orderBy('createdAt'), if it errors, use plain limit.
 
       const render = (docs)=>{
         wrap.innerHTML = "";
+        const active = new Set(docs.map(d=>d.id));
+        cleanupQuestionCountListeners(active);
+
         if(!docs.length){
           $("mtHint").textContent = "0";
           wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
           return;
         }
         $("mtHint").textContent = `${docs.length}`;
+
         docs.forEach(d=>{
           const data = d.data() || {};
           const title = data.name || data.title || "Subject Model Test";
-          const time = data.totalTime ?? data.time ?? "-";
-          const mark = data.totalMark ?? data.mark ?? "-";
+
+          // ✅ time + mark fields (support multiple keys)
+          const time = (data.totalTime ?? data.time ?? data.duration ?? "-");
+          const mark = (data.totalMark ?? data.mark ?? data.totalMarks ?? "-");
+
+          // ✅ questions count:
+          // prefer precomputed field if exists, else live-count from modeltest_questions
+          const preCount = (data.totalQuestions ?? data.totalQ ?? data.questionCount);
+          if(preCount == null){
+            ensureQuestionCountListener(d.id);
+          }
+          const qCount = (preCount != null) ? preCount : (qCountMap.get(d.id) ?? 0);
 
           const card = document.createElement("div");
           card.className = "mtCard";
@@ -1026,51 +898,39 @@
             <div class="mtMeta">
               <span>Time: ${esc(time)}</span>
               <span>Mark: ${esc(mark)}</span>
+              <span>Q: ${esc(qCount)}</span>
             </div>
           `;
           wrap.appendChild(card);
         });
       };
 
-      // Try with createdAt order
-      try{
-        db.collection(COL_SUBJECT_MODEL_TESTS)
-          .orderBy("createdAt", "desc")
-          .limit(6)
-          .onSnapshot((snap)=>{
-            render(snap.docs);
-          }, (err)=>{
-            console.warn("createdAt order failed, fallback:", err);
-            // fallback: no order
-            db.collection(COL_SUBJECT_MODEL_TESTS)
-              .limit(6)
-              .onSnapshot((s2)=>render(s2.docs), (e2)=>{
-                console.error(e2);
-                $("mtHint").textContent = "Failed";
-              });
-          });
-      }catch(e){
-        // fallback
-        db.collection(COL_SUBJECT_MODEL_TESTS)
-          .limit(6)
-          .onSnapshot((s2)=>render(s2.docs), (e2)=>{
-            console.error(e2);
-            $("mtHint").textContent = "Failed";
-          });
-      }
+      // ✅ Try orderBy createdAt; fallback limit only
+      db.collection(COL_SUBJECT_MODEL_TESTS)
+        .orderBy("createdAt", "desc")
+        .limit(6)
+        .onSnapshot((snap)=>render(snap.docs), (err)=>{
+          console.warn("createdAt order failed, fallback:", err);
+          db.collection(COL_SUBJECT_MODEL_TESTS)
+            .limit(6)
+            .onSnapshot((s2)=>render(s2.docs), (e2)=>{
+              console.error(e2);
+              $("mtHint").textContent = "Failed";
+            });
+        });
     }
 
     // Start realtime
     renderSkeleton();
     watchLatestModelTests();
 
-    db.collection("subjects").onSnapshot((snap)=>{
+    db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
       SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
       syncModelTestListeners();
       renderSubjects();
     }, (err)=>{
       console.error(err);
-      $("countHint").textContent = "Failed to load (check Firestore rules)";
+      $("countHint").textContent = "Failed to load";
       $("subjects").innerHTML = "";
       $("empty").style.display = "block";
       $("btnMore").style.display = "none";
