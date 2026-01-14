@@ -667,7 +667,7 @@
     }
 
     // ✅ no orderBy (prevents “appears then disappears” issues)
-    unsubModelTests = db.collection("model_tests")
+    unsubModelTests = db.collection("subject_model_tests")
       .where("subjectId","==",subjectId)
       .onSnapshot((snap)=>{
         MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
@@ -866,7 +866,7 @@
     const totalMarks = Number($("mtMarks").value||0) || 0;
 
     try{
-      await db.collection("model_tests").add({
+      await db.collection("subject_model_tests").add({
         subjectId, title, totalTimeMin, totalMarks,
         counts:{ mcq:0, written:0 },
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -896,7 +896,7 @@
     if(newMarks===null) return;
 
     try{
-      await db.collection("model_tests").doc(modelTestId).update({
+      await db.collection("subject_model_tests").doc(modelTestId).update({
         title: t,
         totalTimeMin: Number(newTime)||0,
         totalMarks: Number(newMarks)||0,
@@ -1114,7 +1114,7 @@
       }
     });
 
-    const mtRef = db.collection("model_tests").doc(modelTestId);
+    const mtRef = db.collection("subject_model_tests").doc(modelTestId);
     const mtSnap = await mtRef.get();
     const mtData = mtSnap.data() || {};
     const counts = mtData.counts || { mcq:0, written:0 };
@@ -1148,7 +1148,7 @@
 
     try{
       await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
-      await db.collection("model_tests").doc(modelTestId).delete();
+      await db.collection("subject_model_tests").doc(modelTestId).delete();
       toast("Done","Model test deleted (cascade)");
     }catch(err){
       console.error(err);
@@ -1167,12 +1167,12 @@
     try{
       await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
 
-      const mtSnap = await db.collection("model_tests").where("subjectId","==",subjectId).get();
+      const mtSnap = await db.collection("subject_model_tests").where("subjectId","==",subjectId).get();
       const mtIds = mtSnap.docs.map(d=>d.id);
 
       for(const mtId of mtIds){
         await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
-        await db.collection("model_tests").doc(mtId).delete();
+        await db.collection("subject_model_tests").doc(mtId).delete();
       }
 
       await db.collection("subjects").doc(subjectId).delete();
