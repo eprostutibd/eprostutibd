@@ -35,7 +35,6 @@
     }
     a{color:inherit}
 
-    /* Keep previous spacing style */
     .container{max-width:1180px;margin:0 auto;padding:10px 12px}
 
     /* ===== Header ===== */
@@ -104,10 +103,10 @@
     .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
-    /* ✅ Mobile menu button right side */
+    /* ✅ mobile menu button right side */
     .menuBtn{
       flex:0 0 auto;
-      margin-left:auto;          /* ✅ ensures right side */
+      margin-left:auto;
       display:none;
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -225,7 +224,6 @@
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding: 12px 14px}
 
-    /* Search small */
     .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
@@ -261,7 +259,6 @@
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
-    /* Subject cards */
     .subjects{display:grid;grid-template-columns: repeat(4, 1fr);gap: 10px;}
     @media (max-width: 1100px){ .subjects{grid-template-columns: repeat(3, 1fr);} }
     @media (max-width: 900px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
@@ -327,7 +324,6 @@
       font-size:12px;
     }
 
-    /* Latest model tests */
     .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px;}
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
@@ -349,7 +345,6 @@
     .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px;}
 
-    /* Sidebar sticky */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -397,25 +392,26 @@
       margin:0 auto;
       padding: 16px 12px 10px;
       display:grid;
-      grid-template-columns: 1.1fr 1fr 1fr 1fr; /* logo + 3 sections */
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
       gap: 14px;
       align-items:start;
     }
 
-    /* ✅ Mobile: 3 sections nicely stacked (logo + 2 cols + follow) */
-    @media (max-width: 780px){
-      .foot{grid-template-columns: 1fr 1fr;}
-    }
+    /* ✅ Mobile footer: 2 columns for links (দরকারি পেজ + অন্যান্য) */
     @media (max-width: 560px){
-      .foot{grid-template-columns: 1fr;}
-      .foot > div{padding-top: 8px;}
+      .foot{
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .footLogo{grid-column: 1 / -1;}      /* logo full width */
+      .footFollow{grid-column: 1 / -1;}    /* follow full width */
     }
 
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
 
-    /* ✅ Footer logo like header (2 lines, no extra) */
+    /* Footer logo like header */
     .footBrand{
       display:flex;
       flex-direction:column;
@@ -439,7 +435,7 @@
       max-width: 320px;
     }
 
-    /* ✅ Social icons one-line, icon only, no box */
+    /* Social icons one-line, icon only, no box */
     .socialRow{
       display:flex;
       gap:14px;
@@ -450,9 +446,6 @@
     .socialRow a{
       display:inline-grid;
       place-items:center;
-      width:auto;
-      height:auto;
-      padding:0;
       text-decoration:none;
       opacity:.92;
       transition: opacity .15s, transform .15s;
@@ -460,7 +453,7 @@
     .socialRow a:hover{opacity:1; transform: translateY(-1px);}
     .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
 
-    /* ✅ Mobile: hide social icons */
+    /* Mobile: hide social icons */
     @media (max-width: 560px){
       .socialRow{display:none;}
     }
@@ -475,7 +468,6 @@
       white-space:nowrap;
     }
 
-    /* skeleton */
     .skeleton{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.78);
@@ -625,8 +617,7 @@
 
   <footer>
     <div class="foot">
-      <!-- Logo (header-like) -->
-      <div>
+      <div class="footLogo">
         <div class="footBrand">
           <div class="name">eProstutiBD</div>
           <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
@@ -649,7 +640,7 @@
         <a href="#">Help</a>
       </div>
 
-      <div>
+      <div class="footFollow">
         <b>Follow</b>
         <div class="socialRow" aria-label="Social media">
           <a href="#" aria-label="Facebook">
