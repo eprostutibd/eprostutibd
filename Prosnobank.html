@@ -35,11 +35,16 @@
     }
     a{color:inherit}
 
-    /* ✅ side gap = max ~ 1/2 inch */
+    /* ✅ Balanced side gap:
+       Desktop: ~1 inch each side (96px)
+       Mobile: 12-16px */
     .container{
-      max-width: 1600px;
+      max-width: 1320px;                 /* ✅ content width controlled */
       margin: 0 auto;
-      padding: 10px 12px;
+      padding-left: clamp(12px, 6vw, 96px);
+      padding-right: clamp(12px, 6vw, 96px);
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     /* ===== Header ===== */
@@ -50,9 +55,12 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: 1600px;
+      max-width: 1320px;
       margin:0 auto;
-      padding:10px 12px;
+      padding-left: clamp(12px, 6vw, 96px);
+      padding-right: clamp(12px, 6vw, 96px);
+      padding-top: 10px;
+      padding-bottom: 10px;
       display:flex;
       align-items:center;
       gap:10px;
@@ -108,7 +116,6 @@
     .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
-    /* ✅ mobile menu button right side */
     .menuBtn{
       flex:0 0 auto;
       margin-left:auto;
@@ -125,7 +132,13 @@
     }
 
     .mobileMenu{display:none}
-    .mobileMenu .panel{max-width:1600px;margin:0 auto;padding:0 12px 12px}
+    .mobileMenu .panel{
+      max-width:1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 6vw, 96px);
+      padding-right: clamp(12px, 6vw, 96px);
+      padding-bottom: 12px;
+    }
     .mobileMenu .panelInner{
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -393,9 +406,12 @@
       color: rgba(255,255,255,.92);
     }
     .foot{
-      max-width: 1600px;
+      max-width: 1320px;
       margin:0 auto;
-      padding: 16px 12px 10px;
+      padding-left: clamp(12px, 6vw, 96px);
+      padding-right: clamp(12px, 6vw, 96px);
+      padding-top: 16px;
+      padding-bottom: 10px;
       display:grid;
       grid-template-columns: 1.1fr 1fr 1fr 1fr;
       gap: 14px;
@@ -439,7 +455,6 @@
       max-width: 320px;
     }
 
-    /* Social icons one-line, icon only, no box */
     .socialRow{
       display:flex;
       gap:14px;
@@ -463,9 +478,11 @@
     }
 
     .copy{
-      max-width: 1600px;
+      max-width: 1320px;
       margin:0 auto;
-      padding: 0 12px 14px;
+      padding-left: clamp(12px, 6vw, 96px);
+      padding-right: clamp(12px, 6vw, 96px);
+      padding-bottom: 14px;
       color: rgba(255,255,255,.72);
       font-size:12px;
       text-align:center;
