@@ -21,8 +21,6 @@
 
       --footerA:#0b1b45;
       --footerB:#071635;
-      --ring1:#60a5fa;
-      --ring2:#22c55e;
     }
     *{box-sizing:border-box}
     body{
@@ -37,15 +35,8 @@
     }
     a{color:inherit}
 
-    /* ✅ Side gap reduce (almost full width) */
-    .container{
-      max-width: 1440px;    /* bigger than before */
-      margin:0 auto;
-      padding: 10px 8px;    /* ✅ left/right gap small */
-    }
-    @media (min-width: 1200px){
-      .container{ padding-left: 10px; padding-right: 10px; } /* ~ 1/2 inch-ish */
-    }
+    /* Keep previous spacing style */
+    .container{max-width:1180px;margin:0 auto;padding:10px 12px}
 
     /* ===== Header ===== */
     header{
@@ -55,9 +46,9 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: 1440px;
+      max-width:1180px;
       margin:0 auto;
-      padding:10px 8px;
+      padding:10px 12px;
       display:flex;
       align-items:center;
       gap:10px;
@@ -84,7 +75,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 320px;
+      max-width: 260px;
     }
 
     .nav{
@@ -113,8 +104,10 @@
     .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
+    /* ✅ Mobile menu button right side */
     .menuBtn{
       flex:0 0 auto;
+      margin-left:auto;          /* ✅ ensures right side */
       display:none;
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -128,7 +121,7 @@
     }
 
     .mobileMenu{display:none}
-    .mobileMenu .panel{max-width:1440px;margin:0 auto;padding:0 8px 12px}
+    .mobileMenu .panel{max-width:1180px;margin:0 auto;padding:0 12px 12px}
     .mobileMenu .panelInner{
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -203,10 +196,10 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Main layout (wider content) ===== */
+    /* ===== Main layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 1fr 320px; /* slightly bigger sidebar */
+      grid-template-columns: 1fr 300px;
       gap: 10px;
       align-items:start;
       margin-top: 12px;
@@ -232,7 +225,7 @@
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding: 12px 14px}
 
-    /* ✅ Search small */
+    /* Search small */
     .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
@@ -268,7 +261,7 @@
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
-    /* ✅ Subject cards */
+    /* Subject cards */
     .subjects{display:grid;grid-template-columns: repeat(4, 1fr);gap: 10px;}
     @media (max-width: 1100px){ .subjects{grid-template-columns: repeat(3, 1fr);} }
     @media (max-width: 900px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
@@ -389,7 +382,7 @@
       color: var(--muted);
     }
 
-    /* ===== Footer (4 columns: Logo + 3 sections) ===== */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -399,89 +392,83 @@
         linear-gradient(180deg, var(--footerA), var(--footerB));
       color: rgba(255,255,255,.92);
     }
-
     .foot{
-      max-width: 1440px;
+      max-width:1180px;
       margin:0 auto;
-      padding: 16px 8px 10px;
+      padding: 16px 12px 10px;
       display:grid;
-      grid-template-columns: 1.1fr 1fr 1fr .9fr; /* ✅ logo first */
+      grid-template-columns: 1.1fr 1fr 1fr 1fr; /* logo + 3 sections */
       gap: 14px;
       align-items:start;
     }
-    @media (max-width: 980px){ .foot{grid-template-columns: 1fr 1fr;} }
-    @media (max-width: 560px){ .foot{grid-template-columns: 1fr;} }
+
+    /* ✅ Mobile: 3 sections nicely stacked (logo + 2 cols + follow) */
+    @media (max-width: 780px){
+      .foot{grid-template-columns: 1fr 1fr;}
+    }
+    @media (max-width: 560px){
+      .foot{grid-template-columns: 1fr;}
+      .foot > div{padding-top: 8px;}
+    }
 
     .foot b{font-size:13px}
-    .foot a{
-      display:block;
-      text-decoration:none;
-      color: rgba(255,255,255,.78);
-      font-size:12px;
-      padding: 6px 0;
-    }
+    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
 
-    .footerLogo{
+    /* ✅ Footer logo like header (2 lines, no extra) */
+    .footBrand{
       display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom: 8px;
+      flex-direction:column;
+      gap:3px;
     }
-    .logoBox{
-      width: 46px; height: 46px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      display:grid;
-      place-items:center;
-      box-shadow: 0 14px 26px rgba(0,0,0,.20);
+    .footBrand .name{
+      color:#fff;
+      font-weight:1000;
+      letter-spacing:.2px;
+      font-size:15px;
+      line-height:1;
+      white-space:nowrap;
     }
-    .logoBox svg{width:24px;height:24px;fill: rgba(255,255,255,.92)}
-    .logoText .t1{font-weight:1000;line-height:1}
-    .logoText .t2{font-size:12px;color: rgba(255,255,255,.75);margin-top: 4px}
-
-    /* ✅ Follow icons: NO BOX, vertical */
-    .followCol{display:flex;flex-direction:column;gap:12px;margin-top: 10px;}
-    .followIcon{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      text-decoration:none;
-      color: rgba(255,255,255,.88);
-      font-weight:900;
+    .footBrand .tag{
+      color:rgba(255,255,255,.78);
       font-size:12px;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 320px;
     }
-    .followIcon .dot{
-      width: 42px; height: 42px;
-      border-radius: 18px;
-      display:grid;
+
+    /* ✅ Social icons one-line, icon only, no box */
+    .socialRow{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:nowrap;
+      margin-top: 10px;
+    }
+    .socialRow a{
+      display:inline-grid;
       place-items:center;
-      position:relative;
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 16px 30px rgba(0,0,0,.20);
-      transition: transform .15s, background .15s;
+      width:auto;
+      height:auto;
+      padding:0;
+      text-decoration:none;
+      opacity:.92;
+      transition: opacity .15s, transform .15s;
     }
-    .followIcon .dot::before{
-      content:"";
-      position:absolute; inset:-1px;
-      border-radius: 18px;
-      padding:1px;
-      background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(34,197,94,.8));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:.9;
-      pointer-events:none;
+    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
+    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
+
+    /* ✅ Mobile: hide social icons */
+    @media (max-width: 560px){
+      .socialRow{display:none;}
     }
-    .followIcon:hover .dot{transform: translateY(-2px); background: rgba(255,255,255,.12)}
-    .followIcon svg{width:18px;height:18px; fill: rgba(255,255,255,.92)}
-    .followIcon span{opacity:.95}
 
     .copy{
-      max-width:1440px;
+      max-width:1180px;
       margin:0 auto;
-      padding: 0 8px 14px;
+      padding: 0 12px 14px;
       color: rgba(255,255,255,.72);
       font-size:12px;
       text-align:center;
@@ -638,22 +625,14 @@
 
   <footer>
     <div class="foot">
-      <!-- ✅ 1) Logo first -->
+      <!-- Logo (header-like) -->
       <div>
-        <div class="footerLogo">
-          <div class="logoBox" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2c4.97 0 9 4.03 9 9 0 4.97-4.03 9-9 9-1.73 0-3.35-.49-4.73-1.34l-3.1 1.02 1.02-3.1A8.93 8.93 0 0 1 3 11c0-4.97 4.03-9 9-9Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"/>
-            </svg>
-          </div>
-          <div class="logoText">
-            <div class="t1">eProstutiBD</div>
-            <div class="t2">সকল প্রস্তুতি হোক গভীর থেকে</div>
-          </div>
+        <div class="footBrand">
+          <div class="name">eProstutiBD</div>
+          <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
         </div>
       </div>
 
-      <!-- ✅ 2) দরকারি পেজ -->
       <div>
         <b>দরকারি পেজ</b>
         <a href="#">About</a>
@@ -662,7 +641,6 @@
         <a href="#">Contact</a>
       </div>
 
-      <!-- ✅ 3) অন্যান্য -->
       <div>
         <b>অন্যান্য</b>
         <a href="#">Notice</a>
@@ -671,36 +649,20 @@
         <a href="#">Help</a>
       </div>
 
-      <!-- ✅ 4) Follow (vertical, no icon boxes around the group) -->
       <div>
         <b>Follow</b>
-        <div class="followCol" aria-label="Social media">
-          <a class="followIcon" href="#" aria-label="Facebook">
-            <div class="dot">
-              <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-            </div>
-            <span>Facebook</span>
+        <div class="socialRow" aria-label="Social media">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
           </a>
-
-          <a class="followIcon" href="#" aria-label="YouTube">
-            <div class="dot">
-              <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-            </div>
-            <span>YouTube</span>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
           </a>
-
-          <a class="followIcon" href="#" aria-label="Telegram">
-            <div class="dot">
-              <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
-            </div>
-            <span>Telegram</span>
+          <a href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
           </a>
-
-          <a class="followIcon" href="#" aria-label="Instagram">
-            <div class="dot">
-              <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-            </div>
-            <span>Instagram</span>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
           </a>
         </div>
       </div>
@@ -709,7 +671,6 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
-  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
@@ -768,7 +729,6 @@
       return (hit/qt.length)*10 + partial;
     }
 
-    /* Subjects */
     let SUBJECTS = [];
     const modelTestCountMap = new Map();
     const modelTestUnsubs = new Map();
@@ -845,7 +805,6 @@
 
       const total = scored.length;
       const shown = scored.slice(0, visibleCount);
-
       $("countHint").textContent = `Total: ${total}`;
 
       const wrap = $("subjects");
@@ -877,7 +836,7 @@
           <div class="counts">
             <span class="countPill">MCQ <b>${mcq}</b></span>
             <span class="countPill">Written <b>${written}</b></span>
-            <span class="countPill">Model test <b>${mtCount}</b></span> <!-- ✅ fixed -->
+            <span class="countPill">Model test <b>${mtCount}</b></span>
           </div>
         `;
         wrap.appendChild(el);
@@ -903,7 +862,6 @@
     }
     window.loadMore = loadMore;
 
-    /* Latest Model Tests (max 8) */
     const qCountUnsubs = new Map();
     const qCountMap = new Map();
     let latestMTDocsCache = [];
@@ -921,13 +879,7 @@
     }
 
     function getTimeField(data){
-      const keys = [
-        "totalTimeMin", /* ✅ your real field */
-        "totalTime", "total_time",
-        "duration", "time", "examTime", "exam_time",
-        "minutes", "totalMinutes", "total_minutes",
-        "totaltime", "testTime", "test_time"
-      ];
+      const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
       for(const k of keys){
         if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
       }
@@ -1037,7 +989,6 @@
         });
     }
 
-    /* Start realtime */
     renderSkeleton();
     watchLatestModelTests();
 
