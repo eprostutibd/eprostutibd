@@ -3,20 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eProstutiBD • প্রশ্নব্যাংক</title>
+  <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
+
+  <!-- ✅ SEO -->
+  <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সম্পূর্ণ ফ্রি।" />
+  <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="#" />
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক" />
+  <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test — সকল প্রস্তুতি হোক গভীর থেকে।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="#" />
+  <meta property="og:image" content="#" />
+
+  <!-- ✅ Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- ✅ Structured Data (Organization + Website) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"eProstutiBD প্রশ্নব্যাংক",
+    "url":"#",
+    "description":"বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"#?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
 
   <style>
     :root{
-      --bg1:#f6f8ff;
-      --bg2:#eef6ff;
-      --card: rgba(255,255,255,.72);
-      --card2: rgba(255,255,255,.56);
+      --bg1:#f7f9ff;
+      --bg2:#eef7ff;
+
+      --header1:#1d4ed8;
+      --header2:#0ea5e9;
+
+      --card: rgba(255,255,255,.78);
       --line: rgba(18, 28, 55, .10);
+
       --text:#0f1730;
       --muted:#5a6685;
-      --accent:#2b6cff;
-      --accent2:#2dd4bf;
-      --shadow: 0 14px 38px rgba(15, 23, 48, .10);
+      --shadow: 0 16px 40px rgba(15,23,48,.12);
       --radius: 18px;
     }
     *{box-sizing:border-box}
@@ -25,279 +60,94 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
       color:var(--text);
       background:
-        radial-gradient(900px 600px at 10% 10%, rgba(43,108,255,.12), transparent 55%),
-        radial-gradient(800px 560px at 92% 14%, rgba(45,212,191,.10), transparent 55%),
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
-      min-height: 100vh;
+      min-height:100vh;
     }
 
-    /* app container */
-    .app{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px;
-    }
+    /* container */
+    .app{max-width:1180px;margin:0 auto;padding:12px;}
 
     /* header */
     header{
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(255,255,255,.72);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
-    }
-    .topbar{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      min-width:0;
+      position:sticky; top:0; z-index:30;
+      background: linear-gradient(135deg, rgba(29,78,216,.95), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 18px 40px rgba(29,78,216,.20);
     }
 
-    /* SVG logo wrapper */
-    .mark{
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      display:grid;
-      place-items:center;
-      background: linear-gradient(135deg, rgba(43,108,255,.18), rgba(45,212,191,.18));
-      border: 1px solid rgba(43,108,255,.18);
-      box-shadow: var(--shadow);
+    /* ✅ header: logo + menu in ONE line */
+    .topbar{
+      max-width:1180px;
+      margin:0 auto;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
       flex:0 0 auto;
     }
-    .brand h1{
-      margin:0;
-      font-size: 16px;
-      line-height: 1.15;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 52vw;
-    }
-    .brand .sub{
-      margin-top:4px;
-      font-size: 12px;
-      color: var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 52vw;
+    .mark{
+      width:42px;height:42px;border-radius:16px;
+      display:grid;place-items:center;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 28px rgba(0,0,0,.18);
     }
 
-    .pill{
+    .brandtxt{
       display:flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.60);
-      color: var(--muted);
-      font-size: 12px;
-      white-space:nowrap;
-      box-shadow: 0 10px 22px rgba(15,23,48,.06);
+      flex-direction:column;
+      gap:2px;
+      color:#fff;
+      line-height:1.1;
     }
-    .dot{width:8px;height:8px;border-radius:999px;background:#f59e0b}
-    .dot.ok{background:#10b981}
+    .brandtxt b{font-size:15px;letter-spacing:.2px}
+    .brandtxt span{font-size:12px;opacity:.92;white-space:nowrap}
 
-    /* nav */
-    .navwrap{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 12px 12px;
-    }
     .nav{
       display:flex;
-      gap: 10px;
+      gap:8px;
       overflow:auto;
-      padding-bottom: 2px;
       -webkit-overflow-scrolling: touch;
+      padding-bottom:2px;
+      margin-left: 6px;
+      flex:1 1 auto;
     }
     .nav a{
       flex:0 0 auto;
       text-decoration:none;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 800;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.65);
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
       transition:.15s;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      white-space:nowrap;
     }
-    .nav a:hover{transform: translateY(-1px)}
-    .nav a:active{transform: translateY(0)}
+    .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{
-      border-color: rgba(43,108,255,.25);
-      background: linear-gradient(135deg, rgba(43,108,255,.14), rgba(45,212,191,.12));
+      background: rgba(255,255,255,.22);
+      border-color: rgba(255,255,255,.28);
     }
 
-    /* layout */
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap: 14px;
-      padding: 14px 0;
+    /* Ads section directly under header */
+    .topAdWrap{
+      max-width:1180px;
+      margin: 12px auto 0;
+      padding: 0 12px;
     }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr}
-    }
-
-    .card{
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hd{
-      padding: 14px;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-    }
-    .bd{padding: 14px}
-    .note{font-size:12px; color: var(--muted); line-height:1.6}
-    .divider{height:1px; background: var(--line); margin: 12px 0}
-
-    /* search */
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    .row > *{flex:1}
-    .field label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px 2px}
-    input{
-      width:100%;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.75);
-      color: var(--text);
-      padding: 11px 12px;
-      border-radius: 14px;
-      outline:none;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-    }
-    input:focus{border-color: rgba(43,108,255,.35)}
-    .btn{
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.75);
-      color: var(--text);
-      padding: 11px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      font-weight: 900;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      white-space:nowrap;
-      transition:.15s;
-    }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(0)}
-
-    /* subjects - FORCE 2 columns */
-    .subjects{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr); /* ✅ always 2 columns */
-      gap: 12px;
-    }
-    @media (max-width: 360px){
-      .subjects{grid-template-columns: 1fr;}
-    }
-
-    .subj{
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.78);
-      border-radius: 18px;
-      padding: 14px;
-      cursor:pointer;
-      transition:.15s;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
-      position: relative;
-      overflow:hidden;
-    }
-    .subj::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: radial-gradient(600px 120px at 20% 0%, rgba(43,108,255,.12), transparent 50%),
-                  radial-gradient(600px 120px at 100% 0%, rgba(45,212,191,.10), transparent 55%);
-      opacity:.9;
-      pointer-events:none;
-    }
-    .subj:hover{transform: translateY(-1px)}
-    .subj:active{transform: translateY(0)}
-    .subj h3{
-      position:relative;
-      margin:0;
-      font-size: 15px;
-      letter-spacing: .15px;
-      line-height: 1.2;
-
-      /* allow 2 lines */
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
-      min-height: 38px; /* keeps height consistent */
-    }
-
-    /* ✅ one-line chips under card */
-    .chips{
-      position:relative;
-      display:flex;
-      gap: 8px;
-      flex-wrap:nowrap;
-      overflow:hidden;
-      margin-top: 10px;
-      align-items:center;
-      white-space:nowrap;
-    }
-    .chip{
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(18,28,55,.12);
-      color: var(--muted);
-      background: rgba(255,255,255,.70);
-      flex: 0 0 auto;
-    }
-    .chip b{color: var(--text)}
-    .hint{
-      position:relative;
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-    }
-    .arrow{
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      display:grid;
-      place-items:center;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.65);
-      flex: 0 0 auto;
-    }
-
-    /* ads */
     .ad{
       border: 1px dashed rgba(18,28,55,.22);
       border-radius: 16px;
       padding: 12px;
-      background: rgba(255,255,255,.66);
+      background: rgba(255,255,255,.72);
       color: var(--muted);
       font-size: 12px;
       box-shadow: 0 12px 26px rgba(15,23,48,.05);
@@ -312,49 +162,203 @@
       border: 1px solid rgba(18,28,55,.12);
       border-radius: 14px;
       background: rgba(255,255,255,.60);
-      min-height: 250px;
+      min-height: 140px;
       display:grid;
       place-items:center;
       text-align:center;
       padding: 10px;
     }
 
+    /* main card */
+    .card{
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-top: 12px;
+    }
+    .hd{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .bd{padding:14px}
+    .note{font-size:12px;color:var(--muted);line-height:1.6}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    /* search */
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row > *{flex:1}
+    .field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 2px}
+    input{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      outline:none;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    input:focus{border-color: rgba(29,78,216,.30)}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.80);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0)}
+    .btn.primary{
+      border-color: rgba(29,78,216,.18);
+      background: rgba(29,78,216,.10);
+    }
+
+    /* subjects */
+    .subjects{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 980px){
+      .subjects{grid-template-columns: repeat(2, 1fr);}
+    }
+    /* ✅ Mobile: single column cards */
+    @media (max-width: 560px){
+      .subjects{grid-template-columns: 1fr;}
+    }
+
+    .subj{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.86);
+      border-radius: 18px;
+      padding: 14px;
+      cursor:pointer;
+      transition:.15s;
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      position:relative;
+      overflow:hidden;
+    }
+    .subj::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 140px at 15% 0%, rgba(29,78,216,.10), transparent 55%),
+        radial-gradient(600px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .subj:hover{transform: translateY(-1px)}
+    .subj:active{transform: translateY(0)}
+    .subj h3{
+      position:relative;
+      margin:0;
+      font-size: 15px;
+      line-height: 1.22;
+      letter-spacing:.15px;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 38px;
+    }
+    /* ✅ one-line counts under title */
+    .counts{
+      position:relative;
+      margin-top: 10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;
+      overflow:hidden;
+      white-space:nowrap;
+      align-items:center;
+    }
+    .pill2{
+      font-size:12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.74);
+      color: var(--muted);
+      flex:0 0 auto;
+    }
+    .pill2 b{color: var(--text)}
+
+    .empty{
+      display:none;
+      padding: 12px;
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,.65);
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
     /* footer */
     footer{
       margin-top: 14px;
-      border-top: 1px solid var(--line);
-      background: rgba(255,255,255,.68);
+      border-top: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.70);
       backdrop-filter: blur(14px);
     }
     .foot{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 16px 12px;
-      display:grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
+      max-width:1180px;
+      margin:0 auto;
+      padding: 14px 12px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
       gap: 14px;
+      flex-wrap:wrap;
     }
-    @media (max-width: 860px){ .foot{grid-template-columns:1fr} }
-    .foot a{color: var(--muted); text-decoration:none; font-size:12px; display:inline-block; padding: 4px 0}
+    .fcol{
+      min-width: 180px;
+    }
+    .foot a{
+      color: var(--muted);
+      text-decoration:none;
+      font-size:12px;
+      display:inline-block;
+      padding:4px 0;
+    }
     .foot a:hover{color: var(--text)}
+
+    /* ✅ Mobile footer 2 lines */
     .copy{
       max-width:1180px;
       margin:0 auto;
-      padding: 0 12px 16px;
+      padding: 0 12px 14px;
       color: var(--muted);
       font-size: 12px;
+    }
+    @media (max-width: 560px){
+      .copy{
+        line-height: 1.6;
+      }
+      .copy .l2{display:block} /* ✅ 2nd line */
     }
 
     /* skeleton */
     .skeleton{
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.80);
       border-radius: 18px;
       padding: 14px;
-      overflow:hidden;
-      position:relative;
       min-height: 110px;
       box-shadow: 0 12px 26px rgba(15,23,48,.05);
+      position: relative;
+      overflow:hidden;
     }
     .shimmer{
       position:absolute; inset:0;
@@ -363,6 +367,13 @@
       animation: sh 1.15s infinite;
     }
     @keyframes sh{to{transform: translateX(100%)}}
+
+    /* more button */
+    .moreWrap{
+      display:flex;
+      justify-content:center;
+      margin-top: 12px;
+    }
   </style>
 </head>
 
@@ -371,30 +382,22 @@
     <div class="topbar">
       <div class="brand">
         <div class="mark" aria-hidden="true">
-          <!-- ✅ Beautiful SVG logo (no image needed) -->
+          <!-- logo svg -->
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
             <path d="M12 2.5c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9Z"
-              stroke="rgba(43,108,255,.9)" stroke-width="1.6"/>
+              stroke="rgba(255,255,255,.95)" stroke-width="1.6"/>
             <path d="M7.2 12.2l2.2 2.4 5.6-6.2"
-              stroke="rgba(45,212,191,.95)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 6.2v2.4" stroke="rgba(43,108,255,.9)" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M12 15.4v2.4" stroke="rgba(43,108,255,.9)" stroke-width="1.6" stroke-linecap="round"/>
+              stroke="rgba(255,255,255,.95)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div style="min-width:0">
-          <h1>eProstutiBD</h1>
-          <div class="sub">প্রশ্নব্যাংক • Subject wise প্রশ্ন</div>
+        <div class="brandtxt">
+          <b>eProstutiBD</b>
+          <span>সকল প্রস্তুতি হোক গভীর থেকে</span>
         </div>
       </div>
 
-      <div class="pill">
-        <span id="connDot" class="dot"></span>
-        <span id="connText">Connecting…</span>
-      </div>
-    </div>
-
-    <div class="navwrap">
-      <nav class="nav">
+      <!-- nav in same line -->
+      <nav class="nav" aria-label="Main navigation">
         <a class="active" href="#">একাডেমী</a>
         <a href="#">প্রশ্ন ব্যাঙ্ক</a>
         <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
@@ -410,115 +413,57 @@
     </div>
   </header>
 
-  <main class="app">
-    <div class="grid">
-      <!-- Main -->
-      <section class="card">
-        <div class="hd">
-          <b>Subjects</b>
-          <span class="note" id="countHint">Loading…</span>
+  <!-- ✅ Ad right under header -->
+  <div class="topAdWrap">
+    <div class="ad">
+      <div class="label">
+        <b>Ad Slot</b>
+        <span>Header নিচে • Responsive</span>
+      </div>
+      <div class="adbox">
+        <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
+        <div>
+          <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
+          <div class="note">Paste ad code here</div>
         </div>
-        <div class="bd">
-          <div class="row">
-            <div class="field">
-              <label>Search Subject</label>
-              <input id="search" placeholder="যেমন: গণিত / Physics / Biology" oninput="renderSubjects()" />
-            </div>
-            <div style="flex:0 0 auto; display:flex; align-items:flex-end">
-              <button class="btn" onclick="renderSubjects()">Search</button>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <!-- Ad slot (top in content) -->
-          <div class="ad" style="margin-bottom:12px">
-            <div class="label">
-              <b>Ad Slot</b>
-              <span>Top • Responsive</span>
-            </div>
-            <div class="adbox">
-              <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
-                <div class="note">Paste ad code here</div>
-              </div>
-            </div>
-          </div>
-
-          <div id="subjects" class="subjects"></div>
-          <div id="empty" class="note" style="display:none">কোনো Subject পাওয়া যায়নি।</div>
-        </div>
-      </section>
-
-      <!-- Sidebar -->
-      <aside class="card">
-        <div class="hd">
-          <b>Sponsored</b>
-          <span class="note">Ads</span>
-        </div>
-        <div class="bd">
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot</b>
-              <span>Sidebar • 300x250</span>
-            </div>
-            <div class="adbox" style="min-height: 280px">
-              <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Sidebar Ad</div>
-                <div class="note">Paste ad code here</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot</b>
-              <span>Bottom • Responsive</span>
-            </div>
-            <div class="adbox" style="min-height: 210px">
-              <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Bottom Ad</div>
-                <div class="note">Paste ad code here</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="note">
-            Subject কার্ডে ক্লিক করলে নতুন ট্যাবে Details পেজ খুলবে।
-          </div>
-        </div>
-      </aside>
+      </div>
     </div>
+  </div>
+
+  <main class="app">
+    <section class="card">
+      <div class="hd">
+        <b>Subjects</b>
+        <span class="note" id="countHint">Loading…</span>
+      </div>
+
+      <div class="bd">
+        <div class="row">
+          <div class="field">
+            <label>Search Subject</label>
+            <input id="search" placeholder="যেমন: গণিত / Physics / Biology" oninput="onSearch()" />
+          </div>
+          <div style="flex:0 0 auto; display:flex; align-items:flex-end">
+            <button class="btn" onclick="onSearch()">Search</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="subjects" class="subjects" aria-live="polite"></div>
+        <div id="empty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
+
+        <!-- ✅ More subjects (6 by 6) -->
+        <div class="moreWrap">
+          <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
     <div class="foot">
-      <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-          <div class="mark" style="width:38px;height:38px;border-radius:14px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2.5c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9Z"
-                stroke="rgba(43,108,255,.9)" stroke-width="1.6"/>
-              <path d="M7.2 12.2l2.2 2.4 5.6-6.2"
-                stroke="rgba(45,212,191,.95)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <b>eProstutiBD</b>
-            <div class="note">Smart & simple question bank</div>
-          </div>
-        </div>
-        <div class="note">তুমি চাইলে এখানে অন্য content (mission/goal) লিখতে পারো।</div>
-      </div>
-
-      <div>
+      <div class="fcol">
         <b>দরকারি পেজ</b><br/>
         <a href="#">About</a><br/>
         <a href="#">Privacy Policy</a><br/>
@@ -526,7 +471,7 @@
         <a href="#">Contact</a><br/>
       </div>
 
-      <div>
+      <div class="fcol">
         <b>অন্যান্য</b><br/>
         <a href="#">Notice</a><br/>
         <a href="#">Blog</a><br/>
@@ -534,14 +479,18 @@
         <a href="#">Help</a><br/>
       </div>
     </div>
-    <div class="copy">© <span id="year"></span> eProstutiBD</div>
+    <div class="copy">
+      © <span id="year"></span> eProstutiBD
+      <span class="l2">All rights reserved</span>
+    </div>
   </footer>
 
-  <!-- Firebase compat (visitor: auth not needed) -->
+  <!-- Firebase compat (visitor: no auth) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -561,21 +510,24 @@
     const $ = (id)=>document.getElementById(id);
     $("year").textContent = new Date().getFullYear();
 
-    let SUBJECTS = [];
-    const modelTestCountMap = new Map();
-    const modelTestUnsubs = new Map();
-
-    function setConn(ok, text){
-      $("connDot").classList.toggle("ok", !!ok);
-      $("connText").textContent = text;
-    }
     function esc(str){
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
+    // realtime data
+    let SUBJECTS = [];
+    const modelTestCountMap = new Map();
+    const modelTestUnsubs = new Map();
+
+    // pagination state
+    const PAGE_SIZE = 6;
+    let visibleCount = 6;
+    let currentQuery = "";
+
     function syncModelTestListeners(){
       const alive = new Set(SUBJECTS.map(s=>s.id));
 
+      // remove old listeners
       for(const [sid, unsub] of modelTestUnsubs.entries()){
         if(!alive.has(sid)){
           try{ unsub(); }catch(e){}
@@ -584,6 +536,7 @@
         }
       }
 
+      // add missing
       SUBJECTS.forEach(s=>{
         if(modelTestUnsubs.has(s.id)) return;
 
@@ -605,7 +558,6 @@
       const url = `details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`;
       window.open(url, "_blank", "noopener");
     }
-    window.openDetails = openDetails;
 
     function renderSkeleton(){
       const wrap = $("subjects");
@@ -617,22 +569,40 @@
         wrap.appendChild(d);
       }
       $("empty").style.display = "none";
+      $("btnMore").style.display = "none";
     }
 
-    function renderSubjects(){
-      const q = ($("search").value || "").trim().toLowerCase();
+    function onSearch(){
+      currentQuery = ($("search").value || "").trim().toLowerCase();
+      visibleCount = PAGE_SIZE; // reset to 6 on new search
+      renderSubjects();
+    }
+    window.onSearch = onSearch;
 
-      const filtered = SUBJECTS
+    function loadMore(){
+      visibleCount += PAGE_SIZE;
+      renderSubjects();
+    }
+    window.loadMore = loadMore;
+
+    function renderSubjects(){
+      const q = currentQuery;
+
+      const filteredAll = SUBJECTS
         .filter(s => (s.name||"").toLowerCase().includes(q))
         .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
 
-      $("countHint").textContent = `Total: ${SUBJECTS.length} • Showing: ${filtered.length}`;
+      // show only visibleCount (6 by 6)
+      const filtered = filteredAll.slice(0, visibleCount);
+
+      $("countHint").textContent = `Total: ${filteredAll.length}`;
 
       const wrap = $("subjects");
       wrap.innerHTML = "";
 
-      if(!filtered.length){
+      if(!filteredAll.length){
         $("empty").style.display = "block";
+        $("btnMore").style.display = "none";
         return;
       }
       $("empty").style.display = "none";
@@ -642,44 +612,43 @@
         const written = s.counts?.written || 0;
         const mtCount = modelTestCountMap.get(s.id) ?? 0;
 
-        const el = document.createElement("div");
+        const el = document.createElement("article");
         el.className = "subj";
         el.setAttribute("role","button");
         el.setAttribute("tabindex","0");
+        el.setAttribute("aria-label", (s.name||"Subject") + " খুলুন");
         el.onclick = ()=>openDetails(s.id);
         el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openDetails(s.id);} };
 
         el.innerHTML = `
           <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
-          <div class="chips">
-            <span class="chip">MCQ <b>${mcq}</b></span>
-            <span class="chip">Written <b>${written}</b></span>
-            <span class="chip">Model <b>${mtCount}</b></span>
-          </div>
-          <div class="hint">
-            <span>Details</span>
-            <span class="arrow">↗</span>
+          <div class="counts" aria-label="Counts">
+            <span class="pill2">MCQ <b>${mcq}</b></span>
+            <span class="pill2">Written <b>${written}</b></span>
+            <span class="pill2">Model <b>${mtCount}</b></span>
           </div>
         `;
         wrap.appendChild(el);
       });
-    }
-    window.renderSubjects = renderSubjects;
 
+      // show/hide more button
+      const hasMore = filteredAll.length > filtered.length;
+      $("btnMore").style.display = hasMore ? "inline-flex" : "none";
+    }
+
+    // start
     renderSkeleton();
-    setConn(false, "Connecting…");
 
     db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
       SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
       syncModelTestListeners();
       renderSubjects();
-      setConn(true, "Live");
     }, (err)=>{
       console.error(err);
-      setConn(false, "Error");
-      $("countHint").textContent = "Failed to load subjects (check rules)";
+      $("countHint").textContent = "Failed to load (check Firestore rules)";
       $("subjects").innerHTML = "";
       $("empty").style.display = "block";
+      $("btnMore").style.display = "none";
     });
   </script>
 </body>
