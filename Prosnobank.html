@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>eProstutiBD • প্রশ্নব্যাংক</title>
+
+  <style>
+    :root{
+      --bg:#070c18;
+      --panel: rgba(18,26,43,.88);
+      --panel2: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.10);
+      --muted:#a3b0c9;
+      --text:#eef3ff;
+      --accent:#6aa6ff;
+      --ok:#5ce3a4;
+      --warn:#ffd36a;
+      --shadow: 0 14px 40px rgba(0,0,0,.42);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 15%, rgba(106,166,255,.20), transparent 55%),
+        radial-gradient(900px 650px at 85% 18%, rgba(92,227,164,.14), transparent 55%),
+        radial-gradient(900px 650px at 50% 100%, rgba(255,211,106,.10), transparent 60%),
+        var(--bg);
+    }
+
+    /* App-like container */
+    .app{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,12,24,.78);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 12px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(92,227,164,.88));
+      box-shadow: var(--shadow);
+      flex:0 0 auto;
+    }
+    .brand h1{
+      margin:0;
+      font-size:16px;
+      line-height: 1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 46vw;
+    }
+    .brand .sub{
+      margin-top:4px;
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 46vw;
+    }
+
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
+    .dot.ok{background:var(--ok)}
+
+    /* Nav */
+    .navwrap{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 12px 12px;
+    }
+    .nav{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom: 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav a{
+      flex:0 0 auto;
+      text-decoration:none;
+      color: var(--text);
+      font-size:12px;
+      font-weight:800;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      transition:.15s;
+    }
+    .nav a:hover{border-color: rgba(255,255,255,.22)}
+    .nav a.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+
+    /* Layout */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap: 14px;
+      padding: 14px 0;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .bd{padding: 14px}
+    .note{font-size:12px; color: var(--muted); line-height:1.6}
+    .divider{height:1px;background:var(--line); margin: 12px 0}
+
+    /* Search */
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .row > *{flex:1}
+    .field label{display:block; font-size:12px; color:var(--muted); margin: 0 0 6px 2px}
+    input{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      outline: none;
+    }
+    input:focus{border-color: rgba(106,166,255,.55)}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color: rgba(255,255,255,.22)}
+
+    /* Subject cards */
+    .subjects{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 980px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 560px){ .subjects{grid-template-columns: 1fr;} }
+
+    .subj{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+      cursor:pointer;
+      transition: .15s;
+      position: relative;
+      overflow:hidden;
+    }
+    .subj:hover{border-color: rgba(255,255,255,.22); transform: translateY(-1px)}
+    .subj:active{transform: translateY(0)}
+    .subj h3{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: .2px;
+      line-height: 1.25;
+    }
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .chip{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(0,0,0,.08);
+    }
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .arrow{
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      flex: 0 0 auto;
+    }
+
+    /* Ads */
+    .ad{
+      border: 1px dashed rgba(255,255,255,.25);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255,255,255,.02);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .ad .label{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .ad b{color: var(--text)}
+    .adbox{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.10);
+      min-height: 250px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding: 10px;
+    }
+
+    /* Footer */
+    footer{
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      background: rgba(7,12,24,.55);
+    }
+    .foot{
+      max-width:1180px;
+      margin:0 auto;
+      padding: 16px 12px;
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){ .foot{grid-template-columns:1fr} }
+    .foot a{color: var(--muted); text-decoration:none; font-size:12px; display:inline-block; padding: 4px 0}
+    .foot a:hover{color: var(--text)}
+    .copy{
+      max-width:1180px;
+      margin:0 auto;
+      padding: 0 12px 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .skeleton{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+      overflow:hidden;
+      position:relative;
+      min-height: 110px;
+    }
+    .shimmer{
+      position:absolute; inset:0;
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.05) 20%, transparent 40%);
+      transform: translateX(-100%);
+      animation: sh 1.15s infinite;
+    }
+    @keyframes sh{to{transform: translateX(100%)}}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div style="min-width:0">
+          <h1>eProstutiBD • প্রশ্নব্যাংক</h1>
+          <div class="sub">ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই</div>
+        </div>
+      </div>
+
+      <div class="pill">
+        <span id="connDot" class="dot"></span>
+        <span id="connText">Connecting…</span>
+      </div>
+    </div>
+
+    <div class="navwrap">
+      <nav class="nav">
+        <a class="active" href="#">একাডেমী</a>
+        <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app">
+    <div class="grid">
+      <!-- Main -->
+      <section class="card">
+        <div class="hd">
+          <b>Subjects</b>
+          <span class="note" id="countHint">Loading…</span>
+        </div>
+        <div class="bd">
+          <div class="row">
+            <div class="field">
+              <label>Search Subject</label>
+              <input id="search" placeholder="যেমন: গণিত / Physics / Biology" oninput="renderSubjects()" />
+            </div>
+            <div style="flex:0 0 auto; display:flex; align-items:flex-end">
+              <button class="btn" onclick="renderSubjects()">Search</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Top Ad slot (in content) -->
+          <div class="ad" style="margin-bottom:12px">
+            <div class="label">
+              <b>Ad Slot (Top)</b>
+              <span>Adsense/Adstra বসানোর জায়গা</span>
+            </div>
+            <div class="adbox">
+              <!-- ✅ এখানে পরে তোমার অ্যাড কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
+                <div class="note">Paste your AdSense / Adstra code here</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="subjects" class="subjects"></div>
+          <div id="empty" class="note" style="display:none">কোনো Subject পাওয়া যায়নি।</div>
+        </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="card">
+        <div class="hd">
+          <b>Sponsored</b>
+          <span class="note">ফ্রি সার্ভিস</span>
+        </div>
+        <div class="bd">
+          <div class="ad">
+            <div class="label">
+              <b>Ad Slot (Sidebar)</b>
+              <span>300x250</span>
+            </div>
+            <div class="adbox" style="min-height: 280px">
+              <!-- ✅ এখানে পরে তোমার অ্যাড কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Sidebar Ad</div>
+                <div class="note">Paste your code here</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="note">
+            ✅ সব কনটেন্ট ফ্রি<br/>
+            ✅ আয়ের উৎস: Ads (Adstra/AdSense)<br/>
+            ✅ Subject এ ক্লিক করলে নতুন ট্যাব এ Details পেজ খুলবে
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="ad">
+            <div class="label">
+              <b>Ad Slot (Bottom)</b>
+              <span>Responsive</span>
+            </div>
+            <div class="adbox" style="min-height: 210px">
+              <!-- ✅ এখানে পরে তোমার অ্যাড কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Bottom Ad</div>
+                <div class="note">Paste your code here</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+          <div class="logo" style="width:38px;height:38px;border-radius:14px;"></div>
+          <div>
+            <b>eProstutiBD</b>
+            <div class="note">Free learning platform</div>
+          </div>
+        </div>
+        <div class="note">
+          এই ওয়েবসাইট সম্পূর্ণ ফ্রি। কোনো প্রিমিয়াম নেই।  
+          আয়ের জন্য শুধু বিজ্ঞাপন ব্যবহার করা হবে।
+        </div>
+      </div>
+
+      <div>
+        <b>দরকারি পেজ</b><br/>
+        <a href="#">About</a><br/>
+        <a href="#">Privacy Policy</a><br/>
+        <a href="#">Terms</a><br/>
+        <a href="#">Contact</a><br/>
+      </div>
+
+      <div>
+        <b>অন্যান্য</b><br/>
+        <a href="#">Notice</a><br/>
+        <a href="#">Blog</a><br/>
+        <a href="#">Career</a><br/>
+        <a href="#">Help</a><br/>
+      </div>
+    </div>
+    <div class="copy">© <span id="year"></span> eProstutiBD • All rights reserved</div>
+  </footer>
+
+  <!-- Firebase compat (no auth needed) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ==== Your Firebase config ====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+
+    // Collections (must match admin)
+    const COL_SUBJECTS = "subjects";
+    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const $ = (id)=>document.getElementById(id);
+    $("year").textContent = new Date().getFullYear();
+
+    // Realtime data
+    let SUBJECTS = [];
+    const modelTestCountMap = new Map();  // subjectId -> count
+    const modelTestUnsubs = new Map();    // subjectId -> unsubscribe
+
+    function setConn(ok, text){
+      $("connDot").classList.toggle("ok", !!ok);
+      $("connText").textContent = text;
+    }
+    function esc(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+
+    // Manage per-subject model test listeners (realtime counts)
+    function syncModelTestListeners(){
+      const alive = new Set(SUBJECTS.map(s=>s.id));
+
+      // remove old listeners
+      for(const [sid, unsub] of modelTestUnsubs.entries()){
+        if(!alive.has(sid)){
+          try{ unsub(); }catch(e){}
+          modelTestUnsubs.delete(sid);
+          modelTestCountMap.delete(sid);
+        }
+      }
+
+      // add missing listeners
+      SUBJECTS.forEach(s=>{
+        if(modelTestUnsubs.has(s.id)) return;
+
+        const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+          .where("subjectId","==", s.id)
+          .onSnapshot((snap)=>{
+            modelTestCountMap.set(s.id, snap.size || 0);
+            renderSubjects(); // update counts live
+          }, (err)=>{
+            console.error(err);
+            // keep app usable even if count fails
+            modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
+          });
+
+        modelTestUnsubs.set(s.id, unsub);
+      });
+    }
+
+    // Click -> details page in new tab
+    function openDetails(subjectId){
+      const url = `details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`;
+      window.open(url, "_blank", "noopener");
+    }
+    window.openDetails = openDetails;
+
+    // Render subjects
+    function renderSkeleton(){
+      const wrap = $("subjects");
+      wrap.innerHTML = "";
+      for(let i=0;i<6;i++){
+        const d = document.createElement("div");
+        d.className = "skeleton";
+        d.innerHTML = `<div class="shimmer"></div>`;
+        wrap.appendChild(d);
+      }
+      $("empty").style.display = "none";
+    }
+
+    function renderSubjects(){
+      const q = ($("search").value || "").trim().toLowerCase();
+
+      const filtered = SUBJECTS
+        .filter(s => (s.name||"").toLowerCase().includes(q))
+        .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+
+      $("countHint").textContent = `Total: ${SUBJECTS.length} • Showing: ${filtered.length}`;
+
+      const wrap = $("subjects");
+      wrap.innerHTML = "";
+
+      if(!filtered.length){
+        $("empty").style.display = "block";
+        return;
+      }
+      $("empty").style.display = "none";
+
+      filtered.forEach(s=>{
+        const mcq = s.counts?.mcq || 0;
+        const written = s.counts?.written || 0;
+        const mtCount = modelTestCountMap.get(s.id) ?? 0;
+
+        const el = document.createElement("div");
+        el.className = "subj";
+        el.setAttribute("role","button");
+        el.setAttribute("tabindex","0");
+        el.onclick = ()=>openDetails(s.id);
+        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openDetails(s.id);} };
+
+        el.innerHTML = `
+          <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
+          <div class="chips">
+            <span class="chip">MCQ: <b style="color:var(--text)">${mcq}</b></span>
+            <span class="chip">Written: <b style="color:var(--text)">${written}</b></span>
+            <span class="chip">Model Test: <b style="color:var(--text)">${mtCount}</b></span>
+          </div>
+          <div class="hint">
+            <span>Details দেখতে ক্লিক করুন</span>
+            <span class="arrow">↗</span>
+          </div>
+        `;
+        wrap.appendChild(el);
+      });
+    }
+    window.renderSubjects = renderSubjects;
+
+    // Realtime subjects listener
+    renderSkeleton();
+    setConn(false, "Connecting…");
+
+    db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      syncModelTestListeners();
+      renderSubjects();
+      setConn(true, "Live");
+    }, (err)=>{
+      console.error(err);
+      setConn(false, "Connection error");
+      $("countHint").textContent = "Failed to load subjects (check rules)";
+      $("subjects").innerHTML = "";
+      $("empty").style.display = "block";
+    });
+  </script>
+
+  <!-- ✅ Ads injection example (optional)
+  <script>
+    // Example: if you want to inject ads after N cards
+    // (Keep it simple; you can remove it)
+  </script>
+  -->
+</body>
+</html>
