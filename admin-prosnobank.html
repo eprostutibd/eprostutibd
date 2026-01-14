@@ -7,75 +7,227 @@
 
   <style>
     :root{
-      --bg:#0b1220; --card:#121a2b; --muted:#9aa7c2; --text:#e9eefb;
-      --line:rgba(255,255,255,.10); --accent:#6aa6ff; --danger:#ff6a6a;
-      --ok:#5ce3a4; --warn:#ffd36a; --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 14px;
+      --bg:#070c18;
+      --panel: rgba(18,26,43,.88);
+      --line: rgba(255,255,255,.10);
+      --muted:#a3b0c9;
+      --text:#eef3ff;
+      --accent:#6aa6ff;
+      --ok:#5ce3a4;
+      --danger:#ff6a6a;
+      --warn:#ffd36a;
+      --shadow: 0 14px 40px rgba(0,0,0,.42);
+      --radius: 16px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
-      background: radial-gradient(1200px 800px at 10% 10%, rgba(106,166,255,.18), transparent 50%),
-                  radial-gradient(1000px 700px at 90% 20%, rgba(92,227,164,.14), transparent 55%),
-                  var(--bg);
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
       color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 15%, rgba(106,166,255,.20), transparent 55%),
+        radial-gradient(900px 650px at 85% 18%, rgba(92,227,164,.14), transparent 55%),
+        radial-gradient(900px 650px at 50% 100%, rgba(255,211,106,.10), transparent 60%),
+        var(--bg);
     }
-    header{position:sticky; top:0; z-index:10; backdrop-filter: blur(10px); background: rgba(11,18,32,.75); border-bottom:1px solid var(--line);}
-    .wrap{max-width:1100px; margin:0 auto; padding:18px 16px;}
-    .topbar{display:flex; gap:12px; align-items:center; justify-content:space-between;}
-    .brand{display:flex; gap:12px; align-items:center;}
-    .logo{width:42px;height:42px;border-radius:12px;background: linear-gradient(135deg, rgba(106,166,255,.9), rgba(92,227,164,.85)); box-shadow: var(--shadow);}
-    h1{font-size:18px; margin:0}
-    .subtitle{font-size:12px; color:var(--muted); margin-top:2px}
-    .pill{font-size:12px; color:var(--muted); border:1px solid var(--line); padding:8px 10px; border-radius:999px; display:flex; gap:8px; align-items:center;}
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(12px);
+      background: rgba(7,12,24,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .wrap{max-width:1180px; margin:0 auto; padding:16px;}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+    .brand{display:flex; align-items:center; gap:12px;}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(92,227,164,.88));
+      box-shadow: var(--shadow);
+    }
+    h1{margin:0; font-size:18px}
+    .sub{margin-top:4px; font-size:12px; color:var(--muted)}
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      min-width: 190px;
+      justify-content:center;
+    }
     .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
     .dot.ok{background:var(--ok)}
-    main .wrap{padding-top:16px}
-    .grid{display:grid; grid-template-columns: 280px 1fr; gap:14px;}
-    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
-    .card{background: rgba(18,26,43,.85); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);}
-    .card .hd{padding:14px 14px 10px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px;}
-    .card .bd{padding:14px}
-    .tabs{display:flex; flex-direction:column; gap:8px; padding:12px;}
-    .tabbtn{width:100%; background: transparent; border:1px solid var(--line); color:var(--text); padding:10px 12px; border-radius: 12px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:.15s;}
-    .tabbtn:hover{border-color: rgba(255,255,255,.22)}
-    .tabbtn.active{border-color: rgba(106,166,255,.55); background: rgba(106,166,255,.10);}
+    .grid{
+      display:grid;
+      grid-template-columns: 310px 1fr;
+      gap:14px;
+      padding: 14px 0;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{
+      background: var(--panel);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .bd{padding:14px}
+    .note{font-size:12px; color:var(--muted); line-height:1.5}
     .small{font-size:12px; color:var(--muted)}
+    .divider{height:1px; background: var(--line); margin:12px 0}
+
+    .tabs{display:flex; flex-direction:column; gap:10px;}
+    .tabbtn{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      transition:.15s;
+    }
+    .tabbtn:hover{border-color: rgba(255,255,255,.22)}
+    .tabbtn.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 620px){ .stats{grid-template-columns:1fr} }
+    .stat{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+    }
+    .stat b{font-size:18px; display:block; margin-bottom:4px}
+    .stat span{font-size:12px; color:var(--muted)}
+
     .row{display:flex; gap:10px; flex-wrap:wrap}
     .row > *{flex:1}
     .field label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px 2px;}
-    input, select{width:100%; background: rgba(255,255,255,.04); border:1px solid var(--line); color:var(--text); padding:10px 12px; border-radius: 12px; outline:none;}
+    input, select{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      outline:none;
+    }
     input:focus, select:focus{border-color: rgba(106,166,255,.55)}
-    .btn{appearance:none; border:1px solid var(--line); background: rgba(255,255,255,.05); color:var(--text); padding:10px 12px; border-radius:12px; cursor:pointer; transition:.15s; font-weight:600;}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.15s;
+      white-space:nowrap;
+    }
     .btn:hover{border-color: rgba(255,255,255,.22)}
-    .btn.primary{border-color: rgba(106,166,255,.55); background: rgba(106,166,255,.14);}
-    .btn.danger{border-color: rgba(255,106,106,.55); background: rgba(255,106,106,.12);}
-    .btn.ok{border-color: rgba(92,227,164,.55); background: rgba(92,227,164,.12);}
+    .btn.primary{border-color: rgba(106,166,255,.6); background: rgba(106,166,255,.16);}
+    .btn.ok{border-color: rgba(92,227,164,.6); background: rgba(92,227,164,.12);}
+    .btn.danger{border-color: rgba(255,106,106,.6); background: rgba(255,106,106,.12);}
     .btn:disabled{opacity:.55; cursor:not-allowed}
+
     .list{display:flex; flex-direction:column; gap:10px;}
-    .item{border:1px solid var(--line); border-radius: 14px; padding:12px; background: rgba(255,255,255,.03); display:flex; gap:10px; align-items:flex-start; justify-content:space-between;}
-    .item .meta{min-width:0}
-    .title{font-weight:800; margin:0; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 520px;}
-    .meta2{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
-    .chip{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted);}
+    .item{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding:12px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .title{
+      margin:0;
+      font-size:15px;
+      font-weight:900;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 560px;
+    }
+    .meta2{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background: rgba(0,0,0,.08);
+    }
     .actions{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
-    .divider{height:1px; background: var(--line); margin:12px 0}
-    .hidden{display:none !important}
-    .note{font-size:12px; color:var(--muted); line-height:1.5;}
-    .toast{position: fixed; right: 16px; bottom: 16px; background: rgba(18,26,43,.95); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 12px; max-width: 420px; display:none;}
+
+    .modalback{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center; justify-content:center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modalback.show{display:flex}
+    .modal{
+      width:min(920px, 100%);
+      background: rgba(18,26,43,.98);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .mhd{padding: 14px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px;}
+    .mbd{padding: 14px}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px; color: var(--muted);
+      border:1px dashed var(--line);
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,255,255,.03);
+      overflow:auto;
+      white-space: pre-wrap;
+    }
+
+    .toast{
+      position: fixed; right: 16px; bottom: 16px;
+      background: rgba(18,26,43,.95);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 12px 12px;
+      max-width: 440px;
+      display:none;
+      z-index: 90;
+    }
     .toast.show{display:block}
     .toast b{display:block; margin-bottom:4px}
     .toast .tmuted{color:var(--muted); font-size:12px}
 
-    .modalback{position:fixed; inset:0; background: rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding: 16px; z-index: 50;}
-    .modalback.show{display:flex}
-    .modal{width:min(900px, 100%); background: rgba(18,26,43,.98); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow:hidden;}
-    .modal .mhd{padding: 14px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px;}
-    .modal .mbd{padding: 14px}
-    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; color: var(--muted); border:1px dashed var(--line); padding:10px 12px; border-radius:12px; background: rgba(255,255,255,.03); overflow:auto; white-space: pre-wrap;}
-
-    #authGate{position: fixed; inset: 0; z-index: 100; background: rgba(11,18,32,.95); display:flex; align-items:center; justify-content:center; padding: 18px;}
-    .authCard{width: min(560px, 100%); border:1px solid var(--line); border-radius: 18px; background: rgba(18,26,43,.92); box-shadow: var(--shadow); padding: 16px;}
+    #authGate{
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(7,12,24,.92);
+      display:flex; align-items:center; justify-content:center;
+      padding: 18px;
+    }
+    .authCard{
+      width: min(560px, 100%);
+      border:1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(18,26,43,.92);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
     .authCard h2{margin: 6px 0 4px; font-size: 18px;}
     .authRow{display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px;}
     .authRow > *{flex:1}
@@ -84,7 +236,6 @@
 
 <body>
 
-<!-- AUTH GATE -->
 <div id="authGate">
   <div class="authCard">
     <div style="display:flex; gap:12px; align-items:center;">
@@ -103,9 +254,7 @@
       <button class="btn" id="btnLogout" disabled>Logout</button>
     </div>
     <div class="divider"></div>
-    <div class="note">
-      ⚠️ Firestore Rules অবশ্যই admin-email-only write হতে হবে, না হলে সিকিউরিটি হবে না।
-    </div>
+    <div class="note">Firestore Rules অবশ্যই admin-email-only write হতে হবে।</div>
   </div>
 </div>
 
@@ -116,7 +265,7 @@
         <div class="logo"></div>
         <div>
           <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
-          <div class="subtitle">Subjects + Model Tests + Import + Cascade Delete</div>
+          <div class="sub">Marks removed • CSV headers updated (right ans)</div>
         </div>
       </div>
       <div class="pill">
@@ -127,114 +276,139 @@
   </div>
 </header>
 
-<main>
-  <div class="wrap">
-    <div class="grid">
-      <div class="card">
-        <div class="hd">
-          <b>মেনু</b>
-          <span class="small" id="whoami">Admin</span>
-        </div>
-        <div class="tabs">
-          <button id="tabSubjects" class="tabbtn active" onclick="showTab('subjects')">
-            <span>Subjects</span><span class="small">Manage</span>
-          </button>
-          <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
-            <span>Model Tests</span><span class="small">Manage</span>
-          </button>
-          <div class="divider"></div>
-          <div class="note">✅ Non-admin Gmail হলে auto signout + block হবে।</div>
-        </div>
-      </div>
+<main class="wrap">
+  <div class="grid">
 
-      <div class="card">
-        <div class="hd">
-          <b id="pageTitle">Subjects</b>
-          <div class="row" style="flex:0 0 auto; align-items:center; gap:8px;">
-            <button class="btn" onclick="openHelp()">CSV/XLSX Format</button>
-            <button class="btn" id="btnRefresh" onclick="manualRefresh()" disabled>Refresh</button>
+    <div class="card">
+      <div class="hd">
+        <b>Admin Menu</b>
+        <span class="small" id="whoami">Admin</span>
+      </div>
+      <div class="bd">
+        <div class="stats">
+          <div class="stat">
+            <b id="statSubjects">0</b>
+            <span>Total Subjects</span>
+          </div>
+          <div class="stat">
+            <b id="statModelTests">0</b>
+            <span>Total Model Tests (selected subject)</span>
+          </div>
+          <div class="stat">
+            <b id="statQuestions">0</b>
+            <span>Total Questions (from subject counts)</span>
           </div>
         </div>
 
-        <div class="bd">
-          <!-- SUBJECTS -->
-          <section id="subjectsSection">
-            <div class="row">
-              <div class="field">
-                <label>নতুন Subject নাম</label>
-                <input id="subjectName" placeholder="যেমন: Physics / গণিত / বাংলা" />
-              </div>
-              <div class="field" style="flex:0 0 180px">
-                <label>&nbsp;</label>
-                <button class="btn primary" id="btnAddSubject" style="width:100%" onclick="addSubject()" disabled>Add Subject</button>
-              </div>
-            </div>
+        <div class="divider"></div>
 
-            <div class="divider"></div>
+        <div class="tabs">
+          <button id="tabSubjects" class="tabbtn active" onclick="showTab('subjects')">
+            <span>Subjects</span><span class="small">Add / Import / Delete</span>
+          </button>
+          <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
+            <span>Model Tests</span><span class="small">Add / Import / Delete</span>
+          </button>
+        </div>
 
-            <div class="row">
-              <div class="field">
-                <label>Search Subject</label>
-                <input id="subjectSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderSubjects()" />
-              </div>
-            </div>
+        <div class="divider"></div>
 
-            <div class="divider"></div>
+        <div class="row">
+          <button class="btn" onclick="openHelp()">CSV/XLSX Format</button>
+          <button class="btn ok" id="btnRefresh" onclick="manualRefresh()" disabled>Refresh</button>
+        </div>
 
-            <div id="subjectsList" class="list"></div>
-            <div id="subjectsEmpty" class="note hidden">এখনও কোনো Subject নেই।</div>
-          </section>
+        <div class="divider"></div>
 
-          <!-- MODEL TESTS -->
-          <section id="modelTestsSection" class="hidden">
-            <div class="row">
-              <div class="field">
-                <label>Subject Select</label>
-                <select id="mtSubjectSelect" onchange="onMtSubjectChange()"></select>
-              </div>
-              <div class="field">
-                <label>Model Test Title</label>
-                <input id="mtTitle" placeholder="যেমন: Model Test 1" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field">
-                <label>Total Time (minutes)</label>
-                <input id="mtTime" type="number" min="0" placeholder="যেমন: 60" />
-              </div>
-              <div class="field">
-                <label>Total Marks</label>
-                <input id="mtMarks" type="number" min="0" placeholder="যেমন: 100" />
-              </div>
-              <div class="field" style="flex:0 0 180px">
-                <label>&nbsp;</label>
-                <button class="btn primary" id="btnAddModelTest" style="width:100%" onclick="addModelTest()" disabled>Add Model Test</button>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="row">
-              <div class="field">
-                <label>Search Model Test</label>
-                <input id="mtSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderModelTests()" />
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div id="modelTestsList" class="list"></div>
-            <div id="modelTestsEmpty" class="note hidden">এই Subject এ এখনও কোনো Model Test নেই।</div>
-          </section>
+        <div class="note">
+          ✅ MCQ header: <b>question, option1..4, right ans, note</b><br/>
+          ✅ Written header: <b>question, right ans, note</b><br/>
+          ✅ marks পুরোপুরি বাদ (save হবে না)
         </div>
       </div>
-
     </div>
+
+    <div class="card">
+      <div class="hd">
+        <b id="pageTitle">Subjects</b>
+        <div class="small" id="pageHint">Manage subjects & import questions</div>
+      </div>
+
+      <div class="bd">
+        <section id="subjectsSection">
+          <div class="row">
+            <div class="field">
+              <label>নতুন Subject নাম</label>
+              <input id="subjectName" placeholder="যেমন: Physics / গণিত / বাংলা" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddSubject" onclick="addSubject()" disabled style="width:100%">Add Subject</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search Subject</label>
+              <input id="subjectSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderSubjects()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="subjectsList" class="list"></div>
+          <div id="subjectsEmpty" class="note" style="display:none">এখনও কোনো Subject নেই।</div>
+        </section>
+
+        <section id="modelTestsSection" style="display:none">
+          <div class="row">
+            <div class="field">
+              <label>Subject Select</label>
+              <select id="mtSubjectSelect" onchange="onMtSubjectChange()"></select>
+            </div>
+            <div class="field">
+              <label>Model Test Title</label>
+              <input id="mtTitle" placeholder="যেমন: Model Test 1" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Total Time (minutes)</label>
+              <input id="mtTime" type="number" min="0" placeholder="যেমন: 60" />
+            </div>
+            <div class="field">
+              <label>Total Marks</label>
+              <input id="mtMarks" type="number" min="0" placeholder="যেমন: 100" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddModelTest" onclick="addModelTest()" disabled style="width:100%">Add Model Test</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search Model Test</label>
+              <input id="mtSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderModelTests()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="modelTestsList" class="list"></div>
+          <div id="modelTestsEmpty" class="note" style="display:none">এই Subject এ এখনও কোনো Model Test নেই।</div>
+        </section>
+      </div>
+    </div>
+
   </div>
 </main>
 
-<!-- Import Modal -->
 <div id="importBack" class="modalback" onclick="closeImport(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mhd">
@@ -258,16 +432,17 @@
 
       <div class="row">
         <div class="field">
-          <label>Correct Format (MCQ only)</label>
-          <select id="correctFormat">
-            <option value="auto">Auto (A/B/C/D or 0/1/2/3)</option>
+          <label>Answer Format</label>
+          <select id="answerFormat">
+            <option value="auto">Auto (A/B/C/D or 1/2/3/4 or option text)</option>
             <option value="letter">A/B/C/D only</option>
-            <option value="index">0/1/2/3 only</option>
+            <option value="number">1/2/3/4 only</option>
+            <option value="text">Must match option text</option>
           </select>
         </div>
         <div class="field">
           <label>&nbsp;</label>
-          <button class="btn ok" id="btnDoImport" style="width:100%" onclick="doImport()" disabled>Start Import</button>
+          <button class="btn ok" id="btnDoImport" onclick="doImport()" disabled style="width:100%">Start Import</button>
         </div>
       </div>
 
@@ -279,7 +454,6 @@
   </div>
 </div>
 
-<!-- Help Modal -->
 <div id="helpBack" class="modalback" onclick="closeHelp(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mhd">
@@ -289,24 +463,31 @@
     <div class="mbd">
       <div class="note">প্রথম row এ header থাকবে। Excel এও একই header রাখবে।</div>
       <div class="divider"></div>
-      <b>MCQ columns</b>
-      <div class="kbd">question, optionA, optionB, optionC, optionD, correct, explanation, marks</div>
+
+      <b>MCQ</b>
+      <div class="kbd">question, option1, option2, option3, option4, right ans, note</div>
+
       <div class="divider"></div>
-      <b>Written columns</b>
-      <div class="kbd">question, answer, marks</div>
+
+      <b>Written</b>
+      <div class="kbd">question, right ans, note</div>
+
       <div class="divider"></div>
-      <div class="note"><b>correct</b> = A/B/C/D অথবা 0/1/2/3 (Auto mode দিলে দুটোই চলবে)।</div>
+
+      <div class="note">
+        ✅ <b>right ans</b> এ A/B/C/D অথবা 1/2/3/4 অথবা option text দিতে পারবে।<br/>
+        ✅ <b>note</b> explanation হিসেবে save হবে।<br/>
+        ✅ marks নেই।
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast">
   <b id="toastTitle">Message</b>
   <div id="toastMsg" class="tmuted"></div>
 </div>
 
-<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
@@ -317,10 +498,9 @@
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
   import {
     getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
-    getDocs, getDoc, query, where, orderBy, serverTimestamp, writeBatch, onSnapshot, limit
+    getDocs, getDoc, query, where, serverTimestamp, writeBatch, onSnapshot, limit
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  // ===== Firebase config (your) =====
   const firebaseConfig = {
     apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
     authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -333,7 +513,7 @@
   const ADMIN_EMAIL = "eprostutibd@gmail.com";
 
   const app = initializeApp(firebaseConfig);
-  try { getAnalytics(app); } catch (e) {}
+  try { getAnalytics(app); } catch(e) {}
   const db = getFirestore(app);
 
   const auth = getAuth(app);
@@ -354,10 +534,7 @@
     $("connDot").classList.toggle("ok", !!ok);
     $("connText").textContent = text;
   }
-
-  // ===== Auth gate UI helpers =====
   function setAuthorizedUI(isAuthorized, userEmail){
-    // enable/disable buttons so non-admin can't click anything even if UI shows
     $("btnRefresh").disabled = !isAuthorized;
     $("btnAddSubject").disabled = !isAuthorized;
     $("btnAddModelTest").disabled = !isAuthorized;
@@ -374,10 +551,7 @@
     try{
       $("authStatus").textContent = "Opening Google login...";
       const res = await signInWithPopup(auth, provider);
-
-      // IMPORTANT: refresh token so Rules email-claim is reliable
       await res.user.getIdToken(true);
-
       const email = (res.user?.email || "").toLowerCase();
       if(email !== ADMIN_EMAIL.toLowerCase()){
         $("authStatus").textContent = "❌ Not authorized. Signing out...";
@@ -390,9 +564,7 @@
       toast("Login failed", err.message || "Error");
     }
   }
-  async function logout(){
-    await signOut(auth);
-  }
+  async function logout(){ await signOut(auth); }
   $("btnLogin").onclick = login;
   $("btnLogout").onclick = logout;
 
@@ -401,93 +573,76 @@
     $("authStatus").textContent = msg || "Please login with eprostutibd@gmail.com";
     setAuthorizedUI(false, "");
   }
-  function hideGate(){
-    $("authGate").style.display = "none";
-  }
+  function hideGate(){ $("authGate").style.display = "none"; }
 
-  // ===== Realtime snapshots =====
+  window.openHelp = ()=>$("helpBack").classList.add("show");
+  window.closeHelp = (e)=>{ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
+  window.closeImport = (e)=>{ if(!e || e.target.id==="importBack") $("importBack").classList.remove("show"); }
+  window.manualRefresh = ()=>{ populateSubjectSelect(); renderSubjects(); if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot(); toast("Refreshed","UI updated"); }
+
   let SUBJECTS = [];
   let MODEL_TESTS = [];
   let CURRENT_TAB = "subjects";
   let importTarget = null;
-
   let unsubSubjects = null;
   let unsubModelTests = null;
 
-  function detachSubjectsSnapshot(){
-    if(unsubSubjects){ unsubSubjects(); unsubSubjects = null; }
+  function timeMs(ts){
+    try{
+      if(!ts) return 0;
+      if(typeof ts.toMillis === "function") return ts.toMillis();
+      return 0;
+    }catch{ return 0; }
   }
-  function detachModelTestsSnapshot(){
-    if(unsubModelTests){ unsubModelTests(); unsubModelTests = null; }
-  }
+
+  function detachSubjectsSnapshot(){ if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; } }
+  function detachModelTestsSnapshot(){ if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; } }
 
   function attachSubjectsSnapshot(){
     detachSubjectsSnapshot();
-    const qSubjects = query(collection(db, "subjects"), orderBy("createdAt", "desc"));
-    unsubSubjects = onSnapshot(qSubjects, (snap)=>{
-      SUBJECTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+    unsubSubjects = onSnapshot(query(collection(db,"subjects")), (snap)=>{
+      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      SUBJECTS.sort((a,b)=> (timeMs(b.createdAt)||timeMs(b.updatedAt)||0) - (timeMs(a.createdAt)||timeMs(a.updatedAt)||0));
       populateSubjectSelect();
       renderSubjects();
-      if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
-    }, (err)=>{
-      console.error(err);
-      toast("Firestore error", err.message || "Subjects snapshot failed");
-      setConn(false, "Rules/Auth error?");
+      refreshStats();
+      if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
     });
   }
 
   function attachModelTestsSnapshot(){
     detachModelTestsSnapshot();
     const subjectId = $("mtSubjectSelect").value;
-    if(!subjectId){ MODEL_TESTS=[]; renderModelTests(); return; }
-    const qMT = query(collection(db, "model_tests"), where("subjectId","==",subjectId), orderBy("createdAt","desc"));
-    unsubModelTests = onSnapshot(qMT, (snap)=>{
-      MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+    if(!subjectId){ MODEL_TESTS=[]; renderModelTests(); refreshStats(); return; }
+    unsubModelTests = onSnapshot(query(collection(db,"model_tests"), where("subjectId","==",subjectId)), (snap)=>{
+      MODEL_TESTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      MODEL_TESTS.sort((a,b)=> (timeMs(b.createdAt)||timeMs(b.updatedAt)||0) - (timeMs(a.createdAt)||timeMs(a.updatedAt)||0));
       renderModelTests();
-    }, (err)=>{
-      console.error(err);
-      toast("Firestore error", err.message || "Model tests snapshot failed");
+      refreshStats();
     });
   }
 
-  // ===== Tabs =====
   window.showTab = function(tab){
     CURRENT_TAB = tab;
-    $("tabSubjects").classList.toggle("active", tab === "subjects");
-    $("tabModelTests").classList.toggle("active", tab === "modeltests");
-    $("subjectsSection").classList.toggle("hidden", tab !== "subjects");
-    $("modelTestsSection").classList.toggle("hidden", tab !== "modeltests");
-    $("pageTitle").textContent = tab === "subjects" ? "Subjects" : "Model Tests";
+    $("tabSubjects").classList.toggle("active", tab==="subjects");
+    $("tabModelTests").classList.toggle("active", tab==="modeltests");
+    $("subjectsSection").style.display = tab==="subjects" ? "block" : "none";
+    $("modelTestsSection").style.display = tab==="modeltests" ? "block" : "none";
+    $("pageTitle").textContent = tab==="subjects" ? "Subjects" : "Model Tests";
+    $("pageHint").textContent = tab==="subjects"
+      ? "Manage subjects & import questions"
+      : "Manage model tests & import questions";
 
-    if(tab === "modeltests") attachModelTestsSnapshot();
-    else detachModelTestsSnapshot();
+    if(tab==="modeltests") attachModelTestsSnapshot(); else detachModelTestsSnapshot();
   }
 
-  // ===== Modals =====
-  window.openHelp = ()=>$("helpBack").classList.add("show");
-  window.closeHelp = (e)=>{ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
-
-  function openImportModal(target){
-    importTarget = target;
-    $("importTitle").textContent = `Import Questions → ${target.title}`;
-    $("importLog").textContent = "Ready.";
-    $("importFile").value = "";
-    $("importType").value = "mcq";
-    $("correctFormat").value = "auto";
-    $("importBack").classList.add("show");
-  }
-  window.closeImport = (e)=>{ if(!e || e.target.id==="importBack") $("importBack").classList.remove("show"); }
-
-  // ===== Manual refresh =====
-  window.manualRefresh = function(){
-    // snapshots already keep it updated; this just re-renders and re-attaches safely
-    populateSubjectSelect();
-    renderSubjects();
-    if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
-    toast("Refreshed", "UI updated");
+  function refreshStats(){
+    $("statSubjects").textContent = String(SUBJECTS.length);
+    $("statModelTests").textContent = String(MODEL_TESTS.length);
+    const approxQ = SUBJECTS.reduce((sum,s)=> sum + (s.counts?.mcq||0) + (s.counts?.written||0), 0);
+    $("statQuestions").textContent = String(approxQ);
   }
 
-  // ===== Select =====
   function populateSubjectSelect(){
     const sel = $("mtSubjectSelect");
     const prev = sel.value;
@@ -507,24 +662,21 @@
     if(prev) sel.value = prev;
     if(!sel.value && SUBJECTS.length) sel.value = SUBJECTS[0].id;
   }
-  window.onMtSubjectChange = function(){
-    if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
-  }
+  window.onMtSubjectChange = ()=>{ if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot(); }
 
-  // ===== Render =====
   window.renderSubjects = function(){
     const q = ($("subjectSearch").value||"").trim().toLowerCase();
     const list = $("subjectsList");
     list.innerHTML = "";
     const filtered = SUBJECTS.filter(s=>(s.name||"").toLowerCase().includes(q));
-    $("subjectsEmpty").classList.toggle("hidden", filtered.length !== 0);
+    $("subjectsEmpty").style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(s=>{
-      const counts = s.counts || { mcq:0, written:0 };
+      const counts = s.counts || {mcq:0, written:0};
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
-        <div class="meta">
+        <div style="min-width:0">
           <p class="title">${esc(s.name||"(no name)")}</p>
           <div class="meta2">
             <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
@@ -532,7 +684,7 @@
             <span class="chip">ID: ${s.id}</span>
           </div>
           <div class="note" style="margin-top:8px">
-            Delete (Cascade) করলে: subject_questions + model_tests + model_test_questions সব ডিলিট হবে।
+            MCQ/Written Import করলে subject_questions এ যাবে।
           </div>
         </div>
         <div class="actions">
@@ -543,6 +695,8 @@
       `;
       list.appendChild(el);
     });
+
+    refreshStats();
   }
 
   window.renderModelTests = function(){
@@ -550,21 +704,20 @@
     const list = $("modelTestsList");
     list.innerHTML = "";
     const filtered = MODEL_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
-    $("modelTestsEmpty").classList.toggle("hidden", filtered.length !== 0);
+    $("modelTestsEmpty").style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(m=>{
-      const counts = m.counts || { mcq:0, written:0 };
+      const counts = m.counts || {mcq:0, written:0};
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
-        <div class="meta">
+        <div style="min-width:0">
           <p class="title">${esc(m.title||"(no title)")}</p>
           <div class="meta2">
             <span class="chip">Time: <b>${m.totalTimeMin||0}</b> min</span>
             <span class="chip">Marks: <b>${m.totalMarks||0}</b></span>
             <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
             <span class="chip">Written: <b>${counts.written||0}</b></span>
-            <span class="chip">ID: ${m.id}</span>
           </div>
         </div>
         <div class="actions">
@@ -575,25 +728,20 @@
       `;
       list.appendChild(el);
     });
+
+    refreshStats();
   }
 
-  // ===== CRUD =====
   window.addSubject = async function(){
     const name = ($("subjectName").value||"").trim();
-    if(!name) return toast("Validation", "Subject নাম দিন।");
-    try{
-      await addDoc(collection(db,"subjects"), {
-        name,
-        counts:{ mcq:0, written:0 },
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
-      $("subjectName").value = "";
-      toast("Done", "Subject added");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message || "Add subject failed (Rules?)");
-    }
+    if(!name) return toast("Validation","Subject নাম দিন।");
+    await addDoc(collection(db,"subjects"), {
+      name, counts:{mcq:0, written:0},
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    $("subjectName").value="";
+    toast("Done","Subject added");
   }
 
   window.editSubjectPrompt = async function(subjectId){
@@ -603,13 +751,8 @@
     if(newName===null) return;
     const name = newName.trim();
     if(!name) return toast("Validation","Empty not allowed");
-    try{
-      await updateDoc(doc(db,"subjects",subjectId), { name, updatedAt: serverTimestamp() });
-      toast("Done","Subject updated");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message||"Update failed");
-    }
+    await updateDoc(doc(db,"subjects",subjectId), { name, updatedAt: serverTimestamp() });
+    toast("Done","Subject updated");
   }
 
   window.addModelTest = async function(){
@@ -620,19 +763,15 @@
     const totalTimeMin = Number($("mtTime").value||0) || 0;
     const totalMarks = Number($("mtMarks").value||0) || 0;
 
-    try{
-      await addDoc(collection(db,"model_tests"), {
-        subjectId, title, totalTimeMin, totalMarks,
-        counts:{ mcq:0, written:0 },
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
-      $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
-      toast("Done","Model test added");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message||"Add model test failed");
-    }
+    await addDoc(collection(db,"model_tests"), {
+      subjectId, title, totalTimeMin, totalMarks,
+      counts:{mcq:0, written:0},
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
+    toast("Done","Model test added");
   }
 
   window.editModelTestPrompt = async function(modelTestId){
@@ -649,31 +788,35 @@
     const newMarks = prompt("Total Marks:", String(mt.totalMarks ?? 0));
     if(newMarks===null) return;
 
-    const totalTimeMin = Number(newTime) || 0;
-    const totalMarks = Number(newMarks) || 0;
-
-    try{
-      await updateDoc(doc(db,"model_tests",modelTestId), { title:t, totalTimeMin, totalMarks, updatedAt: serverTimestamp() });
-      toast("Done","Model test updated");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message||"Update failed");
-    }
+    await updateDoc(doc(db,"model_tests",modelTestId), {
+      title:t,
+      totalTimeMin: Number(newTime)||0,
+      totalMarks: Number(newMarks)||0,
+      updatedAt: serverTimestamp()
+    });
+    toast("Done","Model test updated");
   }
 
-  // ===== Import open =====
-  window.openSubjectImport = function(subjectId){
+  function openImportModal(target){
+    importTarget = target;
+    $("importTitle").textContent = `Import Questions → ${target.title}`;
+    $("importLog").textContent = "Ready.";
+    $("importFile").value = "";
+    $("importType").value = "mcq";
+    $("answerFormat").value = "auto";
+    $("importBack").classList.add("show");
+  }
+  window.openSubjectImport = (subjectId)=>{
     const s = SUBJECTS.find(x=>x.id===subjectId);
     if(!s) return;
     openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
   }
-  window.openModelTestImport = function(modelTestId){
+  window.openModelTestImport = (modelTestId)=>{
     const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
     if(!mt) return;
     openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
   }
 
-  // ===== File parse + normalize =====
   async function parseQuestionsFile(file){
     const ext = file.name.split(".").pop().toLowerCase();
     if(ext==="csv"){
@@ -691,35 +834,60 @@
     throw new Error("Only CSV/XLSX supported");
   }
   function toStr(v){ return (v===undefined||v===null) ? "" : String(v); }
-  function numOr(v, fb){ const n = Number(v); return Number.isFinite(n)?n:fb; }
 
-  function normalizeMCQ(row, correctMode){
+  // ✅ MARKS REMOVED, right ans + note
+  function normalizeMCQ(row, ansMode){
     const question = toStr(row.question).trim();
-    const options = [toStr(row.optionA),toStr(row.optionB),toStr(row.optionC),toStr(row.optionD)].map(s=>s.trim());
-    const explanation = toStr(row.explanation).trim();
-    const marks = numOr(row.marks, 1);
-    const correctRaw = toStr(row.correct).trim();
-    const letterIndex = ["A","B","C","D"].indexOf(correctRaw.toUpperCase());
-    let correctIndex = -1;
+    const o1 = toStr(row.option1).trim();
+    const o2 = toStr(row.option2).trim();
+    const o3 = toStr(row.option3).trim();
+    const o4 = toStr(row.option4).trim();
+    const options = [o1,o2,o3,o4];
 
-    if(correctMode==="letter") correctIndex = letterIndex;
-    else if(correctMode==="index"){
-      const n = Number(correctRaw); correctIndex = Number.isFinite(n)?n:-1;
-    } else {
-      if(letterIndex!==-1) correctIndex = letterIndex;
-      else { const n = Number(correctRaw); correctIndex = Number.isFinite(n)?n:-1; }
-    }
-    return { question, options, correctIndex, explanation, marks };
+    const note = toStr(row["note"]).trim();
+    const ansRaw = toStr(row["right ans"]).trim();
+    const correctIndex = resolveCorrectIndex(ansRaw, options, ansMode);
+
+    return { question, options, correctIndex, note };
   }
+
+  // ✅ Written: question, right ans, note
   function normalizeWritten(row){
-    return { question: toStr(row.question).trim(), answer: toStr(row.answer).trim(), marks: numOr(row.marks, 1) };
+    return {
+      question: toStr(row.question).trim(),
+      rightAns: toStr(row["right ans"]).trim(),
+      note: toStr(row["note"]).trim()
+    };
   }
 
-  // ===== Import process =====
+  function resolveCorrectIndex(ansRaw, options, ansMode){
+    const a = (ansRaw||"").trim();
+    if(!a) return -1;
+
+    const upper = a.toUpperCase();
+    const letterIndex = ["A","B","C","D"].indexOf(upper);
+
+    const n = Number(a);
+
+    if(ansMode === "letter") return letterIndex;
+    if(ansMode === "number"){
+      if(Number.isFinite(n) && n>=1 && n<=4) return n-1;
+      return -1;
+    }
+    if(ansMode === "text"){
+      return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
+    }
+
+    // auto:
+    if(letterIndex !== -1) return letterIndex;
+    if(Number.isFinite(n) && n>=1 && n<=4) return n-1;
+    return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
+  }
+
   window.doImport = async function(){
     if(!importTarget) return;
     const type = $("importType").value;
-    const correctMode = $("correctFormat").value;
+    const ansMode = $("answerFormat").value;
     const file = $("importFile").files?.[0];
     if(!file) return logImport("Please select a CSV/XLSX file.");
 
@@ -729,12 +897,14 @@
       let items = [];
 
       if(type==="mcq"){
-        items = rows.map(r=>normalizeMCQ(r, correctMode))
-          .filter(q=>q.question && q.options.length===4 && q.options.every(Boolean) && q.correctIndex>=0 && q.correctIndex<=3);
+        items = rows.map(r=>normalizeMCQ(r, ansMode))
+          .filter(q => q.question && q.options.every(Boolean) && q.correctIndex>=0 && q.correctIndex<=3);
       } else {
-        items = rows.map(r=>normalizeWritten(r)).filter(q=>q.question);
+        items = rows.map(r=>normalizeWritten(r))
+          .filter(q => q.question);
       }
-      if(!items.length) return logImport("No valid rows found. Check columns/values.");
+
+      if(!items.length) return logImport("No valid rows found. Check headers/values.");
 
       logImport(`Valid rows: ${items.length}. Uploading...`);
 
@@ -755,148 +925,141 @@
   }
   function logImport(msg){ $("importLog").textContent = msg; }
 
+  // ✅ Save fields WITHOUT marks
   async function importToSubject(subjectId, type, items){
     const batch = writeBatch(db);
-    let addCount = 0;
     const qcol = collection(db,"subject_questions");
-
     for(const q of items){
       const ref = doc(qcol);
-      batch.set(ref, { subjectId, type, ...q, createdAt: serverTimestamp() });
-      addCount++;
+      if(type==="mcq"){
+        batch.set(ref, { subjectId, type, question:q.question, options:q.options, correctIndex:q.correctIndex, note:q.note, createdAt: serverTimestamp() });
+      }else{
+        batch.set(ref, { subjectId, type, question:q.question, rightAns:q.rightAns, note:q.note, createdAt: serverTimestamp() });
+      }
     }
 
     const sref = doc(db,"subjects",subjectId);
     const ssnap = await getDoc(sref);
     const sdata = ssnap.data() || {};
     const counts = sdata.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + addCount };
+    const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
 
     batch.update(sref, { counts: newCounts, updatedAt: serverTimestamp() });
     await batch.commit();
-    return addCount;
+    return items.length;
   }
 
   async function importToModelTest(modelTestId, subjectId, type, items){
     const batch = writeBatch(db);
-    let addCount = 0;
     const qcol = collection(db,"model_test_questions");
-
     for(const q of items){
       const ref = doc(qcol);
-      batch.set(ref, { modelTestId, subjectId, type, ...q, createdAt: serverTimestamp() });
-      addCount++;
+      if(type==="mcq"){
+        batch.set(ref, { modelTestId, subjectId, type, question:q.question, options:q.options, correctIndex:q.correctIndex, note:q.note, createdAt: serverTimestamp() });
+      }else{
+        batch.set(ref, { modelTestId, subjectId, type, question:q.question, rightAns:q.rightAns, note:q.note, createdAt: serverTimestamp() });
+      }
     }
 
     const mtRef = doc(db,"model_tests",modelTestId);
     const mtSnap = await getDoc(mtRef);
     const mtData = mtSnap.data() || {};
     const counts = mtData.counts || { mcq:0, written:0 };
-    const newCounts = { ...counts, [type]: (counts[type]||0) + addCount };
+    const newCounts = { ...counts, [type]: (counts[type]||0) + items.length };
 
     batch.update(mtRef, { counts: newCounts, updatedAt: serverTimestamp() });
     await batch.commit();
-    return addCount;
+    return items.length;
   }
 
-  // ===== Cascade delete helpers =====
   async function deleteByQueryInBatches(colName, field, value){
-    let total = 0;
     while(true){
       const qDel = query(collection(db, colName), where(field,"==",value), limit(450));
       const snap = await getDocs(qDel);
       if(snap.empty) break;
-
       const batch = writeBatch(db);
       snap.docs.forEach(d=>batch.delete(d.ref));
       await batch.commit();
-      total += snap.size;
     }
-    return total;
   }
 
   window.deleteModelTestCascade = async function(modelTestId){
-    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
-    if(!mt) return;
-    const ok = confirm(`Delete model test "${mt.title}"?\n\nএটা করলে এই model test এর সব প্রশ্নও ডিলিট হবে।`);
+    const ok = confirm("Delete model test? সব প্রশ্নও ডিলিট হবে।");
     if(!ok) return;
-
-    try{
-      toast("Working...", "Deleting model_test_questions...");
-      await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
-      await deleteDoc(doc(db,"model_tests",modelTestId));
-      toast("Done", "Model test deleted (cascade)");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message||"Cascade delete failed");
-    }
+    await deleteByQueryInBatches("model_test_questions","modelTestId",modelTestId);
+    await deleteDoc(doc(db,"model_tests",modelTestId));
+    toast("Done","Model test deleted (cascade)");
   }
 
   window.deleteSubjectCascade = async function(subjectId){
-    const s = SUBJECTS.find(x=>x.id===subjectId);
-    if(!s) return;
-
-    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- subject_questions ডিলিট\n- এই subject এর সব model_tests ডিলিট\n- সেই model_tests এর সব model_test_questions ডিলিট\nসব হবে।`);
+    const ok = confirm("Delete subject? সব প্রশ্ন+model tests+model test questions ডিলিট হবে।");
     if(!ok) return;
 
-    try{
-      toast("Working...", "Deleting subject_questions...");
-      await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
-
-      toast("Working...", "Loading model tests...");
-      const mtSnap = await getDocs(query(collection(db,"model_tests"), where("subjectId","==",subjectId)));
-      const mtIds = mtSnap.docs.map(d=>d.id);
-
-      for(const mtId of mtIds){
-        toast("Working...", `Deleting model_test_questions for ${mtId}...`);
-        await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
-        await deleteDoc(doc(db,"model_tests",mtId));
-      }
-
-      await deleteDoc(doc(db,"subjects",subjectId));
-      toast("Done", "Subject deleted (cascade)");
-    }catch(err){
-      console.error(err);
-      toast("Error", err.message||"Cascade delete failed");
+    await deleteByQueryInBatches("subject_questions","subjectId",subjectId);
+    const mtSnap = await getDocs(query(collection(db,"model_tests"), where("subjectId","==",subjectId)));
+    const mtIds = mtSnap.docs.map(d=>d.id);
+    for(const mtId of mtIds){
+      await deleteByQueryInBatches("model_test_questions","modelTestId",mtId);
+      await deleteDoc(doc(db,"model_tests",mtId));
     }
+    await deleteDoc(doc(db,"subjects",subjectId));
+    toast("Done","Subject deleted (cascade)");
   }
 
   function esc(str){
     return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
 
-  // ===== AUTH STATE (FIXED) =====
+  // ===== AUTH STATE =====
   onAuthStateChanged(auth, async (user)=>{
     if(!user){
-      detachSubjectsSnapshot();
-      detachModelTestsSnapshot();
+      detachSubjectsSnapshot(); detachModelTestsSnapshot();
       showGate("Please login with eprostutibd@gmail.com");
       return;
     }
-
-    // Force refresh token so Rules sees correct email claim
-    try{ await user.getIdToken(true); } catch(e){}
-
+    try{ await user.getIdToken(true); }catch(e){}
     const email = (user.email || "").toLowerCase();
     if(email !== ADMIN_EMAIL.toLowerCase()){
-      // hard block non-admin
-      detachSubjectsSnapshot();
-      detachModelTestsSnapshot();
+      detachSubjectsSnapshot(); detachModelTestsSnapshot();
       $("authStatus").textContent = "❌ Not authorized. Signing out...";
       await signOut(auth);
       showGate("❌ Only eprostutibd@gmail.com is allowed.");
-      toast("Not authorized", "Only admin email allowed");
+      toast("Not authorized","Only admin email allowed");
       return;
     }
 
-    // authorized
     hideGate();
     setAuthorizedUI(true, user.email);
 
-    // attach snapshots
+    $("btnRefresh").disabled = false;
+    $("btnAddSubject").disabled = false;
+    $("btnAddModelTest").disabled = false;
+    $("btnDoImport").disabled = false;
+
     attachSubjectsSnapshot();
-    if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
+    toast("Welcome","Admin access granted");
   });
+
+  // ===== Import modal open =====
+  function openImportModal(target){
+    importTarget = target;
+    $("importTitle").textContent = `Import Questions → ${target.title}`;
+    $("importLog").textContent = "Ready.";
+    $("importFile").value = "";
+    $("importType").value = "mcq";
+    $("answerFormat").value = "auto";
+    $("importBack").classList.add("show");
+  }
+  window.openSubjectImport = (subjectId)=>{
+    const s = SUBJECTS.find(x=>x.id===subjectId);
+    if(!s) return;
+    openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
+  }
+  window.openModelTestImport = (modelTestId)=>{
+    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+    if(!mt) return;
+    openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
+  }
 
   // initial
   showGate("Checking login...");
