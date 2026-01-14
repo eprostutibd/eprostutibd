@@ -11,24 +11,6 @@
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#1d4ed8" />
 
-  <!-- ✅ Open Graph -->
-  <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক" />
-  <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test — সকল প্রস্তুতি হোক গভীর থেকে।" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="#" />
-  <meta property="og:image" content="#" />
-
-  <!-- ✅ Website structured data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"eProstutiBD প্রশ্নব্যাংক",
-    "url":"#",
-    "description":"বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।"
-  }
-  </script>
-
   <style>
     :root{
       --bg1:#f7f9ff;
@@ -58,7 +40,7 @@
     }
     .app{max-width:1180px;margin:0 auto;padding:12px;}
 
-    /* ===== HEADER (no ugly scroll) ===== */
+    /* ===== HEADER ===== */
     header{
       position:sticky; top:0; z-index:30;
       background: linear-gradient(135deg, rgba(29,78,216,.95), rgba(14,165,233,.92));
@@ -74,7 +56,6 @@
       justify-content:space-between;
       gap:12px;
     }
-    /* ✅ No logo — name acts as logo */
     .brandname{
       color:#fff;
       font-weight: 1000;
@@ -92,7 +73,6 @@
     .brandwrap{display:flex; flex-direction:column; gap:2px; min-width:0}
     .rightwrap{display:flex; align-items:center; gap:10px; flex:0 0 auto}
 
-    /* Desktop nav */
     .navDesktop{
       display:flex;
       gap:8px;
@@ -120,7 +100,7 @@
       border-color: rgba(255,255,255,.28);
     }
 
-    /* ✅ Mobile: menu inside menu bar (dropdown) */
+    /* Mobile menu */
     .menuBtn{
       display:none;
       border: 1px solid rgba(255,255,255,.22);
@@ -163,13 +143,12 @@
       background: rgba(255,255,255,.18);
       border-color: rgba(255,255,255,.22);
     }
-
     @media (max-width: 820px){
       .navDesktop{display:none;}
       .menuBtn{display:inline-flex; align-items:center; gap:8px;}
     }
 
-    /* ===== NOTICE ticker (between header and ad) ===== */
+    /* ===== NOTICE ticker ===== */
     .tickerWrap{
       max-width:1180px;
       margin: 10px auto 0;
@@ -254,6 +233,7 @@
       grid-template-columns: 1fr 320px;
       gap: 14px;
       padding: 12px 0 0;
+      align-items: start; /* ✅ FIX: remove big empty gap (no stretching) */
     }
     @media (max-width: 980px){
       .grid{grid-template-columns:1fr;}
@@ -297,7 +277,7 @@
       border:1px solid var(--line);
       background: rgba(255,255,255,.85);
       color: var(--text);
-      padding: 9px 10px; /* ✅ smaller search button */
+      padding: 9px 10px;
       border-radius: 12px;
       cursor:pointer;
       font-weight: 1000;
@@ -384,17 +364,33 @@
     }
     .pill2 b{color: var(--text)}
 
-    /* inline ad card inside subjects list */
+    /* ✅ inline ad card (compact) */
     .adCard{
-      border:1px dashed rgba(18,28,55,.24);
+      border:1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.75);
       border-radius: 18px;
-      padding: 14px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.05);
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
       display:grid;
       place-items:center;
       text-align:center;
-      min-height: 120px;
+      min-height: 96px; /* ✅ smaller */
+    }
+    .adCard .mini{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .adCard .tag{
+      font-weight:1000;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.72);
+      font-size:12px;
     }
 
     .empty{
@@ -407,12 +403,7 @@
       font-size: 12px;
       margin-top: 12px;
     }
-
-    .moreWrap{
-      display:flex;
-      justify-content:center;
-      margin-top: 12px;
-    }
+    .moreWrap{display:flex;justify-content:center;margin-top: 12px;}
 
     /* sidebar ad */
     .sidebar{
@@ -434,7 +425,7 @@
     .foot{
       max-width:1180px;
       margin:0 auto;
-      padding: 14px 12px;
+      padding: 14px 12px 10px;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -450,6 +441,29 @@
       padding:4px 0;
     }
     .foot a:hover{color: var(--text)}
+
+    /* ✅ social icons */
+    .social{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .iconBtn{
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.75);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      transition: .15s;
+      text-decoration:none;
+    }
+    .iconBtn:hover{transform: translateY(-1px)}
+    .iconBtn svg{width:18px;height:18px; fill: rgba(15,23,48,.72)}
+
     .copy{
       max-width:1180px;
       margin:0 auto;
@@ -457,7 +471,7 @@
       color: var(--muted);
       font-size: 12px;
       text-align:center;
-      white-space:nowrap; /* ✅ one line on mobile too */
+      white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
@@ -497,7 +511,6 @@
         </button>
       </div>
 
-      <!-- Desktop nav stays in header but smooth -->
       <nav class="navDesktop" aria-label="Main navigation">
         <a class="active" href="#">একাডেমী</a>
         <a href="#">প্রশ্ন ব্যাঙ্ক</a>
@@ -513,7 +526,6 @@
       </nav>
     </div>
 
-    <!-- Mobile menu box -->
     <div class="mobileMenu" id="mobileMenu">
       <div class="box">
         <a class="active" href="#">একাডেমী</a>
@@ -531,20 +543,19 @@
     </div>
   </header>
 
-  <!-- ✅ Notice ticker (between header and ad) -->
+  <!-- Notice -->
   <div class="tickerWrap">
     <div class="ticker" role="region" aria-label="Notice">
       <div class="tickerRow">
         <span class="badge">নোটিশ</span>
         <div class="marq">
-          <!-- ✅ তুমি পরে এই টেক্সট বদলাতে পারবে -->
           <span>আজকের আপডেট: নতুন Subject যুক্ত হয়েছে • নতুন Model Test যুক্ত হয়েছে • নিয়মিত পড়াশোনা করুন • সকল প্রস্তুতি হোক গভীর থেকে</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Top ad under notice -->
+  <!-- Header ad -->
   <div class="topAdWrap">
     <div class="ad">
       <div class="label">
@@ -590,7 +601,7 @@
         </div>
       </section>
 
-      <!-- ✅ Sidebar ad option -->
+      <!-- Sidebar ads -->
       <aside class="sidebar">
         <div class="hd">
           <b>Sponsored</b>
@@ -647,10 +658,25 @@
         <a href="#">Blog</a><br/>
         <a href="#">Career</a><br/>
         <a href="#">Help</a><br/>
+
+        <div class="social" aria-label="Social media">
+          <!-- ✅ links will be #, you will replace later -->
+          <a class="iconBtn" href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+          </a>
+          <a class="iconBtn" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
 
-    <!-- ✅ Mobile footer one line -->
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
@@ -659,7 +685,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -682,17 +707,7 @@
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    // data
-    let SUBJECTS = [];
-    const modelTestCountMap = new Map();
-    const modelTestUnsubs = new Map();
-
-    // paging + search
-    const PAGE_SIZE = 6;
-    let visibleCount = 6;
-    let currentQuery = "";
-
-    // ===== mobile menu
+    // mobile menu
     function toggleMenu(){
       const box = $("mobileMenu");
       const btn = $("menuBtn");
@@ -702,7 +717,7 @@
     }
     window.toggleMenu = toggleMenu;
 
-    // ===== related search (not only 100% match)
+    // related search
     function normalize(s){
       return String(s||"")
         .toLowerCase()
@@ -718,7 +733,7 @@
       const q = normalize(query);
       const n = normalize(name);
       if(!q) return 1;
-      if(n.includes(q)) return 100; // strong
+      if(n.includes(q)) return 100;
       const qt = tokens(q);
       const nt = new Set(tokens(n));
       if(!qt.length) return 1;
@@ -734,6 +749,16 @@
       });
       return (hit/qt.length)*10 + partial;
     }
+
+    // data
+    let SUBJECTS = [];
+    const modelTestCountMap = new Map();
+    const modelTestUnsubs = new Map();
+
+    // paging + search
+    const PAGE_SIZE = 6;
+    let visibleCount = 6;
+    let currentQuery = "";
 
     function syncModelTestListeners(){
       const alive = new Set(SUBJECTS.map(s=>s.id));
@@ -794,15 +819,15 @@
     }
     window.loadMore = loadMore;
 
-    // ✅ insert ad after every 5 subject cards
-    function makeInlineAdCard(index){
+    // ✅ inline ad after every 6 subject cards (compact)
+    function makeInlineAdCard(){
       const ad = document.createElement("div");
       ad.className = "adCard";
       ad.setAttribute("aria-label", "Ad slot");
       ad.innerHTML = `
-        <div>
-          <div style="font-weight:1000; color:var(--text); margin-bottom:6px;">Ad Slot</div>
-          <div class="note">Paste AdSense/Adstra code here (inline after 5 cards)</div>
+        <div class="mini">
+          <span class="tag">Ad Slot</span>
+          <span class="note">এখানে AdSense/Adstra কোড বসবে</span>
         </div>
       `;
       return ad;
@@ -815,7 +840,6 @@
         .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
         .filter(s => !q ? true : (s.__score >= 1.2))
         .sort((a,b)=>{
-          // highest score first, then name
           if(b.__score !== a.__score) return b.__score - a.__score;
           return (a.name||"").localeCompare(b.name||"");
         });
@@ -836,7 +860,7 @@
       $("empty").style.display = "none";
 
       let cardCount = 0;
-      shownItems.forEach((s)=>{
+      shownItems.forEach((s, idx)=>{
         cardCount++;
 
         const mcq = s.counts?.mcq || 0;
@@ -861,16 +885,16 @@
         `;
         wrap.appendChild(el);
 
-        // ✅ after every 5 cards, insert an inline ad card (if more content remains)
-        if(cardCount % 5 === 0 && cardCount < shownItems.length){
-          wrap.appendChild(makeInlineAdCard(cardCount/5));
+        // ✅ after every 6 cards, insert inline ad card (if more items remain)
+        if(cardCount % 6 === 0 && idx < shownItems.length - 1){
+          wrap.appendChild(makeInlineAdCard());
         }
       });
 
       $("btnMore").style.display = (total > shownItems.length) ? "inline-flex" : "none";
     }
 
-    // start
+    // start realtime
     renderSkeleton();
 
     db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
