@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
 
-  <!-- ✅ SEO -->
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
@@ -13,17 +12,10 @@
 
   <style>
     :root{
-      --bg1:#f6f8ff;
-      --bg2:#eef6ff;
-
-      --header1:#1d4ed8;
-      --header2:#0ea5e9;
-
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --header1:#1d4ed8; --header2:#0ea5e9;
       --line: rgba(18, 28, 55, .10);
-
-      --text:#0f1730;
-      --muted:#5a6685;
-
+      --text:#0f1730; --muted:#5a6685;
       --shadow: 0 16px 44px rgba(15,23,48,.12);
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
     }
@@ -41,9 +33,6 @@
     a{color:inherit}
     .container{max-width:1180px;margin:0 auto;padding:10px 12px}
 
-    /* =========================
-       ✅ HEADER (single line)
-    ========================== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -59,13 +48,13 @@
       gap:10px;
     }
 
+    /* ✅ Brand back to 2 lines */
     .brand{
       display:flex;
-      align-items:center;
-      gap:10px;
+      flex-direction:column;
+      gap:3px;
       flex:0 0 auto;
       min-width:0;
-      white-space:nowrap;
     }
     .brand .name{
       color:#fff;
@@ -73,18 +62,16 @@
       letter-spacing:.2px;
       font-size:15px;
       line-height:1;
+      white-space:nowrap;
     }
     .brand .tag{
       color:rgba(255,255,255,.88);
       font-size:12px;
-      line-height:1;
-      max-width: 260px;
+      line-height:1.1;
+      white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    @media (max-width: 980px){
-      .brand .tag{display:none;} /* ✅ header ছোট */
+      max-width: 260px;
     }
 
     .nav{
@@ -128,11 +115,7 @@
     }
 
     .mobileMenu{display:none}
-    .mobileMenu .panel{
-      max-width:1180px;
-      margin:0 auto;
-      padding: 0 12px 12px;
-    }
+    .mobileMenu .panel{max-width:1180px;margin:0 auto;padding:0 12px 12px}
     .mobileMenu .panelInner{
       border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.14);
@@ -155,15 +138,12 @@
     }
     .mobileMenu a:last-child{margin-bottom:0}
     .mobileMenu a.active{background: rgba(255,255,255,.18)}
-
     @media (max-width: 860px){
       .nav{display:none;}
       .menuBtn{display:inline-flex;align-items:center;gap:8px;}
+      .brand .tag{max-width: 55vw;}
     }
 
-    /* =========================
-       Notice + Header Ad
-    ========================== */
     .noticeBar{
       margin-top: 10px;
       border: 1px solid var(--line);
@@ -172,12 +152,7 @@
       overflow:hidden;
       box-shadow: var(--shadow2);
     }
-    .noticeRow{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-    }
+    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
     .noticeTag{
       flex:0 0 auto;
       font-size:12px;
@@ -189,22 +164,9 @@
       color: var(--text);
       white-space:nowrap;
     }
-    .marq{
-      flex:1;
-      overflow:hidden;
-      white-space:nowrap;
-      color: var(--muted);
-      font-size:12px;
-    }
-    .marq span{
-      display:inline-block;
-      padding-left: 100%;
-      animation: ticker 18s linear infinite;
-    }
-    @keyframes ticker{
-      0%{transform: translateX(0)}
-      100%{transform: translateX(-100%)}
-    }
+    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
+    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
+    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
     .adBox{
       margin-top: 10px;
@@ -225,30 +187,16 @@
       color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{
-      min-height: 110px;
-      display:grid;
-      place-items:center;
-      padding: 10px;
-      text-align:center;
-      color: var(--muted);
-    }
+    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* =========================
-       ✅ MAIN GRID (less side gap)
-       - wider main area
-       - sidebar sticky, no inner scroll
-    ========================== */
     .grid{
       display:grid;
       grid-template-columns: 1fr 300px;
-      gap: 10px;              /* ✅ gap কম */
+      gap: 10px;
       align-items:start;
       margin-top: 12px;
     }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr;}
-    }
+    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
 
     .panel{
       border: 1px solid var(--line);
@@ -269,35 +217,24 @@
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding: 12px 14px}
 
-    /* ✅ Search bar smaller */
-    .searchRow{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    .searchMini{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:nowrap;
-    }
+    /* Search small */
+    .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+    .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
-      width: 280px;            /* ✅ ছোট */
-      max-width: 72vw;
+      width: 220px; /* ✅ smaller than before */
+      max-width: 70vw;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
       color: var(--text);
-      padding: 10px 12px;      /* ✅ ছোট height */
+      padding: 9px 10px;
       border-radius: 14px;
       outline:none;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       font-size: 13px;
     }
     @media (max-width: 560px){
-      .searchMini input{width: 100%;}
       .searchMini{width:100%;}
+      .searchMini input{width:100%;}
     }
     .btn{
       border:1px solid rgba(18,28,55,.12);
@@ -305,7 +242,7 @@
       color: var(--text);
       border-radius: 14px;
       padding: 8px 10px;
-      height: 38px;
+      height: 36px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
@@ -313,18 +250,10 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .btn.primary{
-      border-color: rgba(29,78,216,.22);
-      background: rgba(29,78,216,.10);
-    }
-    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0}
+    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
+    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
-    /* ✅ Subjects grid: need 4 cards per row if needed */
-    .subjects{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr); /* ✅ 4 per row desktop */
-      gap: 10px;
-    }
+    .subjects{display:grid;grid-template-columns: repeat(4, 1fr);gap: 10px;}
     @media (max-width: 1100px){ .subjects{grid-template-columns: repeat(3, 1fr);} }
     @media (max-width: 900px){ .subjects{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 560px){ .subjects{grid-template-columns: 1fr;} }
@@ -350,36 +279,18 @@
       pointer-events:none;
     }
     .subCard h3{
-      position:relative;
-      margin:0;
-      font-size:14px;
-      font-weight:1000;
-      line-height: 1.2;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height: 34px;
+      position:relative;margin:0;font-size:14px;font-weight:1000;line-height: 1.2;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
     }
-    .counts{
-      position:relative;
-      margin-top: 8px;
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .counts{position:relative;margin-top: 8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
     .countPill{
-      font-size:12px;
-      padding: 6px 9px;
-      border-radius:999px;
+      font-size:12px;padding: 6px 9px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
       color: var(--muted);
     }
     .countPill b{color: var(--text)}
 
-    /* inline ad after every 6 cards */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -393,19 +304,12 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
     .inlineAd .tag{
-      display:inline-block;
-      font-weight:1000;
-      color: var(--text);
-      padding: 6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      margin-bottom: 6px;
-      font-size:12px;
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
     .empty{
-      display:none;
-      border:1px dashed rgba(18,28,55,.22);
+      display:none;border:1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.70);
       border-radius: 16px;
       padding: 12px;
@@ -415,26 +319,11 @@
     }
 
     /* Latest model tests */
-    .mtSection{
-      margin-top: 14px;
-      border-top: 1px solid rgba(18,28,55,.10);
-      padding-top: 12px;
-    }
-    .mtTitle{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
+    .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px;}
+    .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
-    .mtGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+    .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap: 10px;}
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
-
     .mtCard{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
@@ -445,32 +334,13 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
     .mtCard h4{
-      margin:0;
-      font-size: 13px;
-      line-height: 1.25;
-      font-weight:1000;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height: 34px;
+      margin:0;font-size: 13px;line-height: 1.25;font-weight:1000;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
     }
-    .mtMeta{
-      margin-top: 8px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      color: var(--muted);
-      font-size:12px;
-    }
-    .mtMeta span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.78);
-      border-radius: 999px;
-      padding: 6px 10px;
-    }
+    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
+    .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px;}
 
-    /* ✅ Sidebar: sticky, no internal scroll */
+    /* Sidebar sticky no scroll */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -479,19 +349,14 @@
       overflow:hidden;
       height: fit-content;
       position: sticky;
-      top: 86px;     /* ✅ header height approx */
+      top: 72px;
     }
-    @media (max-width: 980px){
-      .sidePanel{position: static; top:auto;}
-    }
+    @media (max-width: 980px){ .sidePanel{position: static; top:auto;} }
     .sidePanel .head{
       padding: 12px 14px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:12px;
-      color: var(--muted);
+      display:flex;align-items:center;justify-content:space-between;
+      font-size:12px;color: var(--muted);
     }
     .sidePanel .head b{color:var(--text);font-size:13px}
     .sidePanel .body{padding: 12px}
@@ -508,10 +373,6 @@
       color: var(--muted);
     }
 
-    /* =========================
-       ✅ FOOTER color change
-       + 3 columns
-    ========================== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -534,13 +395,7 @@
     @media (max-width: 560px){ .foot{grid-template-columns: 1fr;} }
 
     .foot b{font-size:13px}
-    .foot a{
-      display:block;
-      text-decoration:none;
-      color: rgba(255,255,255,.78);
-      font-size:12px;
-      padding: 6px 0;
-    }
+    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
 
     .social{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
@@ -591,7 +446,7 @@
 <body>
   <header>
     <div class="topbar">
-      <div class="brand" aria-label="Brand">
+      <div class="brand">
         <div class="name">eProstutiBD</div>
         <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
@@ -633,7 +488,6 @@
   </header>
 
   <div class="container">
-    <!-- Notice -->
     <div class="noticeBar" role="region" aria-label="Notice">
       <div class="noticeRow">
         <span class="noticeTag">নোটিশ</span>
@@ -643,14 +497,12 @@
       </div>
     </div>
 
-    <!-- Header Ad -->
     <div class="adBox">
       <div class="adHead">
         <b>Ad Slot</b>
         <span>Header নিচে • Responsive</span>
       </div>
       <div class="adBody">
-        <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
         <div>
           <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Responsive Ad</div>
           <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
@@ -659,7 +511,6 @@
     </div>
 
     <main class="grid">
-      <!-- Main -->
       <section class="panel">
         <div class="panelHead">
           <b>Subjects</b>
@@ -672,9 +523,6 @@
               <input id="search" placeholder="Search subject…" oninput="onSearch()" />
               <button class="btn" onclick="onSearch()">Search</button>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
-            </div>
           </div>
 
           <div class="divider"></div>
@@ -682,7 +530,11 @@
           <div id="subjects" class="subjects" aria-live="polite"></div>
           <div id="empty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
 
-          <!-- Latest Model Tests -->
+          <!-- ✅ More button back to bottom -->
+          <div style="display:flex;justify-content:center;margin-top:12px;">
+            <button id="btnMore" class="btn primary" style="display:none" onclick="loadMore()">More Subject</button>
+          </div>
+
           <div class="mtSection" aria-label="Latest model tests">
             <div class="mtTitle">
               <b>Latest Model Tests</b>
@@ -693,7 +545,6 @@
         </div>
       </section>
 
-      <!-- Sidebar -->
       <aside class="sidePanel" aria-label="Sidebar ads">
         <div class="head">
           <b>Sponsored</b>
@@ -701,7 +552,6 @@
         </div>
         <div class="body">
           <div class="sideAdBox">
-            <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
             <div>
               <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Sidebar Ad</div>
               <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
@@ -711,7 +561,6 @@
           <div style="height:10px"></div>
 
           <div class="sideAdBox" style="min-height: 180px">
-            <!-- ✅ এখানে তোমার Adsense/Adstra কোড বসাবে -->
             <div>
               <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Bottom Ad</div>
               <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
@@ -750,7 +599,7 @@
             <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
           </a>
           <a class="iconBtn" href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
           </a>
           <a class="iconBtn" href="#" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
@@ -762,14 +611,10 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
-  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    /* =========================
-       Firebase
-    ========================== */
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -786,12 +631,11 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     const $ = (id)=>document.getElementById(id);
 
-    /* =========================
-       Mobile Menu
-    ========================== */
+    // ✅ Turn this to false if you don't want console debug
+    const DEBUG_TIME = true;
+
     function toggleMenu(){
       const menu = $("mobileMenu");
       const btn = $("menuBtn");
@@ -805,44 +649,30 @@
       return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    /* =========================
-       Search (related)
-    ========================== */
     function normalize(s){
-      return String(s||"")
-        .toLowerCase()
+      return String(s||"").toLowerCase()
         .replace(/[^\p{L}\p{N}\s]+/gu, " ")
         .replace(/\s+/g, " ")
         .trim();
     }
-    function tokens(s){
-      const t = normalize(s);
-      return t ? t.split(" ").filter(Boolean) : [];
-    }
+    function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
     function relatedScore(query, name){
-      const q = normalize(query);
-      const n = normalize(name);
+      const q = normalize(query), n = normalize(name);
       if(!q) return 1;
       if(n.includes(q)) return 100;
-      const qt = tokens(q);
-      const nt = new Set(tokens(n));
+      const qt = tokens(q), nt = new Set(tokens(n));
       if(!qt.length) return 1;
-      let hit = 0;
-      qt.forEach(w=>{ if(nt.has(w)) hit++; });
-      let partial = 0;
+      let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
+      let partial=0;
       qt.forEach(w=>{
-        if(w.length >= 3){
-          for(const tw of nt){
-            if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; }
-          }
+        if(w.length>=3){
+          for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
         }
       });
       return (hit/qt.length)*10 + partial;
     }
 
-    /* =========================
-       Subjects
-    ========================== */
+    /* Subjects */
     let SUBJECTS = [];
     const modelTestCountMap = new Map();
     const modelTestUnsubs = new Map();
@@ -852,20 +682,14 @@
     let currentQuery = "";
 
     function openSubjectDetails(subjectId){
-      // আগের মতো subject → details-prosnobank.html
-      const url = `details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`;
-      window.open(url, "_blank", "noopener");
+      window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
     }
-
-    // ✅ Model test card → details-prosnobank.htm (as you requested)
     function openModelTestDetails(modelTestId){
-      const url = `details-prosnobank.htm?modelTestId=${encodeURIComponent(modelTestId)}`;
-      window.open(url, "_blank", "noopener");
+      window.open(`details-prosnobank.htm?modelTestId=${encodeURIComponent(modelTestId)}`, "_blank", "noopener");
     }
 
     function syncModelTestListeners(){
       const alive = new Set(SUBJECTS.map(s=>s.id));
-
       for(const [sid, unsub] of modelTestUnsubs.entries()){
         if(!alive.has(sid)){
           try{ unsub(); }catch(e){}
@@ -873,10 +697,8 @@
           modelTestCountMap.delete(sid);
         }
       }
-
       SUBJECTS.forEach(s=>{
         if(modelTestUnsubs.has(s.id)) return;
-
         const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
           .where("subjectId","==", s.id)
           .onSnapshot((snap)=>{
@@ -886,7 +708,6 @@
             console.error(err);
             modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
           });
-
         modelTestUnsubs.set(s.id, unsub);
       });
     }
@@ -918,7 +739,6 @@
 
     function renderSubjects(){
       const q = currentQuery;
-
       const scored = SUBJECTS
         .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
         .filter(s => !q ? true : (s.__score >= 1.2))
@@ -987,63 +807,72 @@
     }
     window.loadMore = loadMore;
 
-    /* =========================
-       ✅ Latest Model Tests (max 8)
-       - time not showing → support many field names + format
-       - question count:
-         1) model test doc has totalQuestions/totalQ/questionCount
-         2) else count from modeltest_questions where modelTestId == doc.id
-    ========================== */
-    const qCountUnsubs = new Map(); // mtId -> unsubscribe
-    const qCountMap = new Map();    // mtId -> count
-    let latestMTDocsCache = [];     // keep docs so we can re-render when counts arrive
+    /* Latest Model Tests (max 8) + time fix */
+    const qCountUnsubs = new Map();
+    const qCountMap = new Map();
+    let latestMTDocsCache = [];
 
     function formatTimeValue(v){
       if(v === undefined || v === null || v === "") return "-";
-      // number => assume minutes
-      if(typeof v === "number"){
-        return `${v} min`;
+
+      // Firestore Timestamp
+      if(v && typeof v === "object" && typeof v.toDate === "function"){
+        // timestamp -> show minutes from date? not meaningful, fallback to string
+        return v.toDate().toLocaleString();
       }
-      // numeric string
+
+      // If object {value: 60} etc
+      if(v && typeof v === "object"){
+        if(typeof v.value === "number") return `${v.value} min`;
+        if(typeof v.minutes === "number") return `${v.minutes} min`;
+        if(typeof v.time === "number") return `${v.time} min`;
+        // last fallback
+        try{ return JSON.stringify(v); }catch(e){ return String(v); }
+      }
+
+      // number => minutes
+      if(typeof v === "number") return `${v} min`;
+
+      // numeric string => minutes
       if(typeof v === "string"){
         const t = v.trim();
-        if(t === "") return "-";
+        if(!t) return "-";
         const num = Number(t);
         if(!Number.isNaN(num) && t.match(/^\d+(\.\d+)?$/)) return `${num} min`;
-        return t; // already formatted e.g. "60 min"
+        return t;
       }
+
       return String(v);
     }
 
     function getTimeField(data){
-      // ✅ support multiple time field names
-      return (
-        data.totalTime ??
-        data.total_time ??
-        data.duration ??
-        data.time ??
-        data.examTime ??
-        data.exam_time ??
-        data.minutes ??
-        data.totalMinutes ??
-        "-"
-      );
+      // ✅ MOST COMMON KEYS (add more here if needed)
+      const keys = [
+        "totalTime","total_time","duration","time","examTime","exam_time",
+        "minutes","totalMinutes","total_minutes","totaltime","exam_duration",
+        "total_duration","testTime","test_time"
+      ];
+      for(const k of keys){
+        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+      }
+      return "-";
     }
     function getMarkField(data){
-      return (
-        data.totalMark ??
-        data.total_mark ??
-        data.totalMarks ??
-        data.mark ??
-        data.marks ??
-        "-"
-      );
+      const keys = ["totalMark","total_mark","totalMarks","mark","marks"];
+      for(const k of keys){
+        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+      }
+      return "-";
     }
     function getTitleField(data){
-      return data.name ?? data.title ?? "Subject Model Test";
+      return data?.name ?? data?.title ?? "Subject Model Test";
     }
     function getPreQCount(data){
-      return (data.totalQuestions ?? data.total_questions ?? data.totalQ ?? data.questionCount ?? data.questionsCount);
+      const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
+      for(const k of keys){
+        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+      }
+      return null;
     }
 
     function ensureQuestionCountListener(mtId){
@@ -1052,7 +881,6 @@
         .where("modelTestId","==", mtId)
         .onSnapshot((snap)=>{
           qCountMap.set(mtId, snap.size || 0);
-          // re-render latest tests when count updates
           renderLatestModelTests(latestMTDocsCache);
         }, (err)=>{
           console.error(err);
@@ -1073,27 +901,33 @@
     }
 
     function renderLatestModelTests(docs){
-      const wrap = $("latestMT");
+      const wrap = document.getElementById("latestMT");
       latestMTDocsCache = docs;
-
       wrap.innerHTML = "";
 
       if(!docs.length){
-        $("mtHint").textContent = "0";
+        document.getElementById("mtHint").textContent = "0";
         wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
         return;
       }
 
-      $("mtHint").textContent = `${docs.length}`;
+      document.getElementById("mtHint").textContent = `${docs.length}`;
 
       const active = new Set(docs.map(d=>d.id));
       cleanupQuestionCountListeners(active);
 
       docs.forEach(d=>{
         const data = d.data() || {};
+
+        if(DEBUG_TIME){
+          console.log("MODEL TEST DOC:", d.id, data); // ✅ time field check
+        }
+
         const title = getTitleField(data);
 
-        const timeVal = formatTimeValue(getTimeField(data));
+        const timeRaw = getTimeField(data);
+        const timeVal = formatTimeValue(timeRaw);
+
         const markVal = getMarkField(data);
 
         const preQ = getPreQCount(data);
@@ -1120,9 +954,7 @@
     }
 
     function watchLatestModelTests(){
-      $("mtHint").textContent = "Loading…";
-
-      // ✅ max 8
+      document.getElementById("mtHint").textContent = "Loading…";
       const LIMIT = 8;
 
       db.collection(COL_SUBJECT_MODEL_TESTS)
@@ -1136,14 +968,12 @@
             .limit(LIMIT)
             .onSnapshot((s2)=>renderLatestModelTests(s2.docs), (e2)=>{
               console.error(e2);
-              $("mtHint").textContent = "Failed";
+              document.getElementById("mtHint").textContent = "Failed";
             });
         });
     }
 
-    /* =========================
-       Start realtime
-    ========================== */
+    /* Start realtime */
     renderSkeleton();
     watchLatestModelTests();
 
@@ -1153,10 +983,10 @@
       renderSubjects();
     }, (err)=>{
       console.error(err);
-      $("countHint").textContent = "Failed to load";
-      $("subjects").innerHTML = "";
-      $("empty").style.display = "block";
-      $("btnMore").style.display = "none";
+      document.getElementById("countHint").textContent = "Failed to load";
+      document.getElementById("subjects").innerHTML = "";
+      document.getElementById("empty").style.display = "block";
+      document.getElementById("btnMore").style.display = "none";
     });
   </script>
 </body>
