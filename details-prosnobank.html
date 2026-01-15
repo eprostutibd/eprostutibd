@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eProstutiBD প্রশ্নব্যাংক — Details</title>
 
-  <meta name="description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test।" />
-  <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD" />
+  <!-- ✅ SEO -->
+  <meta name="description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সম্পূর্ণ ফ্রি প্রশ্নব্যাংক — eProstutiBD" />
+  <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#1d4ed8" />
+  <link rel="canonical" href="#" />
 
   <style>
     :root{
@@ -27,6 +29,8 @@
 
       --footerA:#0b1b45;
       --footerB:#071635;
+
+      --safeBottom: env(safe-area-inset-bottom, 0px);
     }
 
     *{box-sizing:border-box}
@@ -42,17 +46,16 @@
     }
     a{color:inherit}
 
-    /* ✅ Desktop side gap = ~1/2 inch (48px). Mobile = 12px */
     .container{
       max-width: 1320px;
       margin: 0 auto;
       padding-left: clamp(12px, 4vw, 48px);
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 10px;
-      padding-bottom: 10px;
+      padding-bottom: calc(88px + var(--safeBottom)); /* ✅ bottom sticky bar space */
     }
 
-    /* ===== Header (same as prosnobank.html) ===== */
+    /* ===== Header (same style) ===== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -70,71 +73,26 @@
       align-items:center;
       gap:10px;
     }
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      flex:0 0 auto;
-      min-width:0;
-    }
-    .brand .name{
-      color:#fff;
-      font-weight:1000;
-      letter-spacing:.2px;
-      font-size:15px;
-      line-height:1;
-      white-space:nowrap;
-    }
-    .brand .tag{
-      color:rgba(255,255,255,.88);
-      font-size:12px;
-      line-height:1.1;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 260px;
-    }
+    .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
+    .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
 
     .nav{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width:none;
-      padding-bottom: 2px;
-      flex:1;
+      display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling: touch;scrollbar-width:none;padding-bottom:2px;flex:1;
     }
     .nav::-webkit-scrollbar{display:none}
     .nav a{
-      flex:0 0 auto;
-      text-decoration:none;
-      color:#fff;
-      font-size:12px;
-      font-weight:1000;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      white-space:nowrap;
-      transition:.15s;
+      flex:0 0 auto;text-decoration:none;color:#fff;font-size:12px;font-weight:1000;
+      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);white-space:nowrap;transition:.15s;
     }
     .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
-    /* ✅ mobile menu button right side */
     .menuBtn{
-      flex:0 0 auto;
-      margin-left:auto;
-      display:none;
-      border:1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.14);
-      color:#fff;
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-weight:1000;
-      font-size:12px;
-      cursor:pointer;
-      line-height:1;
+      flex:0 0 auto;margin-left:auto;display:none;
+      border:1px solid rgba(255,255,255,.22);background: rgba(255,255,255,.14);color:#fff;
+      border-radius: 12px;padding: 8px 10px;font-weight:1000;font-size:12px;cursor:pointer;line-height:1;
     }
     @media (max-width: 860px){
       .nav{display:none;}
@@ -142,100 +100,47 @@
       .brand .tag{max-width: 55vw;}
     }
 
-    /* ===== Mobile Menu (same) ===== */
-    .mobileMenu{
-      display:none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-    }
-    .mobileMenu .overlay{
-      position:absolute;
-      inset:0;
-      background: transparent;
-    }
+    /* ===== Mobile Menu ===== */
+    .mobileMenu{display:none;position: fixed;inset: 0;z-index: 9999;}
+    .mobileMenu .overlay{position:absolute;inset:0;background: transparent;}
     .mobileMenu .drawer{
-      position:absolute;
-      top: 64px;
-      right: 12px;
-      width: min(320px, calc(100vw - 24px));
-      border-radius: 16px;
-      padding: 10px;
-
-      border: 1px solid rgba(255,255,255,.28);
-
-      background: rgba(8, 20, 55, .78);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-
+      position:absolute;top: 64px;right: 12px;width: min(320px, calc(100vw - 24px));
+      border-radius: 16px;padding: 10px;border: 1px solid rgba(255,255,255,.28);
+      background: rgba(8, 20, 55, .78);backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);
       box-shadow: 0 18px 38px rgba(0,0,0,.35);
     }
     .mobileMenu a{
-      display:block;
-      text-decoration:none;
-      color:#ffffff;
-      font-weight:1000;
-      font-size:13px;
-      padding: 12px 12px;
-      border-radius: 12px;
-
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      margin-bottom: 8px;
-      white-space:nowrap;
+      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;padding: 12px 12px;border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);background: rgba(255,255,255,.06);margin-bottom: 8px;white-space:nowrap;
     }
-    .mobileMenu a.active{
-      border-color: rgba(255,255,255,.28);
-      background: rgba(255,255,255,.12);
-    }
+    .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
-    /* ===== Notice + Header Ad (match) ===== */
+    /* ===== Notice + Header Ad ===== */
     .noticeBar{
-      margin-top: 10px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      border-radius: 16px;
-      overflow:hidden;
-      box-shadow: var(--shadow2);
+      margin-top: 10px;border: 1px solid var(--line);background: rgba(255,255,255,.72);
+      border-radius: 16px;overflow:hidden;box-shadow: var(--shadow2);
     }
     .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
     .noticeTag{
-      flex:0 0 auto;
-      font-size:12px;
-      font-weight:1000;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(29,78,216,.10);
-      border: 1px solid rgba(29,78,216,.18);
-      color: var(--text);
-      white-space:nowrap;
+      flex:0 0 auto;font-size:12px;font-weight:1000;padding: 6px 10px;border-radius: 999px;
+      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);color: var(--text);white-space:nowrap;
     }
     .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
     .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
     .adBox{
-      margin-top: 10px;
-      border: 1px dashed rgba(18,28,55,.22);
-      border-radius: 16px;
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
+      margin-top: 10px;border: 1px dashed rgba(18,28,55,.22);border-radius: 16px;
+      background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
     }
     .adHead{
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:12px;
-      color: var(--muted);
+      padding: 10px 12px;border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+    .adBody{min-height: 100px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Details Layout ===== */
+    /* ===== Main layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 330px 1fr;
@@ -253,12 +158,8 @@
       overflow:hidden;
     }
     .panelHead{
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      padding: 12px 14px;border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
     }
     .panelHead b{font-size:14px}
     .panelHead .muted{font-size:12px;color:var(--muted)}
@@ -280,10 +181,7 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .btn:hover{transform: translateY(-1px)}
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
-    .btn.ok{border-color: rgba(22,163,74,.22);background: rgba(22,163,74,.10);}
-    .btn.danger{border-color: rgba(220,38,38,.22);background: rgba(220,38,38,.10);}
 
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
@@ -298,18 +196,26 @@
       font-size: 13px;
     }
 
-    /* Left subject list */
-    .sList{
+    /* ✅ Subject List better + scrollable section */
+    .leftWrap{
+      position: sticky;
+      top: 72px;
+      height: calc(100vh - 92px);
       display:flex;
       flex-direction:column;
       gap:10px;
-      max-height: 68vh;
+    }
+    @media (max-width: 980px){
+      .leftWrap{position: static; height:auto;}
+    }
+
+    .sList{
+      display:flex;flex-direction:column;gap:10px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 4px;
-    }
-    @media (max-width: 980px){
-      .sList{max-height: 42vh;}
+      flex:1;
+      min-height: 220px;
     }
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
@@ -328,8 +234,7 @@
       background:
         radial-gradient(560px 140px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
         radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
-      opacity:.9;
-      pointer-events:none;
+      opacity:.9; pointer-events:none;
     }
     .sItem b{
       position:relative;
@@ -342,17 +247,9 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .chips{
-      position:relative;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .chip{
-      font-size:12px;
-      padding: 6px 9px;
-      border-radius:999px;
+      font-size:12px;padding: 6px 9px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
       color: var(--muted);
@@ -364,12 +261,23 @@
       border-color: rgba(29,78,216,.22);
     }
 
-    /* Top tabs inside right panel */
+    /* ✅ Tabs below Ads + sticky while scroll */
+    .stickyTabs{
+      position: sticky;
+      top: 0;
+      z-index: 12;
+      background: rgba(246,248,255,.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(18,28,55,.08);
+      padding: 10px 0 8px;
+      margin: -6px 0 10px;
+    }
     .tabs{
       display:flex;
       gap:8px;
+      justify-content:flex-start;
       flex-wrap:wrap;
-      justify-content:flex-end;
     }
     .tab{
       border:1px solid rgba(18,28,55,.12);
@@ -389,48 +297,27 @@
       background: rgba(29,78,216,.10);
     }
 
-    /* Answer toggles */
-    .toggleRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+    /* ✅ Question paper style */
+    .paper{
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.10);
+      border-radius: 18px;
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      padding: 12px;
     }
-    .toggleGroup{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-    .toggle{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.15s;
-      height: 36px;
-    }
-    .toggle.active{
-      border-color: rgba(22,163,74,.22);
-      background: rgba(22,163,74,.10);
-    }
-
-    /* Content list */
     .qList{display:flex; flex-direction:column; gap:10px;}
     .qCard{
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.92);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      border: 1px dashed rgba(18,28,55,.18);
+      background: rgba(255,255,255,.94);
+      border-radius: 14px;
+      padding: 10px 10px;
     }
     .qHead{display:flex; gap:10px; align-items:flex-start; justify-content:space-between}
     .qNo{
       flex:0 0 auto;
-      font-size:12px;
+      font-size:11px;
       font-weight:1000;
-      padding: 6px 10px;
+      padding: 5px 8px;
       border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
@@ -439,68 +326,116 @@
     }
     .qText{
       margin:0;
-      font-weight:1000;
-      font-size:14px;
-      line-height:1.5;
+      font-weight:700;
+      font-size:12.5px;       /* ✅ small paper font */
+      line-height:1.55;
       flex:1;
+      letter-spacing: .1px;
     }
 
-    /* Options */
-    .opts{margin-top: 10px; display:flex; flex-direction:column; gap:10px;}
+    .opts{margin-top: 8px; display:grid; grid-template-columns: 1fr 1fr; gap:8px;}
+    @media (max-width: 560px){ .opts{grid-template-columns:1fr;} }
+
     .opt{
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);
-      border-radius: 14px;
-      padding: 10px 12px;
+      border: 1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.84);
+      border-radius: 12px;
+      padding: 8px 10px;
       cursor:pointer;
       display:flex;
-      gap:10px;
+      gap:8px;
       align-items:flex-start;
-      transition:.15s;
+      transition:.12s;
     }
     .opt:hover{transform: translateY(-1px)}
     .badge{
-      width: 26px; height: 26px;
+      width: 22px; height: 22px;
       border-radius: 999px;
       border: 1px solid rgba(18,28,55,.12);
       display:grid; place-items:center;
       font-weight:1000;
       color: var(--muted);
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.95);
       flex:0 0 auto;
+      font-size:11px;
     }
-    .opt .txt{flex:1; font-size:13px; line-height:1.5; color: var(--text)}
-    .opt.correct{
-      border-color: rgba(22,163,74,.28);
-      background: rgba(22,163,74,.10);
-    }
-    .opt.wrong{
-      border-color: rgba(220,38,38,.28);
-      background: rgba(220,38,38,.10);
-    }
+    .opt .txt{flex:1; font-size:12px; line-height:1.55; color: var(--text)}
+    .opt.correct{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.10);}
+    .opt.wrong{border-color: rgba(220,38,38,.28); background: rgba(220,38,38,.10);}
 
     .ansBox{
-      margin-top: 10px;
+      margin-top: 8px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
-      border-radius: 14px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 8px 10px;
       color: var(--muted);
-      font-size:12px;
+      font-size:11.5px;
       line-height:1.6;
     }
     .ansBox b{color: var(--text)}
     .ansHidden{
-      margin-top: 10px;
+      margin-top: 8px;
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.70);
-      border-radius: 14px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 8px 10px;
       color: var(--muted);
-      font-size:12px;
+      font-size:11.5px;
     }
 
-    /* Pager */
+    /* ===== Model test new design ===== */
+    .mtGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
+
+    .mtCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      position:relative;
+      overflow:hidden;
+    }
+    .mtCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(560px 140px at 10% 0%, rgba(29,78,216,.10), transparent 60%),
+        radial-gradient(560px 140px at 100% 0%, rgba(34,197,94,.10), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+    }
+    .mtCard h4{
+      position:relative;
+      margin:0;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.25;
+      margin-bottom: 10px;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 34px;
+    }
+    .mtMeta{
+      position:relative;
+      display:flex; gap:8px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size:12px;
+      margin-bottom:10px;
+    }
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .mtActions{position:relative; display:flex; gap:8px; flex-wrap:wrap}
+
+    /* ===== Pager ===== */
     .pager{
       margin-top: 12px;
       display:flex;
@@ -511,38 +446,6 @@
     }
     .pager .info{font-size:12px;color:var(--muted)}
 
-    /* Model tests */
-    .mtGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
-    .mtCard{
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.92);
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-    }
-    .mtCard h4{
-      margin:0;
-      font-size:13px;
-      font-weight:1000;
-      line-height:1.25;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-      min-height: 34px;
-    }
-    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
-    .mtMeta span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.78);
-      border-radius: 999px;
-      padding: 6px 10px;
-    }
-    .mtActions{margin-top: 10px; display:flex; gap:8px; flex-wrap:wrap}
-
-    /* Inline ad slots inside panel */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -556,15 +459,9 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
     .inlineAd .tag{
-      display:inline-block;
-      font-weight:1000;
-      color: var(--text);
-      padding: 6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      margin-bottom: 6px;
-      font-size:12px;
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
     .empty{
@@ -596,7 +493,53 @@
     }
     @keyframes sh{to{transform: translateX(100%)}}
 
-    /* ===== Footer (same as prosnobank.html) ===== */
+    /* ✅ Sticky bottom answer bar (always visible) */
+    .bottomBar{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;
+      z-index: 999;
+      padding: 10px 12px calc(10px + var(--safeBottom));
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(18,28,55,.10);
+      box-shadow: 0 -16px 40px rgba(15,23,48,.10);
+    }
+    .bottomInner{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .toggles{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
+    .toggle{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      height: 36px;
+      transition:.15s;
+    }
+    .toggle.active{
+      border-color: rgba(22,163,74,.22);
+      background: rgba(22,163,74,.10);
+    }
+    .hintSmall{font-size:12px;color:var(--muted);}
+
+    /* ===== Footer (same style) ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -626,17 +569,9 @@
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
-
     .footBrand{display:flex; flex-direction:column; gap:3px;}
     .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
     .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
-
-    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top: 10px;}
-    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
-    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
-    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
-    @media (max-width: 560px){ .socialRow{display:none;} }
-
     .copy{
       max-width: 1320px;
       margin:0 auto;
@@ -724,7 +659,8 @@
           <b>সকল Subject</b>
           <span class="muted" id="leftHint">Loading…</span>
         </div>
-        <div class="panelBody">
+
+        <div class="panelBody leftWrap">
           <div class="searchMini">
             <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
             <button class="btn" onclick="renderSubjectList()">Search</button>
@@ -734,8 +670,6 @@
 
           <div id="sList" class="sList" aria-live="polite"></div>
           <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
-
-          <div class="divider"></div>
 
           <div class="inlineAd">
             <div>
@@ -754,27 +688,21 @@
             <div class="muted" id="rightHint" style="margin-top:2px;">Left থেকে Subject select করুন</div>
           </div>
 
-          <div class="tabs">
-            <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
-            <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
-            <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
+          <div class="searchMini" style="max-width:420px; width:100%">
+            <input id="qSearch" placeholder="Search question…" oninput="resetAndReload(true)" />
+            <button class="btn" onclick="resetAndReload(true)">Search</button>
           </div>
         </div>
 
         <div class="panelBody">
-          <div class="toggleRow">
-            <div class="toggleGroup" id="ansGroup">
-              <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
-              <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
-            </div>
-
-            <div class="searchMini" style="max-width:420px; width:100%">
-              <input id="qSearch" placeholder="Search question…" oninput="resetAndReload(true)" />
-              <button class="btn" onclick="resetAndReload(true)">Search</button>
+          <!-- ✅ Tabs below ads, sticky -->
+          <div class="stickyTabs" aria-label="Tabs">
+            <div class="tabs">
+              <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+              <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+              <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
             </div>
           </div>
-
-          <div class="divider"></div>
 
           <div class="inlineAd" style="margin-bottom:12px;">
             <div>
@@ -794,22 +722,23 @@
             </div>
           </div>
 
-          <div class="divider"></div>
-
-          <div class="inlineAd">
-            <div>
-              <div class="tag">Ad Slot</div>
-              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
-            </div>
-          </div>
-
           <div style="margin-top:10px; font-size:12px; color:var(--muted);">
-            ✅ প্রতি পেজে সর্বোচ্চ <b>৩০</b>টি আইটেম দেখানো হয়।<br/>
-            ✅ Ans Hide ON হলে MCQ অপশন সিলেক্ট করলে Correct/Wrong দেখাবে।
+            ✅ প্রতি পেজে সর্বোচ্চ <b>৩০</b>টি আইটেম দেখানো হয়।
           </div>
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- ✅ Bottom sticky answer controls -->
+  <div class="bottomBar" id="bottomBar">
+    <div class="bottomInner">
+      <div class="toggles" id="ansGroup">
+        <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+        <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+      </div>
+      <div class="hintSmall" id="bottomHint">Ans Hide ON — MCQ তে অপশন সিলেক্ট করলে রেজাল্ট দেখাবে</div>
+    </div>
   </div>
 
   <footer>
@@ -837,25 +766,13 @@
         <a href="#">Help</a>
       </div>
 
-      <div class="footFollow">
+      <div>
         <b>Follow</b>
-        <div class="socialRow" aria-label="Social media">
-          <a href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-          </a>
-          <a href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-          </a>
-          <a href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
-          </a>
-          <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-          </a>
+        <div style="font-size:12px;color:rgba(255,255,255,.78);padding-top:8px;">
+          Social links পরে বসাবেন ✅
         </div>
       </div>
     </div>
-
     <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
   </footer>
 
@@ -863,7 +780,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    // ========= Firebase =========
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -874,7 +790,6 @@
       measurementId: "G-T2G55NMDQT"
     };
 
-    // Collections (match your admin)
     const COL_SUBJECTS = "subjects";
     const COL_SUBJECT_QUESTIONS = "subject_questions";
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
@@ -883,33 +798,17 @@
     const db = firebase.firestore();
     const $ = (id)=>document.getElementById(id);
 
-    // ========= Menu =========
-    function openMenu(){
-      $("mobileMenu").style.display = "block";
-      $("menuBtn").setAttribute("aria-expanded", "true");
-    }
-    function closeMenu(){
-      $("mobileMenu").style.display = "none";
-      $("menuBtn").setAttribute("aria-expanded", "false");
-    }
-    function toggleMenu(){
-      const menu = $("mobileMenu");
-      if(menu.style.display === "block") closeMenu();
-      else openMenu();
-    }
-    window.openMenu = openMenu;
-    window.closeMenu = closeMenu;
-    window.toggleMenu = toggleMenu;
+    function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+    function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+    function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+    window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
+    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenu(); });
-
-    // ========= Helpers =========
     $("year").textContent = new Date().getFullYear();
 
     function esc(str){
       return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
-
     function normalize(s){
       return String(s||"").toLowerCase()
         .replace(/[^\p{L}\p{N}\s]+/gu, " ")
@@ -917,38 +816,21 @@
         .trim();
     }
 
-    // robust: get options from options[] OR option1..option4
     function getOptions(doc){
       if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
-      const arr = [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
-      return arr;
+      return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
     }
 
-    // robust: determine correct index from correctIndex OR rightAns
-    // rightAns may be "A"/"B"/"C"/"D" OR option text OR index string
     function getCorrectIndex(doc, opts){
       if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
-      if(typeof doc.correctIndex === "string" && doc.correctIndex.trim() !== ""){
-        const n = Number(doc.correctIndex);
-        if(!Number.isNaN(n) && n >= 0 && n <= 3) return n;
-      }
-
       const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
       if(!ra) return -1;
-
       const map = { a:0, b:1, c:2, d:3 };
       const low = ra.toLowerCase();
       if(map[low] !== undefined) return map[low];
-
-      // match exact option text (normalized)
       const nra = normalize(ra);
-      if(!nra) return -1;
       for(let i=0;i<opts.length;i++){
         if(normalize(opts[i]) === nra) return i;
-      }
-      // contain match
-      for(let i=0;i<opts.length;i++){
-        if(normalize(opts[i]).includes(nra) || nra.includes(normalize(opts[i]))) return i;
       }
       return -1;
     }
@@ -964,17 +846,17 @@
       }
     }
 
-    // ========= State =========
+    // ===== State =====
     let SUBJECTS = [];
     let selectedSubjectId = "";
     let selectedSubjectName = "";
 
-    let mode = "mcq";       // mcq | written | model
-    let ansMode = "hide";   // hide | show
+    let mode = "mcq";
+    let ansMode = "hide";
 
     const PAGE_SIZE = 30;
     let pageIndex = 1;
-    let cursors = [null];       // cursor per page
+    let cursors = [null];
     let lastDocThisPage = null;
     let hasNext = false;
 
@@ -982,16 +864,14 @@
     let unsubPage = null;
 
     let currentItems = [];
-    let selectedOptionMap = new Map(); // questionId -> chosen index (MCQ hide)
+    let selectedOptionMap = new Map();
 
-    // ========= URL param =========
     function getParam(name){
       const u = new URL(location.href);
       return u.searchParams.get(name) || "";
     }
     selectedSubjectId = getParam("subjectId");
 
-    // ========= Left subject list =========
     function renderSubjectList(){
       const q = normalize($("sSearch").value || "");
       const list = $("sList");
@@ -1035,25 +915,28 @@
       selectedSubjectName = found?.name || "";
       $("rightTitle").textContent = selectedSubjectName || "Details";
       $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-      $("rightHint").textContent = "Loading…";
+      $("tickerText").textContent = selectedSubjectName
+        ? `${selectedSubjectName} • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে`
+        : "Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন";
 
       renderSubjectList();
       resetAndReload(false);
     }
 
-    // ========= Tabs / Answer mode =========
     function setMode(m){
       mode = m;
-
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
 
-      // show/hide ans toggles
+      // bottom bar visibility
       const showAns = (mode === "mcq" || mode === "written");
       $("ansGroup").style.display = showAns ? "flex" : "none";
-      $("ansHideBtn").style.display = showAns ? "inline-flex" : "none";
-      $("ansShowBtn").style.display = showAns ? "inline-flex" : "none";
+      $("bottomBar").style.display = showAns ? "block" : "none";
+
+      $("bottomHint").textContent = (mode==="mcq")
+        ? "Ans Hide ON — MCQ তে অপশন সিলেক্ট করলে রেজাল্ট দেখাবে"
+        : "Ans Hide ON — Written answer দেখতে Ans Show করুন";
 
       resetAndReload(false);
     }
@@ -1063,11 +946,10 @@
       ansMode = m;
       $("ansHideBtn").classList.toggle("active", ansMode==="hide");
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
-      renderContent(); // re-render current page
+      renderContent();
     }
     window.setAnsMode = setAnsMode;
 
-    // ========= Pagination =========
     function resetPaging(){
       pageIndex = 1;
       cursors = [null];
@@ -1076,14 +958,12 @@
       currentItems = [];
       selectedOptionMap.clear();
     }
-
     function updatePager(){
       $("pager").style.display = "flex";
       $("pageInfo").textContent = `Page ${pageIndex} • Showing ${currentItems.length} (max ${PAGE_SIZE})`;
       $("prevBtn").disabled = pageIndex <= 1;
       $("nextBtn").disabled = !hasNext;
     }
-
     function prevPage(){
       if(pageIndex <= 1) return;
       pageIndex -= 1;
@@ -1092,9 +972,7 @@
     }
     function nextPage(){
       if(!hasNext) return;
-      if(lastDocThisPage){
-        cursors[pageIndex] = lastDocThisPage; // cursor for next page
-      }
+      if(lastDocThisPage) cursors[pageIndex] = lastDocThisPage;
       pageIndex += 1;
       selectedOptionMap.clear();
       loadPage();
@@ -1102,10 +980,7 @@
     window.prevPage = prevPage;
     window.nextPage = nextPage;
 
-    // ========= Firestore query =========
-    function detachPage(){
-      if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; }
-    }
+    function detachPage(){ if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; } }
 
     function resetAndReload(keepPage){
       if(!selectedSubjectId){
@@ -1129,18 +1004,15 @@
           .where("subjectId","==", selectedSubjectId)
           .orderBy("createdAt","desc")
           .limit(PAGE_SIZE + 1);
-
         if(cursor) q = q.startAfter(cursor);
         return { q, searchText, kind:"model" };
       }
 
-      // mcq / written
       let q = db.collection(COL_SUBJECT_QUESTIONS)
         .where("subjectId","==", selectedSubjectId)
         .where("type","==", mode)
         .orderBy("createdAt","desc")
         .limit(PAGE_SIZE + 1);
-
       if(cursor) q = q.startAfter(cursor);
       return { q, searchText, kind:"q" };
     }
@@ -1152,7 +1024,6 @@
       $("pager").style.display = "none";
 
       if(!selectedSubjectId) return;
-
       const built = buildQuery();
 
       unsubPage = built.q.onSnapshot((snap)=>{
@@ -1164,7 +1035,6 @@
 
         currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
 
-        // client-side search
         if(built.searchText){
           if(built.kind === "model"){
             currentItems = currentItems.filter(it => normalize(it.title || it.name || "").includes(built.searchText));
@@ -1173,30 +1043,24 @@
           }
         }
 
-        // hints
-        if(mode === "mcq") $("rightHint").textContent = `${selectedSubjectName || "Subject"} • MCQ • Page ${pageIndex}`;
-        else if(mode === "written") $("rightHint").textContent = `${selectedSubjectName || "Subject"} • Written • Page ${pageIndex}`;
-        else $("rightHint").textContent = `${selectedSubjectName || "Subject"} • Model Tests • Page ${pageIndex}`;
+        $("rightHint").textContent =
+          (mode==="mcq") ? `${selectedSubjectName || "Subject"} • MCQ • Page ${pageIndex}` :
+          (mode==="written") ? `${selectedSubjectName || "Subject"} • Written • Page ${pageIndex}` :
+          `${selectedSubjectName || "Subject"} • Model Tests • Page ${pageIndex}`;
 
         renderContent();
-        if(currentItems.length){
-          updatePager();
-        }else{
-          $("pager").style.display = "none";
-        }
+        if(currentItems.length) updatePager();
+        else $("pager").style.display = "none";
+
       }, (err)=>{
         console.error(err);
-
-        // Common fix: createdAt missing or index not created
         $("content").innerHTML = "";
         $("pager").style.display = "none";
         $("emptyRight").style.display = "block";
-        $("emptyRight").textContent =
-          "ডাটা লোড হচ্ছে না। সম্ভবত Firestore index/createdAt field সমস্যা। (Admin এ createdAt সেট করুন, এবং Firestore composite index তৈরি করুন)।";
+        $("emptyRight").textContent = "ডাটা লোড হচ্ছে না। Firestore Index/createdAt check করুন।";
       });
     }
 
-    // ========= Render content =========
     function renderContent(){
       const wrap = $("content");
       wrap.innerHTML = "";
@@ -1212,7 +1076,6 @@
           const title = mt.title ?? mt.name ?? "Subject Model Test";
           const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
           const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
-
           const counts = mt.counts || {};
           const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
@@ -1221,9 +1084,9 @@
           card.innerHTML = `
             <h4 title="${esc(title)}">${esc(title)}</h4>
             <div class="mtMeta">
-              <span>Time: ${esc(time)}</span>
-              <span>Mark: ${esc(marks)}</span>
-              <span>Q: ${esc(qCount)}</span>
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
             </div>
             <div class="mtActions">
               <button class="btn primary" onclick="startModelTest('${mt.id}')">Start Test</button>
@@ -1237,6 +1100,9 @@
         return;
       }
 
+      const paper = document.createElement("div");
+      paper.className = "paper";
+
       const list = document.createElement("div");
       list.className = "qList";
 
@@ -1244,23 +1110,20 @@
 
       currentItems.forEach((it, idx)=>{
         const qno = ((pageIndex - 1) * PAGE_SIZE) + (idx + 1);
-
         const card = document.createElement("div");
         card.className = "qCard";
 
-        const head = document.createElement("div");
-        head.className = "qHead";
-        head.innerHTML = `
-          <span class="qNo">#${qno}</span>
-          <p class="qText">${esc(it.question || "")}</p>
+        card.innerHTML = `
+          <div class="qHead">
+            <span class="qNo">Q${qno}</span>
+            <p class="qText">${esc(it.question || "")}</p>
+          </div>
         `;
-        card.appendChild(head);
 
         if(mode === "mcq"){
           const opts = getOptions(it);
           const correctIndex = getCorrectIndex(it, opts);
-
-          const chosen = selectedOptionMap.get(it.id); // may be undefined
+          const chosen = selectedOptionMap.get(it.id);
 
           const optWrap = document.createElement("div");
           optWrap.className = "opts";
@@ -1277,13 +1140,11 @@
               if(oi === correctIndex) opt.classList.add("correct");
               opt.style.cursor = "default";
             }else{
-              // Ans hide: allow choose once
               opt.onclick = ()=>{
                 if(selectedOptionMap.has(it.id)) return;
                 selectedOptionMap.set(it.id, oi);
                 renderContent();
               };
-
               if(chosen !== undefined){
                 if(oi === correctIndex) opt.classList.add("correct");
                 if(oi === chosen && chosen !== correctIndex) opt.classList.add("wrong");
@@ -1296,7 +1157,6 @@
 
           card.appendChild(optWrap);
 
-          // Answer info
           const note = (it.note ?? it.explain ?? "").toString().trim();
           if(ansMode === "show"){
             const box = document.createElement("div");
@@ -1344,7 +1204,6 @@
 
         list.appendChild(card);
 
-        // inline ad after every 10 items (optional)
         if((idx+1) % 10 === 0 && idx < currentItems.length - 1){
           const ad = document.createElement("div");
           ad.className = "inlineAd";
@@ -1353,27 +1212,25 @@
         }
       });
 
-      wrap.appendChild(list);
+      paper.appendChild(list);
+      wrap.appendChild(paper);
     }
 
-    // ========= Model test redirects =========
     function startModelTest(modelTestId){
       location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
     }
     function openModelResult(modelTestId){
       location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
     }
-    window.startModelTest = startModelTest;
-    window.openModelResult = openModelResult;
+    window.startModelTest=startModelTest;
+    window.openModelResult=openModelResult;
 
-    // ========= Subjects realtime =========
     function attachSubjects(){
       if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
 
       unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
         SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
 
-        // auto select first subject if none in URL
         if(!selectedSubjectId && SUBJECTS.length){
           const first = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0];
           selectedSubjectId = first.id;
@@ -1384,14 +1241,10 @@
 
         $("rightTitle").textContent = selectedSubjectName || "Details";
         $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-        $("tickerText").textContent = selectedSubjectName
-          ? `${selectedSubjectName} • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে`
-          : "Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে";
 
         renderSubjectList();
 
         if(selectedSubjectId){
-          // update URL if missing
           const u = new URL(location.href);
           u.searchParams.set("subjectId", selectedSubjectId);
           history.replaceState({}, "", u.toString());
@@ -1405,9 +1258,9 @@
       });
     }
 
-    // ========= Boot =========
+    // Boot
     setAnsMode("hide");
-    setMode("mcq"); // keeps UI in sync
+    setMode("mcq");
     renderSkeleton("content", 3);
     attachSubjects();
   </script>
