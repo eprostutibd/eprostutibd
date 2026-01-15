@@ -31,9 +31,11 @@
       --footerB:#071635;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
+      --headerH: 64px; /* approx */
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
@@ -52,12 +54,12 @@
       padding-left: clamp(12px, 4vw, 48px);
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 10px;
-      padding-bottom: calc(88px + var(--safeBottom)); /* ✅ bottom sticky bar space */
+      padding-bottom: calc(94px + var(--safeBottom)); /* ✅ bottom sticky controls space */
     }
 
-    /* ===== Header (same style) ===== */
+    /* ===== Header ===== */
     header{
-      position:sticky; top:0; z-index:50;
+      position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
       border-bottom: 1px solid rgba(255,255,255,.22);
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
@@ -77,9 +79,7 @@
     .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
     .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
 
-    .nav{
-      display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling: touch;scrollbar-width:none;padding-bottom:2px;flex:1;
-    }
+    .nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
     .nav::-webkit-scrollbar{display:none}
     .nav a{
       flex:0 0 auto;text-decoration:none;color:#fff;font-size:12px;font-weight:1000;
@@ -101,52 +101,96 @@
     }
 
     /* ===== Mobile Menu ===== */
-    .mobileMenu{display:none;position: fixed;inset: 0;z-index: 9999;}
-    .mobileMenu .overlay{position:absolute;inset:0;background: transparent;}
+    .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
+    .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
     .mobileMenu .drawer{
-      position:absolute;top: 64px;right: 12px;width: min(320px, calc(100vw - 24px));
-      border-radius: 16px;padding: 10px;border: 1px solid rgba(255,255,255,.28);
-      background: rgba(8, 20, 55, .78);backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);
+      position:absolute;top:64px;right:12px;width:min(320px, calc(100vw - 24px));
+      border-radius:16px;padding:10px;border:1px solid rgba(255,255,255,.28);
+      background: rgba(8, 20, 55, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 18px 38px rgba(0,0,0,.35);
     }
     .mobileMenu a{
-      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;padding: 12px 12px;border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);background: rgba(255,255,255,.06);margin-bottom: 8px;white-space:nowrap;
+      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
+      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);margin-bottom:8px;
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
-    /* ===== Notice + Header Ad ===== */
+    /* ===== Notice + Ad ===== */
     .noticeBar{
-      margin-top: 10px;border: 1px solid var(--line);background: rgba(255,255,255,.72);
-      border-radius: 16px;overflow:hidden;box-shadow: var(--shadow2);
+      margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
+      border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
     }
-    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
+    .noticeRow{display:flex;align-items:center;gap:10px;padding:10px 12px;}
     .noticeTag{
-      flex:0 0 auto;font-size:12px;font-weight:1000;padding: 6px 10px;border-radius: 999px;
-      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);color: var(--text);white-space:nowrap;
+      font-size:12px;font-weight:1000;padding:6px 10px;border-radius:999px;
+      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);white-space:nowrap;
     }
     .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
-    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
+    .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
     .adBox{
-      margin-top: 10px;border: 1px dashed rgba(18,28,55,.22);border-radius: 16px;
+      margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
       background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
     }
     .adHead{
-      padding: 10px 12px;border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color: var(--muted);
+      padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{min-height: 100px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+    .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Main layout ===== */
+    /* ✅ Tabs floating under header (always visible) */
+    .tabsDock{
+      position: sticky;
+      top: 0;
+      z-index: 55;
+      background: rgba(246,248,255,.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(18,28,55,.08);
+      padding: 10px 0;
+      margin-top: 10px;
+      border-radius: 16px;
+      box-shadow: 0 14px 34px rgba(15,23,48,.08);
+    }
+    .tabsDockInner{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tab{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.90);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      height: 36px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .tab.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
+
+    /* ===== Layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 330px 1fr;
       gap: 10px;
       align-items:start;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
 
@@ -158,13 +202,16 @@
       overflow:hidden;
     }
     .panelHead{
-      padding: 12px 14px;border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
     .panelHead b{font-size:14px}
     .panelHead .muted{font-size:12px;color:var(--muted)}
     .panelBody{padding: 12px 14px}
-
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
     .btn{
@@ -183,7 +230,7 @@
     }
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
 
-    .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
+    .searchMini{display:flex;gap:8px;align-items:center;}
     .searchMini input{
       width: 100%;
       border:1px solid rgba(18,28,55,.12);
@@ -196,11 +243,11 @@
       font-size: 13px;
     }
 
-    /* ✅ Subject List better + scrollable section */
+    /* ✅ Subject list scroll fixed */
     .leftWrap{
       position: sticky;
-      top: 72px;
-      height: calc(100vh - 92px);
+      top: 130px; /* under tabsDock */
+      height: calc(100vh - 170px);
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -210,13 +257,17 @@
     }
 
     .sList{
-      display:flex;flex-direction:column;gap:10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 4px;
       flex:1;
-      min-height: 220px;
+      min-height: 240px;
+      max-height: 100%;
     }
+
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
@@ -243,9 +294,7 @@
       font-weight:1000;
       line-height:1.2;
       margin-bottom:8px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
     .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .chip{
@@ -261,43 +310,7 @@
       border-color: rgba(29,78,216,.22);
     }
 
-    /* ✅ Tabs below Ads + sticky while scroll */
-    .stickyTabs{
-      position: sticky;
-      top: 0;
-      z-index: 12;
-      background: rgba(246,248,255,.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(18,28,55,.08);
-      padding: 10px 0 8px;
-      margin: -6px 0 10px;
-    }
-    .tabs{
-      display:flex;
-      gap:8px;
-      justify-content:flex-start;
-      flex-wrap:wrap;
-    }
-    .tab{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.15s;
-      height: 36px;
-    }
-    .tab.active{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.10);
-    }
-
-    /* ✅ Question paper style */
+    /* ✅ Question paper look */
     .paper{
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(18,28,55,.10);
@@ -305,14 +318,14 @@
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
       padding: 12px;
     }
-    .qList{display:flex; flex-direction:column; gap:10px;}
+    .qList{display:flex;flex-direction:column;gap:10px;}
     .qCard{
       border: 1px dashed rgba(18,28,55,.18);
       background: rgba(255,255,255,.94);
       border-radius: 14px;
       padding: 10px 10px;
     }
-    .qHead{display:flex; gap:10px; align-items:flex-start; justify-content:space-between}
+    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
     .qNo{
       flex:0 0 auto;
       font-size:11px;
@@ -325,15 +338,14 @@
       white-space:nowrap;
     }
     .qText{
-      margin:0;
-      font-weight:700;
-      font-size:12.5px;       /* ✅ small paper font */
+      margin:0;font-weight:700;
+      font-size:12.5px;
       line-height:1.55;
       flex:1;
-      letter-spacing: .1px;
+      letter-spacing:.1px;
     }
 
-    .opts{margin-top: 8px; display:grid; grid-template-columns: 1fr 1fr; gap:8px;}
+    .opts{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     @media (max-width: 560px){ .opts{grid-template-columns:1fr;} }
 
     .opt{
@@ -346,24 +358,25 @@
       gap:8px;
       align-items:flex-start;
       transition:.12s;
+      user-select:none;
     }
-    .opt:hover{transform: translateY(-1px)}
     .badge{
-      width: 22px; height: 22px;
-      border-radius: 999px;
+      width: 22px;height:22px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
-      display:grid; place-items:center;
-      font-weight:1000;
-      color: var(--muted);
+      display:grid;place-items:center;
+      font-weight:1000;color: var(--muted);
       background: rgba(255,255,255,.95);
       flex:0 0 auto;
       font-size:11px;
     }
-    .opt .txt{flex:1; font-size:12px; line-height:1.55; color: var(--text)}
+    .opt .txt{flex:1;font-size:12px;line-height:1.55;color: var(--text)}
+
+    /* ✅ Answer marking rules */
     .opt.correct{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.10);}
     .opt.wrong{border-color: rgba(220,38,38,.28); background: rgba(220,38,38,.10);}
+    .opt.locked{cursor:default;opacity:1}
 
-    .ansBox{
+    .noteBox{
       margin-top: 8px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
@@ -373,85 +386,43 @@
       font-size:11.5px;
       line-height:1.6;
     }
-    .ansBox b{color: var(--text)}
-    .ansHidden{
-      margin-top: 8px;
-      border: 1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.70);
-      border-radius: 12px;
-      padding: 8px 10px;
-      color: var(--muted);
-      font-size:11.5px;
-    }
+    .noteBox b{color: var(--text)}
 
-    /* ===== Model test new design ===== */
-    .mtGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+    /* ✅ Model test design */
+    .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap:10px;}
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
-
     .mtCard{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.94);
       border-radius: 18px;
       padding: 12px;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      position:relative;
-      overflow:hidden;
+      position:relative;overflow:hidden;
     }
     .mtCard::before{
-      content:"";
-      position:absolute; inset:-2px;
+      content:"";position:absolute;inset:-2px;
       background:
         radial-gradient(560px 140px at 10% 0%, rgba(29,78,216,.10), transparent 60%),
         radial-gradient(560px 140px at 100% 0%, rgba(34,197,94,.10), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
+      opacity:.85;pointer-events:none;
     }
     .mtCard h4{
-      position:relative;
-      margin:0;
-      font-size:13px;
-      font-weight:1000;
-      line-height:1.25;
-      margin-bottom: 10px;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-      min-height: 34px;
-    }
-    .mtMeta{
-      position:relative;
-      display:flex; gap:8px; flex-wrap:wrap;
-      color: var(--muted);
-      font-size:12px;
+      position:relative;margin:0;
+      font-size:13px;font-weight:1000;line-height:1.25;
       margin-bottom:10px;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height:34px;
     }
-    .mtMeta span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.80);
-      border-radius: 999px;
-      padding: 6px 10px;
-    }
-    .mtActions{position:relative; display:flex; gap:8px; flex-wrap:wrap}
-
-    /* ===== Pager ===== */
-    .pager{
-      margin-top: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .pager .info{font-size:12px;color:var(--muted)}
+    .mtMeta{position:relative;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;margin-bottom:10px;}
+    .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
+    .mtActions{position:relative;display:flex;gap:8px;flex-wrap:wrap}
 
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
       border-radius: 18px;
       padding: 12px;
-      min-height: 90px;
+      min-height: 86px;
       display:grid;
       place-items:center;
       text-align:center;
@@ -475,25 +446,7 @@
       font-size:12px;
     }
 
-    .skeleton{
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.78);
-      border-radius: 18px;
-      padding: 12px;
-      min-height: 100px;
-      position: relative;
-      overflow:hidden;
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
-    }
-    .shimmer{
-      position:absolute; inset:0;
-      background: linear-gradient(110deg, transparent 0%, rgba(0,0,0,.04) 20%, transparent 40%);
-      transform: translateX(-100%);
-      animation: sh 1.15s infinite;
-    }
-    @keyframes sh{to{transform: translateX(100%)}}
-
-    /* ✅ Sticky bottom answer bar (always visible) */
+    /* ✅ Bottom floating ans controls */
     .bottomBar{
       position: fixed;
       left: 0; right: 0;
@@ -514,32 +467,25 @@
       display:flex;
       gap:10px;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-start;
       flex-wrap:wrap;
-    }
-    .toggles{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
     }
     .toggle{
       border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.86);
+      background: rgba(255,255,255,.90);
       color: var(--text);
       border-radius: 999px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
       height: 36px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .toggle.active{
-      border-color: rgba(22,163,74,.22);
-      background: rgba(22,163,74,.10);
-    }
-    .hintSmall{font-size:12px;color:var(--muted);}
+    .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
 
-    /* ===== Footer (same style) ===== */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -569,9 +515,31 @@
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
-    .footBrand{display:flex; flex-direction:column; gap:3px;}
+    .footBrand{display:flex;flex-direction:column;gap:3px;}
     .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
     .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+
+    .socialRow{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:nowrap;
+      margin-top: 10px;
+    }
+    .socialRow a{
+      display:inline-grid;
+      place-items:center;
+      text-decoration:none;
+      opacity:.92;
+      transition: opacity .15s, transform .15s;
+    }
+    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
+    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
+
+    @media (max-width: 560px){
+      .socialRow{display:flex;} /* ✅ mobile show */
+    }
+
     .copy{
       max-width: 1320px;
       margin:0 auto;
@@ -634,7 +602,7 @@
       <div class="noticeRow">
         <span class="noticeTag">Details</span>
         <div class="marq">
-          <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে</span>
+          <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন</span>
         </div>
       </div>
     </div>
@@ -651,7 +619,18 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- ✅ Tabs under header (floating) -->
+  <div class="tabsDock" aria-label="Tabs">
+    <div class="tabsDockInner">
+      <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+      <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+      <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:10px;">
     <main class="grid">
       <!-- LEFT: Subject List -->
       <aside class="panel">
@@ -670,13 +649,6 @@
 
           <div id="sList" class="sList" aria-live="polite"></div>
           <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
-
-          <div class="inlineAd">
-            <div>
-              <div class="tag">Ad Slot</div>
-              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
-            </div>
-          </div>
         </div>
       </aside>
 
@@ -695,15 +667,6 @@
         </div>
 
         <div class="panelBody">
-          <!-- ✅ Tabs below ads, sticky -->
-          <div class="stickyTabs" aria-label="Tabs">
-            <div class="tabs">
-              <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
-              <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
-              <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
-            </div>
-          </div>
-
           <div class="inlineAd" style="margin-bottom:12px;">
             <div>
               <div class="tag">Ad Slot</div>
@@ -713,31 +676,16 @@
 
           <div id="content"></div>
           <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
-
-          <div class="pager" id="pager" style="display:none">
-            <div class="info" id="pageInfo">Page 1</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
-              <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
-            </div>
-          </div>
-
-          <div style="margin-top:10px; font-size:12px; color:var(--muted);">
-            ✅ প্রতি পেজে সর্বোচ্চ <b>৩০</b>টি আইটেম দেখানো হয়।
-          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- ✅ Bottom sticky answer controls -->
+  <!-- ✅ Bottom sticky ans controls (no extra texts) -->
   <div class="bottomBar" id="bottomBar">
-    <div class="bottomInner">
-      <div class="toggles" id="ansGroup">
-        <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
-        <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
-      </div>
-      <div class="hintSmall" id="bottomHint">Ans Hide ON — MCQ তে অপশন সিলেক্ট করলে রেজাল্ট দেখাবে</div>
+    <div class="bottomInner" id="ansControls">
+      <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+      <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
     </div>
   </div>
 
@@ -766,13 +714,25 @@
         <a href="#">Help</a>
       </div>
 
-      <div>
+      <div class="footFollow">
         <b>Follow</b>
-        <div style="font-size:12px;color:rgba(255,255,255,.78);padding-top:8px;">
-          Social links পরে বসাবেন ✅
+        <div class="socialRow" aria-label="Social media">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          </a>
+          <a href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+          </a>
         </div>
       </div>
     </div>
+
     <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
   </footer>
 
@@ -835,17 +795,6 @@
       return -1;
     }
 
-    function renderSkeleton(targetId, count=3){
-      const wrap = $(targetId);
-      wrap.innerHTML = "";
-      for(let i=0;i<count;i++){
-        const d = document.createElement("div");
-        d.className = "skeleton";
-        d.innerHTML = `<div class="shimmer"></div>`;
-        wrap.appendChild(d);
-      }
-    }
-
     // ===== State =====
     let SUBJECTS = [];
     let selectedSubjectId = "";
@@ -854,14 +803,16 @@
     let mode = "mcq";
     let ansMode = "hide";
 
-    const PAGE_SIZE = 30;
-    let pageIndex = 1;
-    let cursors = [null];
-    let lastDocThisPage = null;
-    let hasNext = false;
+    // counts
+    const mtCountMap = new Map();
+    const mtUnsubMap = new Map();
 
     let unsubSubjects = null;
-    let unsubPage = null;
+    let unsubRight = null;
+
+    const PAGE_SIZE = 30;
+    let lastDoc = null;
+    let hasMore = false;
 
     let currentItems = [];
     let selectedOptionMap = new Map();
@@ -872,6 +823,27 @@
     }
     selectedSubjectId = getParam("subjectId");
 
+    function syncModelTestListeners(){
+      const alive = new Set(SUBJECTS.map(s=>s.id));
+      for(const [sid, unsub] of mtUnsubMap.entries()){
+        if(!alive.has(sid)){
+          try{unsub();}catch(e){}
+          mtUnsubMap.delete(sid);
+          mtCountMap.delete(sid);
+        }
+      }
+      SUBJECTS.forEach(s=>{
+        if(mtUnsubMap.has(s.id)) return;
+        const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+          .where("subjectId","==", s.id)
+          .onSnapshot((snap)=>{
+            mtCountMap.set(s.id, snap.size || 0);
+            renderSubjectList();
+          });
+        mtUnsubMap.set(s.id, unsub);
+      });
+    }
+
     function renderSubjectList(){
       const q = normalize($("sSearch").value || "");
       const list = $("sList");
@@ -881,12 +853,13 @@
         .filter(s => !q ? true : normalize(s.name||"").includes(q))
         .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
 
-      $("leftHint").textContent = `Total: ${SUBJECTS.length} • Showing: ${filtered.length}`;
+      $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
       $("sEmpty").style.display = filtered.length ? "none" : "block";
 
       filtered.forEach(s=>{
         const mcq = s.counts?.mcq || 0;
         const written = s.counts?.written || 0;
+        const mt = mtCountMap.get(s.id) ?? 0;
 
         const el = document.createElement("div");
         el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
@@ -897,6 +870,7 @@
           <div class="chips">
             <span class="chip">MCQ <b>${mcq}</b></span>
             <span class="chip">Written <b>${written}</b></span>
+            <span class="chip">Model <b>${mt}</b></span>
           </div>
         `;
         list.appendChild(el);
@@ -915,12 +889,9 @@
       selectedSubjectName = found?.name || "";
       $("rightTitle").textContent = selectedSubjectName || "Details";
       $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-      $("tickerText").textContent = selectedSubjectName
-        ? `${selectedSubjectName} • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে`
-        : "Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন";
 
       renderSubjectList();
-      resetAndReload(false);
+      resetAndReload(true);
     }
 
     function setMode(m){
@@ -929,16 +900,10 @@
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
 
-      // bottom bar visibility
-      const showAns = (mode === "mcq" || mode === "written");
-      $("ansGroup").style.display = showAns ? "flex" : "none";
-      $("bottomBar").style.display = showAns ? "block" : "none";
+      // bottom ans bar show only for mcq/written
+      $("bottomBar").style.display = (mode==="model") ? "none" : "block";
 
-      $("bottomHint").textContent = (mode==="mcq")
-        ? "Ans Hide ON — MCQ তে অপশন সিলেক্ট করলে রেজাল্ট দেখাবে"
-        : "Ans Hide ON — Written answer দেখতে Ans Show করুন";
-
-      resetAndReload(false);
+      resetAndReload(true);
     }
     window.setMode = setMode;
 
@@ -950,61 +915,34 @@
     }
     window.setAnsMode = setAnsMode;
 
-    function resetPaging(){
-      pageIndex = 1;
-      cursors = [null];
-      lastDocThisPage = null;
-      hasNext = false;
-      currentItems = [];
-      selectedOptionMap.clear();
+    function detachRight(){
+      if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
     }
-    function updatePager(){
-      $("pager").style.display = "flex";
-      $("pageInfo").textContent = `Page ${pageIndex} • Showing ${currentItems.length} (max ${PAGE_SIZE})`;
-      $("prevBtn").disabled = pageIndex <= 1;
-      $("nextBtn").disabled = !hasNext;
-    }
-    function prevPage(){
-      if(pageIndex <= 1) return;
-      pageIndex -= 1;
-      selectedOptionMap.clear();
-      loadPage();
-    }
-    function nextPage(){
-      if(!hasNext) return;
-      if(lastDocThisPage) cursors[pageIndex] = lastDocThisPage;
-      pageIndex += 1;
-      selectedOptionMap.clear();
-      loadPage();
-    }
-    window.prevPage = prevPage;
-    window.nextPage = nextPage;
 
-    function detachPage(){ if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; } }
-
-    function resetAndReload(keepPage){
+    function resetAndReload(resetCursor){
       if(!selectedSubjectId){
         $("rightHint").textContent = "Left থেকে Subject select করুন";
         $("content").innerHTML = "";
         $("emptyRight").style.display = "block";
-        $("pager").style.display = "none";
         return;
       }
-      if(!keepPage) resetPaging();
-      loadPage();
+      if(resetCursor){
+        lastDoc = null;
+        hasMore = false;
+        selectedOptionMap.clear();
+      }
+      loadRight();
     }
     window.resetAndReload = resetAndReload;
 
-    function buildQuery(){
-      const cursor = cursors[pageIndex-1];
+    function buildRightQuery(){
       const searchText = normalize($("qSearch").value || "");
 
       if(mode === "model"){
         let q = db.collection(COL_SUBJECT_MODEL_TESTS)
           .where("subjectId","==", selectedSubjectId)
           .orderBy("createdAt","desc")
-          .limit(PAGE_SIZE + 1);
-        if(cursor) q = q.startAfter(cursor);
+          .limit(PAGE_SIZE);
         return { q, searchText, kind:"model" };
       }
 
@@ -1012,28 +950,19 @@
         .where("subjectId","==", selectedSubjectId)
         .where("type","==", mode)
         .orderBy("createdAt","desc")
-        .limit(PAGE_SIZE + 1);
-      if(cursor) q = q.startAfter(cursor);
+        .limit(PAGE_SIZE);
       return { q, searchText, kind:"q" };
     }
 
-    function loadPage(){
-      detachPage();
+    function loadRight(){
+      detachRight();
       $("emptyRight").style.display = "none";
-      renderSkeleton("content", 3);
-      $("pager").style.display = "none";
+      $("content").innerHTML = "";
 
-      if(!selectedSubjectId) return;
-      const built = buildQuery();
+      const built = buildRightQuery();
 
-      unsubPage = built.q.onSnapshot((snap)=>{
-        let docs = snap.docs;
-
-        hasNext = docs.length > PAGE_SIZE;
-        if(hasNext) docs = docs.slice(0, PAGE_SIZE);
-        lastDocThisPage = docs.length ? docs[docs.length-1] : null;
-
-        currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
+      unsubRight = built.q.onSnapshot((snap)=>{
+        currentItems = snap.docs.map(d=>({id:d.id, ...d.data()}));
 
         if(built.searchText){
           if(built.kind === "model"){
@@ -1044,27 +973,23 @@
         }
 
         $("rightHint").textContent =
-          (mode==="mcq") ? `${selectedSubjectName || "Subject"} • MCQ • Page ${pageIndex}` :
-          (mode==="written") ? `${selectedSubjectName || "Subject"} • Written • Page ${pageIndex}` :
-          `${selectedSubjectName || "Subject"} • Model Tests • Page ${pageIndex}`;
+          (mode==="mcq") ? `${selectedSubjectName || "Subject"} • MCQ` :
+          (mode==="written") ? `${selectedSubjectName || "Subject"} • Written` :
+          `${selectedSubjectName || "Subject"} • Model Tests`;
 
         renderContent();
-        if(currentItems.length) updatePager();
-        else $("pager").style.display = "none";
+        $("emptyRight").style.display = currentItems.length ? "none" : "block";
 
       }, (err)=>{
         console.error(err);
         $("content").innerHTML = "";
-        $("pager").style.display = "none";
         $("emptyRight").style.display = "block";
-        $("emptyRight").textContent = "ডাটা লোড হচ্ছে না। Firestore Index/createdAt check করুন।";
       });
     }
 
     function renderContent(){
       const wrap = $("content");
       wrap.innerHTML = "";
-      $("emptyRight").style.display = currentItems.length ? "none" : "block";
 
       if(!currentItems.length) return;
 
@@ -1089,8 +1014,8 @@
               <span>📌 Q: ${esc(qCount)}</span>
             </div>
             <div class="mtActions">
-              <button class="btn primary" onclick="startModelTest('${mt.id}')">Start Test</button>
-              <button class="btn" onclick="openModelResult('${mt.id}')">Result</button>
+              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start Test</button>
+              <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
             </div>
           `;
           grid.appendChild(card);
@@ -1109,10 +1034,10 @@
       const letters = ["A","B","C","D"];
 
       currentItems.forEach((it, idx)=>{
-        const qno = ((pageIndex - 1) * PAGE_SIZE) + (idx + 1);
+        const qno = idx + 1;
+
         const card = document.createElement("div");
         card.className = "qCard";
-
         card.innerHTML = `
           <div class="qHead">
             <span class="qNo">Q${qno}</span>
@@ -1120,35 +1045,36 @@
           </div>
         `;
 
+        const note = (it.note ?? it.explain ?? "").toString().trim();
+
         if(mode === "mcq"){
           const opts = getOptions(it);
           const correctIndex = getCorrectIndex(it, opts);
-          const chosen = selectedOptionMap.get(it.id);
 
+          const chosen = selectedOptionMap.get(it.id);
           const optWrap = document.createElement("div");
           optWrap.className = "opts";
 
           opts.slice(0,4).forEach((op, oi)=>{
             const opt = document.createElement("div");
             opt.className = "opt";
-            opt.innerHTML = `
-              <span class="badge">${letters[oi]}</span>
-              <div class="txt">${esc(op || "")}</div>
-            `;
+            opt.innerHTML = `<span class="badge">${letters[oi]}</span><div class="txt">${esc(op || "")}</div>`;
 
             if(ansMode === "show"){
+              // ✅ always show correct highlighted
               if(oi === correctIndex) opt.classList.add("correct");
-              opt.style.cursor = "default";
+              opt.classList.add("locked");
             }else{
-              opt.onclick = ()=>{
-                if(selectedOptionMap.has(it.id)) return;
-                selectedOptionMap.set(it.id, oi);
-                renderContent();
-              };
+              // ✅ hide correct, but when user selects, show result
               if(chosen !== undefined){
+                opt.classList.add("locked");
                 if(oi === correctIndex) opt.classList.add("correct");
                 if(oi === chosen && chosen !== correctIndex) opt.classList.add("wrong");
-                opt.style.cursor = "default";
+              }else{
+                opt.onclick = ()=>{
+                  selectedOptionMap.set(it.id, oi);
+                  renderContent();
+                };
               }
             }
 
@@ -1157,54 +1083,34 @@
 
           card.appendChild(optWrap);
 
-          const note = (it.note ?? it.explain ?? "").toString().trim();
-          if(ansMode === "show"){
-            const box = document.createElement("div");
-            box.className = "ansBox";
-            box.innerHTML = `<b>Correct:</b> ${correctIndex>=0 ? letters[correctIndex] : "N/A"}`
-              + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
-            card.appendChild(box);
-          }else{
-            if(selectedOptionMap.has(it.id)){
-              const chosenIdx = selectedOptionMap.get(it.id);
-              const ok = chosenIdx === correctIndex;
-              const box = document.createElement("div");
-              box.className = "ansBox";
-              box.innerHTML = ok
-                ? `✅ <b style="color:var(--ok)">Correct!</b>` + (note ? `<br/><b>Note:</b> ${esc(note)}` : "")
-                : `❌ <b style="color:var(--danger)">Wrong!</b> Correct: <b>${correctIndex>=0 ? letters[correctIndex] : "N/A"}</b>`
-                  + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
-              card.appendChild(box);
-            }else{
-              const hidden = document.createElement("div");
-              hidden.className = "ansHidden";
-              hidden.textContent = "Ans Hide ON — অপশন সিলেক্ট করলে রেজাল্ট দেখাবে।";
-              card.appendChild(hidden);
-            }
-          }
+          // ✅ note always visible
+          const nb = document.createElement("div");
+          nb.className = "noteBox";
+          nb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : `<b>Note:</b> -`;
+          card.appendChild(nb);
         }
 
         if(mode === "written"){
           const rightAns = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-          const note = (it.note ?? it.explain ?? "").toString().trim();
 
           if(ansMode === "show"){
-            const box = document.createElement("div");
-            box.className = "ansBox";
-            box.innerHTML = `<b>Answer:</b> ${esc(rightAns)}`
-              + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
-            card.appendChild(box);
+            const ans = document.createElement("div");
+            ans.className = "noteBox";
+            ans.innerHTML = `<b>Answer:</b> ${esc(rightAns || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
+            card.appendChild(ans);
           }else{
-            const hidden = document.createElement("div");
-            hidden.className = "ansHidden";
-            hidden.textContent = "Ans Hide ON — Answer দেখতে Ans Show করুন।";
-            card.appendChild(hidden);
+            // ✅ hide answer, show note only
+            const nb = document.createElement("div");
+            nb.className = "noteBox";
+            nb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : `<b>Note:</b> -`;
+            card.appendChild(nb);
           }
         }
 
         list.appendChild(card);
 
-        if((idx+1) % 10 === 0 && idx < currentItems.length - 1){
+        // optional inline ad after 10
+        if((idx+1)%10===0 && idx < currentItems.length-1){
           const ad = document.createElement("div");
           ad.className = "inlineAd";
           ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div></div>`;
@@ -1216,24 +1122,15 @@
       wrap.appendChild(paper);
     }
 
-    function startModelTest(modelTestId){
-      location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
-    }
-    function openModelResult(modelTestId){
-      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
-    }
-    window.startModelTest=startModelTest;
-    window.openModelResult=openModelResult;
-
     function attachSubjects(){
       if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
 
       unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
-        SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+        syncModelTestListeners();
 
         if(!selectedSubjectId && SUBJECTS.length){
-          const first = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0];
-          selectedSubjectId = first.id;
+          selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
         }
 
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
@@ -1248,11 +1145,11 @@
           const u = new URL(location.href);
           u.searchParams.set("subjectId", selectedSubjectId);
           history.replaceState({}, "", u.toString());
-          resetAndReload(false);
+          resetAndReload(true);
         }
       }, (err)=>{
         console.error(err);
-        $("leftHint").textContent = "Failed to load";
+        $("leftHint").textContent = "Failed";
         $("sList").innerHTML = "";
         $("sEmpty").style.display = "block";
       });
@@ -1261,7 +1158,6 @@
     // Boot
     setAnsMode("hide");
     setMode("mcq");
-    renderSkeleton("content", 3);
     attachSubjects();
   </script>
 </body>
