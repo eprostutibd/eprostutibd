@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>প্রশ্নব্যাংক • Details</title>
+
+  <style>
+    :root{
+      --bg:#070c18;
+      --panel: rgba(18,26,43,.88);
+      --panel2: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.10);
+      --muted:#a3b0c9;
+      --text:#eef3ff;
+      --accent:#6aa6ff;
+      --ok:#5ce3a4;
+      --danger:#ff6a6a;
+      --warn:#ffd36a;
+      --shadow: 0 14px 40px rgba(0,0,0,.42);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 15%, rgba(106,166,255,.20), transparent 55%),
+        radial-gradient(900px 650px at 85% 18%, rgba(92,227,164,.14), transparent 55%),
+        radial-gradient(900px 650px at 50% 100%, rgba(255,211,106,.10), transparent 60%),
+        var(--bg);
+    }
+
+    /* Header (same style as visitor) */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,12,24,.78);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 12px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(92,227,164,.88));
+      box-shadow: var(--shadow);
+      flex:0 0 auto;
+    }
+    .brand h1{
+      margin:0;
+      font-size:16px;
+      line-height: 1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 50vw;
+    }
+    .brand .sub{
+      margin-top:4px;
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 50vw;
+    }
+
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
+    .dot.ok{background:var(--ok)}
+
+    /* Nav (same) */
+    .navwrap{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 12px 12px;
+    }
+    .nav{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom: 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav a{
+      flex:0 0 auto;
+      text-decoration:none;
+      color: var(--text);
+      font-size:12px;
+      font-weight:800;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      transition:.15s;
+    }
+    .nav a:hover{border-color: rgba(255,255,255,.22)}
+    .nav a.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+
+    /* Page layout */
+    .app{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap: 14px;
+      padding: 14px 0;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .bd{padding: 14px}
+    .note{font-size:12px; color: var(--muted); line-height:1.6}
+    .divider{height:1px;background:var(--line); margin: 12px 0}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .row > *{flex:1}
+    input{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      outline: none;
+    }
+    input:focus{border-color: rgba(106,166,255,.55)}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      white-space:nowrap;
+      transition:.15s;
+    }
+    .btn:hover{border-color: rgba(255,255,255,.22)}
+    .btn.primary{border-color: rgba(106,166,255,.6); background: rgba(106,166,255,.16);}
+    .btn.ok{border-color: rgba(92,227,164,.6); background: rgba(92,227,164,.12);}
+    .btn.danger{border-color: rgba(255,106,106,.6); background: rgba(255,106,106,.12);}
+
+    /* Left subjects list */
+    .slist{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height: 68vh;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 4px;
+    }
+    @media (max-width: 980px){
+      .slist{max-height: 44vh}
+    }
+    .sitem{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      transition:.15s;
+    }
+    .sitem:hover{border-color: rgba(255,255,255,.22)}
+    .sitem.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+    .sitem b{display:block; font-size:14px; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(0,0,0,.08);
+    }
+
+    /* Top content tabs: MCQ/Written/Model Test */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 900;
+      transition:.15s;
+    }
+    .tab:hover{border-color: rgba(255,255,255,.22)}
+    .tab.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+
+    /* Answer toggle */
+    .togglebar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .togglegrp{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .toggle{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 900;
+      transition:.15s;
+      color: var(--text);
+    }
+    .toggle.active{
+      border-color: rgba(92,227,164,.55);
+      background: rgba(92,227,164,.12);
+    }
+
+    /* Question list + cards */
+    .qlist{display:flex; flex-direction:column; gap:12px;}
+    .qcard{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .qhead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .qno{
+      font-weight: 900;
+      color: var(--muted);
+      font-size: 12px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.08);
+    }
+    .qtext{
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 900;
+      flex: 1;
+    }
+
+    /* MCQ options */
+    .opts{margin-top: 10px; display:flex; flex-direction:column; gap:10px;}
+    .opt{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      transition:.15s;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .opt:hover{border-color: rgba(255,255,255,.22)}
+    .badge{
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      display:grid;
+      place-items:center;
+      color: var(--muted);
+      font-weight: 900;
+      flex: 0 0 auto;
+      background: rgba(255,255,255,.02);
+    }
+    .opt .txt{flex:1; font-size: 13px; color: var(--text); line-height:1.5}
+    .opt.correct{
+      border-color: rgba(92,227,164,.70);
+      background: rgba(92,227,164,.10);
+    }
+    .opt.wrong{
+      border-color: rgba(255,106,106,.70);
+      background: rgba(255,106,106,.10);
+    }
+
+    .ansBox{
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .ansBox b{color: var(--text)}
+    .ansHidden{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 10px;
+      border: 1px dashed rgba(255,255,255,.20);
+      background: rgba(255,255,255,.02);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    /* Pagination */
+    .pager{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .pager .info{color: var(--muted); font-size:12px}
+
+    /* Model tests */
+    .mtgrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 560px){ .mtgrid{grid-template-columns: 1fr;} }
+    .mtcard{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .mtcard h3{
+      margin:0 0 10px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .mtmeta{display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 10px}
+    .mtmeta .chip b{color: var(--text)}
+    .mtactions{display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Ads */
+    .ad{
+      border: 1px dashed rgba(255,255,255,.25);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255,255,255,.02);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .ad .label{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin-bottom: 8px;
+    }
+    .ad b{color: var(--text)}
+    .adbox{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.10);
+      min-height: 190px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding: 10px;
+    }
+
+    /* Footer (same style) */
+    footer{
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      background: rgba(7,12,24,.55);
+    }
+    .foot{
+      max-width:1180px;
+      margin:0 auto;
+      padding: 16px 12px;
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){ .foot{grid-template-columns:1fr} }
+    .foot a{color: var(--muted); text-decoration:none; font-size:12px; display:inline-block; padding: 4px 0}
+    .foot a:hover{color: var(--text)}
+    .copy{
+      max-width:1180px;
+      margin:0 auto;
+      padding: 0 12px 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .skeleton{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+      overflow:hidden;
+      position:relative;
+      min-height: 110px;
+    }
+    .shimmer{
+      position:absolute; inset:0;
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.05) 20%, transparent 40%);
+      transform: translateX(-100%);
+      animation: sh 1.15s infinite;
+    }
+    @keyframes sh{to{transform: translateX(100%)}}
+  </style>
+</head>
+
+<body>
+  <!-- Header (same as visitor) -->
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div style="min-width:0">
+          <h1>eProstutiBD • প্রশ্নব্যাংক</h1>
+          <div class="sub" id="subLine">Loading subject…</div>
+        </div>
+      </div>
+
+      <div class="pill">
+        <span id="connDot" class="dot"></span>
+        <span id="connText">Connecting…</span>
+      </div>
+    </div>
+
+    <div class="navwrap">
+      <nav class="nav">
+        <a href="#">একাডেমী</a>
+        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
+        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app">
+    <div class="grid">
+
+      <!-- LEFT: Subjects -->
+      <aside class="card">
+        <div class="hd">
+          <b>সকল সাবজেক্ট</b>
+          <span class="note" id="leftHint">Loading…</span>
+        </div>
+        <div class="bd">
+          <div class="row">
+            <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
+          </div>
+          <div class="divider"></div>
+
+          <div id="sList" class="slist"></div>
+          <div id="sEmpty" class="note" style="display:none">কোনো Subject পাওয়া যায়নি।</div>
+
+          <div class="divider"></div>
+
+          <div class="ad">
+            <div class="label">
+              <b>Ad Slot (Left)</b>
+              <span>Responsive</span>
+            </div>
+            <div class="adbox">
+              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Ad Placeholder</div>
+                <div class="note">Paste your ad code here</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: Content -->
+      <section class="card">
+        <div class="hd">
+          <div style="min-width:0">
+            <b id="title">Details</b>
+            <div class="note" id="rightHint">Select a subject</div>
+          </div>
+          <div class="tabs" style="justify-content:flex-end">
+            <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+            <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+            <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="togglebar">
+            <div class="togglegrp">
+              <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+              <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+            </div>
+
+            <div class="togglegrp" style="justify-content:flex-end">
+              <input id="qSearch" placeholder="Search question…" oninput="renderContent()" style="max-width:360px" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Top Ad inside content -->
+          <div class="ad" style="margin-bottom:12px">
+            <div class="label">
+              <b>Ad Slot (Top)</b>
+              <span>Responsive</span>
+            </div>
+            <div class="adbox" style="min-height:180px">
+              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
+                <div class="note">Paste your ad code here</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="content"></div>
+
+          <div class="pager" id="pager" style="display:none">
+            <div class="info" id="pageInfo">Page 1</div>
+            <div class="row" style="flex:0 0 auto; gap:10px">
+              <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
+              <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Bottom ad -->
+          <div class="ad">
+            <div class="label">
+              <b>Ad Slot (Bottom)</b>
+              <span>Responsive</span>
+            </div>
+            <div class="adbox" style="min-height:180px">
+              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
+              <div>
+                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Bottom Ad</div>
+                <div class="note">Paste your ad code here</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:10px">
+            ✅ প্রতি পেজে সর্বোচ্চ ৩০টি আইটেম দেখানো হয়।<br/>
+            ✅ Ans Hide মোডে MCQ তে অপশন ক্লিক করলে রেজাল্ট (Correct/Wrong) দেখাবে।
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer (same as visitor) -->
+  <footer>
+    <div class="foot">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+          <div class="logo" style="width:38px;height:38px;border-radius:14px;"></div>
+          <div>
+            <b>eProstutiBD</b>
+            <div class="note">Free learning platform</div>
+          </div>
+        </div>
+        <div class="note">
+          এই ওয়েবসাইট সম্পূর্ণ ফ্রি। কোনো প্রিমিয়াম নেই।  
+          আয়ের জন্য শুধু বিজ্ঞাপন ব্যবহার করা হবে।
+        </div>
+      </div>
+
+      <div>
+        <b>দরকারি পেজ</b><br/>
+        <a href="#">About</a><br/>
+        <a href="#">Privacy Policy</a><br/>
+        <a href="#">Terms</a><br/>
+        <a href="#">Contact</a><br/>
+      </div>
+
+      <div>
+        <b>অন্যান্য</b><br/>
+        <a href="#">Notice</a><br/>
+        <a href="#">Blog</a><br/>
+        <a href="#">Career</a><br/>
+        <a href="#">Help</a><br/>
+      </div>
+    </div>
+    <div class="copy">© <span id="year"></span> eProstutiBD • All rights reserved</div>
+  </footer>
+
+  <!-- Firebase compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ==== Firebase config (same) ====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+
+    const COL_SUBJECTS = "subjects";
+    const COL_SUBJECT_QUESTIONS = "subject_questions";
+    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_MODEL_TEST_QUESTIONS = "model_test_questions"; // only for counting (optional)
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const $ = (id)=>document.getElementById(id);
+    $("year").textContent = new Date().getFullYear();
+
+    // UI helpers
+    function setConn(ok, text){
+      $("connDot").classList.toggle("ok", !!ok);
+      $("connText").textContent = text;
+    }
+    function esc(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+
+    // Parse URL
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name) || "";
+    }
+
+    // State
+    let SUBJECTS = [];
+    let selectedSubjectId = "";
+    let selectedSubjectName = "";
+    let mode = "mcq";       // mcq | written | model
+    let ansMode = "hide";   // hide | show
+
+    // Pagination state (Firestore cursor paging)
+    const PAGE_SIZE = 30;
+    let pageIndex = 1;
+    let cursors = [null]; // cursors[pageIndex-1] is startAfter doc for page >1
+    let lastDocThisPage = null;
+    let hasNext = false;
+
+    // Data cache current page
+    let currentItems = [];  // questions or model tests for page
+    let lastSelectionMap = new Map(); // questionId -> selectedOptionIndex (for MCQ hide mode)
+
+    // Listeners
+    let unsubSubjects = null;
+    let unsubSubjectDoc = null; // optional
+    let unsubPage = null;
+
+    // Initial subject from URL
+    selectedSubjectId = getParam("subjectId");
+
+    // Tabs + toggles
+    function setMode(newMode){
+      mode = newMode;
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
+
+      // Ans toggle only for mcq/written
+      const showAnsControls = (mode === "mcq" || mode === "written");
+      $("ansHideBtn").style.display = showAnsControls ? "inline-block" : "none";
+      $("ansShowBtn").style.display = showAnsControls ? "inline-block" : "none";
+
+      // Reset paging & selection
+      resetPaging();
+      lastSelectionMap.clear();
+
+      renderContentSkeleton();
+      attachPageListener();
+    }
+    window.setMode = setMode;
+
+    function setAnsMode(m){
+      ansMode = m;
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      // When toggling, re-render current page
+      renderContent();
+    }
+    window.setAnsMode = setAnsMode;
+
+    function resetPaging(){
+      pageIndex = 1;
+      cursors = [null];
+      lastDocThisPage = null;
+      hasNext = false;
+      currentItems = [];
+    }
+
+    function renderContentSkeleton(){
+      const c = $("content");
+      c.innerHTML = `
+        <div class="skeleton"><div class="shimmer"></div></div>
+        <div style="height:10px"></div>
+        <div class="skeleton"><div class="shimmer"></div></div>
+        <div style="height:10px"></div>
+        <div class="skeleton"><div class="shimmer"></div></div>
+      `;
+      $("pager").style.display = "none";
+    }
+
+    // Left subject list render
+    function renderSubjectList(){
+      const q = ($("sSearch").value || "").trim().toLowerCase();
+      const list = $("sList");
+      list.innerHTML = "";
+
+      const filtered = SUBJECTS
+        .filter(s => (s.name||"").toLowerCase().includes(q))
+        .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+
+      $("leftHint").textContent = `Total: ${SUBJECTS.length} • Showing: ${filtered.length}`;
+      $("sEmpty").style.display = filtered.length ? "none" : "block";
+
+      filtered.forEach(s=>{
+        const mcq = s.counts?.mcq || 0;
+        const written = s.counts?.written || 0;
+
+        const el = document.createElement("div");
+        el.className = "sitem" + (s.id === selectedSubjectId ? " active" : "");
+        el.onclick = ()=> selectSubject(s.id, s.name || "");
+        el.innerHTML = `
+          <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+          <div class="chips">
+            <span class="chip">MCQ: <b style="color:var(--text)">${mcq}</b></span>
+            <span class="chip">Written: <b style="color:var(--text)">${written}</b></span>
+          </div>
+        `;
+        list.appendChild(el);
+      });
+    }
+    window.renderSubjectList = renderSubjectList;
+
+    // Select subject
+    function selectSubject(id, name){
+      if(!id) return;
+      selectedSubjectId = id;
+      selectedSubjectName = name;
+
+      // update URL without reload
+      const u = new URL(location.href);
+      u.searchParams.set("subjectId", id);
+      history.replaceState({}, "", u.toString());
+
+      $("title").textContent = name ? name : "Details";
+      $("subLine").textContent = name ? `${name} • ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই` : "ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই";
+      $("rightHint").textContent = "Loading…";
+
+      // reset & reload
+      resetPaging();
+      lastSelectionMap.clear();
+      renderSubjectList();
+      renderContentSkeleton();
+      attachPageListener();
+    }
+
+    // Firestore page listener
+    function detachPage(){
+      if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; }
+    }
+
+    function buildQuery(){
+      if(!selectedSubjectId) return null;
+
+      const search = ($("qSearch").value || "").trim().toLowerCase();
+
+      if(mode === "model"){
+        // subject model tests paginated by createdAt desc
+        let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+          .where("subjectId","==", selectedSubjectId)
+          .orderBy("createdAt","desc")
+          .limit(PAGE_SIZE + 1);
+
+        const cursor = cursors[pageIndex-1];
+        if(cursor) q = q.startAfter(cursor);
+
+        // Search on client-side (title) -> we'll filter after fetching
+        return { q, search, type:"model" };
+      }
+
+      // Questions (mcq/written) from subject_questions
+      let q = db.collection(COL_SUBJECT_QUESTIONS)
+        .where("subjectId","==", selectedSubjectId)
+        .where("type","==", mode) // mcq or written
+        .orderBy("createdAt","desc")
+        .limit(PAGE_SIZE + 1);
+
+      const cursor = cursors[pageIndex-1];
+      if(cursor) q = q.startAfter(cursor);
+
+      return { q, search, type:"q" };
+    }
+
+    function attachPageListener(){
+      detachPage();
+
+      if(!selectedSubjectId){
+        $("rightHint").textContent = "Left থেকে Subject select করুন।";
+        $("content").innerHTML = `<div class="note">Left থেকে একটি Subject select করলে এখানে প্রশ্ন/মডেল টেস্ট দেখাবে।</div>`;
+        $("pager").style.display = "none";
+        return;
+      }
+
+      const built = buildQuery();
+      if(!built) return;
+
+      unsubPage = built.q.onSnapshot(async (snap)=>{
+        let docs = snap.docs;
+
+        // hasNext logic: we fetch PAGE_SIZE+1
+        hasNext = docs.length > PAGE_SIZE;
+        if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+
+        lastDocThisPage = docs.length ? docs[docs.length - 1] : null;
+
+        // set next cursor for next page (when user clicks next)
+        // we store the "last doc" of this page as cursor for next page
+        // but only when we haveNext
+        // (actual cursor is stored when clicking next)
+
+        // Map docs
+        if(built.type === "model"){
+          currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
+        }else{
+          currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
+        }
+
+        // Client-side search filter
+        const s = built.search;
+        if(s){
+          if(built.type === "model"){
+            currentItems = currentItems.filter(it => (it.title||"").toLowerCase().includes(s));
+          }else{
+            currentItems = currentItems.filter(it => (it.question||"").toLowerCase().includes(s));
+          }
+        }
+
+        // Update hint
+        if(mode === "model"){
+          $("rightHint").textContent = `Model Tests • Page ${pageIndex}`;
+        }else if(mode === "mcq"){
+          $("rightHint").textContent = `MCQ • Page ${pageIndex} • Ans: ${ansMode.toUpperCase()}`;
+        }else{
+          $("rightHint").textContent = `Written • Page ${pageIndex} • Ans: ${ansMode.toUpperCase()}`;
+        }
+
+        renderContent();
+        updatePager();
+        setConn(true, "Live");
+      }, (err)=>{
+        console.error(err);
+        setConn(false, "Connection error");
+        $("rightHint").textContent = "Load failed (check rules)";
+        $("content").innerHTML = `<div class="note">ডাটা লোড হচ্ছে না। Firestore rules/permission check করুন।</div>`;
+        $("pager").style.display = "none";
+      });
+    }
+
+    function updatePager(){
+      $("pager").style.display = "flex";
+      $("pageInfo").textContent = `Page ${pageIndex} • Showing ${currentItems.length} (max ${PAGE_SIZE})`;
+      $("prevBtn").disabled = pageIndex <= 1;
+      $("nextBtn").disabled = !hasNext;
+    }
+
+    function prevPage(){
+      if(pageIndex <= 1) return;
+      pageIndex -= 1;
+      lastSelectionMap.clear();
+      renderContentSkeleton();
+      attachPageListener();
+    }
+    window.prevPage = prevPage;
+
+    function nextPage(){
+      if(!hasNext) return;
+      // store cursor for next page = last doc of this page
+      if(lastDocThisPage){
+        cursors[pageIndex] = lastDocThisPage; // cursor for pageIndex+1
+      }
+      pageIndex += 1;
+      lastSelectionMap.clear();
+      renderContentSkeleton();
+      attachPageListener();
+    }
+    window.nextPage = nextPage;
+
+    // Render content
+    function renderContent(){
+      const c = $("content");
+      c.innerHTML = "";
+
+      if(mode === "model"){
+        // Model tests view
+        if(!currentItems.length){
+          c.innerHTML = `<div class="note">এই Subject এ কোনো Model Test নেই।</div>`;
+          return;
+        }
+
+        const wrap = document.createElement("div");
+        wrap.className = "mtgrid";
+
+        currentItems.forEach((mt, idx)=>{
+          const counts = mt.counts || { mcq:0, written:0 };
+          const qCount = (counts.mcq||0) + (counts.written||0);
+
+          const card = document.createElement("div");
+          card.className = "mtcard";
+          card.innerHTML = `
+            <h3>${esc(mt.title || ("Model Test " + (idx+1)))}</h3>
+            <div class="mtmeta">
+              <span class="chip">সময়: <b>${mt.totalTimeMin || 0}</b> মিনিট</span>
+              <span class="chip">মার্ক: <b>${mt.totalMarks || 0}</b></span>
+              <span class="chip">প্রশ্ন: <b>${qCount}</b></span>
+            </div>
+            <div class="mtactions">
+              <button class="btn primary" onclick="startModelTest('${mt.id}')">Start Test</button>
+              <button class="btn" onclick="openModelResult('${mt.id}')">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+
+        c.appendChild(wrap);
+        return;
+      }
+
+      // Questions view
+      if(!currentItems.length){
+        c.innerHTML = `<div class="note">এই Subject এ কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      const list = document.createElement("div");
+      list.className = "qlist";
+
+      currentItems.forEach((it, i)=>{
+        const qno = ((pageIndex - 1) * PAGE_SIZE) + (i + 1);
+
+        const card = document.createElement("div");
+        card.className = "qcard";
+
+        const head = document.createElement("div");
+        head.className = "qhead";
+        head.innerHTML = `
+          <span class="qno">#${qno}</span>
+          <p class="qtext">${esc(it.question || "")}</p>
+        `;
+        card.appendChild(head);
+
+        if(mode === "mcq"){
+          const opts = Array.isArray(it.options) ? it.options : [];
+          const correctIndex = Number.isFinite(it.correctIndex) ? it.correctIndex : -1;
+
+          const optWrap = document.createElement("div");
+          optWrap.className = "opts";
+
+          const letters = ["A","B","C","D"];
+          const chosen = lastSelectionMap.get(it.id); // maybe undefined
+
+          opts.slice(0,4).forEach((op, idx)=>{
+            const div = document.createElement("div");
+            div.className = "opt";
+            div.innerHTML = `
+              <span class="badge">${letters[idx]}</span>
+              <div class="txt">${esc(op || "")}</div>
+            `;
+
+            // Ans show mode: highlight correct always
+            if(ansMode === "show"){
+              if(idx === correctIndex) div.classList.add("correct");
+              div.style.cursor = "default";
+            }else{
+              // Ans hide mode: allow choose
+              div.onclick = ()=>{
+                // If already selected for this question, ignore further clicks (stable result)
+                if(lastSelectionMap.has(it.id)) return;
+
+                lastSelectionMap.set(it.id, idx);
+                // re-render only this card: simplest - re-render all current
+                renderContent();
+              };
+
+              // after selection, show correct/wrong highlight
+              if(chosen !== undefined){
+                if(idx === correctIndex) div.classList.add("correct");
+                if(idx === chosen && chosen !== correctIndex) div.classList.add("wrong");
+                div.style.cursor = "default";
+              }
+            }
+
+            optWrap.appendChild(div);
+          });
+
+          card.appendChild(optWrap);
+
+          // Answer area rules
+          if(ansMode === "show"){
+            const ans = document.createElement("div");
+            ans.className = "ansBox";
+            ans.innerHTML = `<b>Correct:</b> ${correctIndex>=0 ? (["A","B","C","D"][correctIndex]) : "N/A"}${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
+            card.appendChild(ans);
+          }else{
+            // hide mode: show status after selection
+            if(lastSelectionMap.has(it.id)){
+              const chosenIdx = lastSelectionMap.get(it.id);
+              const isOk = chosenIdx === correctIndex;
+              const ans = document.createElement("div");
+              ans.className = "ansBox";
+              ans.innerHTML = isOk
+                ? `✅ <b>Correct!</b>${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`
+                : `❌ <b>Wrong!</b> Correct Answer: <b>${correctIndex>=0 ? (["A","B","C","D"][correctIndex]) : "N/A"}</b>${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
+              card.appendChild(ans);
+            }else{
+              const hint = document.createElement("div");
+              hint.className = "ansHidden";
+              hint.textContent = "Ans Hide ON — অপশন সিলেক্ট করলে রেজাল্ট দেখাবে।";
+              card.appendChild(hint);
+            }
+          }
+        }
+
+        if(mode === "written"){
+          if(ansMode === "show"){
+            const ans = document.createElement("div");
+            ans.className = "ansBox";
+            ans.innerHTML = `<b>Answer:</b> ${esc(it.rightAns || "")}${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
+            card.appendChild(ans);
+          }else{
+            const hidden = document.createElement("div");
+            hidden.className = "ansHidden";
+            hidden.textContent = "Ans Hide ON — Answer দেখতে Ans Show করুন।";
+            card.appendChild(hidden);
+          }
+        }
+
+        list.appendChild(card);
+      });
+
+      c.appendChild(list);
+    }
+    window.renderContent = renderContent;
+
+    // Model test redirects
+    function startModelTest(modelTestId){
+      // same tab redirect
+      location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.startModelTest = startModelTest;
+
+    function openModelResult(modelTestId){
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.openModelResult = openModelResult;
+
+    // ==== Subjects realtime ====
+    function attachSubjects(){
+      if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
+
+      unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+        SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+
+        // If no subjectId in url, auto-select first subject
+        if(!selectedSubjectId && SUBJECTS.length){
+          selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
+        }
+
+        // Find selected subject name
+        const sel = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        selectedSubjectName = sel?.name || "";
+
+        $("title").textContent = selectedSubjectName ? selectedSubjectName : "Details";
+        $("subLine").textContent = selectedSubjectName
+          ? `${selectedSubjectName} • ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই`
+          : "ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই";
+
+        renderSubjectList();
+
+        if(selectedSubjectId){
+          // ensure paging/listener attached
+          attachPageListener();
+        }else{
+          $("rightHint").textContent = "Left থেকে Subject select করুন।";
+          $("content").innerHTML = `<div class="note">Left থেকে একটি Subject select করলে এখানে প্রশ্ন/মডেল টেস্ট দেখাবে।</div>`;
+          $("pager").style.display = "none";
+        }
+
+        setConn(true, "Live");
+      }, (err)=>{
+        console.error(err);
+        setConn(false, "Connection error");
+        $("leftHint").textContent = "Load failed (check rules)";
+        $("sList").innerHTML = "";
+        $("sEmpty").style.display = "block";
+      });
+    }
+
+    // Boot
+    setConn(false, "Connecting…");
+    renderContentSkeleton();
+    attachSubjects();
+
+    // Ensure answer toggle default
+    setAnsMode("hide");
+    setMode("mcq");
+  </script>
+</body>
+</html>
