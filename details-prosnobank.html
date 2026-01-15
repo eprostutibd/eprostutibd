@@ -31,7 +31,6 @@
       --footerB:#071635;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
-      --headerH: 64px; /* approx */
     }
 
     *{box-sizing:border-box}
@@ -48,16 +47,17 @@
     }
     a{color:inherit}
 
+    /* ✅ IMPORTANT: footer যেন hide না হয়, তাই bottom bar space না ধরে আমরা floating করব */
     .container{
       max-width: 1320px;
       margin: 0 auto;
       padding-left: clamp(12px, 4vw, 48px);
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 10px;
-      padding-bottom: calc(94px + var(--safeBottom)); /* ✅ bottom sticky controls space */
+      padding-bottom: 18px; /* footer visible */
     }
 
-    /* ===== Header ===== */
+    /* ===== Header (same as prosnobank) ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -118,7 +118,7 @@
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
-    /* ===== Notice + Ad ===== */
+    /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
       border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
@@ -145,25 +145,45 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ✅ Tabs floating under header (always visible) */
-    .tabsDock{
+    /* ===== Sticky Subject header (Subject name + tabs) ===== */
+    .subjectDock{
       position: sticky;
       top: 0;
-      z-index: 55;
-      background: rgba(246,248,255,.78);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(18,28,55,.08);
-      padding: 10px 0;
+      z-index: 58;
       margin-top: 10px;
+      background: rgba(246,248,255,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(18,28,55,.08);
       border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
-    .tabsDockInner{
+    .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
+      padding: 10px clamp(12px, 4vw, 48px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .subTitle{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .subTitle b{
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 70vw;
+    }
+    .subTitle span{font-size:12px;color:var(--muted)}
+
+    .tabs{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
@@ -171,7 +191,7 @@
     }
     .tab{
       border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.90);
+      background: rgba(255,255,255,.92);
       color: var(--text);
       border-radius: 999px;
       padding: 8px 12px;
@@ -184,15 +204,22 @@
     }
     .tab.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
 
-    /* ===== Layout ===== */
+    /* ===== Main layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 330px 1fr;
+      grid-template-columns: 340px 1fr 300px; /* left, main, right ad */
       gap: 10px;
       align-items:start;
       margin-top: 10px;
     }
-    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+    @media (max-width: 1100px){
+      .grid{grid-template-columns: 340px 1fr;}
+      .rightAd{display:none;}
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+      .rightAd{display:block;}
+    }
 
     .panel{
       border: 1px solid var(--line);
@@ -243,11 +270,11 @@
       font-size: 13px;
     }
 
-    /* ✅ Subject list scroll fixed */
+    /* ✅ LEFT Subject list scroll works */
     .leftWrap{
       position: sticky;
-      top: 130px; /* under tabsDock */
-      height: calc(100vh - 170px);
+      top: 160px; /* header+subjectDock approx */
+      height: calc(100vh - 190px);
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -257,17 +284,17 @@
     }
 
     .sList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 4px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       flex:1;
       min-height: 240px;
-      max-height: 100%;
     }
 
+    /* ✅ Better subject card design */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
@@ -279,6 +306,7 @@
       position:relative;
       overflow:hidden;
     }
+    .sItem:hover{transform: translateY(-1px)}
     .sItem::before{
       content:"";
       position:absolute; inset:-2px;
@@ -300,7 +328,7 @@
     .chip{
       font-size:12px;padding: 6px 9px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.80);
       color: var(--muted);
       white-space: nowrap;
     }
@@ -310,7 +338,7 @@
       border-color: rgba(29,78,216,.22);
     }
 
-    /* ✅ Question paper look */
+    /* ===== Paper look + questions ===== */
     .paper{
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(18,28,55,.10);
@@ -344,7 +372,6 @@
       flex:1;
       letter-spacing:.1px;
     }
-
     .opts{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     @media (max-width: 560px){ .opts{grid-template-columns:1fr;} }
 
@@ -370,11 +397,9 @@
       font-size:11px;
     }
     .opt .txt{flex:1;font-size:12px;line-height:1.55;color: var(--text)}
-
-    /* ✅ Answer marking rules */
     .opt.correct{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.10);}
     .opt.wrong{border-color: rgba(220,38,38,.28); background: rgba(220,38,38,.10);}
-    .opt.locked{cursor:default;opacity:1}
+    .opt.locked{cursor:default}
 
     .noteBox{
       margin-top: 8px;
@@ -388,7 +413,7 @@
     }
     .noteBox b{color: var(--text)}
 
-    /* ✅ Model test design */
+    /* ===== Model test ===== */
     .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap:10px;}
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
     .mtCard{
@@ -417,6 +442,7 @@
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
     .mtActions{position:relative;display:flex;gap:8px;flex-wrap:wrap}
 
+    /* ===== Mid ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -446,33 +472,28 @@
       font-size:12px;
     }
 
-    /* ✅ Bottom floating ans controls */
-    .bottomBar{
+    /* ✅ Floating ans control (does NOT block footer) */
+    .floatingAns{
       position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(14px + var(--safeBottom));
       z-index: 999;
-      padding: 10px 12px calc(10px + var(--safeBottom));
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(18,28,55,.10);
-      box-shadow: 0 -16px 40px rgba(15,23,48,.10);
-    }
-    .bottomInner{
-      max-width: 1320px;
-      margin: 0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
+      border: 1px solid rgba(18,28,55,.12);
+      border-radius: 999px;
+      box-shadow: 0 18px 44px rgba(15,23,48,.14);
+      padding: 8px;
       display:flex;
-      gap:10px;
+      gap:8px;
       align-items:center;
-      justify-content:flex-start;
-      flex-wrap:wrap;
+      max-width: calc(100vw - 24px);
     }
     .toggle{
       border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.90);
+      background: rgba(255,255,255,.92);
       color: var(--text);
       border-radius: 999px;
       padding: 8px 12px;
@@ -482,10 +503,11 @@
       height: 36px;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
+      white-space:nowrap;
     }
     .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
 
-    /* ===== Footer ===== */
+    /* ===== Footer (same) ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -518,28 +540,10 @@
     .footBrand{display:flex;flex-direction:column;gap:3px;}
     .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
     .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
-
-    .socialRow{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:nowrap;
-      margin-top: 10px;
-    }
-    .socialRow a{
-      display:inline-grid;
-      place-items:center;
-      text-decoration:none;
-      opacity:.92;
-      transition: opacity .15s, transform .15s;
-    }
+    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top:10px;}
+    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
     .socialRow a:hover{opacity:1; transform: translateY(-1px);}
     .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
-
-    @media (max-width: 560px){
-      .socialRow{display:flex;} /* ✅ mobile show */
-    }
-
     .copy{
       max-width: 1320px;
       margin:0 auto;
@@ -555,610 +559,749 @@
 </head>
 
 <body>
-  <header>
-    <div class="topbar">
-      <div class="brand">
-        <div class="name">eProstutiBD</div>
-        <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
-      </div>
-
-      <nav class="nav" aria-label="Main navigation">
-        <a href="#">একাডেমী</a>
-        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
-        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
-        <a href="#">মডেল টেস্ট</a>
-        <a href="#">কারেন্ট এফেয়ার্স</a>
-        <a href="#">IELTS</a>
-        <a href="#">BCS</a>
-        <a href="#">নোটিশ</a>
-        <a href="#">ব্লগ</a>
-        <a href="#">ক্যারিয়ার</a>
-      </nav>
-
-      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="name">eProstutiBD</div>
+      <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
     </div>
 
-    <div class="mobileMenu" id="mobileMenu">
-      <div class="overlay" onclick="closeMenu()"></div>
-      <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
-        <a href="#">একাডেমী</a>
-        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
-        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
-        <a href="#">মডেল টেস্ট</a>
-        <a href="#">কারেন্ট এফেয়ার্স</a>
-        <a href="#">IELTS</a>
-        <a href="#">BCS</a>
-        <a href="#">নোটিশ</a>
-        <a href="#">ব্লগ</a>
-        <a href="#">ক্যারিয়ার</a>
-      </div>
-    </div>
-  </header>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#">একাডেমী</a>
+      <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
+      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+      <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+      <a href="#">মডেল টেস্ট</a>
+      <a href="#">কারেন্ট এফেয়ার্স</a>
+      <a href="#">IELTS</a>
+      <a href="#">BCS</a>
+      <a href="#">নোটিশ</a>
+      <a href="#">ব্লগ</a>
+      <a href="#">ক্যারিয়ার</a>
+    </nav>
 
-  <div class="container">
-    <div class="noticeBar" role="region" aria-label="Notice">
-      <div class="noticeRow">
-        <span class="noticeTag">Details</span>
-        <div class="marq">
-          <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন</span>
-        </div>
-      </div>
-    </div>
+    <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+  </div>
 
-    <div class="adBox">
-      <div class="adHead">
-        <b>Ad Slot</b>
-        <span>Header নিচে • Responsive</span>
-      </div>
-      <div class="adBody">
-        <div>
-          <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Responsive Ad</div>
-          <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
-        </div>
+  <div class="mobileMenu" id="mobileMenu">
+    <div class="overlay" onclick="closeMenu()"></div>
+    <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+      <a href="#">একাডেমী</a>
+      <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
+      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+      <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+      <a href="#">মডেল টেস্ট</a>
+      <a href="#">কারেন্ট এফেয়ার্স</a>
+      <a href="#">IELTS</a>
+      <a href="#">BCS</a>
+      <a href="#">নোটিশ</a>
+      <a href="#">ব্লগ</a>
+      <a href="#">ক্যারিয়ার</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="noticeBar" role="region" aria-label="Notice">
+    <div class="noticeRow">
+      <span class="noticeTag">Details</span>
+      <div class="marq">
+        <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে ট্যাব ব্যবহার করুন</span>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Tabs under header (floating) -->
-  <div class="tabsDock" aria-label="Tabs">
-    <div class="tabsDockInner">
+  <div class="adBox">
+    <div class="adHead">
+      <b>Ad Slot</b><span>Header নিচে</span>
+    </div>
+    <div class="adBody">Paste ad code here</div>
+  </div>
+</div>
+
+<!-- ✅ Subject name + Tabs (sticky) -->
+<div class="subjectDock" aria-label="Subject navigation">
+  <div class="subjectDockInner">
+    <div class="subTitle">
+      <b id="subName">Details</b>
+      <span id="subMeta">Subject select করুন</span>
+    </div>
+    <div class="tabs">
       <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
       <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
     </div>
   </div>
+</div>
 
-  <div class="container" style="padding-top:10px;">
-    <main class="grid">
-      <!-- LEFT: Subject List -->
-      <aside class="panel">
-        <div class="panelHead">
-          <b>সকল Subject</b>
-          <span class="muted" id="leftHint">Loading…</span>
-        </div>
-
-        <div class="panelBody leftWrap">
-          <div class="searchMini">
-            <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
-            <button class="btn" onclick="renderSubjectList()">Search</button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div id="sList" class="sList" aria-live="polite"></div>
-          <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
-        </div>
-      </aside>
-
-      <!-- RIGHT: Content -->
-      <section class="panel">
-        <div class="panelHead">
-          <div style="min-width:0">
-            <b id="rightTitle">Details</b>
-            <div class="muted" id="rightHint" style="margin-top:2px;">Left থেকে Subject select করুন</div>
-          </div>
-
-          <div class="searchMini" style="max-width:420px; width:100%">
-            <input id="qSearch" placeholder="Search question…" oninput="resetAndReload(true)" />
-            <button class="btn" onclick="resetAndReload(true)">Search</button>
-          </div>
-        </div>
-
-        <div class="panelBody">
-          <div class="inlineAd" style="margin-bottom:12px;">
-            <div>
-              <div class="tag">Ad Slot</div>
-              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
-            </div>
-          </div>
-
-          <div id="content"></div>
-          <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- ✅ Bottom sticky ans controls (no extra texts) -->
-  <div class="bottomBar" id="bottomBar">
-    <div class="bottomInner" id="ansControls">
-      <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
-      <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
-    </div>
-  </div>
-
-  <footer>
-    <div class="foot">
-      <div class="footLogo">
-        <div class="footBrand">
-          <div class="name">eProstutiBD</div>
-          <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
-        </div>
+<div class="container">
+  <main class="grid">
+    <!-- LEFT -->
+    <aside class="panel">
+      <div class="panelHead">
+        <b>সকল Subject</b>
+        <span class="muted" id="leftHint">Loading…</span>
       </div>
 
-      <div>
-        <b>দরকারি পেজ</b>
-        <a href="#">About</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms</a>
-        <a href="#">Contact</a>
-      </div>
-
-      <div>
-        <b>অন্যান্য</b>
-        <a href="#">Notice</a>
-        <a href="#">Blog</a>
-        <a href="#">Career</a>
-        <a href="#">Help</a>
-      </div>
-
-      <div class="footFollow">
-        <b>Follow</b>
-        <div class="socialRow" aria-label="Social media">
-          <a href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-          </a>
-          <a href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-          </a>
-          <a href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
-          </a>
-          <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-          </a>
+      <div class="panelBody leftWrap">
+        <div class="searchMini">
+          <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
+          <button class="btn" onclick="renderSubjectList()">Search</button>
         </div>
+
+        <div class="divider"></div>
+
+        <div id="sList" class="sList"></div>
+        <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <section class="panel">
+      <div class="panelHead">
+        <b id="rightTitle">Questions</b>
+        <span class="muted" id="pageHint"></span>
+      </div>
+
+      <div class="panelBody">
+        <div class="searchMini" style="margin-bottom:12px;">
+          <input id="qSearch" placeholder="Search question…" oninput="debouncedSearch()" />
+          <button class="btn" onclick="resetAndReload(true)">Search</button>
+        </div>
+
+        <div class="inlineAd" style="margin-bottom:12px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Mid Content Ad</div>
+          </div>
+        </div>
+
+        <div id="content"></div>
+        <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
+
+        <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
+          <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT AD -->
+    <aside class="panel rightAd">
+      <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
+      <div class="panelBody">
+        <div class="inlineAd" style="min-height:240px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- ✅ Floating Ans controls -->
+<div class="floatingAns" id="ansFloat">
+  <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+  <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+</div>
+
+<footer>
+  <div class="foot">
+    <div class="footLogo">
+      <div class="footBrand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
     </div>
 
-    <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
-  </footer>
+    <div>
+      <b>দরকারি পেজ</b>
+      <a href="#">About</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <div>
+      <b>অন্যান্য</b>
+      <a href="#">Notice</a>
+      <a href="#">Blog</a>
+      <a href="#">Career</a>
+      <a href="#">Help</a>
+    </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-      authDomain: "eprostutibd-webapp.firebaseapp.com",
-      projectId: "eprostutibd-webapp",
-      storageBucket: "eprostutibd-webapp.firebasestorage.app",
-      messagingSenderId: "1044069942330",
-      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-      measurementId: "G-T2G55NMDQT"
+    <div class="footFollow">
+      <b>Follow</b>
+      <div class="socialRow">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
+        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
+      </div>
+
+      <div class="inlineAd" style="margin-top:12px;">
+        <div>
+          <div class="tag">Ad Slot</div>
+          <div style="font-size:12px;">Footer Ad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
+  };
+
+  const COL_SUBJECTS = "subjects";
+  const COL_SUBJECT_QUESTIONS = "subject_questions";
+  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
+
+  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+  window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+
+  $("year").textContent = new Date().getFullYear();
+
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+  function normalize(s){
+    return String(s||"").toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  // ✅ Debounce for search performance
+  let searchTimer = null;
+  function debouncedSearch(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(()=>resetAndReload(true), 350);
+  }
+  window.debouncedSearch = debouncedSearch;
+
+  function getOptions(doc){
+    if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+    return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+  }
+  function getCorrectIndex(doc, opts){
+    if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+    const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+    if(!ra) return -1;
+    const map = { a:0, b:1, c:2, d:3 };
+    const low = ra.toLowerCase();
+    if(map[low] !== undefined) return map[low];
+    const nra = normalize(ra);
+    for(let i=0;i<opts.length;i++){
+      if(normalize(opts[i]) === nra) return i;
+    }
+    return -1;
+  }
+
+  // ===== State (1–6 requirements) =====
+  let SUBJECTS = [];
+  let selectedSubjectId = "";
+  let selectedSubjectName = "";
+
+  let mode = "mcq";
+  let ansMode = "hide";
+
+  // pagination
+  const PAGE_SIZE = 30;
+  let page = 1;
+  let cursorByPage = { 1: null };
+  let lastDoc = null;
+  let hasNext = false;
+
+  // for MCQ selection
+  let selectedOptionMap = new Map();
+
+  // counts
+  const mtCountMap = new Map();
+  const mtUnsubMap = new Map();
+
+  // listeners
+  let unsubSubjects = null;
+  let unsubRight = null;
+
+  // LocalStorage keys
+  const LS_KEY = "epbd_details_state_v1";
+
+  function saveState(){
+    const payload = {
+      subjectId: selectedSubjectId,
+      mode,
+      ansMode,
+      page,
+      q: $("qSearch").value || "",
+      s: $("sSearch").value || ""
     };
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+  }
 
-    const COL_SUBJECTS = "subjects";
-    const COL_SUBJECT_QUESTIONS = "subject_questions";
-    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const $ = (id)=>document.getElementById(id);
-
-    function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-    function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-    function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-    window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
-    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
-
-    $("year").textContent = new Date().getFullYear();
-
-    function esc(str){
-      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-    function normalize(s){
-      return String(s||"").toLowerCase()
-        .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function getOptions(doc){
-      if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
-      return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
-    }
-
-    function getCorrectIndex(doc, opts){
-      if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
-      const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
-      if(!ra) return -1;
-      const map = { a:0, b:1, c:2, d:3 };
-      const low = ra.toLowerCase();
-      if(map[low] !== undefined) return map[low];
-      const nra = normalize(ra);
-      for(let i=0;i<opts.length;i++){
-        if(normalize(opts[i]) === nra) return i;
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return;
+      const st = JSON.parse(raw);
+      if(st && typeof st === "object"){
+        selectedSubjectId = st.subjectId || selectedSubjectId;
+        mode = st.mode || mode;
+        ansMode = st.ansMode || ansMode;
+        page = Number(st.page || 1) || 1;
+        if($("qSearch")) $("qSearch").value = st.q || "";
+        if($("sSearch")) $("sSearch").value = st.s || "";
       }
-      return -1;
+    }catch(e){}
+  }
+
+  function getParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name) || "";
+  }
+  // subjectId from URL has priority
+  const urlSubjectId = getParam("subjectId");
+  if(urlSubjectId) selectedSubjectId = urlSubjectId;
+
+  // page from URL for SEO
+  const urlPage = Number(getParam("page") || "1") || 1;
+  if(urlPage > 1) page = urlPage;
+
+  // load saved state after reading url
+  loadState();
+
+  function setUrlState(){
+    const u = new URL(location.href);
+    if(selectedSubjectId) u.searchParams.set("subjectId", selectedSubjectId);
+    u.searchParams.set("page", String(page));
+    u.searchParams.set("mode", mode);
+    history.replaceState({}, "", u.toString());
+  }
+
+  function setMode(m){
+    mode = m;
+    $("tabMcq").classList.toggle("active", mode==="mcq");
+    $("tabWritten").classList.toggle("active", mode==="written");
+    $("tabModel").classList.toggle("active", mode==="model");
+
+    // Ans controls visible only for mcq/written
+    $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
+
+    // reset pagination on mode change
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    resetAndReload(true);
+  }
+  window.setMode = setMode;
+
+  function setAnsMode(m){
+    ansMode = m;
+    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    saveState();
+    renderContent(); // just re-render
+  }
+  window.setAnsMode = setAnsMode;
+
+  function syncModelTestListeners(){
+    const alive = new Set(SUBJECTS.map(s=>s.id));
+    for(const [sid, unsub] of mtUnsubMap.entries()){
+      if(!alive.has(sid)){
+        try{unsub();}catch(e){}
+        mtUnsubMap.delete(sid);
+        mtCountMap.delete(sid);
+      }
+    }
+    SUBJECTS.forEach(s=>{
+      if(mtUnsubMap.has(s.id)) return;
+      const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", s.id)
+        .onSnapshot((snap)=>{
+          mtCountMap.set(s.id, snap.size || 0);
+          renderSubjectList();
+        });
+      mtUnsubMap.set(s.id, unsub);
+    });
+  }
+
+  function relatedMatch(query, text){
+    // ✅ partial/related search (simple scoring)
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
+  }
+
+  function renderSubjectList(){
+    const q = $("sSearch").value || "";
+    const list = $("sList");
+    list.innerHTML = "";
+
+    const filtered = SUBJECTS
+      .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
+      .filter(s => !q ? true : s._score >= 0.25)
+      .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
+
+    $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
+    $("sEmpty").style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(s=>{
+      const mcq = s.counts?.mcq || 0;
+      const written = s.counts?.written || 0;
+      const mt = mtCountMap.get(s.id) ?? 0;
+
+      const el = document.createElement("div");
+      el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
+      el.onclick = ()=> selectSubject(s.id);
+
+      el.innerHTML = `
+        <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+        <div class="chips">
+          <span class="chip">MCQ <b>${mcq}</b></span>
+          <span class="chip">Written <b>${written}</b></span>
+          <span class="chip">Model <b>${mt}</b></span>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  window.renderSubjectList = renderSubjectList;
+
+  function selectSubject(id){
+    selectedSubjectId = id;
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+
+    const found = SUBJECTS.find(s=>s.id===id);
+    selectedSubjectName = found?.name || "";
+    $("subName").textContent = selectedSubjectName || "Details";
+    $("subMeta").textContent = "ফ্রি প্রশ্নব্যাংক • Ads supported";
+    $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
+    $("tickerText").textContent = selectedSubjectName
+      ? `${selectedSubjectName} • MCQ/Written/Model Test`
+      : "Subject নির্বাচন করুন";
+
+    renderSubjectList();
+    setUrlState();
+    saveState();
+    resetAndReload(true);
+  }
+
+  function detachRight(){
+    if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
+  }
+
+  function buildQuery(){
+    const searchText = $("qSearch").value || "";
+    const cursor = cursorByPage[page] || null;
+
+    if(mode === "model"){
+      let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", selectedSubjectId)
+        .orderBy("createdAt","desc")
+        .limit(PAGE_SIZE + 1);
+      if(cursor) q = q.startAfter(cursor);
+      return { q, searchText, kind:"model" };
     }
 
-    // ===== State =====
-    let SUBJECTS = [];
-    let selectedSubjectId = "";
-    let selectedSubjectName = "";
+    let q = db.collection(COL_SUBJECT_QUESTIONS)
+      .where("subjectId","==", selectedSubjectId)
+      .where("type","==", mode)
+      .orderBy("createdAt","desc")
+      .limit(PAGE_SIZE + 1);
+    if(cursor) q = q.startAfter(cursor);
+    return { q, searchText, kind:"q" };
+  }
 
-    let mode = "mcq";
-    let ansMode = "hide";
+  let currentItems = [];
 
-    // counts
-    const mtCountMap = new Map();
-    const mtUnsubMap = new Map();
-
-    let unsubSubjects = null;
-    let unsubRight = null;
-
-    const PAGE_SIZE = 30;
-    let lastDoc = null;
-    let hasMore = false;
-
-    let currentItems = [];
-    let selectedOptionMap = new Map();
-
-    function getParam(name){
-      const u = new URL(location.href);
-      return u.searchParams.get(name) || "";
+  function resetAndReload(resetCursor){
+    if(!selectedSubjectId){
+      $("emptyRight").style.display = "block";
+      $("content").innerHTML = "";
+      $("pageHint").textContent = "";
+      return;
     }
-    selectedSubjectId = getParam("subjectId");
+    if(resetCursor){
+      // keep current page but refresh
+    }
+    loadRight();
+  }
+  window.resetAndReload = resetAndReload;
 
-    function syncModelTestListeners(){
-      const alive = new Set(SUBJECTS.map(s=>s.id));
-      for(const [sid, unsub] of mtUnsubMap.entries()){
-        if(!alive.has(sid)){
-          try{unsub();}catch(e){}
-          mtUnsubMap.delete(sid);
-          mtCountMap.delete(sid);
+  function loadRight(){
+    detachRight();
+    $("emptyRight").style.display = "none";
+    $("content").innerHTML = "";
+    $("pageHint").textContent = `Page ${page}`;
+
+    const built = buildQuery();
+
+    unsubRight = built.q.onSnapshot((snap)=>{
+      let docs = snap.docs;
+
+      hasNext = docs.length > PAGE_SIZE;
+      if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+
+      lastDoc = docs.length ? docs[docs.length-1] : null;
+
+      currentItems = docs.map(d=>({id:d.id, ...d.data()}));
+
+      // ✅ related/partial search
+      const qtxt = normalize(built.searchText);
+      if(qtxt){
+        if(built.kind === "model"){
+          currentItems = currentItems
+            .map(it => ({...it, _score: relatedMatch(qtxt, it.title || it.name || "")}))
+            .filter(it => it._score >= 0.25)
+            .sort((a,b)=> (b._score - a._score));
+        }else{
+          currentItems = currentItems
+            .map(it => ({...it, _score: relatedMatch(qtxt, it.question || "")}))
+            .filter(it => it._score >= 0.25)
+            .sort((a,b)=> (b._score - a._score));
         }
       }
-      SUBJECTS.forEach(s=>{
-        if(mtUnsubMap.has(s.id)) return;
-        const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
-          .where("subjectId","==", s.id)
-          .onSnapshot((snap)=>{
-            mtCountMap.set(s.id, snap.size || 0);
-            renderSubjectList();
-          });
-        mtUnsubMap.set(s.id, unsub);
-      });
-    }
 
-    function renderSubjectList(){
-      const q = normalize($("sSearch").value || "");
-      const list = $("sList");
-      list.innerHTML = "";
+      renderContent();
 
-      const filtered = SUBJECTS
-        .filter(s => !q ? true : normalize(s.name||"").includes(q))
-        .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+      $("emptyRight").style.display = currentItems.length ? "none" : "block";
+      $("prevBtn").disabled = page <= 1;
+      $("nextBtn").disabled = !hasNext;
 
-      $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
-      $("sEmpty").style.display = filtered.length ? "none" : "block";
+      setUrlState();
+      saveState();
+    }, (err)=>{
+      console.error(err);
+      $("content").innerHTML = "";
+      $("emptyRight").style.display = "block";
+    });
+  }
 
-      filtered.forEach(s=>{
-        const mcq = s.counts?.mcq || 0;
-        const written = s.counts?.written || 0;
-        const mt = mtCountMap.get(s.id) ?? 0;
+  function prevPage(){
+    if(page <= 1) return;
+    page -= 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  function nextPage(){
+    if(!hasNext) return;
+    if(lastDoc) cursorByPage[page+1] = lastDoc;
+    page += 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  window.prevPage = prevPage;
+  window.nextPage = nextPage;
 
-        const el = document.createElement("div");
-        el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
-        el.onclick = ()=> selectSubject(s.id);
+  function renderContent(){
+    const wrap = $("content");
+    wrap.innerHTML = "";
 
-        el.innerHTML = `
-          <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
-          <div class="chips">
-            <span class="chip">MCQ <b>${mcq}</b></span>
-            <span class="chip">Written <b>${written}</b></span>
-            <span class="chip">Model <b>${mt}</b></span>
+    $("rightTitle").textContent =
+      mode==="mcq" ? "MCQ প্রশ্ন" :
+      mode==="written" ? "Written প্রশ্ন" :
+      "Subject Model Tests";
+
+    if(!currentItems.length) return;
+
+    if(mode === "model"){
+      const grid = document.createElement("div");
+      grid.className = "mtGrid";
+      currentItems.forEach((mt)=>{
+        const title = mt.title ?? mt.name ?? "Subject Model Test";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+        const counts = mt.counts || {};
+        const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+        const card = document.createElement("div");
+        card.className = "mtCard";
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="mtMeta">
+            <span>⏱ ${esc(time)} min</span>
+            <span>🧮 Mark: ${esc(marks)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="mtActions">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start Test</button>
+            <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
           </div>
         `;
-        list.appendChild(el);
+        grid.appendChild(card);
       });
+      wrap.appendChild(grid);
+      return;
     }
-    window.renderSubjectList = renderSubjectList;
 
-    function selectSubject(id){
-      selectedSubjectId = id;
+    const paper = document.createElement("div");
+    paper.className = "paper";
+    const list = document.createElement("div");
+    list.className = "qList";
+    const letters = ["A","B","C","D"];
 
-      const u = new URL(location.href);
-      u.searchParams.set("subjectId", id);
-      history.replaceState({}, "", u.toString());
+    currentItems.forEach((it, idx)=>{
+      const qno = ((page-1)*PAGE_SIZE) + (idx+1);
 
-      const found = SUBJECTS.find(s=>s.id===id);
+      const card = document.createElement("div");
+      card.className = "qCard";
+      card.innerHTML = `
+        <div class="qHead">
+          <span class="qNo">Q${qno}</span>
+          <p class="qText">${esc(it.question || "")}</p>
+        </div>
+      `;
+
+      const note = (it.note ?? it.explain ?? "").toString().trim();
+
+      if(mode === "mcq"){
+        const opts = getOptions(it);
+        const correctIndex = getCorrectIndex(it, opts);
+        const chosen = selectedOptionMap.get(it.id);
+
+        const optWrap = document.createElement("div");
+        optWrap.className = "opts";
+
+        opts.slice(0,4).forEach((op, oi)=>{
+          const opt = document.createElement("div");
+          opt.className = "opt";
+          opt.innerHTML = `<span class="badge">${letters[oi]}</span><div class="txt">${esc(op || "")}</div>`;
+
+          if(ansMode === "show"){
+            if(oi === correctIndex) opt.classList.add("correct");
+            opt.classList.add("locked");
+          }else{
+            if(chosen !== undefined){
+              opt.classList.add("locked");
+              if(oi === correctIndex) opt.classList.add("correct");
+              if(oi === chosen && chosen !== correctIndex) opt.classList.add("wrong");
+            }else{
+              opt.onclick = ()=>{
+                selectedOptionMap.set(it.id, oi);
+                renderContent();
+              };
+            }
+          }
+          optWrap.appendChild(opt);
+        });
+
+        card.appendChild(optWrap);
+
+        // note always show
+        const nb = document.createElement("div");
+        nb.className = "noteBox";
+        nb.innerHTML = `<b>Note:</b> ${esc(note || "-")}`;
+        card.appendChild(nb);
+      }
+
+      if(mode === "written"){
+        const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+
+        const box = document.createElement("div");
+        box.className = "noteBox";
+
+        if(ansMode === "show"){
+          box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
+        }else{
+          box.innerHTML = `<b>Note:</b> ${esc(note || "-")}`;
+        }
+        card.appendChild(box);
+      }
+
+      list.appendChild(card);
+
+      if((idx+1)%10===0 && idx < currentItems.length-1){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad</div></div>`;
+        list.appendChild(ad);
+      }
+    });
+
+    paper.appendChild(list);
+    wrap.appendChild(paper);
+  }
+
+  function attachSubjects(){
+    if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
+
+    unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      syncModelTestListeners();
+
+      if(!selectedSubjectId && SUBJECTS.length){
+        selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
+      }
+
+      const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
       selectedSubjectName = found?.name || "";
-      $("rightTitle").textContent = selectedSubjectName || "Details";
+      $("subName").textContent = selectedSubjectName || "Details";
+      $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
+
       $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
+      $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
 
       renderSubjectList();
-      resetAndReload(true);
-    }
 
-    function setMode(m){
-      mode = m;
+      // apply mode + ansMode UI
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
-
-      // bottom ans bar show only for mcq/written
-      $("bottomBar").style.display = (mode==="model") ? "none" : "block";
-
-      resetAndReload(true);
-    }
-    window.setMode = setMode;
-
-    function setAnsMode(m){
-      ansMode = m;
       $("ansHideBtn").classList.toggle("active", ansMode==="hide");
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
-      renderContent();
-    }
-    window.setAnsMode = setAnsMode;
+      $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
 
-    function detachRight(){
-      if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
-    }
+      setUrlState();
+      saveState();
 
-    function resetAndReload(resetCursor){
-      if(!selectedSubjectId){
-        $("rightHint").textContent = "Left থেকে Subject select করুন";
-        $("content").innerHTML = "";
-        $("emptyRight").style.display = "block";
-        return;
+      if(selectedSubjectId){
+        loadRight();
       }
-      if(resetCursor){
-        lastDoc = null;
-        hasMore = false;
-        selectedOptionMap.clear();
-      }
-      loadRight();
-    }
-    window.resetAndReload = resetAndReload;
+    }, (err)=>{
+      console.error(err);
+      $("leftHint").textContent = "Failed";
+      $("sList").innerHTML = "";
+      $("sEmpty").style.display = "block";
+    });
+  }
 
-    function buildRightQuery(){
-      const searchText = normalize($("qSearch").value || "");
-
-      if(mode === "model"){
-        let q = db.collection(COL_SUBJECT_MODEL_TESTS)
-          .where("subjectId","==", selectedSubjectId)
-          .orderBy("createdAt","desc")
-          .limit(PAGE_SIZE);
-        return { q, searchText, kind:"model" };
-      }
-
-      let q = db.collection(COL_SUBJECT_QUESTIONS)
-        .where("subjectId","==", selectedSubjectId)
-        .where("type","==", mode)
-        .orderBy("createdAt","desc")
-        .limit(PAGE_SIZE);
-      return { q, searchText, kind:"q" };
-    }
-
-    function loadRight(){
-      detachRight();
-      $("emptyRight").style.display = "none";
-      $("content").innerHTML = "";
-
-      const built = buildRightQuery();
-
-      unsubRight = built.q.onSnapshot((snap)=>{
-        currentItems = snap.docs.map(d=>({id:d.id, ...d.data()}));
-
-        if(built.searchText){
-          if(built.kind === "model"){
-            currentItems = currentItems.filter(it => normalize(it.title || it.name || "").includes(built.searchText));
-          }else{
-            currentItems = currentItems.filter(it => normalize(it.question || "").includes(built.searchText));
-          }
-        }
-
-        $("rightHint").textContent =
-          (mode==="mcq") ? `${selectedSubjectName || "Subject"} • MCQ` :
-          (mode==="written") ? `${selectedSubjectName || "Subject"} • Written` :
-          `${selectedSubjectName || "Subject"} • Model Tests`;
-
-        renderContent();
-        $("emptyRight").style.display = currentItems.length ? "none" : "block";
-
-      }, (err)=>{
-        console.error(err);
-        $("content").innerHTML = "";
-        $("emptyRight").style.display = "block";
-      });
-    }
-
-    function renderContent(){
-      const wrap = $("content");
-      wrap.innerHTML = "";
-
-      if(!currentItems.length) return;
-
-      if(mode === "model"){
-        const grid = document.createElement("div");
-        grid.className = "mtGrid";
-
-        currentItems.forEach((mt)=>{
-          const title = mt.title ?? mt.name ?? "Subject Model Test";
-          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
-          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
-          const counts = mt.counts || {};
-          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
-
-          const card = document.createElement("div");
-          card.className = "mtCard";
-          card.innerHTML = `
-            <h4 title="${esc(title)}">${esc(title)}</h4>
-            <div class="mtMeta">
-              <span>⏱ ${esc(time)} min</span>
-              <span>🧮 Mark: ${esc(marks)}</span>
-              <span>📌 Q: ${esc(qCount)}</span>
-            </div>
-            <div class="mtActions">
-              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start Test</button>
-              <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-
-        wrap.appendChild(grid);
-        return;
-      }
-
-      const paper = document.createElement("div");
-      paper.className = "paper";
-
-      const list = document.createElement("div");
-      list.className = "qList";
-
-      const letters = ["A","B","C","D"];
-
-      currentItems.forEach((it, idx)=>{
-        const qno = idx + 1;
-
-        const card = document.createElement("div");
-        card.className = "qCard";
-        card.innerHTML = `
-          <div class="qHead">
-            <span class="qNo">Q${qno}</span>
-            <p class="qText">${esc(it.question || "")}</p>
-          </div>
-        `;
-
-        const note = (it.note ?? it.explain ?? "").toString().trim();
-
-        if(mode === "mcq"){
-          const opts = getOptions(it);
-          const correctIndex = getCorrectIndex(it, opts);
-
-          const chosen = selectedOptionMap.get(it.id);
-          const optWrap = document.createElement("div");
-          optWrap.className = "opts";
-
-          opts.slice(0,4).forEach((op, oi)=>{
-            const opt = document.createElement("div");
-            opt.className = "opt";
-            opt.innerHTML = `<span class="badge">${letters[oi]}</span><div class="txt">${esc(op || "")}</div>`;
-
-            if(ansMode === "show"){
-              // ✅ always show correct highlighted
-              if(oi === correctIndex) opt.classList.add("correct");
-              opt.classList.add("locked");
-            }else{
-              // ✅ hide correct, but when user selects, show result
-              if(chosen !== undefined){
-                opt.classList.add("locked");
-                if(oi === correctIndex) opt.classList.add("correct");
-                if(oi === chosen && chosen !== correctIndex) opt.classList.add("wrong");
-              }else{
-                opt.onclick = ()=>{
-                  selectedOptionMap.set(it.id, oi);
-                  renderContent();
-                };
-              }
-            }
-
-            optWrap.appendChild(opt);
-          });
-
-          card.appendChild(optWrap);
-
-          // ✅ note always visible
-          const nb = document.createElement("div");
-          nb.className = "noteBox";
-          nb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : `<b>Note:</b> -`;
-          card.appendChild(nb);
-        }
-
-        if(mode === "written"){
-          const rightAns = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-
-          if(ansMode === "show"){
-            const ans = document.createElement("div");
-            ans.className = "noteBox";
-            ans.innerHTML = `<b>Answer:</b> ${esc(rightAns || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
-            card.appendChild(ans);
-          }else{
-            // ✅ hide answer, show note only
-            const nb = document.createElement("div");
-            nb.className = "noteBox";
-            nb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : `<b>Note:</b> -`;
-            card.appendChild(nb);
-          }
-        }
-
-        list.appendChild(card);
-
-        // optional inline ad after 10
-        if((idx+1)%10===0 && idx < currentItems.length-1){
-          const ad = document.createElement("div");
-          ad.className = "inlineAd";
-          ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div></div>`;
-          list.appendChild(ad);
-        }
-      });
-
-      paper.appendChild(list);
-      wrap.appendChild(paper);
-    }
-
-    function attachSubjects(){
-      if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
-
-      unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
-        SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
-        syncModelTestListeners();
-
-        if(!selectedSubjectId && SUBJECTS.length){
-          selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
-        }
-
-        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
-        selectedSubjectName = found?.name || "";
-
-        $("rightTitle").textContent = selectedSubjectName || "Details";
-        $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-
-        renderSubjectList();
-
-        if(selectedSubjectId){
-          const u = new URL(location.href);
-          u.searchParams.set("subjectId", selectedSubjectId);
-          history.replaceState({}, "", u.toString());
-          resetAndReload(true);
-        }
-      }, (err)=>{
-        console.error(err);
-        $("leftHint").textContent = "Failed";
-        $("sList").innerHTML = "";
-        $("sEmpty").style.display = "block";
-      });
-    }
-
-    // Boot
-    setAnsMode("hide");
-    setMode("mcq");
-    attachSubjects();
-  </script>
+  // Boot
+  attachSubjects();
+</script>
 </body>
 </html>
