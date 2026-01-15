@@ -149,35 +149,45 @@
       background: transparent; /* ✅ no overlay color */
     }
     .mobileMenu .drawer{
-      position:absolute;
-      top: 64px;
-      right: 12px;
-      width: min(320px, calc(100vw - 24px));
-      border-radius: 16px;
-      padding: 10px;
-      border: 1px solid rgba(255,255,255,.25);
-      background: transparent; /* ✅ no background color */
-      box-shadow: none;       /* ✅ no shadow */
-    }
-    .mobileMenu a{
-      display:block;
-      text-decoration:none;
-      color:#fff;
-      font-weight:1000;
-      font-size:12px;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: transparent; /* ✅ no background */
-      margin-bottom: 8px;
-      white-space:nowrap;
-    }
-    .mobileMenu a:last-child{margin-bottom:0}
-    .mobileMenu a.active{
-      background: transparent;
-      border-color: rgba(255,255,255,.35);
-    }
+  position:absolute;
+  top: 64px;
+  right: 12px;
+  width: min(320px, calc(100vw - 24px));
+  border-radius: 16px;
+  padding: 10px;
 
+  border: 1px solid rgba(255,255,255,.28);
+
+  /* ✅ readable background */
+  background: rgba(8, 20, 55, .78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow: 0 18px 38px rgba(0,0,0,.35);
+}
+
+.mobileMenu a{
+  display:block;
+  text-decoration:none;
+  color:#ffffff;                 /* ✅ bright text */
+  font-weight:1000;
+  font-size:13px;                /* ✅ slightly bigger */
+  padding: 12px 12px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.16);
+
+  /* ✅ subtle item background to separate rows */
+  background: rgba(255,255,255,.06);
+
+  margin-bottom: 8px;
+  white-space:nowrap;
+}
+
+.mobileMenu a.active{
+  border-color: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.12);
+}
     /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top: 10px;
