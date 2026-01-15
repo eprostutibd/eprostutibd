@@ -3,193 +3,303 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>প্রশ্নব্যাংক • Details</title>
+  <title>eProstutiBD প্রশ্নব্যাংক — Details</title>
+
+  <meta name="description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test।" />
+  <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#1d4ed8" />
 
   <style>
     :root{
-      --bg:#070c18;
-      --panel: rgba(18,26,43,.88);
-      --panel2: rgba(255,255,255,.03);
-      --line: rgba(255,255,255,.10);
-      --muted:#a3b0c9;
-      --text:#eef3ff;
-      --accent:#6aa6ff;
-      --ok:#5ce3a4;
-      --danger:#ff6a6a;
-      --warn:#ffd36a;
-      --shadow: 0 14px 40px rgba(0,0,0,.42);
-      --radius: 18px;
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --line: rgba(18, 28, 55, .10);
+      --text:#0f1730; --muted:#5a6685;
+
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --brandA:#1d4ed8;
+      --brandB:#0ea5e9;
+
+      --ok:#16a34a;
+      --danger:#dc2626;
+
+      --footerA:#0b1b45;
+      --footerB:#071635;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 10% 15%, rgba(106,166,255,.20), transparent 55%),
-        radial-gradient(900px 650px at 85% 18%, rgba(92,227,164,.14), transparent 55%),
-        radial-gradient(900px 650px at 50% 100%, rgba(255,211,106,.10), transparent 60%),
-        var(--bg);
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit}
+
+    /* ✅ Desktop side gap = ~1/2 inch (48px). Mobile = 12px */
+    .container{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
-    /* Header (same style as visitor) */
+    /* ===== Header (same as prosnobank.html) ===== */
     header{
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(7,12,24,.78);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 10px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 12px;
-      max-width: 1180px;
-      margin: 0 auto;
+      gap:10px;
     }
     .brand{
       display:flex;
-      align-items:center;
-      gap:12px;
-      min-width: 0;
-    }
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(92,227,164,.88));
-      box-shadow: var(--shadow);
+      flex-direction:column;
+      gap:3px;
       flex:0 0 auto;
+      min-width:0;
     }
-    .brand h1{
-      margin:0;
-      font-size:16px;
-      line-height: 1.1;
+    .brand .name{
+      color:#fff;
+      font-weight:1000;
+      letter-spacing:.2px;
+      font-size:15px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .brand .tag{
+      color:rgba(255,255,255,.88);
+      font-size:12px;
+      line-height:1.1;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 50vw;
-    }
-    .brand .sub{
-      margin-top:4px;
-      font-size:12px;
-      color: var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 50vw;
+      max-width: 260px;
     }
 
-    .pill{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
-    .dot.ok{background:var(--ok)}
-
-    /* Nav (same) */
-    .navwrap{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 12px 12px;
-    }
     .nav{
       display:flex;
-      gap:10px;
+      gap:8px;
       overflow:auto;
-      padding-bottom: 2px;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width:none;
+      padding-bottom: 2px;
+      flex:1;
     }
+    .nav::-webkit-scrollbar{display:none}
     .nav a{
       flex:0 0 auto;
       text-decoration:none;
-      color: var(--text);
+      color:#fff;
       font-size:12px;
-      font-weight:800;
-      padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      transition:.15s;
-    }
-    .nav a:hover{border-color: rgba(255,255,255,.22)}
-    .nav a.active{
-      border-color: rgba(106,166,255,.55);
-      background: rgba(106,166,255,.12);
-    }
-
-    /* Page layout */
-    .app{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: 320px 1fr;
-      gap: 14px;
-      padding: 14px 0;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr}
-    }
-    .card{
-      border:1px solid var(--line);
-      background: var(--panel);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hd{
-      padding: 14px;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .bd{padding: 14px}
-    .note{font-size:12px; color: var(--muted); line-height:1.6}
-    .divider{height:1px;background:var(--line); margin: 12px 0}
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    .row > *{flex:1}
-    input{
-      width:100%;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      padding: 11px 12px;
-      border-radius: 14px;
-      outline: none;
-    }
-    input:focus{border-color: rgba(106,166,255,.55)}
-    .btn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      font-weight: 900;
+      font-weight:1000;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
       white-space:nowrap;
       transition:.15s;
     }
-    .btn:hover{border-color: rgba(255,255,255,.22)}
-    .btn.primary{border-color: rgba(106,166,255,.6); background: rgba(106,166,255,.16);}
-    .btn.ok{border-color: rgba(92,227,164,.6); background: rgba(92,227,164,.12);}
-    .btn.danger{border-color: rgba(255,106,106,.6); background: rgba(255,106,106,.12);}
+    .nav a:hover{background: rgba(255,255,255,.16)}
+    .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
-    /* Left subjects list */
-    .slist{
+    /* ✅ mobile menu button right side */
+    .menuBtn{
+      flex:0 0 auto;
+      margin-left:auto;
+      display:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
+      color:#fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight:1000;
+      font-size:12px;
+      cursor:pointer;
+      line-height:1;
+    }
+    @media (max-width: 860px){
+      .nav{display:none;}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
+      .brand .tag{max-width: 55vw;}
+    }
+
+    /* ===== Mobile Menu (same) ===== */
+    .mobileMenu{
+      display:none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+    }
+    .mobileMenu .overlay{
+      position:absolute;
+      inset:0;
+      background: transparent;
+    }
+    .mobileMenu .drawer{
+      position:absolute;
+      top: 64px;
+      right: 12px;
+      width: min(320px, calc(100vw - 24px));
+      border-radius: 16px;
+      padding: 10px;
+
+      border: 1px solid rgba(255,255,255,.28);
+
+      background: rgba(8, 20, 55, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      box-shadow: 0 18px 38px rgba(0,0,0,.35);
+    }
+    .mobileMenu a{
+      display:block;
+      text-decoration:none;
+      color:#ffffff;
+      font-weight:1000;
+      font-size:13px;
+      padding: 12px 12px;
+      border-radius: 12px;
+
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      margin-bottom: 8px;
+      white-space:nowrap;
+    }
+    .mobileMenu a.active{
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.12);
+    }
+
+    /* ===== Notice + Header Ad (match) ===== */
+    .noticeBar{
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+    }
+    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
+    .noticeTag{
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:1000;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(29,78,216,.10);
+      border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
+    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
+    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
+
+    .adBox{
+      margin-top: 10px;
+      border: 1px dashed rgba(18,28,55,.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .adHead{
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .adHead b{color: var(--text)}
+    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+
+    /* ===== Details Layout ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 330px 1fr;
+      gap: 10px;
+      align-items:start;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead b{font-size:14px}
+    .panelHead .muted{font-size:12px;color:var(--muted)}
+    .panelBody{padding: 12px 14px}
+
+    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
+
+    .btn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 8px 10px;
+      height: 36px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
+    .btn.ok{border-color: rgba(22,163,74,.22);background: rgba(22,163,74,.10);}
+    .btn.danger{border-color: rgba(220,38,38,.22);background: rgba(220,38,38,.10);}
+
+    .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
+    .searchMini input{
+      width: 100%;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 14px;
+      outline:none;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-size: 13px;
+    }
+
+    /* Left subject list */
+    .sList{
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -199,289 +309,357 @@
       padding-right: 4px;
     }
     @media (max-width: 980px){
-      .slist{max-height: 44vh}
+      .sList{max-height: 42vh;}
     }
-    .sitem{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
+    .sItem{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      border-radius: 18px;
       padding: 12px;
       cursor:pointer;
       transition:.15s;
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      position:relative;
+      overflow:hidden;
     }
-    .sitem:hover{border-color: rgba(255,255,255,.22)}
-    .sitem.active{
-      border-color: rgba(106,166,255,.55);
-      background: rgba(106,166,255,.12);
+    .sItem::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(560px 140px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
+        radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
     }
-    .sitem b{display:block; font-size:14px; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .chips{display:flex; gap:8px; flex-wrap:wrap}
-    .chip{
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      background: rgba(0,0,0,.08);
+    .sItem b{
+      position:relative;
+      display:block;
+      font-size:14px;
+      font-weight:1000;
+      line-height:1.2;
+      margin-bottom:8px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-
-    /* Top content tabs: MCQ/Written/Model Test */
-    .tabs{
+    .chips{
+      position:relative;
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .tab{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight: 900;
-      transition:.15s;
-    }
-    .tab:hover{border-color: rgba(255,255,255,.22)}
-    .tab.active{
-      border-color: rgba(106,166,255,.55);
-      background: rgba(106,166,255,.12);
-    }
-
-    /* Answer toggle */
-    .togglebar{
-      display:flex;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
       align-items:center;
-      justify-content:space-between;
     }
-    .togglegrp{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .toggle{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding: 10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight: 900;
-      transition:.15s;
-      color: var(--text);
+    .chip{
+      font-size:12px;
+      padding: 6px 9px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
+      color: var(--muted);
+      white-space: nowrap;
     }
-    .toggle.active{
-      border-color: rgba(92,227,164,.55);
-      background: rgba(92,227,164,.12);
+    .chip b{color: var(--text)}
+    .sItem.active{
+      outline: 2px solid rgba(29,78,216,.22);
+      border-color: rgba(29,78,216,.22);
     }
 
-    /* Question list + cards */
-    .qlist{display:flex; flex-direction:column; gap:12px;}
-    .qcard{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: 18px;
-      padding: 14px;
-    }
-    .qhead{
+    /* Top tabs inside right panel */
+    .tabs{
       display:flex;
-      align-items:flex-start;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .tab{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+      height: 36px;
+    }
+    .tab.active{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.10);
+    }
+
+    /* Answer toggles */
+    .toggleRow{
+      display:flex;
+      align-items:center;
       justify-content:space-between;
       gap:10px;
+      flex-wrap:wrap;
     }
-    .qno{
-      font-weight: 900;
-      color: var(--muted);
-      font-size: 12px;
-      flex: 0 0 auto;
-      border: 1px solid var(--line);
+    .toggleGroup{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .toggle{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
       border-radius: 999px;
-      padding: 6px 10px;
-      background: rgba(0,0,0,.08);
+      padding: 8px 10px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+      height: 36px;
     }
-    .qtext{
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-      font-weight: 900;
-      flex: 1;
+    .toggle.active{
+      border-color: rgba(22,163,74,.22);
+      background: rgba(22,163,74,.10);
     }
 
-    /* MCQ options */
+    /* Content list */
+    .qList{display:flex; flex-direction:column; gap:10px;}
+    .qCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+    }
+    .qHead{display:flex; gap:10px; align-items:flex-start; justify-content:space-between}
+    .qNo{
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:1000;
+      padding: 6px 10px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .qText{
+      margin:0;
+      font-weight:1000;
+      font-size:14px;
+      line-height:1.5;
+      flex:1;
+    }
+
+    /* Options */
     .opts{margin-top: 10px; display:flex; flex-direction:column; gap:10px;}
     .opt{
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.10);
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
       border-radius: 14px;
       padding: 10px 12px;
       cursor:pointer;
-      transition:.15s;
       display:flex;
       gap:10px;
       align-items:flex-start;
+      transition:.15s;
     }
-    .opt:hover{border-color: rgba(255,255,255,.22)}
+    .opt:hover{transform: translateY(-1px)}
     .badge{
-      width: 26px;
-      height: 26px;
+      width: 26px; height: 26px;
       border-radius: 999px;
-      border:1px solid var(--line);
-      display:grid;
-      place-items:center;
+      border: 1px solid rgba(18,28,55,.12);
+      display:grid; place-items:center;
+      font-weight:1000;
       color: var(--muted);
-      font-weight: 900;
-      flex: 0 0 auto;
-      background: rgba(255,255,255,.02);
+      background: rgba(255,255,255,.92);
+      flex:0 0 auto;
     }
-    .opt .txt{flex:1; font-size: 13px; color: var(--text); line-height:1.5}
+    .opt .txt{flex:1; font-size:13px; line-height:1.5; color: var(--text)}
     .opt.correct{
-      border-color: rgba(92,227,164,.70);
-      background: rgba(92,227,164,.10);
+      border-color: rgba(22,163,74,.28);
+      background: rgba(22,163,74,.10);
     }
     .opt.wrong{
-      border-color: rgba(255,106,106,.70);
-      background: rgba(255,106,106,.10);
+      border-color: rgba(220,38,38,.28);
+      background: rgba(220,38,38,.10);
     }
 
     .ansBox{
       margin-top: 10px;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.10);
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
       border-radius: 14px;
       padding: 10px 12px;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
+      font-size:12px;
+      line-height:1.6;
     }
     .ansBox b{color: var(--text)}
     .ansHidden{
-      color: var(--muted);
-      font-size: 12px;
       margin-top: 10px;
-      border: 1px dashed rgba(255,255,255,.20);
-      background: rgba(255,255,255,.02);
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
       border-radius: 14px;
       padding: 10px 12px;
+      color: var(--muted);
+      font-size:12px;
     }
 
-    /* Pagination */
+    /* Pager */
     .pager{
+      margin-top: 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
-      margin-top: 12px;
     }
-    .pager .info{color: var(--muted); font-size:12px}
+    .pager .info{font-size:12px;color:var(--muted)}
 
     /* Model tests */
-    .mtgrid{
+    .mtGrid{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
-    @media (max-width: 560px){ .mtgrid{grid-template-columns: 1fr;} }
-    .mtcard{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: 18px;
-      padding: 14px;
-    }
-    .mtcard h3{
-      margin:0 0 10px;
-      font-size: 15px;
-      line-height: 1.35;
-    }
-    .mtmeta{display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 10px}
-    .mtmeta .chip b{color: var(--text)}
-    .mtactions{display:flex; gap:10px; flex-wrap:wrap}
-
-    /* Ads */
-    .ad{
-      border: 1px dashed rgba(255,255,255,.25);
+    @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
+    .mtCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
       border-radius: 16px;
       padding: 12px;
-      background: rgba(255,255,255,.02);
-      color: var(--muted);
-      font-size: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
-    .ad .label{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; margin-bottom: 8px;
+    .mtCard h4{
+      margin:0;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.25;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 34px;
     }
-    .ad b{color: var(--text)}
-    .adbox{
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(0,0,0,.10);
-      min-height: 190px;
+    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .mtActions{margin-top: 10px; display:flex; gap:8px; flex-wrap:wrap}
+
+    /* Inline ad slots inside panel */
+    .inlineAd{
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 90px;
       display:grid;
       place-items:center;
       text-align:center;
-      padding: 10px;
+      color: var(--muted);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .inlineAd .tag{
+      display:inline-block;
+      font-weight:1000;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      margin-bottom: 6px;
+      font-size:12px;
     }
 
-    /* Footer (same style) */
-    footer{
-      margin-top: 14px;
-      border-top: 1px solid var(--line);
-      background: rgba(7,12,24,.55);
-    }
-    .foot{
-      max-width:1180px;
-      margin:0 auto;
-      padding: 16px 12px;
-      display:grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 860px){ .foot{grid-template-columns:1fr} }
-    .foot a{color: var(--muted); text-decoration:none; font-size:12px; display:inline-block; padding: 4px 0}
-    .foot a:hover{color: var(--text)}
-    .copy{
-      max-width:1180px;
-      margin:0 auto;
-      padding: 0 12px 16px;
+    .empty{
+      display:none;
+      border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
       color: var(--muted);
-      font-size: 12px;
+      margin-top: 12px;
+      font-size:12px;
     }
 
     .skeleton{
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
       border-radius: 18px;
-      padding: 14px;
+      padding: 12px;
+      min-height: 100px;
+      position: relative;
       overflow:hidden;
-      position:relative;
-      min-height: 110px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
     .shimmer{
       position:absolute; inset:0;
-      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.05) 20%, transparent 40%);
+      background: linear-gradient(110deg, transparent 0%, rgba(0,0,0,.04) 20%, transparent 40%);
       transform: translateX(-100%);
       animation: sh 1.15s infinite;
     }
     @keyframes sh{to{transform: translateX(100%)}}
+
+    /* ===== Footer (same as prosnobank.html) ===== */
+    footer{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
+        linear-gradient(180deg, var(--footerA), var(--footerB));
+      color: rgba(255,255,255,.92);
+    }
+    .foot{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 16px;
+      padding-bottom: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 560px){
+      .foot{grid-template-columns: 1fr 1fr; gap: 12px;}
+      .footLogo{grid-column: 1 / -1;}
+      .footFollow{grid-column: 1 / -1;}
+    }
+    .foot b{font-size:13px}
+    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
+    .foot a:hover{color:#fff}
+
+    .footBrand{display:flex; flex-direction:column; gap:3px;}
+    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+
+    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top: 10px;}
+    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
+    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
+    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
+    @media (max-width: 560px){ .socialRow{display:none;} }
+
+    .copy{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-bottom: 14px;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
+      text-align:center;
+      white-space:nowrap;
+    }
   </style>
 </head>
 
 <body>
-  <!-- Header (same as visitor) -->
   <header>
     <div class="topbar">
       <div class="brand">
-        <div class="logo"></div>
-        <div style="min-width:0">
-          <h1>eProstutiBD • প্রশ্নব্যাংক</h1>
-          <div class="sub" id="subLine">Loading subject…</div>
-        </div>
+        <div class="name">eProstutiBD</div>
+        <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
 
-      <div class="pill">
-        <span id="connDot" class="dot"></span>
-        <span id="connText">Connecting…</span>
-      </div>
-    </div>
-
-    <div class="navwrap">
-      <nav class="nav">
+      <nav class="nav" aria-label="Main navigation">
         <a href="#">একাডেমী</a>
         <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
         <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
@@ -494,93 +672,123 @@
         <a href="#">ব্লগ</a>
         <a href="#">ক্যারিয়ার</a>
       </nav>
+
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="mobileMenu" id="mobileMenu">
+      <div class="overlay" onclick="closeMenu()"></div>
+      <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+        <a href="#">একাডেমী</a>
+        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
+        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </div>
     </div>
   </header>
 
-  <main class="app">
-    <div class="grid">
-
-      <!-- LEFT: Subjects -->
-      <aside class="card">
-        <div class="hd">
-          <b>সকল সাবজেক্ট</b>
-          <span class="note" id="leftHint">Loading…</span>
+  <div class="container">
+    <div class="noticeBar" role="region" aria-label="Notice">
+      <div class="noticeRow">
+        <span class="noticeTag">Details</span>
+        <div class="marq">
+          <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে</span>
         </div>
-        <div class="bd">
-          <div class="row">
+      </div>
+    </div>
+
+    <div class="adBox">
+      <div class="adHead">
+        <b>Ad Slot</b>
+        <span>Header নিচে • Responsive</span>
+      </div>
+      <div class="adBody">
+        <div>
+          <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Responsive Ad</div>
+          <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
+        </div>
+      </div>
+    </div>
+
+    <main class="grid">
+      <!-- LEFT: Subject List -->
+      <aside class="panel">
+        <div class="panelHead">
+          <b>সকল Subject</b>
+          <span class="muted" id="leftHint">Loading…</span>
+        </div>
+        <div class="panelBody">
+          <div class="searchMini">
             <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
+            <button class="btn" onclick="renderSubjectList()">Search</button>
           </div>
-          <div class="divider"></div>
-
-          <div id="sList" class="slist"></div>
-          <div id="sEmpty" class="note" style="display:none">কোনো Subject পাওয়া যায়নি।</div>
 
           <div class="divider"></div>
 
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot (Left)</b>
-              <span>Responsive</span>
-            </div>
-            <div class="adbox">
-              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Ad Placeholder</div>
-                <div class="note">Paste your ad code here</div>
-              </div>
+          <div id="sList" class="sList" aria-live="polite"></div>
+          <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
+
+          <div class="divider"></div>
+
+          <div class="inlineAd">
+            <div>
+              <div class="tag">Ad Slot</div>
+              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
             </div>
           </div>
         </div>
       </aside>
 
       <!-- RIGHT: Content -->
-      <section class="card">
-        <div class="hd">
+      <section class="panel">
+        <div class="panelHead">
           <div style="min-width:0">
-            <b id="title">Details</b>
-            <div class="note" id="rightHint">Select a subject</div>
+            <b id="rightTitle">Details</b>
+            <div class="muted" id="rightHint" style="margin-top:2px;">Left থেকে Subject select করুন</div>
           </div>
-          <div class="tabs" style="justify-content:flex-end">
+
+          <div class="tabs">
             <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
             <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
             <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
           </div>
         </div>
 
-        <div class="bd">
-          <div class="togglebar">
-            <div class="togglegrp">
+        <div class="panelBody">
+          <div class="toggleRow">
+            <div class="toggleGroup" id="ansGroup">
               <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
               <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
             </div>
 
-            <div class="togglegrp" style="justify-content:flex-end">
-              <input id="qSearch" placeholder="Search question…" oninput="renderContent()" style="max-width:360px" />
+            <div class="searchMini" style="max-width:420px; width:100%">
+              <input id="qSearch" placeholder="Search question…" oninput="resetAndReload(true)" />
+              <button class="btn" onclick="resetAndReload(true)">Search</button>
             </div>
           </div>
 
           <div class="divider"></div>
 
-          <!-- Top Ad inside content -->
-          <div class="ad" style="margin-bottom:12px">
-            <div class="label">
-              <b>Ad Slot (Top)</b>
-              <span>Responsive</span>
-            </div>
-            <div class="adbox" style="min-height:180px">
-              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Responsive Ad</div>
-                <div class="note">Paste your ad code here</div>
-              </div>
+          <div class="inlineAd" style="margin-bottom:12px;">
+            <div>
+              <div class="tag">Ad Slot</div>
+              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
             </div>
           </div>
 
           <div id="content"></div>
+          <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
 
           <div class="pager" id="pager" style="display:none">
             <div class="info" id="pageInfo">Page 1</div>
-            <div class="row" style="flex:0 0 auto; gap:10px">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
               <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
             </div>
@@ -588,72 +796,74 @@
 
           <div class="divider"></div>
 
-          <!-- Bottom ad -->
-          <div class="ad">
-            <div class="label">
-              <b>Ad Slot (Bottom)</b>
-              <span>Responsive</span>
-            </div>
-            <div class="adbox" style="min-height:180px">
-              <!-- এখানে পরে AdSense/Adstra কোড বসাবে -->
-              <div>
-                <div style="font-weight:900; color:var(--text); margin-bottom:6px;">Bottom Ad</div>
-                <div class="note">Paste your ad code here</div>
-              </div>
+          <div class="inlineAd">
+            <div>
+              <div class="tag">Ad Slot</div>
+              <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
             </div>
           </div>
 
-          <div class="note" style="margin-top:10px">
-            ✅ প্রতি পেজে সর্বোচ্চ ৩০টি আইটেম দেখানো হয়।<br/>
-            ✅ Ans Hide মোডে MCQ তে অপশন ক্লিক করলে রেজাল্ট (Correct/Wrong) দেখাবে।
+          <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+            ✅ প্রতি পেজে সর্বোচ্চ <b>৩০</b>টি আইটেম দেখানো হয়।<br/>
+            ✅ Ans Hide ON হলে MCQ অপশন সিলেক্ট করলে Correct/Wrong দেখাবে।
           </div>
         </div>
       </section>
-    </div>
-  </main>
+    </main>
+  </div>
 
-  <!-- Footer (same as visitor) -->
   <footer>
     <div class="foot">
-      <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-          <div class="logo" style="width:38px;height:38px;border-radius:14px;"></div>
-          <div>
-            <b>eProstutiBD</b>
-            <div class="note">Free learning platform</div>
-          </div>
-        </div>
-        <div class="note">
-          এই ওয়েবসাইট সম্পূর্ণ ফ্রি। কোনো প্রিমিয়াম নেই।  
-          আয়ের জন্য শুধু বিজ্ঞাপন ব্যবহার করা হবে।
+      <div class="footLogo">
+        <div class="footBrand">
+          <div class="name">eProstutiBD</div>
+          <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
         </div>
       </div>
 
       <div>
-        <b>দরকারি পেজ</b><br/>
-        <a href="#">About</a><br/>
-        <a href="#">Privacy Policy</a><br/>
-        <a href="#">Terms</a><br/>
-        <a href="#">Contact</a><br/>
+        <b>দরকারি পেজ</b>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
       </div>
 
       <div>
-        <b>অন্যান্য</b><br/>
-        <a href="#">Notice</a><br/>
-        <a href="#">Blog</a><br/>
-        <a href="#">Career</a><br/>
-        <a href="#">Help</a><br/>
+        <b>অন্যান্য</b>
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
+      </div>
+
+      <div class="footFollow">
+        <b>Follow</b>
+        <div class="socialRow" aria-label="Social media">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          </a>
+          <a href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="copy">© <span id="year"></span> eProstutiBD • All rights reserved</div>
+
+    <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
   </footer>
 
-  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    // ==== Firebase config (same) ====
+    // ========= Firebase =========
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -664,116 +874,131 @@
       measurementId: "G-T2G55NMDQT"
     };
 
+    // Collections (match your admin)
     const COL_SUBJECTS = "subjects";
     const COL_SUBJECT_QUESTIONS = "subject_questions";
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODEL_TEST_QUESTIONS = "model_test_questions"; // only for counting (optional)
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     const $ = (id)=>document.getElementById(id);
+
+    // ========= Menu =========
+    function openMenu(){
+      $("mobileMenu").style.display = "block";
+      $("menuBtn").setAttribute("aria-expanded", "true");
+    }
+    function closeMenu(){
+      $("mobileMenu").style.display = "none";
+      $("menuBtn").setAttribute("aria-expanded", "false");
+    }
+    function toggleMenu(){
+      const menu = $("mobileMenu");
+      if(menu.style.display === "block") closeMenu();
+      else openMenu();
+    }
+    window.openMenu = openMenu;
+    window.closeMenu = closeMenu;
+    window.toggleMenu = toggleMenu;
+
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenu(); });
+
+    // ========= Helpers =========
     $("year").textContent = new Date().getFullYear();
 
-    // UI helpers
-    function setConn(ok, text){
-      $("connDot").classList.toggle("ok", !!ok);
-      $("connText").textContent = text;
-    }
     function esc(str){
-      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    // Parse URL
+    function normalize(s){
+      return String(s||"").toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    // robust: get options from options[] OR option1..option4
+    function getOptions(doc){
+      if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+      const arr = [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+      return arr;
+    }
+
+    // robust: determine correct index from correctIndex OR rightAns
+    // rightAns may be "A"/"B"/"C"/"D" OR option text OR index string
+    function getCorrectIndex(doc, opts){
+      if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+      if(typeof doc.correctIndex === "string" && doc.correctIndex.trim() !== ""){
+        const n = Number(doc.correctIndex);
+        if(!Number.isNaN(n) && n >= 0 && n <= 3) return n;
+      }
+
+      const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+      if(!ra) return -1;
+
+      const map = { a:0, b:1, c:2, d:3 };
+      const low = ra.toLowerCase();
+      if(map[low] !== undefined) return map[low];
+
+      // match exact option text (normalized)
+      const nra = normalize(ra);
+      if(!nra) return -1;
+      for(let i=0;i<opts.length;i++){
+        if(normalize(opts[i]) === nra) return i;
+      }
+      // contain match
+      for(let i=0;i<opts.length;i++){
+        if(normalize(opts[i]).includes(nra) || nra.includes(normalize(opts[i]))) return i;
+      }
+      return -1;
+    }
+
+    function renderSkeleton(targetId, count=3){
+      const wrap = $(targetId);
+      wrap.innerHTML = "";
+      for(let i=0;i<count;i++){
+        const d = document.createElement("div");
+        d.className = "skeleton";
+        d.innerHTML = `<div class="shimmer"></div>`;
+        wrap.appendChild(d);
+      }
+    }
+
+    // ========= State =========
+    let SUBJECTS = [];
+    let selectedSubjectId = "";
+    let selectedSubjectName = "";
+
+    let mode = "mcq";       // mcq | written | model
+    let ansMode = "hide";   // hide | show
+
+    const PAGE_SIZE = 30;
+    let pageIndex = 1;
+    let cursors = [null];       // cursor per page
+    let lastDocThisPage = null;
+    let hasNext = false;
+
+    let unsubSubjects = null;
+    let unsubPage = null;
+
+    let currentItems = [];
+    let selectedOptionMap = new Map(); // questionId -> chosen index (MCQ hide)
+
+    // ========= URL param =========
     function getParam(name){
       const u = new URL(location.href);
       return u.searchParams.get(name) || "";
     }
-
-    // State
-    let SUBJECTS = [];
-    let selectedSubjectId = "";
-    let selectedSubjectName = "";
-    let mode = "mcq";       // mcq | written | model
-    let ansMode = "hide";   // hide | show
-
-    // Pagination state (Firestore cursor paging)
-    const PAGE_SIZE = 30;
-    let pageIndex = 1;
-    let cursors = [null]; // cursors[pageIndex-1] is startAfter doc for page >1
-    let lastDocThisPage = null;
-    let hasNext = false;
-
-    // Data cache current page
-    let currentItems = [];  // questions or model tests for page
-    let lastSelectionMap = new Map(); // questionId -> selectedOptionIndex (for MCQ hide mode)
-
-    // Listeners
-    let unsubSubjects = null;
-    let unsubSubjectDoc = null; // optional
-    let unsubPage = null;
-
-    // Initial subject from URL
     selectedSubjectId = getParam("subjectId");
 
-    // Tabs + toggles
-    function setMode(newMode){
-      mode = newMode;
-      $("tabMcq").classList.toggle("active", mode==="mcq");
-      $("tabWritten").classList.toggle("active", mode==="written");
-      $("tabModel").classList.toggle("active", mode==="model");
-
-      // Ans toggle only for mcq/written
-      const showAnsControls = (mode === "mcq" || mode === "written");
-      $("ansHideBtn").style.display = showAnsControls ? "inline-block" : "none";
-      $("ansShowBtn").style.display = showAnsControls ? "inline-block" : "none";
-
-      // Reset paging & selection
-      resetPaging();
-      lastSelectionMap.clear();
-
-      renderContentSkeleton();
-      attachPageListener();
-    }
-    window.setMode = setMode;
-
-    function setAnsMode(m){
-      ansMode = m;
-      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-      $("ansShowBtn").classList.toggle("active", ansMode==="show");
-      // When toggling, re-render current page
-      renderContent();
-    }
-    window.setAnsMode = setAnsMode;
-
-    function resetPaging(){
-      pageIndex = 1;
-      cursors = [null];
-      lastDocThisPage = null;
-      hasNext = false;
-      currentItems = [];
-    }
-
-    function renderContentSkeleton(){
-      const c = $("content");
-      c.innerHTML = `
-        <div class="skeleton"><div class="shimmer"></div></div>
-        <div style="height:10px"></div>
-        <div class="skeleton"><div class="shimmer"></div></div>
-        <div style="height:10px"></div>
-        <div class="skeleton"><div class="shimmer"></div></div>
-      `;
-      $("pager").style.display = "none";
-    }
-
-    // Left subject list render
+    // ========= Left subject list =========
     function renderSubjectList(){
-      const q = ($("sSearch").value || "").trim().toLowerCase();
+      const q = normalize($("sSearch").value || "");
       const list = $("sList");
       list.innerHTML = "";
 
       const filtered = SUBJECTS
-        .filter(s => (s.name||"").toLowerCase().includes(q))
+        .filter(s => !q ? true : normalize(s.name||"").includes(q))
         .sort((a,b)=> (a.name||"").localeCompare(b.name||""));
 
       $("leftHint").textContent = `Total: ${SUBJECTS.length} • Showing: ${filtered.length}`;
@@ -784,13 +1009,14 @@
         const written = s.counts?.written || 0;
 
         const el = document.createElement("div");
-        el.className = "sitem" + (s.id === selectedSubjectId ? " active" : "");
-        el.onclick = ()=> selectSubject(s.id, s.name || "");
+        el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
+        el.onclick = ()=> selectSubject(s.id);
+
         el.innerHTML = `
           <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
           <div class="chips">
-            <span class="chip">MCQ: <b style="color:var(--text)">${mcq}</b></span>
-            <span class="chip">Written: <b style="color:var(--text)">${written}</b></span>
+            <span class="chip">MCQ <b>${mcq}</b></span>
+            <span class="chip">Written <b>${written}</b></span>
           </div>
         `;
         list.appendChild(el);
@@ -798,129 +1024,57 @@
     }
     window.renderSubjectList = renderSubjectList;
 
-    // Select subject
-    function selectSubject(id, name){
-      if(!id) return;
+    function selectSubject(id){
       selectedSubjectId = id;
-      selectedSubjectName = name;
 
-      // update URL without reload
       const u = new URL(location.href);
       u.searchParams.set("subjectId", id);
       history.replaceState({}, "", u.toString());
 
-      $("title").textContent = name ? name : "Details";
-      $("subLine").textContent = name ? `${name} • ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই` : "ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই";
+      const found = SUBJECTS.find(s=>s.id===id);
+      selectedSubjectName = found?.name || "";
+      $("rightTitle").textContent = selectedSubjectName || "Details";
+      $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
       $("rightHint").textContent = "Loading…";
 
-      // reset & reload
-      resetPaging();
-      lastSelectionMap.clear();
       renderSubjectList();
-      renderContentSkeleton();
-      attachPageListener();
+      resetAndReload(false);
     }
 
-    // Firestore page listener
-    function detachPage(){
-      if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; }
+    // ========= Tabs / Answer mode =========
+    function setMode(m){
+      mode = m;
+
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
+
+      // show/hide ans toggles
+      const showAns = (mode === "mcq" || mode === "written");
+      $("ansGroup").style.display = showAns ? "flex" : "none";
+      $("ansHideBtn").style.display = showAns ? "inline-flex" : "none";
+      $("ansShowBtn").style.display = showAns ? "inline-flex" : "none";
+
+      resetAndReload(false);
     }
+    window.setMode = setMode;
 
-    function buildQuery(){
-      if(!selectedSubjectId) return null;
-
-      const search = ($("qSearch").value || "").trim().toLowerCase();
-
-      if(mode === "model"){
-        // subject model tests paginated by createdAt desc
-        let q = db.collection(COL_SUBJECT_MODEL_TESTS)
-          .where("subjectId","==", selectedSubjectId)
-          .orderBy("createdAt","desc")
-          .limit(PAGE_SIZE + 1);
-
-        const cursor = cursors[pageIndex-1];
-        if(cursor) q = q.startAfter(cursor);
-
-        // Search on client-side (title) -> we'll filter after fetching
-        return { q, search, type:"model" };
-      }
-
-      // Questions (mcq/written) from subject_questions
-      let q = db.collection(COL_SUBJECT_QUESTIONS)
-        .where("subjectId","==", selectedSubjectId)
-        .where("type","==", mode) // mcq or written
-        .orderBy("createdAt","desc")
-        .limit(PAGE_SIZE + 1);
-
-      const cursor = cursors[pageIndex-1];
-      if(cursor) q = q.startAfter(cursor);
-
-      return { q, search, type:"q" };
+    function setAnsMode(m){
+      ansMode = m;
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      renderContent(); // re-render current page
     }
+    window.setAnsMode = setAnsMode;
 
-    function attachPageListener(){
-      detachPage();
-
-      if(!selectedSubjectId){
-        $("rightHint").textContent = "Left থেকে Subject select করুন।";
-        $("content").innerHTML = `<div class="note">Left থেকে একটি Subject select করলে এখানে প্রশ্ন/মডেল টেস্ট দেখাবে।</div>`;
-        $("pager").style.display = "none";
-        return;
-      }
-
-      const built = buildQuery();
-      if(!built) return;
-
-      unsubPage = built.q.onSnapshot(async (snap)=>{
-        let docs = snap.docs;
-
-        // hasNext logic: we fetch PAGE_SIZE+1
-        hasNext = docs.length > PAGE_SIZE;
-        if(hasNext) docs = docs.slice(0, PAGE_SIZE);
-
-        lastDocThisPage = docs.length ? docs[docs.length - 1] : null;
-
-        // set next cursor for next page (when user clicks next)
-        // we store the "last doc" of this page as cursor for next page
-        // but only when we haveNext
-        // (actual cursor is stored when clicking next)
-
-        // Map docs
-        if(built.type === "model"){
-          currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
-        }else{
-          currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
-        }
-
-        // Client-side search filter
-        const s = built.search;
-        if(s){
-          if(built.type === "model"){
-            currentItems = currentItems.filter(it => (it.title||"").toLowerCase().includes(s));
-          }else{
-            currentItems = currentItems.filter(it => (it.question||"").toLowerCase().includes(s));
-          }
-        }
-
-        // Update hint
-        if(mode === "model"){
-          $("rightHint").textContent = `Model Tests • Page ${pageIndex}`;
-        }else if(mode === "mcq"){
-          $("rightHint").textContent = `MCQ • Page ${pageIndex} • Ans: ${ansMode.toUpperCase()}`;
-        }else{
-          $("rightHint").textContent = `Written • Page ${pageIndex} • Ans: ${ansMode.toUpperCase()}`;
-        }
-
-        renderContent();
-        updatePager();
-        setConn(true, "Live");
-      }, (err)=>{
-        console.error(err);
-        setConn(false, "Connection error");
-        $("rightHint").textContent = "Load failed (check rules)";
-        $("content").innerHTML = `<div class="note">ডাটা লোড হচ্ছে না। Firestore rules/permission check করুন।</div>`;
-        $("pager").style.display = "none";
-      });
+    // ========= Pagination =========
+    function resetPaging(){
+      pageIndex = 1;
+      cursors = [null];
+      lastDocThisPage = null;
+      hasNext = false;
+      currentItems = [];
+      selectedOptionMap.clear();
     }
 
     function updatePager(){
@@ -933,166 +1087,253 @@
     function prevPage(){
       if(pageIndex <= 1) return;
       pageIndex -= 1;
-      lastSelectionMap.clear();
-      renderContentSkeleton();
-      attachPageListener();
+      selectedOptionMap.clear();
+      loadPage();
     }
-    window.prevPage = prevPage;
-
     function nextPage(){
       if(!hasNext) return;
-      // store cursor for next page = last doc of this page
       if(lastDocThisPage){
-        cursors[pageIndex] = lastDocThisPage; // cursor for pageIndex+1
+        cursors[pageIndex] = lastDocThisPage; // cursor for next page
       }
       pageIndex += 1;
-      lastSelectionMap.clear();
-      renderContentSkeleton();
-      attachPageListener();
+      selectedOptionMap.clear();
+      loadPage();
     }
+    window.prevPage = prevPage;
     window.nextPage = nextPage;
 
-    // Render content
-    function renderContent(){
-      const c = $("content");
-      c.innerHTML = "";
+    // ========= Firestore query =========
+    function detachPage(){
+      if(unsubPage){ try{unsubPage();}catch(e){} unsubPage=null; }
+    }
+
+    function resetAndReload(keepPage){
+      if(!selectedSubjectId){
+        $("rightHint").textContent = "Left থেকে Subject select করুন";
+        $("content").innerHTML = "";
+        $("emptyRight").style.display = "block";
+        $("pager").style.display = "none";
+        return;
+      }
+      if(!keepPage) resetPaging();
+      loadPage();
+    }
+    window.resetAndReload = resetAndReload;
+
+    function buildQuery(){
+      const cursor = cursors[pageIndex-1];
+      const searchText = normalize($("qSearch").value || "");
 
       if(mode === "model"){
-        // Model tests view
-        if(!currentItems.length){
-          c.innerHTML = `<div class="note">এই Subject এ কোনো Model Test নেই।</div>`;
-          return;
+        let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+          .where("subjectId","==", selectedSubjectId)
+          .orderBy("createdAt","desc")
+          .limit(PAGE_SIZE + 1);
+
+        if(cursor) q = q.startAfter(cursor);
+        return { q, searchText, kind:"model" };
+      }
+
+      // mcq / written
+      let q = db.collection(COL_SUBJECT_QUESTIONS)
+        .where("subjectId","==", selectedSubjectId)
+        .where("type","==", mode)
+        .orderBy("createdAt","desc")
+        .limit(PAGE_SIZE + 1);
+
+      if(cursor) q = q.startAfter(cursor);
+      return { q, searchText, kind:"q" };
+    }
+
+    function loadPage(){
+      detachPage();
+      $("emptyRight").style.display = "none";
+      renderSkeleton("content", 3);
+      $("pager").style.display = "none";
+
+      if(!selectedSubjectId) return;
+
+      const built = buildQuery();
+
+      unsubPage = built.q.onSnapshot((snap)=>{
+        let docs = snap.docs;
+
+        hasNext = docs.length > PAGE_SIZE;
+        if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+        lastDocThisPage = docs.length ? docs[docs.length-1] : null;
+
+        currentItems = docs.map(d => ({ id:d.id, ...d.data() }));
+
+        // client-side search
+        if(built.searchText){
+          if(built.kind === "model"){
+            currentItems = currentItems.filter(it => normalize(it.title || it.name || "").includes(built.searchText));
+          }else{
+            currentItems = currentItems.filter(it => normalize(it.question || "").includes(built.searchText));
+          }
         }
 
-        const wrap = document.createElement("div");
-        wrap.className = "mtgrid";
+        // hints
+        if(mode === "mcq") $("rightHint").textContent = `${selectedSubjectName || "Subject"} • MCQ • Page ${pageIndex}`;
+        else if(mode === "written") $("rightHint").textContent = `${selectedSubjectName || "Subject"} • Written • Page ${pageIndex}`;
+        else $("rightHint").textContent = `${selectedSubjectName || "Subject"} • Model Tests • Page ${pageIndex}`;
 
-        currentItems.forEach((mt, idx)=>{
-          const counts = mt.counts || { mcq:0, written:0 };
-          const qCount = (counts.mcq||0) + (counts.written||0);
+        renderContent();
+        if(currentItems.length){
+          updatePager();
+        }else{
+          $("pager").style.display = "none";
+        }
+      }, (err)=>{
+        console.error(err);
+
+        // Common fix: createdAt missing or index not created
+        $("content").innerHTML = "";
+        $("pager").style.display = "none";
+        $("emptyRight").style.display = "block";
+        $("emptyRight").textContent =
+          "ডাটা লোড হচ্ছে না। সম্ভবত Firestore index/createdAt field সমস্যা। (Admin এ createdAt সেট করুন, এবং Firestore composite index তৈরি করুন)।";
+      });
+    }
+
+    // ========= Render content =========
+    function renderContent(){
+      const wrap = $("content");
+      wrap.innerHTML = "";
+      $("emptyRight").style.display = currentItems.length ? "none" : "block";
+
+      if(!currentItems.length) return;
+
+      if(mode === "model"){
+        const grid = document.createElement("div");
+        grid.className = "mtGrid";
+
+        currentItems.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Subject Model Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+
+          const counts = mt.counts || {};
+          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
           const card = document.createElement("div");
-          card.className = "mtcard";
+          card.className = "mtCard";
           card.innerHTML = `
-            <h3>${esc(mt.title || ("Model Test " + (idx+1)))}</h3>
-            <div class="mtmeta">
-              <span class="chip">সময়: <b>${mt.totalTimeMin || 0}</b> মিনিট</span>
-              <span class="chip">মার্ক: <b>${mt.totalMarks || 0}</b></span>
-              <span class="chip">প্রশ্ন: <b>${qCount}</b></span>
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMeta">
+              <span>Time: ${esc(time)}</span>
+              <span>Mark: ${esc(marks)}</span>
+              <span>Q: ${esc(qCount)}</span>
             </div>
-            <div class="mtactions">
+            <div class="mtActions">
               <button class="btn primary" onclick="startModelTest('${mt.id}')">Start Test</button>
               <button class="btn" onclick="openModelResult('${mt.id}')">Result</button>
             </div>
           `;
-          wrap.appendChild(card);
+          grid.appendChild(card);
         });
 
-        c.appendChild(wrap);
-        return;
-      }
-
-      // Questions view
-      if(!currentItems.length){
-        c.innerHTML = `<div class="note">এই Subject এ কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+        wrap.appendChild(grid);
         return;
       }
 
       const list = document.createElement("div");
-      list.className = "qlist";
+      list.className = "qList";
 
-      currentItems.forEach((it, i)=>{
-        const qno = ((pageIndex - 1) * PAGE_SIZE) + (i + 1);
+      const letters = ["A","B","C","D"];
+
+      currentItems.forEach((it, idx)=>{
+        const qno = ((pageIndex - 1) * PAGE_SIZE) + (idx + 1);
 
         const card = document.createElement("div");
-        card.className = "qcard";
+        card.className = "qCard";
 
         const head = document.createElement("div");
-        head.className = "qhead";
+        head.className = "qHead";
         head.innerHTML = `
-          <span class="qno">#${qno}</span>
-          <p class="qtext">${esc(it.question || "")}</p>
+          <span class="qNo">#${qno}</span>
+          <p class="qText">${esc(it.question || "")}</p>
         `;
         card.appendChild(head);
 
         if(mode === "mcq"){
-          const opts = Array.isArray(it.options) ? it.options : [];
-          const correctIndex = Number.isFinite(it.correctIndex) ? it.correctIndex : -1;
+          const opts = getOptions(it);
+          const correctIndex = getCorrectIndex(it, opts);
+
+          const chosen = selectedOptionMap.get(it.id); // may be undefined
 
           const optWrap = document.createElement("div");
           optWrap.className = "opts";
 
-          const letters = ["A","B","C","D"];
-          const chosen = lastSelectionMap.get(it.id); // maybe undefined
-
-          opts.slice(0,4).forEach((op, idx)=>{
-            const div = document.createElement("div");
-            div.className = "opt";
-            div.innerHTML = `
-              <span class="badge">${letters[idx]}</span>
+          opts.slice(0,4).forEach((op, oi)=>{
+            const opt = document.createElement("div");
+            opt.className = "opt";
+            opt.innerHTML = `
+              <span class="badge">${letters[oi]}</span>
               <div class="txt">${esc(op || "")}</div>
             `;
 
-            // Ans show mode: highlight correct always
             if(ansMode === "show"){
-              if(idx === correctIndex) div.classList.add("correct");
-              div.style.cursor = "default";
+              if(oi === correctIndex) opt.classList.add("correct");
+              opt.style.cursor = "default";
             }else{
-              // Ans hide mode: allow choose
-              div.onclick = ()=>{
-                // If already selected for this question, ignore further clicks (stable result)
-                if(lastSelectionMap.has(it.id)) return;
-
-                lastSelectionMap.set(it.id, idx);
-                // re-render only this card: simplest - re-render all current
+              // Ans hide: allow choose once
+              opt.onclick = ()=>{
+                if(selectedOptionMap.has(it.id)) return;
+                selectedOptionMap.set(it.id, oi);
                 renderContent();
               };
 
-              // after selection, show correct/wrong highlight
               if(chosen !== undefined){
-                if(idx === correctIndex) div.classList.add("correct");
-                if(idx === chosen && chosen !== correctIndex) div.classList.add("wrong");
-                div.style.cursor = "default";
+                if(oi === correctIndex) opt.classList.add("correct");
+                if(oi === chosen && chosen !== correctIndex) opt.classList.add("wrong");
+                opt.style.cursor = "default";
               }
             }
 
-            optWrap.appendChild(div);
+            optWrap.appendChild(opt);
           });
 
           card.appendChild(optWrap);
 
-          // Answer area rules
+          // Answer info
+          const note = (it.note ?? it.explain ?? "").toString().trim();
           if(ansMode === "show"){
-            const ans = document.createElement("div");
-            ans.className = "ansBox";
-            ans.innerHTML = `<b>Correct:</b> ${correctIndex>=0 ? (["A","B","C","D"][correctIndex]) : "N/A"}${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
-            card.appendChild(ans);
+            const box = document.createElement("div");
+            box.className = "ansBox";
+            box.innerHTML = `<b>Correct:</b> ${correctIndex>=0 ? letters[correctIndex] : "N/A"}`
+              + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
+            card.appendChild(box);
           }else{
-            // hide mode: show status after selection
-            if(lastSelectionMap.has(it.id)){
-              const chosenIdx = lastSelectionMap.get(it.id);
-              const isOk = chosenIdx === correctIndex;
-              const ans = document.createElement("div");
-              ans.className = "ansBox";
-              ans.innerHTML = isOk
-                ? `✅ <b>Correct!</b>${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`
-                : `❌ <b>Wrong!</b> Correct Answer: <b>${correctIndex>=0 ? (["A","B","C","D"][correctIndex]) : "N/A"}</b>${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
-              card.appendChild(ans);
+            if(selectedOptionMap.has(it.id)){
+              const chosenIdx = selectedOptionMap.get(it.id);
+              const ok = chosenIdx === correctIndex;
+              const box = document.createElement("div");
+              box.className = "ansBox";
+              box.innerHTML = ok
+                ? `✅ <b style="color:var(--ok)">Correct!</b>` + (note ? `<br/><b>Note:</b> ${esc(note)}` : "")
+                : `❌ <b style="color:var(--danger)">Wrong!</b> Correct: <b>${correctIndex>=0 ? letters[correctIndex] : "N/A"}</b>`
+                  + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
+              card.appendChild(box);
             }else{
-              const hint = document.createElement("div");
-              hint.className = "ansHidden";
-              hint.textContent = "Ans Hide ON — অপশন সিলেক্ট করলে রেজাল্ট দেখাবে।";
-              card.appendChild(hint);
+              const hidden = document.createElement("div");
+              hidden.className = "ansHidden";
+              hidden.textContent = "Ans Hide ON — অপশন সিলেক্ট করলে রেজাল্ট দেখাবে।";
+              card.appendChild(hidden);
             }
           }
         }
 
         if(mode === "written"){
+          const rightAns = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+          const note = (it.note ?? it.explain ?? "").toString().trim();
+
           if(ansMode === "show"){
-            const ans = document.createElement("div");
-            ans.className = "ansBox";
-            ans.innerHTML = `<b>Answer:</b> ${esc(it.rightAns || "")}${it.note ? `<br/><b>Note:</b> ${esc(it.note)}` : ""}`;
-            card.appendChild(ans);
+            const box = document.createElement("div");
+            box.className = "ansBox";
+            box.innerHTML = `<b>Answer:</b> ${esc(rightAns)}`
+              + (note ? `<br/><b>Note:</b> ${esc(note)}` : "");
+            card.appendChild(box);
           }else{
             const hidden = document.createElement("div");
             hidden.className = "ansHidden";
@@ -1102,74 +1343,73 @@
         }
 
         list.appendChild(card);
+
+        // inline ad after every 10 items (optional)
+        if((idx+1) % 10 === 0 && idx < currentItems.length - 1){
+          const ad = document.createElement("div");
+          ad.className = "inlineAd";
+          ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div></div>`;
+          list.appendChild(ad);
+        }
       });
 
-      c.appendChild(list);
+      wrap.appendChild(list);
     }
-    window.renderContent = renderContent;
 
-    // Model test redirects
+    // ========= Model test redirects =========
     function startModelTest(modelTestId){
-      // same tab redirect
       location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
     }
-    window.startModelTest = startModelTest;
-
     function openModelResult(modelTestId){
       location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
     }
+    window.startModelTest = startModelTest;
     window.openModelResult = openModelResult;
 
-    // ==== Subjects realtime ====
+    // ========= Subjects realtime =========
     function attachSubjects(){
       if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
 
       unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
         SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
 
-        // If no subjectId in url, auto-select first subject
+        // auto select first subject if none in URL
         if(!selectedSubjectId && SUBJECTS.length){
-          selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
+          const first = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0];
+          selectedSubjectId = first.id;
         }
 
-        // Find selected subject name
-        const sel = SUBJECTS.find(s=>s.id===selectedSubjectId);
-        selectedSubjectName = sel?.name || "";
+        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        selectedSubjectName = found?.name || "";
 
-        $("title").textContent = selectedSubjectName ? selectedSubjectName : "Details";
-        $("subLine").textContent = selectedSubjectName
-          ? `${selectedSubjectName} • ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই`
-          : "ফ্রি সার্ভিস • কোনো প্রিমিয়াম নেই";
+        $("rightTitle").textContent = selectedSubjectName || "Details";
+        $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
+        $("tickerText").textContent = selectedSubjectName
+          ? `${selectedSubjectName} • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে`
+          : "Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে Tab ব্যবহার করুন • Ans Hide মোডে MCQ সিলেক্ট করলে Correct/Wrong দেখাবে";
 
         renderSubjectList();
 
         if(selectedSubjectId){
-          // ensure paging/listener attached
-          attachPageListener();
-        }else{
-          $("rightHint").textContent = "Left থেকে Subject select করুন।";
-          $("content").innerHTML = `<div class="note">Left থেকে একটি Subject select করলে এখানে প্রশ্ন/মডেল টেস্ট দেখাবে।</div>`;
-          $("pager").style.display = "none";
+          // update URL if missing
+          const u = new URL(location.href);
+          u.searchParams.set("subjectId", selectedSubjectId);
+          history.replaceState({}, "", u.toString());
+          resetAndReload(false);
         }
-
-        setConn(true, "Live");
       }, (err)=>{
         console.error(err);
-        setConn(false, "Connection error");
-        $("leftHint").textContent = "Load failed (check rules)";
+        $("leftHint").textContent = "Failed to load";
         $("sList").innerHTML = "";
         $("sEmpty").style.display = "block";
       });
     }
 
-    // Boot
-    setConn(false, "Connecting…");
-    renderContentSkeleton();
-    attachSubjects();
-
-    // Ensure answer toggle default
+    // ========= Boot =========
     setAnsMode("hide");
-    setMode("mcq");
+    setMode("mcq"); // keeps UI in sync
+    renderSkeleton("content", 3);
+    attachSubjects();
   </script>
 </body>
 </html>
