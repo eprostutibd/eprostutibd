@@ -25,7 +25,7 @@
       --ok:#16a34a;
       --danger:#dc2626;
 
-      /* ✅ footer new palette */
+      /* Footer palette */
       --footerA:#0b254a;
       --footerB:#061a38;
 
@@ -154,15 +154,11 @@
       background: rgba(255,255,255,.94);box-shadow: 0 18px 44px rgba(0,0,0,.22);
       overflow:hidden;
       max-height: calc(100vh - (var(--headerH, 64px) + 24px));
-      display:flex;
-      flex-direction:column;
-      min-height:0;
+      display:flex;flex-direction:column;min-height:0;
     }
     .subjectSheet .head{
       padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      display:flex;align-items:center;justify-content:space-between;
       border-bottom: 1px solid rgba(18,28,55,.10);
       flex:0 0 auto;
     }
@@ -170,7 +166,7 @@
     .subjectSheet .closeBtn{border:1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.90);border-radius: 12px;padding: 8px 10px;font-weight:1000;cursor:pointer;}
     .subjectSheet .body{
       padding: 12px;
-      overflow:auto;              /* ✅ scroll works */
+      overflow:auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       scroll-behavior: smooth;
@@ -203,29 +199,16 @@
       border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
+
+    /* ✅ Left subject button + Center group (subject + tabs) */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
       padding: 10px clamp(12px, 4vw, 48px);
-      display:grid;
-      grid-template-columns: 1fr auto auto;
+      display:flex;
       align-items:center;
       gap:12px;
     }
-    .subTitle{display:flex;align-items:center;gap:10px;min-width:0;}
-    .subTitle b{
-      font-size:14px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 40vw;
-      font-weight:1000;
-    }
-    .subTitle span{display:none !important;}
-
-    .tabs{display:flex;gap:14px;align-items:center;justify-content:center;white-space:nowrap;}
-    .tab{border:none;background: transparent;color: var(--text);padding:0;font-size:13px;font-weight:1000;cursor:pointer;}
-    .tab.active{color: var(--brandA);text-decoration: underline;text-underline-offset: 6px;}
 
     .subBtnMobile{
       display:none;
@@ -239,10 +222,66 @@
       cursor:pointer;
       white-space:nowrap;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      flex:0 0 auto;
     }
     @media (max-width: 980px){
       .subBtnMobile{display:inline-flex;align-items:center;gap:8px;}
-      .subTitle b{max-width: 46vw;}
+    }
+
+    /* ✅ Center everything: "English 1 , MCQ , Written , মডেল টেস্ট" */
+    .centerGroup{
+      flex: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      min-width:0;
+      white-space:nowrap;
+    }
+    .centerGroup .subName{
+      font-size:14px;
+      font-weight:1000;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 36vw;
+    }
+    .sep{
+      opacity:.45;
+      font-weight:900;
+      transform: translateY(-1px);
+    }
+
+    .tabs{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+    }
+    .tab{
+      border:none;
+      background: transparent;
+      color: var(--text);
+      padding: 0;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor:pointer;
+    }
+    .tab.active{
+      color: var(--brandA);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+
+    /* right spacer (to keep center true when button shown on left) */
+    .dockSpacer{
+      width: 42px;
+      flex:0 0 auto;
+      display:none;
+    }
+    @media (max-width: 980px){
+      .dockSpacer{display:block;}
+      .centerGroup .subName{max-width: 28vw;}
     }
 
     /* ===== Layout ===== */
@@ -329,7 +368,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px;
+        max-height: 520px; /* ~8 cards */
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -337,11 +376,11 @@
         padding-right:6px;
         display:flex;
         flex-direction:column;
-        gap:12px;
+        gap:12px; /* ✅ gap between cards */
       }
     }
 
-    /* ✅ Desktop subject cards = mobile sheet style */
+    /* Subject card design (mobile-like) */
     .sItem{
       border:1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.97);
@@ -402,13 +441,11 @@
     }
     .qText{margin:0;font-weight:700;font-size:12.5px;line-height:1.55;flex:1;letter-spacing:.1px;}
 
-    /* ✅ always 2 columns */
+    /* options */
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:10px;}
-
-    /* ✅ tick/cross BEFORE text (tight) */
     .optLine{
       display:grid;
-      grid-template-columns: 18px 22px 1fr;  /* mark + A/B + text */
+      grid-template-columns: 18px 22px 1fr;
       column-gap: 6px;
       align-items:start;
       cursor:pointer;
@@ -433,7 +470,6 @@
     .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
     .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);}
 
-    /* Note plain text */
     .noteBox{
       margin-top: 8px;
       padding: 0;
@@ -472,53 +508,52 @@
       font-size:12px;
     }
 
-    /* ===== Ans controls above footer ===== */
-    .ansBarWrap{
-      max-width: 1320px;
-      margin: 0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      margin-top: 12px;
-      margin-bottom: 12px;
-      position: sticky;
-      bottom: calc(12px + var(--safeBottom));
-      z-index: 999;
-      pointer-events:none;
+    /* ===== Model test cards (right sidebar latest list) ===== */
+    .latestBoxTitle{
+      font-weight:1000;
+      font-size:13px;
+      margin: 14px 0 10px;
+      color: var(--text);
     }
-    .floatingAns{
-      pointer-events:auto;
-      width: fit-content;
-      margin-left:auto;
-      margin-right:auto;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(18,28,55,.12);
-      border-radius: 999px;
-      box-shadow: 0 18px 44px rgba(15,23,48,.14);
-      padding: 8px;
+    .latestMT{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .mtCardMini{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      position:relative;
+      overflow:hidden;
+    }
+    .mtCardMini h4{
+      margin:0 0 8px;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.25;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .mtMetaMini{
       display:flex;
       gap:8px;
-      align-items:center;
-      max-width: calc(100vw - 24px);
-    }
-    .toggle{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.92);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 12px;
+      flex-wrap:wrap;
+      color: var(--muted);
       font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      height: 36px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.15s;
-      white-space:nowrap;
+      margin-bottom:10px;
     }
-    .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
+    .mtMetaMini span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius:999px;
+      padding:6px 10px;
+    }
+    .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
+    .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Footer (Mobile 3 line) ===== */
+    /* ===== Footer (4 lines desktop + mobile) ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -535,40 +570,42 @@
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 16px;
       padding-bottom: 10px;
-      display:grid;
-      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      display:flex;
+      flex-direction:column;
       gap: 14px;
-      align-items:start;
     }
-
+    .footLine{
+      width:100%;
+      display:flex;
+      gap: 18px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
     .footBrand{display:flex;flex-direction:column;gap:3px;}
     .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 520px;}
 
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
 
-    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top:10px;}
+    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:8px;}
     .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
     .socialRow a:hover{opacity:1; transform: translateY(-1px);}
     .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
 
-    /* ✅ Mobile footer exactly 3 lines */
-    .footLine1, .footLine2, .footLine3{display:contents;}
+    /* Mobile: keep 4 lines, make link lines 2 columns */
+    .linkCols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 520px;
+    }
     @media (max-width: 560px){
-      .foot{
-        display:flex !important;
-        flex-direction:column !important;
-        gap: 14px !important;
-      }
-      .footLine1{display:block;}
-      .footLine2{
-        display:grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      .footLine3{display:block;}
+      .footBrand .tag{max-width: 320px;}
+      .linkCols{grid-template-columns: 1fr 1fr;}
     }
 
     .copy{
@@ -659,21 +696,28 @@
   </div>
 </div>
 
-<!-- Sticky Subject line + tabs + subject button -->
+<!-- ✅ Subject Dock -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
-    <div class="subTitle">
-      <b id="subName">Details</b>
-      <span id="subMeta"></span>
-    </div>
-
-    <div class="tabs" aria-label="Tabs">
-      <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
-      <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
-      <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
-    </div>
-
+    <!-- ✅ mobile subject menu button LEFT -->
     <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
+
+    <!-- ✅ center: English 1 , MCQ , Written , মডেল টেস্ট -->
+    <div class="centerGroup">
+      <div class="subName" id="subName">Details</div>
+      <span class="sep">,</span>
+
+      <div class="tabs" aria-label="Tabs">
+        <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+        <span class="sep">,</span>
+        <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+        <span class="sep">,</span>
+        <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
+      </div>
+    </div>
+
+    <!-- spacer for symmetry on mobile -->
+    <div class="dockSpacer" aria-hidden="true"></div>
   </div>
 </div>
 
@@ -728,7 +772,7 @@
       </div>
     </section>
 
-    <!-- RIGHT ADS -->
+    <!-- RIGHT ADS + LATEST MODEL TEST -->
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
@@ -745,24 +789,19 @@
             <div style="font-size:12px;">Sidebar Ad 2</div>
           </div>
         </div>
+
+        <div class="latestBoxTitle">Latest Model Tests</div>
+        <div class="latestMT" id="latestMT"></div>
+        <div class="empty" id="latestEmpty">কোনো Model Test পাওয়া যায়নি।</div>
       </div>
     </aside>
   </main>
 </div>
 
-<!-- Ans controls -->
-<div class="ansBarWrap">
-  <div class="floatingAns" id="ansFloat">
-    <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
-    <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
-  </div>
-</div>
-
-<!-- Footer (NO ADS) -->
 <footer>
   <div class="foot">
     <!-- Line 1 -->
-    <div class="footLine1">
+    <div class="footLine">
       <div class="footBrand">
         <div class="name">eProstutiBD</div>
         <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
@@ -770,26 +809,37 @@
     </div>
 
     <!-- Line 2 -->
-    <div class="footLine2">
-      <div>
-        <b>দরকারি পেজ</b>
-        <a href="#">About</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms</a>
-        <a href="#">Contact</a>
-      </div>
-
-      <div>
-        <b>অন্যান্য</b>
-        <a href="#">Notice</a>
-        <a href="#">Blog</a>
-        <a href="#">Career</a>
-        <a href="#">Help</a>
+    <div class="footLine">
+      <b>দরকারি পেজ</b>
+      <div class="linkCols">
+        <div>
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
       </div>
     </div>
 
     <!-- Line 3 -->
-    <div class="footLine3">
+    <div class="footLine">
+      <b>অন্যান্য</b>
+      <div class="linkCols">
+        <div>
+          <a href="#">Notice</a>
+          <a href="#">Blog</a>
+        </div>
+        <div>
+          <a href="#">Career</a>
+          <a href="#">Help</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 4 -->
+    <div class="footLine">
       <b>Social</b>
       <div class="socialRow" aria-label="Social icons">
         <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
@@ -871,6 +921,7 @@
     }
   }
 
+  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -918,8 +969,9 @@
 
   let unsubSubjects = null;
   let unsubRight = null;
+  let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_final_v3";
+  const LS_KEY = "epbd_details_state_latest_v1";
 
   function saveState(){
     const payload = {
@@ -975,8 +1027,6 @@
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
 
-    document.querySelector(".ansBarWrap").style.display = (mode==="model") ? "none" : "block";
-
     page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
@@ -988,8 +1038,7 @@
 
   function setAnsMode(m){
     ansMode = m;
-    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    // kept for future if needed
     saveState();
     renderContent();
   }
@@ -1131,22 +1180,21 @@
     const searchText = $("qSearch").value || "";
     const cursor = cursorByPage[page] || null;
 
-    if(mode === "model"){
-      let q = db.collection(COL_SUBJECT_MODEL_TESTS)
-        .where("subjectId","==", selectedSubjectId)
-        .orderBy("createdAt","desc")
-        .limit(PAGE_SIZE + 1);
-      if(cursor) q = q.startAfter(cursor);
-      return { q, searchText, kind:"model" };
-    }
-
     let q = db.collection(COL_SUBJECT_QUESTIONS)
       .where("subjectId","==", selectedSubjectId)
       .where("type","==", mode)
       .orderBy("createdAt","desc")
       .limit(PAGE_SIZE + 1);
+
+    if(mode === "model"){
+      q = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", selectedSubjectId)
+        .orderBy("createdAt","desc")
+        .limit(PAGE_SIZE + 1);
+    }
+
     if(cursor) q = q.startAfter(cursor);
-    return { q, searchText, kind:"q" };
+    return { q, searchText, kind: mode==="model" ? "model" : "q" };
   }
 
   let currentItems = [];
@@ -1242,7 +1290,7 @@
 
     if(mode === "model"){
       const grid = document.createElement("div");
-      grid.className = "mtGrid";
+      grid.className = "latestMT"; // reuse stacked
       currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Subject Model Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
@@ -1251,16 +1299,16 @@
         const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
         const card = document.createElement("div");
-        card.className = "mtCard";
+        card.className = "mtCardMini";
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
-          <div class="mtMeta">
+          <div class="mtMetaMini">
             <span>⏱ ${esc(time)} min</span>
             <span>🧮 Mark: ${esc(marks)}</span>
             <span>📌 Q: ${esc(qCount)}</span>
           </div>
-          <div class="mtActions">
-            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start Test</button>
+          <div class="mtActionsMini">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
             <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
           </div>
         `;
@@ -1290,65 +1338,54 @@
 
       const note = (it.note ?? it.explain ?? "").toString().trim();
 
-      if(mode === "mcq"){
-        const opts = getOptions(it);
-        const correctIndex = getCorrectIndex(it, opts);
-        const chosen = selectedOptionMap.get(it.id);
+      const opts = getOptions(it);
+      const correctIndex = getCorrectIndex(it, opts);
+      const chosen = selectedOptionMap.get(it.id);
 
-        const optWrap = document.createElement("div");
-        optWrap.className = "opts";
+      const optWrap = document.createElement("div");
+      optWrap.className = "opts";
 
-        opts.slice(0,4).forEach((op, oi)=>{
-          const row = document.createElement("div");
-          row.className = "optLine";
-          row.innerHTML = `
-            <span class="optMark"></span>
-            <span class="optKey">${letters[oi]}.</span>
-            <span class="optTxt">${esc(op || "")}</span>
-          `;
-          const mark = row.querySelector(".optMark");
+      opts.slice(0,4).forEach((op, oi)=>{
+        const row = document.createElement("div");
+        row.className = "optLine";
+        row.innerHTML = `
+          <span class="optMark"></span>
+          <span class="optKey">${letters[oi]}.</span>
+          <span class="optTxt">${esc(op || "")}</span>
+        `;
+        const mark = row.querySelector(".optMark");
 
-          if(ansMode === "show"){
-            row.classList.add("locked");
-            if(oi === correctIndex){
-              row.classList.add("correct");
-              mark.textContent = "✓";
-            }
-          }else{
-            if(chosen !== undefined){
-              row.classList.add("locked");
-              if(oi === correctIndex){
-                row.classList.add("correct");
-                mark.textContent = "✓";
-              }
-              if(oi === chosen && chosen !== correctIndex){
-                row.classList.add("wrong");
-                mark.textContent = "✕";
-              }
-            }else{
-              row.onclick = ()=>{
-                selectedOptionMap.set(it.id, oi);
-                renderContent();
-              };
-            }
+        if(chosen !== undefined){
+          row.classList.add("locked");
+          if(oi === correctIndex){
+            row.classList.add("correct");
+            mark.textContent = "✓";
           }
-
-          optWrap.appendChild(row);
-        });
-
-        card.appendChild(optWrap);
-
-        if(note){
-          const nb = document.createElement("div");
-          nb.className = "noteBox";
-          nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
-          card.appendChild(nb);
+          if(oi === chosen && chosen !== correctIndex){
+            row.classList.add("wrong");
+            mark.textContent = "✕";
+          }
+        }else{
+          row.onclick = ()=>{
+            selectedOptionMap.set(it.id, oi);
+            renderContent();
+          };
         }
+
+        optWrap.appendChild(row);
+      });
+
+      card.appendChild(optWrap);
+
+      if(note){
+        const nb = document.createElement("div");
+        nb.className = "noteBox";
+        nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
+        card.appendChild(nb);
       }
 
       list.appendChild(card);
 
-      /* ✅ every 10 questions show an ad */
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1359,6 +1396,47 @@
 
     paper.appendChild(list);
     wrap.appendChild(paper);
+  }
+
+  // ✅ Latest model tests under right ads
+  function attachLatestModelTests(){
+    if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
+
+    unsubLatest = db.collection(COL_SUBJECT_MODEL_TESTS)
+      .orderBy("createdAt","desc")
+      .limit(6)
+      .onSnapshot((snap)=>{
+        const wrap = $("latestMT");
+        const empty = $("latestEmpty");
+        wrap.innerHTML = "";
+
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Subject Model Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+          const counts = mt.counts || {};
+          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMetaMini">
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+              <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }, (err)=>console.error(err));
   }
 
   function attachSubjects(){
@@ -1374,6 +1452,11 @@
 
       renderSubjectList();
       renderSubjectSheet();
+
+      // restore tab state
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
 
       if(selectedSubjectId){
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
@@ -1394,6 +1477,7 @@
   }
 
   attachSubjects();
+  attachLatestModelTests();
 </script>
 </body>
 </html>
