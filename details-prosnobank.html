@@ -30,7 +30,7 @@
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
 
-      /* ✅ dynamic header height for sticky offsets */
+      /* ✅ JS will keep it in sync */
       --headerH: 64px;
     }
 
@@ -194,32 +194,15 @@
       max-width: 45vw;
     }
 
-    /* ✅ Plain text tabs */
-    .tabs{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      flex-wrap:nowrap;
-      white-space:nowrap;
-    }
+    /* Tabs */
+    .tabs{display:flex;gap:12px;align-items:center;flex-wrap:nowrap;white-space:nowrap;}
     .tab{
-      border:none;
-      background: transparent;
-      color: var(--text);
-      padding: 0;
-      font-size: 13px;
-      font-weight: 1000;
-      cursor:pointer;
-      height:auto;
-      box-shadow:none;
+      border:none;background: transparent;color: var(--text);
+      padding: 0;font-size: 13px;font-weight: 1000;cursor:pointer;
     }
-    .tab.active{
-      color: var(--brandA);
-      text-decoration: underline;
-      text-underline-offset: 6px;
-    }
+    .tab.active{color: var(--brandA);text-decoration: underline;text-underline-offset: 6px;}
 
-    /* ===== Mobile Subject Bar (horizontal) ===== */
+    /* ===== Mobile subject menu bar ===== */
     .mobileSubjectBar{
       display:none;
       gap:10px;
@@ -314,34 +297,34 @@
       font-size: 13px;
     }
 
-    /* ==========================================================
-       ✅ Desktop Sidebar Scroll FIX + Beautiful Subject Design
-       ========================================================== */
-    aside.panel.leftDesktop{
-      position: sticky;
-      top: calc(var(--headerH, 64px) + 84px);
-      height: calc(100vh - (var(--headerH, 64px) + 96px));
-      overflow: hidden;
-    }
-    aside.panel.leftDesktop .panelBody{
-      height: 100%;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
+    /* =================================================================
+       ✅ DESKTOP SIDEBAR SCROLL — FIXED (this is the important part)
+       ================================================================= */
+    .grid{ align-items: stretch; } /* let columns stretch full row height */
+
+    @media (min-width: 981px){
+      aside.panel.leftDesktop{
+        position: sticky;
+        top: calc(var(--headerH, 64px) + 12px);
+        height: calc(100vh - (var(--headerH, 64px) + 24px));
+        overflow: hidden; /* inner list scrolls */
+      }
+      aside.panel.leftDesktop .panelBody{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        min-height:0;  /* ✅ crucial */
+      }
+      #sList.sList{
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 6px;
+      }
     }
 
-    .sList{
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      padding-right: 6px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-height:0;
-      flex:1;
-    }
-
-    /* ===== Sidebar Subject Card NEW DESIGN ===== */
+    /* ✅ Sidebar subject design (pretty) */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.86));
@@ -355,13 +338,11 @@
     }
     .sItem::before{
       content:"";
-      position:absolute;
-      inset:-2px;
+      position:absolute; inset:-2px;
       background:
         radial-gradient(560px 140px at 0% 0%, rgba(29,78,216,.13), transparent 60%),
         radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 60%);
-      opacity:.95;
-      pointer-events:none;
+      opacity:.95; pointer-events:none;
     }
     .sItem:hover{
       transform: translateY(-2px);
@@ -376,17 +357,9 @@
       line-height:1.15;
       margin-bottom: 10px;
       letter-spacing: .15px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .chips{
-      position:relative;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .chip{
       font-size: 11.5px;
       padding: 6px 10px;
@@ -399,12 +372,7 @@
       gap:6px;
       align-items:center;
     }
-    .chip b{
-      font-size: 11.5px;
-      margin:0;
-      font-weight:1000;
-      color: var(--text);
-    }
+    .chip b{font-size: 11.5px;margin:0;font-weight:1000;color: var(--text);}
     .sItem.active{
       border-color: rgba(29,78,216,.24);
       box-shadow: 0 20px 46px rgba(29,78,216,.14);
@@ -412,9 +380,7 @@
     .sItem.active::after{
       content:"";
       position:absolute;
-      left:0;
-      top:12px;
-      bottom:12px;
+      left:0; top:12px; bottom:12px;
       width: 6px;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(29,78,216,.98), rgba(14,165,233,.92));
@@ -439,10 +405,8 @@
     .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
     .qNo{
       flex:0 0 auto;
-      font-size:11px;
-      font-weight:1000;
-      padding: 5px 8px;
-      border-radius:999px;
+      font-size:11px;font-weight:1000;
+      padding: 5px 8px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
       color: var(--muted);
@@ -450,22 +414,18 @@
     }
     .qText{
       margin:0;font-weight:700;
-      font-size:12.5px;
-      line-height:1.55;
-      flex:1;
-      letter-spacing:.1px;
+      font-size:12.5px;line-height:1.55;
+      flex:1;letter-spacing:.1px;
     }
     .opts{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     @media (max-width: 560px){ .opts{grid-template-columns:1fr;} }
-
     .opt{
       border: 1px solid rgba(18,28,55,.14);
       background: rgba(255,255,255,.84);
       border-radius: 12px;
       padding: 8px 10px;
       cursor:pointer;
-      display:flex;
-      gap:8px;
+      display:flex;gap:8px;
       align-items:flex-start;
       transition:.12s;
       user-select:none;
@@ -476,8 +436,7 @@
       display:grid;place-items:center;
       font-weight:1000;color: var(--muted);
       background: rgba(255,255,255,.95);
-      flex:0 0 auto;
-      font-size:11px;
+      flex:0 0 auto;font-size:11px;
     }
     .opt .txt{flex:1;font-size:12px;line-height:1.55;color: var(--text)}
     .opt.correct{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.10);}
@@ -587,151 +546,6 @@
       white-space:nowrap;
     }
     .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
-
-    /* ===== Footer ===== */
-    footer{
-      margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,.18);
-      background:
-        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
-        linear-gradient(180deg, var(--footerA), var(--footerB));
-      color: rgba(255,255,255,.92);
-    }
-    .foot{
-      max-width: 1320px;
-      margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-top: 16px;
-      padding-bottom: 10px;
-      display:grid;
-      grid-template-columns: 1.1fr 1fr 1fr 1fr;
-      gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 560px){
-      .foot{grid-template-columns: 1fr 1fr; gap: 12px;}
-      .footLogo{grid-column: 1 / -1;}
-      .footFollow{grid-column: 1 / -1;}
-    }
-    .foot b{font-size:13px}
-    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
-    .foot a:hover{color:#fff}
-    .footBrand{display:flex;flex-direction:column;gap:3px;}
-    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
-    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top:10px;}
-    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
-    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
-    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
-    .copy{
-      max-width: 1320px;
-      margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-bottom: 14px;
-      color: rgba(255,255,255,.72);
-      font-size:12px;
-      text-align:center;
-      white-space:nowrap;
-    }
-
-    /* =========================================================
-       ✅ MOBILE APP-LIKE FULL REDESIGN (override)
-       ========================================================= */
-    @media (max-width: 980px){
-      body{ background: #eef3ff !important; }
-
-      .container{
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-        padding-top: 10px !important;
-        padding-bottom: calc(92px + var(--safeBottom)) !important;
-      }
-
-      header{
-        box-shadow: 0 10px 28px rgba(29,78,216,.18) !important;
-      }
-      .topbar{
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-      }
-      .brand .name{ font-size: 16px !important; }
-      .brand .tag{ font-size: 12px !important; opacity:.92; }
-
-      .noticeBar, .adBox{
-        border-radius: 18px !important;
-        background: rgba(255,255,255,.92) !important;
-      }
-
-      .subjectDock{
-        border-radius: 18px !important;
-        background: rgba(255,255,255,.88) !important;
-        box-shadow: 0 10px 26px rgba(15,23,48,.08) !important;
-      }
-      .subjectDockInner{
-        padding: 12px 12px !important;
-        gap: 10px !important;
-      }
-
-      /* tabs => segmented pills */
-      .tabs{ gap: 8px !important; }
-      .tab{
-        padding: 9px 12px !important;
-        border-radius: 999px !important;
-        border: 1px solid rgba(18,28,55,.10) !important;
-        background: rgba(255,255,255,.72) !important;
-        font-size: 12px !important;
-        font-weight: 1000 !important;
-        text-decoration: none !important;
-      }
-      .tab.active{
-        color: #fff !important;
-        border-color: rgba(29,78,216,.18) !important;
-        background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92)) !important;
-        box-shadow: 0 10px 22px rgba(29,78,216,.18) !important;
-      }
-
-      /* Mobile subject bar => sticky pill scroller */
-      #mobileSubjectBar.mobileSubjectBar{
-        position: sticky;
-        top: calc(var(--headerH, 64px) + 2px);
-        z-index: 59;
-        margin-top: 10px;
-        background: rgba(255,255,255,.86);
-        border: 1px solid rgba(18,28,55,.08);
-        border-radius: 18px;
-        padding: 10px;
-        box-shadow: 0 12px 28px rgba(15,23,48,.08);
-      }
-      .mobileSubBtn{
-        border-radius: 999px !important;
-        padding: 10px 12px !important;
-        background: rgba(245,248,255,.95) !important;
-      }
-      .mobileSubBtn.active{
-        background: rgba(29,78,216,.12) !important;
-        border-color: rgba(29,78,216,.25) !important;
-      }
-
-      /* Main panel = app card */
-      .panel{
-        border-radius: 18px !important;
-        background: rgba(255,255,255,.94) !important;
-        box-shadow: 0 10px 26px rgba(15,23,48,.08) !important;
-      }
-
-      /* Floating bar as app bottom bar */
-      .floatingAns{
-        bottom: calc(12px + var(--safeBottom));
-        border-radius: 18px;
-        padding: 10px;
-      }
-
-      /* ✅ Mobile: hide footer completely (app like) */
-      footer{ display:none !important; }
-    }
   </style>
 </head>
 
@@ -885,50 +699,11 @@
   <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
 </div>
 
-<footer>
-  <div class="foot">
-    <div class="footLogo">
-      <div class="footBrand">
-        <div class="name">eProstutiBD</div>
-        <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
-      </div>
-    </div>
-
-    <div>
-      <b>দরকারি পেজ</b>
-      <a href="#">About</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
-    </div>
-
-    <div>
-      <b>অন্যান্য</b>
-      <a href="#">Notice</a>
-      <a href="#">Blog</a>
-      <a href="#">Career</a>
-      <a href="#">Help</a>
-    </div>
-
-    <div class="footFollow">
-      <b>Social links পরে বসাবেন ✅</b>
-      <div class="socialRow" aria-label="Social icons">
-        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
-        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
-        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg></a>
-        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
-      </div>
-
-      <div class="inlineAd" style="margin-top:12px;">
-        <div>
-          <div class="tag">Ad Slot</div>
-          <div style="font-size:12px;">Footer Ad</div>
-        </div>
-      </div>
-    </div>
+<!-- (Footer optional) -->
+<footer style="margin-top:14px; border-top:1px solid rgba(255,255,255,.18); background: linear-gradient(180deg, #0b1b45, #071635); color: rgba(255,255,255,.92);">
+  <div style="max-width:1320px; margin:0 auto; padding:14px clamp(12px,4vw,48px); font-size:12px; text-align:center;">
+    © <span id="year"></span> eProstutiBD All rights reserved
   </div>
-
-  <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -961,7 +736,7 @@
 
   $("year").textContent = new Date().getFullYear();
 
-  /* ✅ dynamic header height => fixes sticky overlaps */
+  /* ✅ keep sticky offsets correct */
   function syncStickyOffsets(){
     const h = document.querySelector("header")?.offsetHeight || 64;
     document.documentElement.style.setProperty("--headerH", h + "px");
@@ -982,6 +757,7 @@
     }
   }
 
+  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -1258,7 +1034,6 @@
     $("emptyRight").style.display = "none";
     $("content").innerHTML = "";
     $("pageHint").textContent = `Page ${page}`;
-
     $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
 
     const built = buildQuery();
@@ -1424,10 +1199,8 @@
 
       if(mode === "written"){
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-
         const box = document.createElement("div");
         box.className = "noteBox";
-
         if(ansMode === "show"){
           box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
         }else{
