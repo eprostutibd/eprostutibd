@@ -29,8 +29,6 @@
       --footerB:#071635;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
-
-      /* ✅ JS will keep it in sync */
       --headerH: 64px;
     }
 
@@ -133,7 +131,7 @@
     .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
     @media (prefers-reduced-motion: reduce){
-      .marq span{ animation: none; padding-left: 0; }
+      .marq span{ animation:none; padding-left:0; }
     }
 
     .adBox{
@@ -161,16 +159,18 @@
       border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
+
+    /* ✅ Tabs middle রাখার জন্য grid layout */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
       padding: 10px clamp(12px, 4vw, 48px);
-      display:flex;
+      display:grid;
+      grid-template-columns: 1fr auto 1fr; /* left title | center tabs | right spacer */
       align-items:center;
-      justify-content:space-between;
       gap:12px;
-      flex-wrap:nowrap;
     }
+
     .subTitle{
       display:flex;
       align-items:center;
@@ -182,7 +182,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 30vw;
+      max-width: 32vw;
       font-weight:1000;
     }
     .subTitle span{
@@ -194,13 +194,30 @@
       max-width: 45vw;
     }
 
-    /* Tabs */
-    .tabs{display:flex;gap:12px;align-items:center;flex-wrap:nowrap;white-space:nowrap;}
-    .tab{
-      border:none;background: transparent;color: var(--text);
-      padding: 0;font-size: 13px;font-weight: 1000;cursor:pointer;
+    .tabs{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      white-space:nowrap;
+      justify-content:center;
     }
-    .tab.active{color: var(--brandA);text-decoration: underline;text-underline-offset: 6px;}
+    .tab{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .tab.active{
+      color:#fff;
+      border-color: rgba(29,78,216,.22);
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+    }
 
     /* ===== Mobile subject menu bar ===== */
     .mobileSubjectBar{
@@ -297,23 +314,23 @@
       font-size: 13px;
     }
 
-    /* =================================================================
-       ✅ DESKTOP SIDEBAR SCROLL — FIXED (this is the important part)
-       ================================================================= */
-    .grid{ align-items: stretch; } /* let columns stretch full row height */
+    /* ================================
+       ✅ DESKTOP Sidebar Scroll FIX + Smooth
+       ================================ */
+    .grid{ align-items: stretch; }
 
     @media (min-width: 981px){
       aside.panel.leftDesktop{
         position: sticky;
         top: calc(var(--headerH, 64px) + 12px);
         height: calc(100vh - (var(--headerH, 64px) + 24px));
-        overflow: hidden; /* inner list scrolls */
+        overflow: hidden;
       }
       aside.panel.leftDesktop .panelBody{
         height: 100%;
         display:flex;
         flex-direction:column;
-        min-height:0;  /* ✅ crucial */
+        min-height:0;
       }
       #sList.sList{
         flex: 1;
@@ -321,10 +338,21 @@
         overflow: auto;
         -webkit-overflow-scrolling: touch;
         padding-right: 6px;
+
+        /* ✅ smoother feel */
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
       }
     }
 
-    /* ✅ Sidebar subject design (pretty) */
+    /* ✅ Subject list container basic */
+    .sList{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    /* ✅ Sidebar subject design সুন্দর */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.86));
@@ -335,6 +363,7 @@
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
       position:relative;
       overflow:hidden;
+      will-change: transform;
     }
     .sItem::before{
       content:"";
@@ -546,6 +575,55 @@
       white-space:nowrap;
     }
     .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
+
+    /* ===== Footer ===== */
+    footer{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
+        linear-gradient(180deg, var(--footerA), var(--footerB));
+      color: rgba(255,255,255,.92);
+    }
+    .foot{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 16px;
+      padding-bottom: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 560px){
+      .foot{grid-template-columns: 1fr 1fr; gap: 12px;}
+      .footLogo{grid-column: 1 / -1;}
+      .footFollow{grid-column: 1 / -1;}
+    }
+    .foot b{font-size:13px}
+    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
+    .foot a:hover{color:#fff}
+    .footBrand{display:flex;flex-direction:column;gap:3px;}
+    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top:10px;}
+    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
+    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
+    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
+    .copy{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-bottom: 14px;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
+      text-align:center;
+      white-space:nowrap;
+    }
   </style>
 </head>
 
@@ -611,12 +689,12 @@
   <div id="mobileSubjectBar" class="mobileSubjectBar" aria-label="Subjects menu"></div>
 </div>
 
-<!-- ✅ Sticky Subject line + tabs -->
+<!-- ✅ Sticky Subject line + tabs (tabs centered) -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
       <b id="subName">Details</b>
-      <span id="subMeta">Subject select করুন</span>
+      <span id="subMeta"></span>
     </div>
 
     <div class="tabs" aria-label="Tabs">
@@ -624,6 +702,9 @@
       <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
     </div>
+
+    <!-- right spacer for perfect centering -->
+    <div></div>
   </div>
 </div>
 
@@ -661,7 +742,14 @@
           <button class="btn" onclick="resetAndReload(true)">Search</button>
         </div>
 
-        <div class="inlineAd" style="margin-bottom:12px;">
+        <!-- ✅ Ads On/Off option -->
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+          <button class="btn primary" id="adsOnBtn" onclick="setAdsMode('on')">Ads On</button>
+          <button class="btn" id="adsOffBtn" onclick="setAdsMode('off')">Ads Off</button>
+        </div>
+
+        <!-- ✅ Mid Content Ad (toggle-able) -->
+        <div class="inlineAd" id="midAd" style="margin-bottom:12px;">
           <div>
             <div class="tag">Ad Slot</div>
             <div style="font-size:12px;">Mid Content Ad</div>
@@ -678,7 +766,7 @@
       </div>
     </section>
 
-    <!-- RIGHT AD -->
+    <!-- RIGHT ADS -->
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
@@ -686,6 +774,14 @@
           <div>
             <div class="tag">Ad Slot</div>
             <div style="font-size:12px;">Sidebar Ad</div>
+          </div>
+        </div>
+
+        <!-- ✅ Extra right-side ad slot -->
+        <div class="inlineAd" style="min-height:180px;margin-top:12px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Extra Sidebar Ad</div>
           </div>
         </div>
       </div>
@@ -699,11 +795,51 @@
   <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
 </div>
 
-<!-- (Footer optional) -->
-<footer style="margin-top:14px; border-top:1px solid rgba(255,255,255,.18); background: linear-gradient(180deg, #0b1b45, #071635); color: rgba(255,255,255,.92);">
-  <div style="max-width:1320px; margin:0 auto; padding:14px clamp(12px,4vw,48px); font-size:12px; text-align:center;">
-    © <span id="year"></span> eProstutiBD All rights reserved
+<!-- ✅ Full footer (ager moto) -->
+<footer>
+  <div class="foot">
+    <div class="footLogo">
+      <div class="footBrand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      </div>
+    </div>
+
+    <div>
+      <b>দরকারি পেজ</b>
+      <a href="#">About</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div>
+      <b>অন্যান্য</b>
+      <a href="#">Notice</a>
+      <a href="#">Blog</a>
+      <a href="#">Career</a>
+      <a href="#">Help</a>
+    </div>
+
+    <div class="footFollow">
+      <b>Social links পরে বসাবেন ✅</b>
+      <div class="socialRow" aria-label="Social icons">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
+        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
+      </div>
+
+      <div class="inlineAd" style="margin-top:12px;">
+        <div>
+          <div class="tag">Ad Slot</div>
+          <div style="font-size:12px;">Footer Ad</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -792,6 +928,9 @@
   let mode = "mcq";
   let ansMode = "hide";
 
+  // ✅ Ads mode (on/off)
+  let adsMode = "on";
+
   const PAGE_SIZE = 30;
   let page = 1;
   let cursorByPage = { 1: null };
@@ -813,6 +952,7 @@
       subjectId: selectedSubjectId,
       mode,
       ansMode,
+      adsMode,
       page,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
@@ -829,12 +969,23 @@
         selectedSubjectId = st.subjectId || selectedSubjectId;
         mode = st.mode || mode;
         ansMode = st.ansMode || ansMode;
+        adsMode = st.adsMode || adsMode;
         page = Number(st.page || 1) || 1;
         if($("qSearch")) $("qSearch").value = st.q || "";
         if($("sSearch")) $("sSearch").value = st.s || "";
       }
     }catch(e){}
   }
+
+  function setAdsMode(m){
+    adsMode = m;
+    $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
+    $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
+    if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
+    saveState();
+    renderContent();
+  }
+  window.setAdsMode = setAdsMode;
 
   function getParam(name){
     const u = new URL(location.href);
@@ -867,6 +1018,10 @@
     page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
+
+    // ✅ subMeta text remove
+    if($("subMeta")) $("subMeta").textContent = "";
+
     setUrlState();
     saveState();
     loadRight();
@@ -977,7 +1132,10 @@
     const found = SUBJECTS.find(s=>s.id===id);
     selectedSubjectName = found?.name || "";
     $("subName").textContent = selectedSubjectName || "Details";
-    $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
+
+    // ✅ remove subMeta line (keep empty)
+    if($("subMeta")) $("subMeta").textContent = "";
+
     $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
     $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
 
@@ -1034,7 +1192,14 @@
     $("emptyRight").style.display = "none";
     $("content").innerHTML = "";
     $("pageHint").textContent = `Page ${page}`;
-    $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
+
+    // ✅ subMeta remove
+    if($("subMeta")) $("subMeta").textContent = "";
+
+    // ✅ apply ads toggle to mid ad
+    if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
+    $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
+    $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
 
     const built = buildQuery();
     unsubRight = built.q.onSnapshot((snap)=>{
@@ -1211,7 +1376,8 @@
 
       list.appendChild(card);
 
-      if((idx+1)%10===0 && idx < currentItems.length-1){
+      // ✅ Inline ad after each 10 questions (toggle-able)
+      if(adsMode==="on" && (idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad</div></div>`;
@@ -1241,6 +1407,11 @@
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
       $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
 
+      // ✅ set ads buttons state
+      $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
+      $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
+      if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
+
       renderSubjectList();
       renderMobileSubjectBar();
 
@@ -1248,7 +1419,10 @@
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
         selectedSubjectName = found?.name || "";
         $("subName").textContent = selectedSubjectName || "Details";
-        $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
+
+        // ✅ remove subMeta line (keep empty)
+        if($("subMeta")) $("subMeta").textContent = "";
+
         $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
         $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
         setUrlState();
