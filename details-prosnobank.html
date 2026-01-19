@@ -35,7 +35,8 @@
       --footText: rgba(255,255,255,.86);
       --footMuted: rgba(255,255,255,.70);
 
-      --ansBarReserve: 76px; /* fixed Ans buttons height reserve */
+      /* ✅ Ans bar reserve */
+      --ansBarH: 56px;
     }
 
     *{box-sizing:border-box}
@@ -50,8 +51,8 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
 
-      /* ✅ footer যেন fixed Ans bar এর নিচে লুকিয়ে না যায় */
-      padding-bottom: calc(var(--ansBarReserve) + var(--safeBottom));
+      /* ✅ never let footer cover fixed Ans bar */
+      padding-bottom: calc(var(--ansBarH) + 30px + var(--safeBottom));
     }
     a{color:inherit}
 
@@ -379,7 +380,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px; /* ~8 cards feel */
+        max-height: 520px;
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -424,28 +425,41 @@
     }
     .chip b{font-size:11.5px;color: var(--text);}
 
-    /* ===== Paper look (no boxes) ===== */
+    /* ======================================================
+       ✅ PAPER FEEL (patched)
+       ====================================================== */
     .paper{
       background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,.98) 0px,
-          rgba(255,255,255,.98) 26px,
-          rgba(18,28,55,.04) 27px
+          rgba(0,0,0,0) 0px,
+          rgba(0,0,0,0) 25px,
+          rgba(18,28,55,.055) 26px
         );
       border: 1px solid rgba(18,28,55,.10);
-      border-radius: 18px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
-      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(15,23,48,.10);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .paper::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 260px at 20% 0%, rgba(29,78,216,.05), transparent 60%),
+                  radial-gradient(900px 260px at 80% 0%, rgba(14,165,233,.04), transparent 60%);
+      pointer-events:none;
     }
 
     .qList{
       display:flex;
       flex-direction:column;
-      gap: 0; /* ✅ paper style */
+      gap: 0;
+      position: relative;
+      z-index: 1;
     }
 
-    /* ✅ Desktop: 2 columns + middle line */
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
       body[data-mode="written"] .qList{
@@ -454,26 +468,19 @@
         column-gap: 0;
         row-gap: 0;
       }
-
-      /* left/right divider line */
       body[data-mode="mcq"] .qRow:nth-child(2n),
       body[data-mode="written"] .qRow:nth-child(2n){
         border-left: 1px solid var(--line2);
       }
-
-      /* horizontal lines per row pair */
       body[data-mode="mcq"] .qRow:nth-child(n+3),
       body[data-mode="written"] .qRow:nth-child(n+3){
         border-top: 1px solid var(--line2);
       }
     }
-
-    /* ✅ Mobile: single column with line */
     @media (max-width: 980px){
       .qRow + .qRow{ border-top: 1px solid var(--line2); }
     }
 
-    /* ✅ each question row (NO BOX) */
     .qRow{
       padding: 12px 12px;
       background: transparent;
@@ -514,7 +521,7 @@
       }
     }
 
-    /* ✅ NOTE right under question (not under answers) */
+    /* ✅ Note 바로 প্রশ্নের পরে থাকবে (question end -> note start) */
     .noteInline{
       margin-top: 6px;
       color: var(--muted);
@@ -523,7 +530,6 @@
     }
     .noteInline b{color: var(--text);}
 
-    /* ✅ options paper style (2 lines) */
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
     @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
@@ -603,15 +609,14 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ================================
-       ✅ Floating Ans buttons (always visible, above footer)
-       ================================ */
+    /* ======================================================
+       ✅ Ans bar ALWAYS above footer (patched)
+       ====================================================== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
-      bottom: 0;
+      bottom: calc(12px + var(--safeBottom));
       z-index: 99999;
-      padding-bottom: calc(10px + var(--safeBottom));
       pointer-events: none;
     }
     .ansBar{
@@ -649,10 +654,7 @@
       color: rgba(15,23,48,.95);
     }
 
-    /* ===== Footer =====
-       ✅ Desktop 4 columns
-       ✅ Mobile 3 columns in one row (brand hidden)
-    */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       background:
@@ -662,8 +664,8 @@
       border-top: 1px solid var(--footLine);
       color: var(--footText);
 
-      /* ✅ footer bottom space so fixed bar won't cover last line */
-      padding-bottom: calc(var(--ansBarReserve) + var(--safeBottom));
+      /* ✅ extra footer reserve so last lines are reachable */
+      padding-bottom: calc(var(--ansBarH) + 30px + var(--safeBottom));
     }
     .footGrid{
       max-width: 1320px;
@@ -684,14 +686,12 @@
     .socialCol a:hover{color:#fff;}
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
 
-    /* ✅ Mobile: 3 columns (one row). Brand/desc hidden */
     @media (max-width: 980px){
       .footGrid{
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px 10px;
       }
       .footBrandCol{display:none !important;}
-      .copy{padding-bottom: 14px;}
     }
 
     .copy{
@@ -1051,7 +1051,10 @@
 
   const PAGE_SIZE = 30;
   let page = 1;
+
+  /* ✅ cursorByPage will persist with {t,id} pairs */
   let cursorByPage = { 1: null };
+
   let lastDoc = null;
   let hasNext = false;
 
@@ -1064,7 +1067,7 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_paper_final_v1";
+  const LS_KEY = "epbd_details_state_paper_final_patched_v2";
 
   function saveState(){
     const payload = {
@@ -1072,6 +1075,7 @@
       mode,
       ansMode,
       page,
+      cursorByPage,         // ✅ persist cursors
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
@@ -1088,6 +1092,12 @@
         mode = st.mode || mode;
         ansMode = st.ansMode || ansMode;
         page = Number(st.page || 1) || 1;
+
+        if(st.cursorByPage && typeof st.cursorByPage === "object"){
+          cursorByPage = st.cursorByPage;
+          if(!cursorByPage[1]) cursorByPage[1] = null;
+        }
+
         if($("qSearch")) $("qSearch").value = st.q || "";
         if($("sSearch")) $("sSearch").value = st.s || "";
       }
@@ -1275,25 +1285,37 @@
     if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
   }
 
+  /* ======================================================
+     ✅ Patched buildQuery with stable cursor (createdAt + id)
+     ====================================================== */
   function buildQuery(){
     const searchText = $("qSearch").value || "";
     const cursor = cursorByPage[page] || null;
+
+    if(mode === "model"){
+      let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", selectedSubjectId)
+        .orderBy("createdAt","desc")
+        .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+        .limit(PAGE_SIZE + 1);
+
+      if(cursor && cursor.t && cursor.id){
+        q = q.startAfter(new Date(cursor.t), cursor.id);
+      }
+      return { q, searchText, kind:"model" };
+    }
 
     let q = db.collection(COL_SUBJECT_QUESTIONS)
       .where("subjectId","==", selectedSubjectId)
       .where("type","==", mode)
       .orderBy("createdAt","desc")
+      .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
       .limit(PAGE_SIZE + 1);
 
-    if(mode === "model"){
-      q = db.collection(COL_SUBJECT_MODEL_TESTS)
-        .where("subjectId","==", selectedSubjectId)
-        .orderBy("createdAt","desc")
-        .limit(PAGE_SIZE + 1);
+    if(cursor && cursor.t && cursor.id){
+      q = q.startAfter(new Date(cursor.t), cursor.id);
     }
-
-    if(cursor) q = q.startAfter(cursor);
-    return { q, searchText, kind: mode==="model" ? "model" : "q" };
+    return { q, searchText, kind:"q" };
   }
 
   let currentItems = [];
@@ -1364,9 +1386,19 @@
     saveState();
     loadRight();
   }
+
+  /* ======================================================
+     ✅ Patched nextPage to store cursor {t,id} in cursorByPage
+     ====================================================== */
   function nextPage(){
     if(!hasNext) return;
-    if(lastDoc) cursorByPage[page+1] = lastDoc;
+    if(lastDoc){
+      const data = lastDoc.data() || {};
+      const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
+      if(ts){
+        cursorByPage[page+1] = { t: ts, id: lastDoc.id };
+      }
+    }
     page += 1;
     selectedOptionMap.clear();
     setUrlState();
@@ -1430,21 +1462,14 @@
       const row = document.createElement("div");
       row.className = "qRow";
 
-      // question
+      /* ✅ Note starts from where question ends */
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
           <p class="qText">${esc(it.question || "")}</p>
         </div>
+        ${note ? `<div class="noteInline"><b>Note:</b> ${esc(note)}</div>` : ``}
       `;
-
-      // ✅ NOTE under question (before answers)
-      if(note){
-        const n = document.createElement("div");
-        n.className = "noteInline";
-        n.innerHTML = `<b>Note:</b> ${esc(note)}`;
-        row.appendChild(n);
-      }
 
       if(mode === "mcq"){
         const opts = getOptions(it);
@@ -1497,17 +1522,16 @@
 
       if(mode === "written"){
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-        const box = document.createElement("div");
-        box.className = "noteInline";
         if(ansMode === "show"){
+          const box = document.createElement("div");
+          box.className = "noteInline";
           box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
+          row.appendChild(box);
         }
-        row.appendChild(box);
       }
 
       list.appendChild(row);
 
-      // ✅ Ad after every 10 items
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
