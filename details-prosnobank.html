@@ -14,6 +14,7 @@
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
       --line: rgba(18, 28, 55, .10);
+      --line2: rgba(18, 28, 55, .08);
       --text:#0f1730; --muted:#5a6685;
 
       --shadow: 0 16px 44px rgba(15,23,48,.12);
@@ -33,6 +34,8 @@
       --footLine: rgba(255,255,255,.14);
       --footText: rgba(255,255,255,.86);
       --footMuted: rgba(255,255,255,.70);
+
+      --ansBarReserve: 76px; /* fixed Ans buttons height reserve */
     }
 
     *{box-sizing:border-box}
@@ -47,8 +50,8 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
 
-      /* reserve space for floating Ans buttons */
-      padding-bottom: calc(78px + var(--safeBottom));
+      /* ✅ footer যেন fixed Ans bar এর নিচে লুকিয়ে না যায় */
+      padding-bottom: calc(var(--ansBarReserve) + var(--safeBottom));
     }
     a{color:inherit}
 
@@ -61,6 +64,7 @@
       padding-bottom: 18px;
     }
 
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -103,6 +107,7 @@
       .brand .tag{max-width: 55vw;}
     }
 
+    /* ===== Mobile Menu ===== */
     .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
     .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
     .mobileMenu .drawer{
@@ -120,6 +125,7 @@
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
+    /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
       border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
@@ -146,7 +152,7 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* Mobile Subject Sheet */
+    /* ===== Mobile Subject Sheet ===== */
     .subjectSheet{display:none;position:fixed;inset:0;z-index:99999;}
     .subjectSheet .backdrop{position:absolute;inset:0;background: rgba(8, 18, 45, .35);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);}
     .subjectSheet .sheet{
@@ -188,7 +194,7 @@
     .sheetItem .mini{font-size:11.5px;color: var(--muted);display:flex;gap:8px;flex-wrap:wrap;}
     .sheetItem.active{border-color: rgba(29,78,216,.28);background: rgba(29,78,216,.08);}
 
-    /* Subject Dock */
+    /* ===== Subject Dock ===== */
     .subjectDock{
       position: sticky;
       top: var(--headerH, 64px);
@@ -289,7 +295,7 @@
       .subjectDockInner{gap:10px;}
     }
 
-    /* Layout */
+    /* ===== Layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 340px minmax(0, 1fr) 280px;
@@ -356,7 +362,7 @@
       font-size: 13px;
     }
 
-    /* Desktop Sidebar Scroll */
+    /* ===== Desktop Sidebar Scroll ===== */
     @media (min-width: 981px){
       aside.panel.leftDesktop{
         position: sticky;
@@ -373,7 +379,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px;
+        max-height: 520px; /* ~8 cards feel */
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -418,42 +424,87 @@
     }
     .chip b{font-size:11.5px;color: var(--text);}
 
-    /* Paper */
+    /* ===== Paper look (no boxes) ===== */
     .paper{
-      background: rgba(255,255,255,.92);
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.98) 0px,
+          rgba(255,255,255,.98) 26px,
+          rgba(18,28,55,.04) 27px
+        );
       border: 1px solid rgba(18,28,55,.10);
       border-radius: 18px;
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
       padding: 12px;
     }
-    .qList{display:flex;flex-direction:column;gap:10px;}
 
+    .qList{
+      display:flex;
+      flex-direction:column;
+      gap: 0; /* ✅ paper style */
+    }
+
+    /* ✅ Desktop: 2 columns + middle line */
     @media (min-width: 981px){
-      body[data-mode="mcq"] .qList{
+      body[data-mode="mcq"] .qList,
+      body[data-mode="written"] .qList{
         display:grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        column-gap: 0;
+        row-gap: 0;
       }
-      body[data-mode="mcq"] .qCard{height:100%;}
+
+      /* left/right divider line */
+      body[data-mode="mcq"] .qRow:nth-child(2n),
+      body[data-mode="written"] .qRow:nth-child(2n){
+        border-left: 1px solid var(--line2);
+      }
+
+      /* horizontal lines per row pair */
+      body[data-mode="mcq"] .qRow:nth-child(n+3),
+      body[data-mode="written"] .qRow:nth-child(n+3){
+        border-top: 1px solid var(--line2);
+      }
     }
 
-    .qCard{
-      border: 1px dashed rgba(18,28,55,.18);
-      background: rgba(255,255,255,.94);
-      border-radius: 14px;
-      padding: 10px 10px;
+    /* ✅ Mobile: single column with line */
+    @media (max-width: 980px){
+      .qRow + .qRow{ border-top: 1px solid var(--line2); }
     }
-    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+
+    /* ✅ each question row (NO BOX) */
+    .qRow{
+      padding: 12px 12px;
+      background: transparent;
+      border-radius: 0;
+    }
+
+    .qHead{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:flex-start;
+    }
     .qNo{
       flex:0 0 auto;
-      font-size:11px;font-weight:1000;
-      padding: 5px 8px;border-radius:999px;
+      font-size:11px;
+      font-weight:1000;
+      padding: 5px 8px;
+      border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.70);
       color: var(--muted);
       white-space:nowrap;
     }
-    .qText{margin:0;font-weight:700;font-size:12.5px;line-height:1.55;flex:1;letter-spacing:.1px;}
+    .qText{
+      margin:0;
+      font-weight:800;
+      font-size:12.6px;
+      line-height:1.55;
+      flex:1;
+      letter-spacing:.1px;
+    }
     @media (min-width: 981px){
       .qText{
         display:-webkit-box;
@@ -463,8 +514,17 @@
       }
     }
 
-    /* Options (paper style, 2 lines) */
-    .opts{margin-top:8px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
+    /* ✅ NOTE right under question (not under answers) */
+    .noteInline{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .noteInline b{color: var(--text);}
+
+    /* ✅ options paper style (2 lines) */
+    .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
     @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
     .optLine{
@@ -489,22 +549,12 @@
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
       min-height: calc(2 * 1.5em);
     }
-    .optLine.correct .optTxt{color: var(--ok);font-weight:800;}
-    .optLine.wrong .optTxt{color: var(--danger);font-weight:800;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
+    .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
+    .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
     .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
     .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);}
 
-    .noteBox{
-      margin-top: 8px;
-      padding: 0;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    /* Ads */
+    /* ===== Ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -516,6 +566,7 @@
       text-align:center;
       color: var(--muted);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      margin: 12px 0;
     }
     .inlineAd .tag{
       display:inline-block;font-weight:1000;color: var(--text);
@@ -552,12 +603,14 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* Watermark-like floating Ans buttons (no container box) */
+    /* ================================
+       ✅ Floating Ans buttons (always visible, above footer)
+       ================================ */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
       bottom: 0;
-      z-index: 9999;
+      z-index: 99999;
       padding-bottom: calc(10px + var(--safeBottom));
       pointer-events: none;
     }
@@ -571,7 +624,7 @@
       background: transparent;
       border: none;
       box-shadow: none;
-      padding: 0;
+      padding: 0 10px;
     }
     .toggle{
       border:1px solid rgba(18,28,55,.14);
@@ -596,7 +649,10 @@
       color: rgba(15,23,48,.95);
     }
 
-    /* FOOTER: desktop 4 columns, mobile 3 columns + mobile description removed */
+    /* ===== Footer =====
+       ✅ Desktop 4 columns
+       ✅ Mobile 3 columns in one row (brand hidden)
+    */
     footer{
       margin-top: 14px;
       background:
@@ -605,6 +661,9 @@
         linear-gradient(180deg, var(--footTop), var(--footBottom));
       border-top: 1px solid var(--footLine);
       color: var(--footText);
+
+      /* ✅ footer bottom space so fixed bar won't cover last line */
+      padding-bottom: calc(var(--ansBarReserve) + var(--safeBottom));
     }
     .footGrid{
       max-width: 1320px;
@@ -615,13 +674,6 @@
       gap: 14px 18px;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .footGrid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px 12px;
-      }
-      .footDesc{display:none !important;} /* remove that long line on mobile */
-    }
     .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
     .footText{color: var(--footMuted);font-size:12px;line-height:1.6;}
     .footLinks{display:flex;flex-direction:column;gap: 8px;}
@@ -631,6 +683,17 @@
     .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: var(--footMuted);font-size:12px;}
     .socialCol a:hover{color:#fff;}
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
+
+    /* ✅ Mobile: 3 columns (one row). Brand/desc hidden */
+    @media (max-width: 980px){
+      .footGrid{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px 10px;
+      }
+      .footBrandCol{display:none !important;}
+      .copy{padding-bottom: 14px;}
+    }
+
     .copy{
       max-width: 1320px;
       margin:0 auto;
@@ -646,6 +709,7 @@
     @media (min-width: 981px){
       .container{padding-left:16px;padding-right:16px;}
     }
+
     @media (prefers-reduced-motion: reduce){
       .marq span{ animation:none; padding-left:0; }
     }
@@ -779,7 +843,7 @@
           <button class="btn" onclick="resetAndReload(true)">Search</button>
         </div>
 
-        <div class="inlineAd" style="margin-bottom:12px;">
+        <div class="inlineAd">
           <div>
             <div class="tag">Ad Slot</div>
             <div style="font-size:12px;">Mid Content Ad</div>
@@ -807,7 +871,7 @@
           </div>
         </div>
 
-        <div class="inlineAd" style="min-height:180px;margin-top:12px;">
+        <div class="inlineAd" style="min-height:180px;">
           <div>
             <div class="tag">Ad Slot</div>
             <div style="font-size:12px;">Sidebar Ad 2</div>
@@ -822,7 +886,7 @@
   </main>
 </div>
 
-<!-- Floating Ans Buttons (watermark-like) -->
+<!-- Floating Ans Buttons -->
 <div class="ansBarWrap" id="ansBarWrap">
   <div class="ansBar">
     <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
@@ -832,9 +896,9 @@
 
 <footer>
   <div class="footGrid">
-    <div>
+    <div class="footBrandCol">
       <div class="footTitle">eProstutiBD</div>
-      <div class="footText footDesc">সকল প্রস্তুতি হোক গভীর থেকে — বিষয়ভিত্তিক প্রশ্নব্যাংক, মডেল টেস্ট এবং প্রস্তুতি সহায়ক কনটেন্ট।</div>
+      <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে</div>
     </div>
 
     <div>
@@ -1000,7 +1064,7 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_latest_v_final";
+  const LS_KEY = "epbd_details_state_paper_final_v1";
 
   function saveState(){
     const payload = {
@@ -1361,17 +1425,26 @@
 
     currentItems.forEach((it, idx)=>{
       const qno = ((page-1)*PAGE_SIZE) + (idx+1);
+      const note = (it.note ?? it.explain ?? "").toString().trim();
 
-      const card = document.createElement("div");
-      card.className = "qCard";
-      card.innerHTML = `
+      const row = document.createElement("div");
+      row.className = "qRow";
+
+      // question
+      row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
           <p class="qText">${esc(it.question || "")}</p>
         </div>
       `;
 
-      const note = (it.note ?? it.explain ?? "").toString().trim();
+      // ✅ NOTE under question (before answers)
+      if(note){
+        const n = document.createElement("div");
+        n.className = "noteInline";
+        n.innerHTML = `<b>Note:</b> ${esc(note)}`;
+        row.appendChild(n);
+      }
 
       if(mode === "mcq"){
         const opts = getOptions(it);
@@ -1382,67 +1455,59 @@
         optWrap.className = "opts";
 
         opts.slice(0,4).forEach((op, oi)=>{
-          const row = document.createElement("div");
-          row.className = "optLine";
-          row.innerHTML = `
+          const opt = document.createElement("div");
+          opt.className = "optLine";
+
+          opt.innerHTML = `
             <span class="optMark"></span>
             <span class="optKey">${letters[oi]}.</span>
             <span class="optTxt">${esc(op || "")}</span>
           `;
-          const mark = row.querySelector(".optMark");
+          const mark = opt.querySelector(".optMark");
 
           if(ansMode === "show"){
-            row.classList.add("locked");
+            opt.classList.add("locked");
             if(oi === correctIndex){
-              row.classList.add("correct");
+              opt.classList.add("correct");
               mark.textContent = "✓";
             }
           }else{
             if(chosen !== undefined){
-              row.classList.add("locked");
+              opt.classList.add("locked");
               if(oi === correctIndex){
-                row.classList.add("correct");
+                opt.classList.add("correct");
                 mark.textContent = "✓";
               }
               if(oi === chosen && chosen !== correctIndex){
-                row.classList.add("wrong");
+                opt.classList.add("wrong");
                 mark.textContent = "✕";
               }
             }else{
-              row.onclick = ()=>{
+              opt.onclick = ()=>{
                 selectedOptionMap.set(it.id, oi);
                 renderContent();
               };
             }
           }
-
-          optWrap.appendChild(row);
+          optWrap.appendChild(opt);
         });
 
-        card.appendChild(optWrap);
-
-        if(note){
-          const nb = document.createElement("div");
-          nb.className = "noteBox";
-          nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
-          card.appendChild(nb);
-        }
+        row.appendChild(optWrap);
       }
 
       if(mode === "written"){
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-        const wb = document.createElement("div");
-        wb.className = "noteBox";
+        const box = document.createElement("div");
+        box.className = "noteInline";
         if(ansMode === "show"){
-          wb.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
-        }else{
-          wb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : "";
+          box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
         }
-        card.appendChild(wb);
+        row.appendChild(box);
       }
 
-      list.appendChild(card);
+      list.appendChild(row);
 
+      // ✅ Ad after every 10 items
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1535,7 +1600,6 @@
     });
   }
 
-  document.body.setAttribute("data-mode", mode);
   attachSubjects();
   attachLatestModelTests();
 </script>
