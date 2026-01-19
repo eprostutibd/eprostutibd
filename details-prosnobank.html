@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eProstutiBD প্রশ্নব্যাংক — Details</title>
 
-  <!-- ✅ SEO -->
   <meta name="description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সম্পূর্ণ ফ্রি প্রশ্নব্যাংক — eProstutiBD" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#1d4ed8" />
-  <link rel="canonical" href="#" />
 
   <style>
     :root{
@@ -47,17 +45,16 @@
     }
     a{color:inherit}
 
-    /* ✅ IMPORTANT: footer যেন hide না হয়, তাই bottom bar space না ধরে আমরা floating করব */
     .container{
       max-width: 1320px;
       margin: 0 auto;
       padding-left: clamp(12px, 4vw, 48px);
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 10px;
-      padding-bottom: 18px; /* footer visible */
+      padding-bottom: 18px;
     }
 
-    /* ===== Header (same as prosnobank) ===== */
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -145,7 +142,7 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Sticky Subject header (Subject name + tabs) ===== */
+    /* ===== Subject Dock (sticky under header) ===== */
     .subjectDock{
       position: sticky;
       top: 0;
@@ -165,49 +162,88 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+      gap:12px;
+      flex-wrap:nowrap;
     }
     .subTitle{
-      min-width:0;
       display:flex;
-      flex-direction:column;
-      gap:2px;
+      align-items:center;
+      gap:10px;
+      min-width:0;
     }
     .subTitle b{
       font-size:14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 70vw;
+      max-width: 30vw;
+      font-weight:1000;
     }
-    .subTitle span{font-size:12px;color:var(--muted)}
+    .subTitle span{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 45vw;
+    }
 
+    /* ✅ Plain text tabs */
     .tabs{
       display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+      gap:12px;
       align-items:center;
+      flex-wrap:nowrap;
+      white-space:nowrap;
     }
     .tab{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.92);
+      border:none;
+      background: transparent;
       color: var(--text);
+      padding: 0;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor:pointer;
+      height:auto;
+      box-shadow:none;
+    }
+    .tab.active{
+      color: var(--brandA);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+
+    /* ===== Mobile Subject Bar (horizontal) ===== */
+    .mobileSubjectBar{
+      display:none;
+      gap:10px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width:none;
+      padding: 10px 0;
+    }
+    .mobileSubjectBar::-webkit-scrollbar{display:none;}
+    .mobileSubBtn{
+      flex:0 0 auto;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.92);
       border-radius: 999px;
-      padding: 8px 12px;
+      padding: 10px 12px;
       font-size:12px;
       font-weight:1000;
+      white-space:nowrap;
       cursor:pointer;
-      height: 36px;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.15s;
     }
-    .tab.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
+    .mobileSubBtn.active{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.10);
+    }
 
-    /* ===== Main layout ===== */
+    /* ===== Layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 340px 1fr 300px; /* left, main, right ad */
+      grid-template-columns: 340px 1fr 300px;
       gap: 10px;
       align-items:start;
       margin-top: 10px;
@@ -218,6 +254,8 @@
     }
     @media (max-width: 980px){
       .grid{grid-template-columns: 1fr;}
+      .leftDesktop{display:none;}
+      .mobileSubjectBar{display:flex;}
       .rightAd{display:block;}
     }
 
@@ -270,19 +308,7 @@
       font-size: 13px;
     }
 
-    /* ✅ LEFT Subject list scroll works */
-    .leftWrap{
-      position: sticky;
-      top: 160px; /* header+subjectDock approx */
-      height: calc(100vh - 190px);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    @media (max-width: 980px){
-      .leftWrap{position: static; height:auto;}
-    }
-
+    /* ✅ Only left subject list scroll + max ~8 items */
     .sList{
       overflow:auto;
       -webkit-overflow-scrolling: touch;
@@ -290,11 +316,9 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      flex:1;
-      min-height: 240px;
+      max-height: 520px;
     }
 
-    /* ✅ Better subject card design */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.92);
@@ -332,13 +356,13 @@
       color: var(--muted);
       white-space: nowrap;
     }
-    .chip b{color: var(--text)}
+    .chip b{color: var(--text); font-weight:1000}
     .sItem.active{
       outline: 2px solid rgba(29,78,216,.22);
       border-color: rgba(29,78,216,.22);
     }
 
-    /* ===== Paper look + questions ===== */
+    /* ===== Paper look ===== */
     .paper{
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(18,28,55,.10);
@@ -413,7 +437,7 @@
     }
     .noteBox b{color: var(--text)}
 
-    /* ===== Model test ===== */
+    /* ===== Model test cards ===== */
     .mtGrid{display:grid;grid-template-columns: repeat(2, 1fr);gap:10px;}
     @media (max-width: 560px){ .mtGrid{grid-template-columns: 1fr;} }
     .mtCard{
@@ -442,7 +466,7 @@
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
     .mtActions{position:relative;display:flex;gap:8px;flex-wrap:wrap}
 
-    /* ===== Mid ads ===== */
+    /* ===== Ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -460,10 +484,8 @@
       padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
-
     .empty{
-      display:none;
-      border:1px dashed rgba(18,28,55,.22);
+      display:none;border:1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.70);
       border-radius: 16px;
       padding: 12px;
@@ -472,7 +494,7 @@
       font-size:12px;
     }
 
-    /* ✅ Floating ans control (does NOT block footer) */
+    /* ===== Floating Ans controls (footer hide করবে না) ===== */
     .floatingAns{
       position: fixed;
       left: 50%;
@@ -507,7 +529,7 @@
     }
     .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
 
-    /* ===== Footer (same) ===== */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -612,21 +634,23 @@
   </div>
 
   <div class="adBox">
-    <div class="adHead">
-      <b>Ad Slot</b><span>Header নিচে</span>
-    </div>
+    <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
     <div class="adBody">Paste ad code here</div>
   </div>
+
+  <!-- ✅ Mobile subject menu bar -->
+  <div id="mobileSubjectBar" class="mobileSubjectBar" aria-label="Subjects menu"></div>
 </div>
 
-<!-- ✅ Subject name + Tabs (sticky) -->
+<!-- ✅ Sticky Subject line + tabs -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
       <b id="subName">Details</b>
       <span id="subMeta">Subject select করুন</span>
     </div>
-    <div class="tabs">
+
+    <div class="tabs" aria-label="Tabs">
       <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
       <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
@@ -636,14 +660,13 @@
 
 <div class="container">
   <main class="grid">
-    <!-- LEFT -->
-    <aside class="panel">
+    <!-- LEFT DESKTOP ONLY -->
+    <aside class="panel leftDesktop">
       <div class="panelHead">
         <b>সকল Subject</b>
         <span class="muted" id="leftHint">Loading…</span>
       </div>
-
-      <div class="panelBody leftWrap">
+      <div class="panelBody">
         <div class="searchMini">
           <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
           <button class="btn" onclick="renderSubjectList()">Search</button>
@@ -701,7 +724,7 @@
   </main>
 </div>
 
-<!-- ✅ Floating Ans controls -->
+<!-- ✅ Floating ans control -->
 <div class="floatingAns" id="ansFloat">
   <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
   <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
@@ -733,8 +756,8 @@
     </div>
 
     <div class="footFollow">
-      <b>Follow</b>
-      <div class="socialRow">
+      <b>Social links পরে বসাবেন ✅</b>
+      <div class="socialRow" aria-label="Social icons">
         <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
         <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
         <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg></a>
@@ -793,7 +816,7 @@
       .trim();
   }
 
-  // ✅ Debounce for search performance
+  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -819,7 +842,6 @@
     return -1;
   }
 
-  // ===== State (1–6 requirements) =====
   let SUBJECTS = [];
   let selectedSubjectId = "";
   let selectedSubjectName = "";
@@ -827,26 +849,21 @@
   let mode = "mcq";
   let ansMode = "hide";
 
-  // pagination
   const PAGE_SIZE = 30;
   let page = 1;
   let cursorByPage = { 1: null };
   let lastDoc = null;
   let hasNext = false;
 
-  // for MCQ selection
   let selectedOptionMap = new Map();
 
-  // counts
   const mtCountMap = new Map();
   const mtUnsubMap = new Map();
 
-  // listeners
   let unsubSubjects = null;
   let unsubRight = null;
 
-  // LocalStorage keys
-  const LS_KEY = "epbd_details_state_v1";
+  const LS_KEY = "epbd_details_state_v2";
 
   function saveState(){
     const payload = {
@@ -855,7 +872,7 @@
       ansMode,
       page,
       q: $("qSearch").value || "",
-      s: $("sSearch").value || ""
+      s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
     localStorage.setItem(LS_KEY, JSON.stringify(payload));
   }
@@ -880,15 +897,13 @@
     const u = new URL(location.href);
     return u.searchParams.get(name) || "";
   }
-  // subjectId from URL has priority
+
   const urlSubjectId = getParam("subjectId");
   if(urlSubjectId) selectedSubjectId = urlSubjectId;
 
-  // page from URL for SEO
   const urlPage = Number(getParam("page") || "1") || 1;
   if(urlPage > 1) page = urlPage;
 
-  // load saved state after reading url
   loadState();
 
   function setUrlState(){
@@ -904,17 +919,14 @@
     $("tabMcq").classList.toggle("active", mode==="mcq");
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
-
-    // Ans controls visible only for mcq/written
     $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
 
-    // reset pagination on mode change
     page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
     setUrlState();
     saveState();
-    resetAndReload(true);
+    loadRight();
   }
   window.setMode = setMode;
 
@@ -923,9 +935,21 @@
     $("ansHideBtn").classList.toggle("active", ansMode==="hide");
     $("ansShowBtn").classList.toggle("active", ansMode==="show");
     saveState();
-    renderContent(); // just re-render
+    renderContent();
   }
   window.setAnsMode = setAnsMode;
+
+  function relatedMatch(query, text){
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
+  }
 
   function syncModelTestListeners(){
     const alive = new Set(SUBJECTS.map(s=>s.id));
@@ -943,29 +967,17 @@
         .onSnapshot((snap)=>{
           mtCountMap.set(s.id, snap.size || 0);
           renderSubjectList();
+          renderMobileSubjectBar();
         });
       mtUnsubMap.set(s.id, unsub);
     });
   }
 
-  function relatedMatch(query, text){
-    // ✅ partial/related search (simple scoring)
-    const q = normalize(query);
-    const t = normalize(text);
-    if(!q) return 1;
-    if(t.includes(q)) return 10;
-    const qw = q.split(" ").filter(Boolean);
-    const tw = new Set(t.split(" ").filter(Boolean));
-    let hit = 0;
-    qw.forEach(w => { if(tw.has(w)) hit++; });
-    return hit / Math.max(1, qw.length);
-  }
-
   function renderSubjectList(){
-    const q = $("sSearch").value || "";
     const list = $("sList");
-    list.innerHTML = "";
+    if(!list) return;
 
+    const q = $("sSearch").value || "";
     const filtered = SUBJECTS
       .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
       .filter(s => !q ? true : s._score >= 0.25)
@@ -974,6 +986,7 @@
     $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
     $("sEmpty").style.display = filtered.length ? "none" : "block";
 
+    list.innerHTML = "";
     filtered.forEach(s=>{
       const mcq = s.counts?.mcq || 0;
       const written = s.counts?.written || 0;
@@ -982,7 +995,6 @@
       const el = document.createElement("div");
       el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
       el.onclick = ()=> selectSubject(s.id);
-
       el.innerHTML = `
         <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
         <div class="chips">
@@ -996,6 +1008,23 @@
   }
   window.renderSubjectList = renderSubjectList;
 
+  function renderMobileSubjectBar(){
+    const bar = $("mobileSubjectBar");
+    if(!bar) return;
+
+    bar.innerHTML = "";
+    SUBJECTS
+      .slice()
+      .sort((a,b)=>(a.name||"").localeCompare(b.name||""))
+      .forEach(s=>{
+        const btn = document.createElement("button");
+        btn.className = "mobileSubBtn" + (s.id===selectedSubjectId ? " active" : "");
+        btn.textContent = s.name || "(no name)";
+        btn.onclick = ()=>selectSubject(s.id);
+        bar.appendChild(btn);
+      });
+  }
+
   function selectSubject(id){
     selectedSubjectId = id;
     page = 1;
@@ -1005,16 +1034,15 @@
     const found = SUBJECTS.find(s=>s.id===id);
     selectedSubjectName = found?.name || "";
     $("subName").textContent = selectedSubjectName || "Details";
-    $("subMeta").textContent = "ফ্রি প্রশ্নব্যাংক • Ads supported";
+    $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
     $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-    $("tickerText").textContent = selectedSubjectName
-      ? `${selectedSubjectName} • MCQ/Written/Model Test`
-      : "Subject নির্বাচন করুন";
+    $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
 
     renderSubjectList();
+    renderMobileSubjectBar();
     setUrlState();
     saveState();
-    resetAndReload(true);
+    loadRight();
   }
 
   function detachRight(){
@@ -1045,28 +1073,28 @@
 
   let currentItems = [];
 
-  function resetAndReload(resetCursor){
+  function resetAndReload(){
     if(!selectedSubjectId){
       $("emptyRight").style.display = "block";
       $("content").innerHTML = "";
       $("pageHint").textContent = "";
       return;
     }
-    if(resetCursor){
-      // keep current page but refresh
-    }
     loadRight();
   }
   window.resetAndReload = resetAndReload;
 
   function loadRight(){
+    if(!selectedSubjectId) return;
+
     detachRight();
     $("emptyRight").style.display = "none";
     $("content").innerHTML = "";
     $("pageHint").textContent = `Page ${page}`;
 
-    const built = buildQuery();
+    $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
 
+    const built = buildQuery();
     unsubRight = built.q.onSnapshot((snap)=>{
       let docs = snap.docs;
 
@@ -1074,23 +1102,20 @@
       if(hasNext) docs = docs.slice(0, PAGE_SIZE);
 
       lastDoc = docs.length ? docs[docs.length-1] : null;
-
       currentItems = docs.map(d=>({id:d.id, ...d.data()}));
 
-      // ✅ related/partial search
       const qtxt = normalize(built.searchText);
       if(qtxt){
-        if(built.kind === "model"){
-          currentItems = currentItems
-            .map(it => ({...it, _score: relatedMatch(qtxt, it.title || it.name || "")}))
-            .filter(it => it._score >= 0.25)
-            .sort((a,b)=> (b._score - a._score));
-        }else{
-          currentItems = currentItems
-            .map(it => ({...it, _score: relatedMatch(qtxt, it.question || "")}))
-            .filter(it => it._score >= 0.25)
-            .sort((a,b)=> (b._score - a._score));
-        }
+        currentItems = currentItems
+          .map(it => ({
+            ...it,
+            _score: relatedMatch(qtxt, built.kind==="model"
+              ? (it.title || it.name || "")
+              : (it.question || "")
+            )
+          }))
+          .filter(it => it._score >= 0.25)
+          .sort((a,b)=> (b._score - a._score));
       }
 
       renderContent();
@@ -1142,6 +1167,7 @@
     if(mode === "model"){
       const grid = document.createElement("div");
       grid.className = "mtGrid";
+
       currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Subject Model Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
@@ -1165,6 +1191,7 @@
         `;
         grid.appendChild(card);
       });
+
       wrap.appendChild(grid);
       return;
     }
@@ -1222,7 +1249,6 @@
 
         card.appendChild(optWrap);
 
-        // note always show
         const nb = document.createElement("div");
         nb.className = "noteBox";
         nb.innerHTML = `<b>Note:</b> ${esc(note || "-")}`;
@@ -1265,20 +1291,9 @@
       syncModelTestListeners();
 
       if(!selectedSubjectId && SUBJECTS.length){
-        selectedSubjectId = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""))[0].id;
+        selectedSubjectId = SUBJECTS[0].id;
       }
 
-      const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
-      selectedSubjectName = found?.name || "";
-      $("subName").textContent = selectedSubjectName || "Details";
-      $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
-
-      $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
-      $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
-
-      renderSubjectList();
-
-      // apply mode + ansMode UI
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
@@ -1286,21 +1301,28 @@
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
       $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
 
-      setUrlState();
-      saveState();
+      renderSubjectList();
+      renderMobileSubjectBar();
 
       if(selectedSubjectId){
+        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        selectedSubjectName = found?.name || "";
+        $("subName").textContent = selectedSubjectName || "Details";
+        $("subMeta").textContent = `ফ্রি সার্ভিস • Ads supported • Page ${page}`;
+        $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
+        $("tickerText").textContent = selectedSubjectName ? `${selectedSubjectName} • MCQ/Written/Model Test` : "Subject নির্বাচন করুন";
+        setUrlState();
+        saveState();
         loadRight();
       }
     }, (err)=>{
       console.error(err);
-      $("leftHint").textContent = "Failed";
-      $("sList").innerHTML = "";
-      $("sEmpty").style.display = "block";
+      if($("leftHint")) $("leftHint").textContent = "Failed";
+      if($("sList")) $("sList").innerHTML = "";
+      if($("sEmpty")) $("sEmpty").style.display = "block";
     });
   }
 
-  // Boot
   attachSubjects();
 </script>
 </body>
