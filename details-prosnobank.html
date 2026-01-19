@@ -37,6 +37,9 @@
 
       /* ✅ Ans bar reserve */
       --ansBarH: 56px;
+
+      /* ✅ JS will update this on scroll so Ans bar never goes under footer */
+      --ansBarLift: 0px;
     }
 
     *{box-sizing:border-box}
@@ -254,6 +257,9 @@
       text-overflow:ellipsis;
       white-space:nowrap;
     }
+    @media (max-width: 980px){
+      .subName{font-size:13.5px;}
+    }
     .tabsLine{
       display:flex;
       align-items:center;
@@ -291,7 +297,6 @@
     }
     @media (max-width: 980px){
       .dockSpacer{display:block;}
-      .subName{font-size:13.5px;}
       .tab{font-size:12.8px;}
       .subjectDockInner{gap:10px;}
     }
@@ -425,9 +430,7 @@
     }
     .chip b{font-size:11.5px;color: var(--text);}
 
-    /* ======================================================
-       ✅ PAPER FEEL (patched)
-       ====================================================== */
+    /* ===== Paper ===== */
     .paper{
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
@@ -451,14 +454,7 @@
                   radial-gradient(900px 260px at 80% 0%, rgba(14,165,233,.04), transparent 60%);
       pointer-events:none;
     }
-
-    .qList{
-      display:flex;
-      flex-direction:column;
-      gap: 0;
-      position: relative;
-      z-index: 1;
-    }
+    .qList{display:flex;flex-direction:column;gap:0;position:relative;z-index:1;}
 
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
@@ -481,53 +477,18 @@
       .qRow + .qRow{ border-top: 1px solid var(--line2); }
     }
 
-    .qRow{
-      padding: 12px 12px;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .qHead{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      justify-content:flex-start;
-    }
+    .qRow{padding:12px 12px;background:transparent;border-radius:0;}
+    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start;}
     .qNo{
-      flex:0 0 auto;
-      font-size:11px;
-      font-weight:1000;
-      padding: 5px 8px;
-      border-radius:999px;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.70);
-      color: var(--muted);
-      white-space:nowrap;
+      flex:0 0 auto;font-size:11px;font-weight:1000;padding:5px 8px;border-radius:999px;
+      border:1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.70);color: var(--muted);white-space:nowrap;
     }
-    .qText{
-      margin:0;
-      font-weight:800;
-      font-size:12.6px;
-      line-height:1.55;
-      flex:1;
-      letter-spacing:.1px;
-    }
+    .qText{margin:0;font-weight:800;font-size:12.6px;line-height:1.55;flex:1;letter-spacing:.1px;}
     @media (min-width: 981px){
-      .qText{
-        display:-webkit-box;
-        -webkit-line-clamp:2;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
-      }
+      .qText{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
     }
 
-    /* ✅ Note 바로 প্রশ্নের পরে থাকবে (question end -> note start) */
-    .noteInline{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
+    .noteInline{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.55;}
     .noteInline b{color: var(--text);}
 
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
@@ -543,18 +504,9 @@
       padding: 1px 0;
     }
     .optLine.locked{cursor:default;}
-    .optMark{
-      width: 18px;height: 18px;border-radius:999px;
-      display:grid;place-items:center;
-      font-weight:1000;font-size:12px;
-      opacity:0;
-    }
+    .optMark{width:18px;height:18px;border-radius:999px;display:grid;place-items:center;font-weight:1000;font-size:12px;opacity:0;}
     .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
-    .optTxt{
-      font-size:12.5px;line-height:1.5;color: var(--text);
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-      min-height: calc(2 * 1.5em);
-    }
+    .optTxt{font-size:12.5px;line-height:1.5;color: var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: calc(2 * 1.5em);}
     .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
     .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
     .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
@@ -579,15 +531,7 @@
       padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
-    .empty{
-      display:none;border:1px dashed rgba(18,28,55,.22);
-      background: rgba(255,255,255,.70);
-      border-radius: 16px;
-      padding: 12px;
-      color: var(--muted);
-      margin-top: 12px;
-      font-size:12px;
-    }
+    .empty{display:none;border:1px dashed rgba(18,28,55,.22);background: rgba(255,255,255,.70);border-radius:16px;padding:12px;color: var(--muted);margin-top:12px;font-size:12px;}
 
     /* Latest MT */
     .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
@@ -610,14 +554,19 @@
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
     /* ======================================================
-       ✅ Ans bar ALWAYS above footer (patched)
+       ✅ Ans bar: NEVER under footer (JS lifts it when footer comes)
        ====================================================== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
       bottom: calc(12px + var(--safeBottom));
-      z-index: 99999;
+      z-index: 2147483647; /* ✅ always above everything */
       pointer-events: none;
+
+      /* ✅ lift up when footer overlaps */
+      transform: translateY(calc(-1 * var(--ansBarLift)));
+      transition: transform .12s ease;
+      will-change: transform;
     }
     .ansBar{
       pointer-events:auto;
@@ -687,10 +636,7 @@
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
 
     @media (max-width: 980px){
-      .footGrid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px 10px;
-      }
+      .footGrid{grid-template-columns: repeat(3, minmax(0, 1fr));gap: 10px 10px;}
       .footBrandCol{display:none !important;}
     }
 
@@ -709,9 +655,9 @@
     @media (min-width: 981px){
       .container{padding-left:16px;padding-right:16px;}
     }
-
     @media (prefers-reduced-motion: reduce){
       .marq span{ animation:none; padding-left:0; }
+      .ansBarWrap{ transition:none; }
     }
   </style>
 </head>
@@ -894,7 +840,7 @@
   </div>
 </div>
 
-<footer>
+<footer id="pageFooter">
   <div class="footGrid">
     <div class="footBrandCol">
       <div class="footTitle">eProstutiBD</div>
@@ -1003,6 +949,49 @@
   window.addEventListener("load", syncStickyOffsets);
   syncStickyOffsets();
 
+  /* ======================================================
+     ✅ Footer-safe floating bar: never under footer
+     ====================================================== */
+  function syncAnsBarWithFooter(){
+    const ansWrap = $("ansBarWrap");
+    const footer = $("pageFooter");
+    if(!ansWrap || !footer) return;
+
+    // if Ans bar hidden (mode=model) => reset lift
+    if(ansWrap.style.display === "none"){
+      document.documentElement.style.setProperty("--ansBarLift", "0px");
+      return;
+    }
+
+    const ansRect = ansWrap.getBoundingClientRect();
+    const footerRect = footer.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    // bottom position of ans bar (in viewport)
+    // ansRect.bottom is already relative to viewport
+    // footerRect.top is footer top relative to viewport
+    // If footer top comes up and touches ans bar, lift up by overlap + small gap
+    const gap = 10;
+    const overlap = (ansRect.bottom + gap) - footerRect.top;
+
+    const lift = overlap > 0 ? overlap : 0;
+    document.documentElement.style.setProperty("--ansBarLift", lift.toFixed(0) + "px");
+  }
+
+  // throttle with rAF
+  let _ansRAF = null;
+  function scheduleAnsSync(){
+    if(_ansRAF) return;
+    _ansRAF = requestAnimationFrame(()=>{
+      _ansRAF = null;
+      syncAnsBarWithFooter();
+    });
+  }
+
+  window.addEventListener("scroll", scheduleAnsSync, {passive:true});
+  window.addEventListener("resize", scheduleAnsSync);
+  window.addEventListener("load", scheduleAnsSync);
+
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
@@ -1075,7 +1064,7 @@
       mode,
       ansMode,
       page,
-      cursorByPage,         // ✅ persist cursors
+      cursorByPage,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
@@ -1133,6 +1122,7 @@
     $("tabModel").classList.toggle("active", mode==="model");
 
     $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+    scheduleAnsSync(); // ✅ re-sync after toggle
 
     page = 1;
     cursorByPage = { 1: null };
@@ -1149,6 +1139,7 @@
     $("ansShowBtn").classList.toggle("active", ansMode==="show");
     saveState();
     renderContent();
+    scheduleAnsSync(); // ✅ re-sync (height could change)
   }
   window.setAnsMode = setAnsMode;
 
@@ -1279,15 +1270,13 @@
       try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
       catch(e){ window.scrollTo(0,0); }
     }
+    scheduleAnsSync();
   }
 
   function detachRight(){
     if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
   }
 
-  /* ======================================================
-     ✅ Patched buildQuery with stable cursor (createdAt + id)
-     ====================================================== */
   function buildQuery(){
     const searchText = $("qSearch").value || "";
     const cursor = cursorByPage[page] || null;
@@ -1371,10 +1360,12 @@
 
       setUrlState();
       saveState();
+      scheduleAnsSync(); // ✅ after content render
     }, (err)=>{
       console.error(err);
       $("content").innerHTML = "";
       $("emptyRight").style.display = "block";
+      scheduleAnsSync();
     });
   }
 
@@ -1387,9 +1378,6 @@
     loadRight();
   }
 
-  /* ======================================================
-     ✅ Patched nextPage to store cursor {t,id} in cursorByPage
-     ====================================================== */
   function nextPage(){
     if(!hasNext) return;
     if(lastDoc){
@@ -1462,7 +1450,6 @@
       const row = document.createElement("div");
       row.className = "qRow";
 
-      /* ✅ Note starts from where question ends */
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
@@ -1511,6 +1498,7 @@
               opt.onclick = ()=>{
                 selectedOptionMap.set(it.id, oi);
                 renderContent();
+                scheduleAnsSync();
               };
             }
           }
@@ -1581,6 +1569,8 @@
           `;
           wrap.appendChild(card);
         });
+
+        scheduleAnsSync();
       }, (err)=>console.error(err));
   }
 
@@ -1621,11 +1611,16 @@
         saveState();
         loadRight();
       }
+
+      scheduleAnsSync();
     });
   }
 
   attachSubjects();
   attachLatestModelTests();
+
+  // initial sync after first paint
+  setTimeout(scheduleAnsSync, 0);
 </script>
 </body>
 </html>
