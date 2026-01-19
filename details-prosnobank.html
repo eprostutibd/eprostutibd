@@ -25,8 +25,9 @@
       --ok:#16a34a;
       --danger:#dc2626;
 
-      --footerA:#0b1b45;
-      --footerB:#071635;
+      /* ✅ Footer color changed */
+      --footerA:#0b3b2e;
+      --footerB:#06261f;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
       --headerH: 64px;
@@ -191,11 +192,11 @@
     }
     .subjectSheet .body{
       padding: 12px;
-      overflow:auto;
+      overflow:auto; /* ✅ mobile scroll if many */
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
     }
-    /* ✅ 2 columns (2 line) */
+    /* ✅ 2 columns */
     .sheetGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -232,7 +233,7 @@
       background: rgba(29,78,216,.08);
     }
 
-    /* ===== Subject Dock (sticky under header) ===== */
+    /* ===== Subject Dock ===== */
     .subjectDock{
       position: sticky;
       top: var(--headerH, 64px);
@@ -245,8 +246,6 @@
       border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
-
-    /* ✅ Tabs centered + Mobile Subject button on the RIGHT of tabs */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
@@ -270,8 +269,10 @@
       max-width: 36vw;
       font-weight:1000;
     }
+    /* ✅ remove subMeta text completely */
     .subTitle span{ display:none !important; }
 
+    /* Tabs centered */
     .tabs{
       display:flex;
       gap:14px;
@@ -287,8 +288,6 @@
       font-size: 13px;
       font-weight: 1000;
       cursor:pointer;
-      height:auto;
-      box-shadow:none;
     }
     .tab.active{
       color: var(--brandA);
@@ -303,7 +302,6 @@
       gap:10px;
       min-width:0;
     }
-    /* Only show subject button on mobile */
     .subBtnMobile{
       display:none;
       border:1px solid rgba(18,28,55,.12);
@@ -326,7 +324,7 @@
     .grid{
       display:grid;
       grid-template-columns: 340px 1fr 300px;
-      gap: 10px;
+      gap: 12px; /* ✅ more gap between boxes */
       align-items:start;
       margin-top: 10px;
     }
@@ -390,20 +388,38 @@
     }
 
     /* ======================================================
-       ✅ Desktop sidebar scroll "ager moto"
-       - Only the list scrolls with max-height (NOT sticky full height)
+       ✅ Desktop sidebar: show max ~8 at a time + scroll + all data
        ====================================================== */
-    .sList{
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      padding-right: 6px;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;                 /* ✅ more gap between cards */
-      max-height: 520px;         /* ✅ old style scroll */
-      scroll-behavior: smooth;
+    @media (min-width: 981px){
+      aside.panel.leftDesktop{
+        position: sticky;
+        top: calc(var(--headerH, 64px) + 12px);
+        height: calc(100vh - (var(--headerH, 64px) + 24px));
+        overflow: hidden;
+      }
+      aside.panel.leftDesktop .panelBody{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+      }
+      /* list scroll inside */
+      .sList{
+        flex: 1;
+        min-height: 0;
+        overflow:auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 6px;
+        display:flex;
+        flex-direction:column;
+        gap: 10px;
+        scroll-behavior:smooth;
+        /* ✅ ensures not too tall visually; ~8 cards visible depending on screen */
+        max-height: calc(100vh - (var(--headerH, 64px) + 240px));
+      }
     }
-    /* Optional: nicer scrollbar */
+
+    /* Scrollbar */
     .sList{ scrollbar-width: thin; scrollbar-color: rgba(29,78,216,.35) rgba(15,23,48,.06); }
     .sList::-webkit-scrollbar{ width: 10px; }
     .sList::-webkit-scrollbar-track{ background: rgba(15,23,48,.06); border-radius: 999px; }
@@ -413,12 +429,12 @@
       border: 2px solid rgba(15,23,48,.06);
     }
 
-    /* ✅ Desktop subject card: smaller */
+    /* ✅ Desktop subject card: compact */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.88));
-      border-radius: 18px;
-      padding: 10px 12px;
+      border-radius: 16px;
+      padding: 9px 11px;
       cursor:pointer;
       transition: transform .12s, box-shadow .12s, border-color .12s;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
@@ -429,8 +445,8 @@
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(520px 120px at 0% 0%, rgba(29,78,216,.11), transparent 62%),
-        radial-gradient(520px 120px at 100% 0%, rgba(14,165,233,.09), transparent 62%);
+        radial-gradient(460px 110px at 0% 0%, rgba(29,78,216,.11), transparent 62%),
+        radial-gradient(460px 110px at 100% 0%, rgba(14,165,233,.09), transparent 62%);
       opacity:.9; pointer-events:none;
     }
     .sItem:hover{
@@ -507,13 +523,17 @@
       flex:1;letter-spacing:.1px;
     }
 
-    /* ✅ Options: 2 lines + tick/cross on right */
+    /* ✅ Options: question paper style (2 columns on desktop), each option max 2 lines */
     .opts{
       margin-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+      display:grid;
+      grid-template-columns: 1fr;   /* mobile default */
+      gap:10px;
     }
+    @media (min-width: 700px){
+      .opts{ grid-template-columns: 1fr 1fr; } /* ✅ paper-like */
+    }
+
     .optLine{
       display:flex;
       gap:8px;
@@ -532,13 +552,14 @@
       line-height:1.6;
       margin-top: 1px;
     }
+    /* ✅ always 2 lines (like paper) */
     .optTxt{
       flex:1;
       font-size:12.5px;
       line-height:1.6;
       color: var(--text);
       display:-webkit-box;
-      -webkit-line-clamp:2;          /* ✅ two lines */
+      -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
@@ -552,7 +573,7 @@
       font-weight:1000;
       font-size:12px;
       margin-top: 2px;
-      opacity: 0;                 /* hidden by default */
+      opacity: 0;
       transform: translateY(1px);
     }
     .optLine.correct .optTxt{ color: var(--ok); font-weight: 800; }
@@ -570,7 +591,7 @@
       box-shadow: 0 8px 18px rgba(220,38,38,.20);
     }
 
-    /* Note box -> plain text (kept) */
+    /* Note -> plain text */
     .noteBox{
       margin-top: 8px;
       padding: 0;
@@ -640,7 +661,7 @@
       font-size:12px;
     }
 
-    /* ✅ Ans controls: sticky ABOVE footer (NOT inside footer) */
+    /* ✅ Ans controls: sticky ABOVE footer */
     .ansBarWrap{
       max-width: 1320px;
       margin: 0 auto;
@@ -651,7 +672,7 @@
       position: sticky;
       bottom: calc(12px + var(--safeBottom));
       z-index: 999;
-      pointer-events:none; /* only buttons clickable */
+      pointer-events:none;
     }
     .floatingAns{
       pointer-events:auto;
@@ -691,8 +712,8 @@
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
       background:
-        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
+        radial-gradient(700px 240px at 20% 0%, rgba(34,197,94,.18), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(96,165,250,.14), transparent 60%),
         linear-gradient(180deg, var(--footerA), var(--footerB));
       color: rgba(255,255,255,.92);
     }
@@ -708,10 +729,15 @@
       gap: 14px;
       align-items:start;
     }
+    /* ✅ Mobile: footer 3 lines (3 rows) */
     @media (max-width: 560px){
-      .foot{grid-template-columns: 1fr 1fr; gap: 12px;}
-      .footLogo{grid-column: 1 / -1;}
-      .footFollow{grid-column: 1 / -1;}
+      .foot{
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .footLogo, .footFollow{
+        grid-column: auto;
+      }
     }
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
@@ -810,7 +836,7 @@
   </div>
 </div>
 
-<!-- Sticky Subject line + centered tabs + mobile subject button on right -->
+<!-- Sticky Subject line + tabs + subject button on right -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
@@ -998,7 +1024,6 @@
 
   $("year").textContent = new Date().getFullYear();
 
-  /* keep sticky offsets correct */
   function syncStickyOffsets(){
     const h = document.querySelector("header")?.offsetHeight || 64;
     document.documentElement.style.setProperty("--headerH", h + "px");
@@ -1068,7 +1093,7 @@
   let unsubSubjects = null;
   let unsubRight = null;
 
-  const LS_KEY = "epbd_details_state_v2";
+  const LS_KEY = "epbd_details_state_v3";
 
   function saveState(){
     const payload = {
@@ -1125,7 +1150,6 @@
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
 
-    // model mode => hide ans bar
     document.querySelector(".ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
     page = 1;
@@ -1460,11 +1484,9 @@
             <span class="optTxt">${esc(op || "")}</span>
             <span class="optMark"></span>
           `;
-
           const mark = row.querySelector(".optMark");
 
           if(ansMode === "show"){
-            // show only correct tick
             if(oi === correctIndex){
               row.classList.add("correct");
               mark.textContent = "✓";
@@ -1488,20 +1510,22 @@
               };
             }
           }
+
           optWrap.appendChild(row);
         });
 
         card.appendChild(optWrap);
 
-        const nb = document.createElement("div");
-        nb.className = "noteBox";
-        nb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : "";
-        card.appendChild(nb);
+        if(note){
+          const nb = document.createElement("div");
+          nb.className = "noteBox";
+          nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
+          card.appendChild(nb);
+        }
       }
 
       if(mode === "written"){
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-
         const box = document.createElement("div");
         box.className = "noteBox";
 
