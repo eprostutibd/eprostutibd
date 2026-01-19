@@ -29,6 +29,9 @@
       --footerB:#071635;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
+
+      /* ✅ dynamic header height for sticky offsets */
+      --headerH: 64px;
     }
 
     *{box-sizing:border-box}
@@ -129,6 +132,9 @@
     .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
     .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
+    @media (prefers-reduced-motion: reduce){
+      .marq span{ animation: none; padding-left: 0; }
+    }
 
     .adBox{
       margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
@@ -145,7 +151,7 @@
     /* ===== Subject Dock (sticky under header) ===== */
     .subjectDock{
       position: sticky;
-      top: 0;
+      top: var(--headerH, 64px);  /* ✅ prevents overlap with header */
       z-index: 58;
       margin-top: 10px;
       background: rgba(246,248,255,.82);
@@ -308,15 +314,15 @@
       font-size: 13px;
     }
 
-    /* ✅ Only left subject list scroll + max ~8 items */
+    /* ✅ Only left subject list scroll */
     .sList{
       overflow:auto;
       -webkit-overflow-scrolling: touch;
-      padding-right: 4px;
+      padding-right: 6px;
       display:flex;
       flex-direction:column;
       gap:10px;
-      max-height: 520px;
+      max-height: calc(100vh - 240px); /* ✅ stable scroll height */
     }
 
     .sItem{
@@ -360,6 +366,42 @@
     .sItem.active{
       outline: 2px solid rgba(29,78,216,.22);
       border-color: rgba(29,78,216,.22);
+    }
+
+    /* ✅ Desktop: subject cards nicer */
+    @media (min-width: 981px){
+      .sItem{
+        border-radius: 20px;
+        padding: 14px 14px;
+        border: 1px solid rgba(18,28,55,.10);
+        background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+        box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      }
+      .sItem b{
+        font-size: 14.5px;
+        letter-spacing: .1px;
+        margin-bottom: 10px;
+      }
+      .chip{
+        font-size: 11.5px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(245,248,255,.92);
+      }
+      .sItem.active{
+        outline: none;
+        border-color: rgba(29,78,216,.26);
+        box-shadow: 0 18px 40px rgba(29,78,216,.12);
+        position: relative;
+      }
+      .sItem.active::after{
+        content:"";
+        position:absolute;
+        left:0; top:12px; bottom:12px;
+        width: 6px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, rgba(29,78,216,.95), rgba(14,165,233,.90));
+      }
     }
 
     /* ===== Paper look ===== */
@@ -494,7 +536,7 @@
       font-size:12px;
     }
 
-    /* ===== Floating Ans controls (footer hide করবে না) ===== */
+    /* ===== Floating Ans controls ===== */
     .floatingAns{
       position: fixed;
       left: 50%;
@@ -577,6 +619,37 @@
       text-align:center;
       white-space:nowrap;
     }
+
+    /* ================================
+       ✅ Mobile App-like Tweaks
+       ================================ */
+    @media (max-width: 980px){
+      body{ background: #f3f7ff; }
+      .container{ padding-left: 12px; padding-right: 12px; padding-bottom: calc(86px + var(--safeBottom)); }
+
+      .panel{
+        border-radius: 18px;
+        background: rgba(255,255,255,.92);
+        box-shadow: 0 10px 26px rgba(15,23,48,.08);
+      }
+      main.grid{ gap: 10px; }
+
+      /* ✅ Mobile: subject bar looks like app top scroller */
+      #mobileSubjectBar.mobileSubjectBar{
+        position: sticky;
+        top: var(--headerH, 64px);
+        z-index: 59;
+        margin-top: 10px;
+        background: rgba(246,248,255,.92);
+        border: 1px solid rgba(18,28,55,.08);
+        border-radius: 16px;
+        padding: 10px;
+        box-shadow: 0 12px 28px rgba(15,23,48,.08);
+      }
+
+      /* ✅ Mobile: hide footer ad blocks (footer a ad option thakbe na) */
+      footer .inlineAd{ display:none !important; }
+    }
   </style>
 </head>
 
@@ -602,7 +675,7 @@
       <a href="#">ক্যারিয়ার</a>
     </nav>
 
-    <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+    <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
   </div>
 
   <div class="mobileMenu" id="mobileMenu">
@@ -764,6 +837,7 @@
         <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
       </div>
 
+      <!-- ✅ Footer Ad (Mobile এ CSS দিয়ে hide করা আছে) -->
       <div class="inlineAd" style="margin-top:12px;">
         <div>
           <div class="tag">Ad Slot</div>
@@ -806,14 +880,25 @@
 
   $("year").textContent = new Date().getFullYear();
 
+  /* ✅ dynamic header height => fixes sticky overlaps */
+  function syncStickyOffsets(){
+    const h = document.querySelector("header")?.offsetHeight || 64;
+    document.documentElement.style.setProperty("--headerH", h + "px");
+  }
+  window.addEventListener("resize", syncStickyOffsets);
+  window.addEventListener("load", syncStickyOffsets);
+  syncStickyOffsets();
+
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
   function normalize(s){
-    return String(s||"").toLowerCase()
-      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    s = String(s||"").toLowerCase();
+    try{
+      return s.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+    }catch(e){
+      return s.replace(/[^a-z0-9\u0980-\u09FF\s]+/g, " ").replace(/\s+/g, " ").trim();
+    }
   }
 
   // debounce for search
@@ -832,9 +917,12 @@
     if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
     const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
     if(!ra) return -1;
-    const map = { a:0, b:1, c:2, d:3 };
-    const low = ra.toLowerCase();
+
+    // ✅ supports A/B/C/D + Bengali ক/খ/গ/ঘ
+    const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
+    const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
     if(map[low] !== undefined) return map[low];
+
     const nra = normalize(ra);
     for(let i=0;i<opts.length;i++){
       if(normalize(opts[i]) === nra) return i;
