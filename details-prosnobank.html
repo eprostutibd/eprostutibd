@@ -146,6 +146,33 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
+    /* ===== Mobile subject menu bar ===== */
+    .mobileSubjectBar{
+      display:none;
+      gap:10px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width:none;
+      padding: 10px 0;
+    }
+    .mobileSubjectBar::-webkit-scrollbar{display:none;}
+    .mobileSubBtn{
+      flex:0 0 auto;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.92);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size:12px;
+      font-weight:1000;
+      white-space:nowrap;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    .mobileSubBtn.active{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.10);
+    }
+
     /* ===== Subject Dock (sticky under header) ===== */
     .subjectDock{
       position: sticky;
@@ -160,7 +187,7 @@
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
 
-    /* ✅ Tabs middle রাখার জন্য grid layout */
+    /* ✅ Tabs middle */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
@@ -217,33 +244,6 @@
       color:#fff;
       border-color: rgba(29,78,216,.22);
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
-    }
-
-    /* ===== Mobile subject menu bar ===== */
-    .mobileSubjectBar{
-      display:none;
-      gap:10px;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width:none;
-      padding: 10px 0;
-    }
-    .mobileSubjectBar::-webkit-scrollbar{display:none;}
-    .mobileSubBtn{
-      flex:0 0 auto;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.92);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-size:12px;
-      font-weight:1000;
-      white-space:nowrap;
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-    }
-    .mobileSubBtn.active{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.10);
     }
 
     /* ===== Layout ===== */
@@ -314,9 +314,9 @@
       font-size: 13px;
     }
 
-    /* ================================
-       ✅ DESKTOP Sidebar Scroll FIX + Smooth
-       ================================ */
+    /* ======================================================
+       ✅ DESKTOP Sidebar Scroll FIX (FINAL stable)
+       ====================================================== */
     .grid{ align-items: stretch; }
 
     @media (min-width: 981px){
@@ -325,27 +325,32 @@
         top: calc(var(--headerH, 64px) + 12px);
         height: calc(100vh - (var(--headerH, 64px) + 24px));
         overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      aside.panel.leftDesktop .panelHead{
+        flex: 0 0 auto;
       }
       aside.panel.leftDesktop .panelBody{
-        height: 100%;
-        display:flex;
-        flex-direction:column;
-        min-height:0;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       #sList.sList{
-        flex: 1;
+        flex: 1 1 auto;
         min-height: 0;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
-        padding-right: 6px;
-
-        /* ✅ smoother feel */
-        scroll-behavior: smooth;
         overscroll-behavior: contain;
+        scroll-behavior: smooth;
+        padding-right: 6px;
       }
     }
 
-    /* ✅ Subject list container basic */
     .sList{
       display:flex;
       flex-direction:column;
@@ -689,7 +694,7 @@
   <div id="mobileSubjectBar" class="mobileSubjectBar" aria-label="Subjects menu"></div>
 </div>
 
-<!-- ✅ Sticky Subject line + tabs (tabs centered) -->
+<!-- ✅ Sticky Subject line + tabs -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
@@ -703,7 +708,6 @@
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
     </div>
 
-    <!-- right spacer for perfect centering -->
     <div></div>
   </div>
 </div>
@@ -742,13 +746,6 @@
           <button class="btn" onclick="resetAndReload(true)">Search</button>
         </div>
 
-        <!-- ✅ Ads On/Off option -->
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
-          <button class="btn primary" id="adsOnBtn" onclick="setAdsMode('on')">Ads On</button>
-          <button class="btn" id="adsOffBtn" onclick="setAdsMode('off')">Ads Off</button>
-        </div>
-
-        <!-- ✅ Mid Content Ad (toggle-able) -->
         <div class="inlineAd" id="midAd" style="margin-bottom:12px;">
           <div>
             <div class="tag">Ad Slot</div>
@@ -777,7 +774,6 @@
           </div>
         </div>
 
-        <!-- ✅ Extra right-side ad slot -->
         <div class="inlineAd" style="min-height:180px;margin-top:12px;">
           <div>
             <div class="tag">Ad Slot</div>
@@ -795,7 +791,7 @@
   <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
 </div>
 
-<!-- ✅ Full footer (ager moto) -->
+<!-- ✅ Footer -->
 <footer>
   <div class="foot">
     <div class="footLogo">
@@ -928,9 +924,6 @@
   let mode = "mcq";
   let ansMode = "hide";
 
-  // ✅ Ads mode (on/off)
-  let adsMode = "on";
-
   const PAGE_SIZE = 30;
   let page = 1;
   let cursorByPage = { 1: null };
@@ -952,7 +945,6 @@
       subjectId: selectedSubjectId,
       mode,
       ansMode,
-      adsMode,
       page,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
@@ -969,23 +961,12 @@
         selectedSubjectId = st.subjectId || selectedSubjectId;
         mode = st.mode || mode;
         ansMode = st.ansMode || ansMode;
-        adsMode = st.adsMode || adsMode;
         page = Number(st.page || 1) || 1;
         if($("qSearch")) $("qSearch").value = st.q || "";
         if($("sSearch")) $("sSearch").value = st.s || "";
       }
     }catch(e){}
   }
-
-  function setAdsMode(m){
-    adsMode = m;
-    $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
-    $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
-    if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
-    saveState();
-    renderContent();
-  }
-  window.setAdsMode = setAdsMode;
 
   function getParam(name){
     const u = new URL(location.href);
@@ -1019,7 +1000,6 @@
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
 
-    // ✅ subMeta text remove
     if($("subMeta")) $("subMeta").textContent = "";
 
     setUrlState();
@@ -1132,8 +1112,6 @@
     const found = SUBJECTS.find(s=>s.id===id);
     selectedSubjectName = found?.name || "";
     $("subName").textContent = selectedSubjectName || "Details";
-
-    // ✅ remove subMeta line (keep empty)
     if($("subMeta")) $("subMeta").textContent = "";
 
     $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
@@ -1192,14 +1170,7 @@
     $("emptyRight").style.display = "none";
     $("content").innerHTML = "";
     $("pageHint").textContent = `Page ${page}`;
-
-    // ✅ subMeta remove
     if($("subMeta")) $("subMeta").textContent = "";
-
-    // ✅ apply ads toggle to mid ad
-    if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
-    $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
-    $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
 
     const built = buildQuery();
     unsubRight = built.q.onSnapshot((snap)=>{
@@ -1376,8 +1347,8 @@
 
       list.appendChild(card);
 
-      // ✅ Inline ad after each 10 questions (toggle-able)
-      if(adsMode==="on" && (idx+1)%10===0 && idx < currentItems.length-1){
+      /* ✅ per 10 questions show inline ad (always) */
+      if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad</div></div>`;
@@ -1407,11 +1378,6 @@
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
       $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
 
-      // ✅ set ads buttons state
-      $("adsOnBtn")?.classList.toggle("primary", adsMode==="on");
-      $("adsOffBtn")?.classList.toggle("primary", adsMode==="off");
-      if($("midAd")) $("midAd").style.display = (adsMode==="on") ? "grid" : "none";
-
       renderSubjectList();
       renderMobileSubjectBar();
 
@@ -1419,8 +1385,6 @@
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
         selectedSubjectName = found?.name || "";
         $("subName").textContent = selectedSubjectName || "Details";
-
-        // ✅ remove subMeta line (keep empty)
         if($("subMeta")) $("subMeta").textContent = "";
 
         $("headerTag").textContent = selectedSubjectName ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}` : "সকল প্রস্তুতি হোক গভীর থেকে";
