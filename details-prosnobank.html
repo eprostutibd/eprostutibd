@@ -151,7 +151,7 @@
     /* ===== Subject Dock (sticky under header) ===== */
     .subjectDock{
       position: sticky;
-      top: var(--headerH, 64px);  /* ✅ prevents overlap with header */
+      top: var(--headerH, 64px);
       z-index: 58;
       margin-top: 10px;
       background: rgba(246,248,255,.82);
@@ -249,13 +249,13 @@
     /* ===== Layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 340px 1fr 300px;
+      grid-template-columns: 360px 1fr 300px;
       gap: 10px;
       align-items:start;
       margin-top: 10px;
     }
     @media (max-width: 1100px){
-      .grid{grid-template-columns: 340px 1fr;}
+      .grid{grid-template-columns: 360px 1fr;}
       .rightAd{display:none;}
     }
     @media (max-width: 980px){
@@ -314,7 +314,22 @@
       font-size: 13px;
     }
 
-    /* ✅ Only left subject list scroll */
+    /* ==========================================================
+       ✅ Desktop Sidebar Scroll FIX + Beautiful Subject Design
+       ========================================================== */
+    aside.panel.leftDesktop{
+      position: sticky;
+      top: calc(var(--headerH, 64px) + 84px);
+      height: calc(100vh - (var(--headerH, 64px) + 96px));
+      overflow: hidden;
+    }
+    aside.panel.leftDesktop .panelBody{
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
     .sList{
       overflow:auto;
       -webkit-overflow-scrolling: touch;
@@ -322,86 +337,88 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      max-height: calc(100vh - 240px); /* ✅ stable scroll height */
+      min-height:0;
+      flex:1;
     }
 
+    /* ===== Sidebar Subject Card NEW DESIGN ===== */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.92);
-      border-radius: 18px;
-      padding: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.86));
+      border-radius: 22px;
+      padding: 14px 14px;
       cursor:pointer;
-      transition:.15s;
+      transition: transform .12s, box-shadow .12s, border-color .12s;
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
       position:relative;
       overflow:hidden;
     }
-    .sItem:hover{transform: translateY(-1px)}
     .sItem::before{
       content:"";
-      position:absolute; inset:-2px;
+      position:absolute;
+      inset:-2px;
       background:
-        radial-gradient(560px 140px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
-        radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
-      opacity:.9; pointer-events:none;
+        radial-gradient(560px 140px at 0% 0%, rgba(29,78,216,.13), transparent 60%),
+        radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 60%);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .sItem:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(15,23,48,.10);
+      border-color: rgba(29,78,216,.18);
     }
     .sItem b{
       position:relative;
       display:block;
-      font-size:14px;
-      font-weight:1000;
-      line-height:1.2;
-      margin-bottom:8px;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      font-size: 15px;
+      font-weight: 1000;
+      line-height:1.15;
+      margin-bottom: 10px;
+      letter-spacing: .15px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .chips{
+      position:relative;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
     .chip{
-      font-size:12px;padding: 6px 9px;border-radius:999px;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.80);
+      font-size: 11.5px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(245,248,255,.92);
       color: var(--muted);
       white-space: nowrap;
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
     }
-    .chip b{color: var(--text); font-weight:1000}
+    .chip b{
+      font-size: 11.5px;
+      margin:0;
+      font-weight:1000;
+      color: var(--text);
+    }
     .sItem.active{
-      outline: 2px solid rgba(29,78,216,.22);
-      border-color: rgba(29,78,216,.22);
+      border-color: rgba(29,78,216,.24);
+      box-shadow: 0 20px 46px rgba(29,78,216,.14);
     }
-
-    /* ✅ Desktop: subject cards nicer */
-    @media (min-width: 981px){
-      .sItem{
-        border-radius: 20px;
-        padding: 14px 14px;
-        border: 1px solid rgba(18,28,55,.10);
-        background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
-        box-shadow: 0 12px 26px rgba(15,23,48,.06);
-      }
-      .sItem b{
-        font-size: 14.5px;
-        letter-spacing: .1px;
-        margin-bottom: 10px;
-      }
-      .chip{
-        font-size: 11.5px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(245,248,255,.92);
-      }
-      .sItem.active{
-        outline: none;
-        border-color: rgba(29,78,216,.26);
-        box-shadow: 0 18px 40px rgba(29,78,216,.12);
-        position: relative;
-      }
-      .sItem.active::after{
-        content:"";
-        position:absolute;
-        left:0; top:12px; bottom:12px;
-        width: 6px;
-        border-radius: 12px;
-        background: linear-gradient(180deg, rgba(29,78,216,.95), rgba(14,165,233,.90));
-      }
+    .sItem.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      top:12px;
+      bottom:12px;
+      width: 6px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(29,78,216,.98), rgba(14,165,233,.92));
+      box-shadow: 0 10px 22px rgba(29,78,216,.25);
     }
 
     /* ===== Paper look ===== */
@@ -620,35 +637,100 @@
       white-space:nowrap;
     }
 
-    /* ================================
-       ✅ Mobile App-like Tweaks
-       ================================ */
+    /* =========================================================
+       ✅ MOBILE APP-LIKE FULL REDESIGN (override)
+       ========================================================= */
     @media (max-width: 980px){
-      body{ background: #f3f7ff; }
-      .container{ padding-left: 12px; padding-right: 12px; padding-bottom: calc(86px + var(--safeBottom)); }
+      body{ background: #eef3ff !important; }
 
-      .panel{
-        border-radius: 18px;
-        background: rgba(255,255,255,.92);
-        box-shadow: 0 10px 26px rgba(15,23,48,.08);
+      .container{
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-top: 10px !important;
+        padding-bottom: calc(92px + var(--safeBottom)) !important;
       }
-      main.grid{ gap: 10px; }
 
-      /* ✅ Mobile: subject bar looks like app top scroller */
+      header{
+        box-shadow: 0 10px 28px rgba(29,78,216,.18) !important;
+      }
+      .topbar{
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+      }
+      .brand .name{ font-size: 16px !important; }
+      .brand .tag{ font-size: 12px !important; opacity:.92; }
+
+      .noticeBar, .adBox{
+        border-radius: 18px !important;
+        background: rgba(255,255,255,.92) !important;
+      }
+
+      .subjectDock{
+        border-radius: 18px !important;
+        background: rgba(255,255,255,.88) !important;
+        box-shadow: 0 10px 26px rgba(15,23,48,.08) !important;
+      }
+      .subjectDockInner{
+        padding: 12px 12px !important;
+        gap: 10px !important;
+      }
+
+      /* tabs => segmented pills */
+      .tabs{ gap: 8px !important; }
+      .tab{
+        padding: 9px 12px !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(18,28,55,.10) !important;
+        background: rgba(255,255,255,.72) !important;
+        font-size: 12px !important;
+        font-weight: 1000 !important;
+        text-decoration: none !important;
+      }
+      .tab.active{
+        color: #fff !important;
+        border-color: rgba(29,78,216,.18) !important;
+        background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92)) !important;
+        box-shadow: 0 10px 22px rgba(29,78,216,.18) !important;
+      }
+
+      /* Mobile subject bar => sticky pill scroller */
       #mobileSubjectBar.mobileSubjectBar{
         position: sticky;
-        top: var(--headerH, 64px);
+        top: calc(var(--headerH, 64px) + 2px);
         z-index: 59;
         margin-top: 10px;
-        background: rgba(246,248,255,.92);
+        background: rgba(255,255,255,.86);
         border: 1px solid rgba(18,28,55,.08);
-        border-radius: 16px;
+        border-radius: 18px;
         padding: 10px;
         box-shadow: 0 12px 28px rgba(15,23,48,.08);
       }
+      .mobileSubBtn{
+        border-radius: 999px !important;
+        padding: 10px 12px !important;
+        background: rgba(245,248,255,.95) !important;
+      }
+      .mobileSubBtn.active{
+        background: rgba(29,78,216,.12) !important;
+        border-color: rgba(29,78,216,.25) !important;
+      }
 
-      /* ✅ Mobile: hide footer ad blocks (footer a ad option thakbe na) */
-      footer .inlineAd{ display:none !important; }
+      /* Main panel = app card */
+      .panel{
+        border-radius: 18px !important;
+        background: rgba(255,255,255,.94) !important;
+        box-shadow: 0 10px 26px rgba(15,23,48,.08) !important;
+      }
+
+      /* Floating bar as app bottom bar */
+      .floatingAns{
+        bottom: calc(12px + var(--safeBottom));
+        border-radius: 18px;
+        padding: 10px;
+      }
+
+      /* ✅ Mobile: hide footer completely (app like) */
+      footer{ display:none !important; }
     }
   </style>
 </head>
@@ -837,7 +919,6 @@
         <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
       </div>
 
-      <!-- ✅ Footer Ad (Mobile এ CSS দিয়ে hide করা আছে) -->
       <div class="inlineAd" style="margin-top:12px;">
         <div>
           <div class="tag">Ad Slot</div>
@@ -901,7 +982,6 @@
     }
   }
 
-  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -918,7 +998,6 @@
     const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
     if(!ra) return -1;
 
-    // ✅ supports A/B/C/D + Bengali ক/খ/গ/ঘ
     const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
     const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
     if(map[low] !== undefined) return map[low];
