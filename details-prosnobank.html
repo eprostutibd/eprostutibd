@@ -25,12 +25,15 @@
       --ok:#16a34a;
       --danger:#dc2626;
 
-      /* Footer palette */
-      --footerA:#0b254a;
-      --footerB:#061a38;
-
       --safeBottom: env(safe-area-inset-bottom, 0px);
       --headerH: 64px;
+
+      /* footer palette */
+      --footTop:#0b1f3f;
+      --footBottom:#07152e;
+      --footLine: rgba(255,255,255,.14);
+      --footText: rgba(255,255,255,.86);
+      --footMuted: rgba(255,255,255,.70);
     }
 
     *{box-sizing:border-box}
@@ -199,8 +202,6 @@
       border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
-
-    /* ✅ Left subject button + Center group (subject + tabs) */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
@@ -210,6 +211,7 @@
       gap:12px;
     }
 
+    /* mobile subject menu button (LEFT) */
     .subBtnMobile{
       display:none;
       border:1px solid rgba(18,28,55,.12);
@@ -228,13 +230,13 @@
       .subBtnMobile{display:inline-flex;align-items:center;gap:8px;}
     }
 
-    /* ✅ Center everything: "English 1 , MCQ , Written , মডেল টেস্ট" */
+    /* center group: NO comma, use dot/pipe style separators */
     .centerGroup{
       flex: 1;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 10px;
+      gap: 12px;
       min-width:0;
       white-space:nowrap;
     }
@@ -245,15 +247,16 @@
       text-overflow:ellipsis;
       max-width: 36vw;
     }
-    .sep{
-      opacity:.45;
-      font-weight:900;
-      transform: translateY(-1px);
+    .sepDot{
+      width: 6px;height: 6px;border-radius:999px;
+      background: rgba(18,28,55,.22);
+      flex:0 0 auto;
+      transform: translateY(1px);
     }
 
     .tabs{
       display:flex;
-      gap:12px;
+      gap: 10px;
       align-items:center;
       justify-content:center;
       white-space:nowrap;
@@ -273,7 +276,7 @@
       text-underline-offset: 6px;
     }
 
-    /* right spacer (to keep center true when button shown on left) */
+    /* right spacer (keep center true when button shown on left) */
     .dockSpacer{
       width: 42px;
       flex:0 0 auto;
@@ -376,11 +379,17 @@
         padding-right:6px;
         display:flex;
         flex-direction:column;
-        gap:12px; /* ✅ gap between cards */
+        gap:12px;
       }
+
+      /* smoother scroll feel */
+      .sList{
+        scroll-snap-type: y proximity;
+      }
+      .sItem{scroll-snap-align: start;}
     }
 
-    /* Subject card design (mobile-like) */
+    /* Subject card design */
     .sItem{
       border:1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.97);
@@ -508,18 +517,14 @@
       font-size:12px;
     }
 
-    /* ===== Model test cards (right sidebar latest list) ===== */
+    /* ===== Model test cards ===== */
     .latestBoxTitle{
       font-weight:1000;
       font-size:13px;
       margin: 14px 0 10px;
       color: var(--text);
     }
-    .latestMT{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .latestMT{display:flex;flex-direction:column;gap:10px;}
     .mtCardMini{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.94);
@@ -553,72 +558,114 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Footer (4 lines desktop + mobile) ===== */
+    /* ======================================================
+       ✅ NEW FOOTER (beautiful + icons vertical serial)
+       ====================================================== */
     footer{
       margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,.18);
       background:
-        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.14), transparent 60%),
-        linear-gradient(180deg, var(--footerA), var(--footerB));
-      color: rgba(255,255,255,.92);
+        radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.18), transparent 60%),
+        radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.14), transparent 60%),
+        linear-gradient(180deg, var(--footTop), var(--footBottom));
+      border-top: 1px solid var(--footLine);
+      color: var(--footText);
     }
-    .foot{
+    .footWrap{
       max-width: 1320px;
       margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-top: 16px;
-      padding-bottom: 10px;
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
-    .footLine{
-      width:100%;
-      display:flex;
-      gap: 18px;
-      align-items:flex-start;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    .footBrand{display:flex;flex-direction:column;gap:3px;}
-    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 520px;}
-
-    .foot b{font-size:13px}
-    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
-    .foot a:hover{color:#fff}
-
-    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:8px;}
-    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
-    .socialRow a:hover{opacity:1; transform: translateY(-1px);}
-    .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
-
-    /* Mobile: keep 4 lines, make link lines 2 columns */
-    .linkCols{
+      padding: 18px clamp(12px, 4vw, 48px) 10px;
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      width: 100%;
-      max-width: 520px;
+      grid-template-columns: 1.2fr 1fr 1fr 0.9fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      .footWrap{grid-template-columns: 1fr 1fr;}
     }
     @media (max-width: 560px){
-      .footBrand .tag{max-width: 320px;}
-      .linkCols{grid-template-columns: 1fr 1fr;}
+      .footWrap{grid-template-columns: 1fr;}
     }
+
+    .footCard{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 18px 44px rgba(0,0,0,.18);
+    }
+    .footBrand2 .name{
+      font-size:16px;
+      font-weight:1000;
+      letter-spacing:.2px;
+      margin-bottom:6px;
+      color:#fff;
+    }
+    .footBrand2 .tag{
+      color: var(--footMuted);
+      font-size:12px;
+      line-height:1.5;
+      max-width: 48ch;
+    }
+
+    .footHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .footHead b{
+      font-size:13px;
+      color:#fff;
+    }
+    .footLinks a{
+      display:block;
+      text-decoration:none;
+      color: var(--footMuted);
+      font-size:12px;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(255,255,255,.12);
+    }
+    .footLinks a:last-child{border-bottom:none;}
+    .footLinks a:hover{color:#fff}
+
+    /* social: vertical serial list */
+    .socialList{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .socialItem{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color: var(--footMuted);
+      font-size:12px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      transition:.15s;
+    }
+    .socialItem:hover{
+      color:#fff;
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.08);
+      transform: translateY(-1px);
+    }
+    .socialItem svg{width:18px;height:18px;fill:#fff;opacity:.92}
 
     .copy{
       max-width: 1320px;
       margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-bottom: 14px;
-      color: rgba(255,255,255,.72);
+      padding: 10px clamp(12px, 4vw, 48px) 14px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.68);
       font-size:12px;
       text-align:center;
-      white-space:normal;
       line-height:1.6;
+      white-space:normal;
     }
   </style>
 </head>
@@ -696,27 +743,24 @@
   </div>
 </div>
 
-<!-- ✅ Subject Dock -->
+<!-- Subject Dock -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
-    <!-- ✅ mobile subject menu button LEFT -->
     <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
 
-    <!-- ✅ center: English 1 , MCQ , Written , মডেল টেস্ট -->
     <div class="centerGroup">
       <div class="subName" id="subName">Details</div>
-      <span class="sep">,</span>
+      <span class="sepDot" aria-hidden="true"></span>
 
       <div class="tabs" aria-label="Tabs">
         <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
-        <span class="sep">,</span>
+        <span class="sepDot" aria-hidden="true"></span>
         <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
-        <span class="sep">,</span>
+        <span class="sepDot" aria-hidden="true"></span>
         <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
       </div>
     </div>
 
-    <!-- spacer for symmetry on mobile -->
     <div class="dockSpacer" aria-hidden="true"></div>
   </div>
 </div>
@@ -772,7 +816,7 @@
       </div>
     </section>
 
-    <!-- RIGHT ADS + LATEST MODEL TEST -->
+    <!-- RIGHT -->
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
@@ -799,59 +843,57 @@
 </div>
 
 <footer>
-  <div class="foot">
-    <!-- Line 1 -->
-    <div class="footLine">
-      <div class="footBrand">
-        <div class="name">eProstutiBD</div>
-        <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+  <div class="footWrap">
+    <div class="footCard footBrand2">
+      <div class="name">eProstutiBD</div>
+      <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে — বিষয়ভিত্তিক প্রশ্নব্যাংক, মডেল টেস্ট এবং প্রস্তুতি সহায়ক কনটেন্ট।</div>
+    </div>
+
+    <div class="footCard">
+      <div class="footHead"><b>দরকারি পেজ</b></div>
+      <div class="footLinks">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
       </div>
     </div>
 
-    <!-- Line 2 -->
-    <div class="footLine">
-      <b>দরকারি পেজ</b>
-      <div class="linkCols">
-        <div>
-          <a href="#">About</a>
-          <a href="#">Privacy Policy</a>
-        </div>
-        <div>
-          <a href="#">Terms</a>
-          <a href="#">Contact</a>
-        </div>
+    <div class="footCard">
+      <div class="footHead"><b>অন্যান্য</b></div>
+      <div class="footLinks">
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
       </div>
     </div>
 
-    <!-- Line 3 -->
-    <div class="footLine">
-      <b>অন্যান্য</b>
-      <div class="linkCols">
-        <div>
-          <a href="#">Notice</a>
-          <a href="#">Blog</a>
-        </div>
-        <div>
-          <a href="#">Career</a>
-          <a href="#">Help</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Line 4 -->
-    <div class="footLine">
-      <b>Social</b>
-      <div class="socialRow" aria-label="Social icons">
-        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg></a>
-        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
-        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg></a>
-        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg></a>
+    <div class="footCard">
+      <div class="footHead"><b>Social</b></div>
+      <div class="socialList" aria-label="Social list">
+        <a class="socialItem" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+          Facebook
+        </a>
+        <a class="socialItem" href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          YouTube
+        </a>
+        <a class="socialItem" href="#" aria-label="Telegram">
+          <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+          Telegram
+        </a>
+        <a class="socialItem" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+          Instagram
+        </a>
       </div>
     </div>
   </div>
 
   <div class="copy">
-    © <span id="year"></span> eProstutiBD<br/>All rights reserved
+    © <span id="year"></span> eProstutiBD — All rights reserved
   </div>
 </footer>
 
@@ -921,7 +963,6 @@
     }
   }
 
-  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -954,7 +995,6 @@
   let selectedSubjectName = "";
 
   let mode = "mcq";
-  let ansMode = "hide";
 
   const PAGE_SIZE = 30;
   let page = 1;
@@ -971,13 +1011,12 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_latest_v1";
+  const LS_KEY = "epbd_details_state_latest_v2";
 
   function saveState(){
     const payload = {
       subjectId: selectedSubjectId,
       mode,
-      ansMode,
       page,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
@@ -993,7 +1032,6 @@
       if(st && typeof st === "object"){
         selectedSubjectId = st.subjectId || selectedSubjectId;
         mode = st.mode || mode;
-        ansMode = st.ansMode || ansMode;
         page = Number(st.page || 1) || 1;
         if($("qSearch")) $("qSearch").value = st.q || "";
         if($("sSearch")) $("sSearch").value = st.s || "";
@@ -1035,14 +1073,6 @@
     loadRight();
   }
   window.setMode = setMode;
-
-  function setAnsMode(m){
-    ansMode = m;
-    // kept for future if needed
-    saveState();
-    renderContent();
-  }
-  window.setAnsMode = setAnsMode;
 
   function relatedMatch(query, text){
     const q = normalize(query);
@@ -1290,7 +1320,7 @@
 
     if(mode === "model"){
       const grid = document.createElement("div");
-      grid.className = "latestMT"; // reuse stacked
+      grid.className = "latestMT";
       currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Subject Model Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
@@ -1337,7 +1367,6 @@
       `;
 
       const note = (it.note ?? it.explain ?? "").toString().trim();
-
       const opts = getOptions(it);
       const correctIndex = getCorrectIndex(it, opts);
       const chosen = selectedOptionMap.get(it.id);
@@ -1398,13 +1427,13 @@
     wrap.appendChild(paper);
   }
 
-  // ✅ Latest model tests under right ads
+  /* ✅ Latest model tests: max 10 */
   function attachLatestModelTests(){
     if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
 
     unsubLatest = db.collection(COL_SUBJECT_MODEL_TESTS)
       .orderBy("createdAt","desc")
-      .limit(6)
+      .limit(10)  // ✅ max 10
       .onSnapshot((snap)=>{
         const wrap = $("latestMT");
         const empty = $("latestEmpty");
@@ -1453,7 +1482,6 @@
       renderSubjectList();
       renderSubjectSheet();
 
-      // restore tab state
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
