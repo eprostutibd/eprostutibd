@@ -149,45 +149,45 @@
       background: transparent; /* ✅ no overlay color */
     }
     .mobileMenu .drawer{
-  position:absolute;
-  top: 64px;
-  right: 12px;
-  width: min(320px, calc(100vw - 24px));
-  border-radius: 16px;
-  padding: 10px;
+      position:absolute;
+      top: 64px;
+      right: 12px;
+      width: min(320px, calc(100vw - 24px));
+      border-radius: 16px;
+      padding: 10px;
 
-  border: 1px solid rgba(255,255,255,.28);
+      border: 1px solid rgba(255,255,255,.28);
 
-  /* ✅ readable background */
-  background: rgba(8, 20, 55, .78);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+      /* ✅ readable background */
+      background: rgba(8, 20, 55, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
 
-  box-shadow: 0 18px 38px rgba(0,0,0,.35);
-}
+      box-shadow: 0 18px 38px rgba(0,0,0,.35);
+    }
 
-.mobileMenu a{
-  display:block;
-  text-decoration:none;
-  color:#ffffff;                 /* ✅ bright text */
-  font-weight:1000;
-  font-size:13px;                /* ✅ slightly bigger */
-  padding: 12px 12px;
-  border-radius: 12px;
+    .mobileMenu a{
+      display:block;
+      text-decoration:none;
+      color:#ffffff;
+      font-weight:1000;
+      font-size:13px;
+      padding: 12px 12px;
+      border-radius: 12px;
 
-  border: 1px solid rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.16);
 
-  /* ✅ subtle item background to separate rows */
-  background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.06);
 
-  margin-bottom: 8px;
-  white-space:nowrap;
-}
+      margin-bottom: 8px;
+      white-space:nowrap;
+    }
 
-.mobileMenu a.active{
-  border-color: rgba(255,255,255,.28);
-  background: rgba(255,255,255,.12);
-}
+    .mobileMenu a.active{
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.12);
+    }
+
     /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top: 10px;
@@ -266,7 +266,7 @@
     .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
     .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
     .searchMini input{
-      width: 190px;                 /* ✅ smaller */
+      width: 190px;
       max-width: 70vw;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
@@ -299,16 +299,16 @@
     .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
 
     .subjects{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-@media (max-width: 1100px){
-  .subjects{ grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 560px){
-  .subjects{ grid-template-columns: 1fr; }
-}
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 1100px){
+      .subjects{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px){
+      .subjects{ grid-template-columns: 1fr; }
+    }
 
     .subCard{
       border: 1px solid rgba(18,28,55,.10);
@@ -341,7 +341,7 @@
       margin-top: 8px;
       display:flex;
       gap:8px;
-      flex-wrap: nowrap;     /* one line */
+      flex-wrap: nowrap;
       align-items:center;
       overflow:hidden;
     }
@@ -387,7 +387,11 @@
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
 
-    /* ✅ Model tests: 3 per row on desktop */
+    /* ================================
+       ✅ NEW Model Test design (my design)
+       ================================ */
+
+    /* ✅ 3 per row desktop */
     .mtGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -398,20 +402,53 @@
 
     .mtCard{
       border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.94);
       border-radius: 16px;
       padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow:hidden;
       cursor:pointer;
       transition:.15s;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
-    .mtCard h4{
-      margin:0;font-size: 13px;line-height: 1.25;font-weight:1000;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
-    }
-    .mtMeta{margin-top: 8px;display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;}
-    .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.78);border-radius: 999px;padding: 6px 10px;}
+    .mtCard:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08); }
 
+    .mtCard h4{
+      margin:0 0 8px;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.25;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 34px;
+    }
+    .mtMeta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:12px;
+      margin-bottom:10px;
+    }
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+    .mtActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .mtActions .btn{
+      height:34px;
+      padding:7px 10px;
+      border-radius:12px;
+    }
+
+    /* ================================
+       Sidebar
+       ================================ */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -820,7 +857,6 @@
       window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
     }
     function openModelTestDetails(modelTestId){
-      // ✅ requirement: model test card -> details-prosnobank.htm
       window.open(`details-prosnobank.htm?modelTestId=${encodeURIComponent(modelTestId)}`, "_blank", "noopener");
     }
 
@@ -1007,6 +1043,7 @@
       }
     }
 
+    /* ✅ UPDATED: renders model test in my "details page" design with buttons */
     function renderLatestModelTests(docs){
       const wrap = $("latestMT");
       latestMTDocsCache = docs;
@@ -1025,6 +1062,7 @@
       docs.forEach(d=>{
         const data = d.data() || {};
         const title = getTitleField(data);
+
         const timeVal = formatTimeMin(getTimeField(data));
         const markVal = getMarkField(data);
 
@@ -1034,17 +1072,18 @@
 
         const card = document.createElement("div");
         card.className = "mtCard";
-        card.setAttribute("role","button");
-        card.setAttribute("tabindex","0");
-        card.onclick = ()=>openModelTestDetails(d.id);
-        card.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openModelTestDetails(d.id);} };
+        card.setAttribute("role","article");
 
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
           <div class="mtMeta">
-            <span>Time: ${esc(timeVal)}</span>
-            <span>Mark: ${esc(markVal)}</span>
-            <span>Q: ${esc(qCount)}</span>
+            <span>⏱ ${esc(timeVal)}</span>
+            <span>🧮 Mark: ${esc(markVal)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="mtActions">
+            <button class="btn primary" onclick="openModelTestDetails('${esc(d.id)}')">Open</button>
+            <button class="btn" onclick="window.location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">Start</button>
           </div>
         `;
         wrap.appendChild(card);
