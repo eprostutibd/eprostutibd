@@ -52,8 +52,8 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
 
-      /* ✅ reserve ONLY for fixed Ans bar (no extra footer gap) */
-      padding-bottom: calc(var(--ansBarH) + 18px + var(--safeBottom));
+      /* ✅ FINAL: no extra footer gap */
+      padding-bottom: 0;
     }
     a{color:inherit}
 
@@ -377,7 +377,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px;
+        max-height: 520px; /* shows around ~8 cards depending on size */
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -455,6 +455,7 @@
       z-index: 1;
     }
 
+    /* Desktop: 2 columns + divider lines */
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
       body[data-mode="written"] .qList{
@@ -528,9 +529,10 @@
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
     @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
+    /* ✅ Paper-like options (2 lines) + tight tick/cross */
     .optLine{
       display:grid;
-      grid-template-columns: 18px 22px 1fr;
+      grid-template-columns: 16px 22px 1fr;
       column-gap: 4px;
       align-items:start;
       cursor:pointer;
@@ -539,10 +541,11 @@
     }
     .optLine.locked{cursor:default;}
     .optMark{
-      width: 18px;height: 18px;border-radius:999px;
+      width: 16px;height: 16px;border-radius:999px;
       display:grid;place-items:center;
-      font-weight:1000;font-size:12px;
+      font-weight:1000;font-size:11px;
       opacity:0;
+      transform: translateY(1px);
     }
     .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
     .optTxt{
@@ -604,7 +607,7 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Fixed Ans Bar (always above footer via JS lift) ===== */
+    /* ===== Fixed Ans Bar (watermark floating) ===== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
@@ -625,26 +628,26 @@
       padding: 0 10px;
     }
     .toggle{
-      border:1px solid rgba(18,28,55,.14);
-      background: rgba(255,255,255,.34);
-      color: rgba(15,23,48,.82);
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.20);
+      color: rgba(15,23,48,.75);
       border-radius: 999px;
       padding: 8px 12px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
       height: 36px;
-      box-shadow: 0 14px 34px rgba(15,23,48,.08);
+      box-shadow: 0 14px 34px rgba(15,23,48,.06);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       transition:.15s;
       white-space:nowrap;
     }
-    .toggle:hover{background: rgba(255,255,255,.52); transform: translateY(-1px);}
+    .toggle:hover{background: rgba(255,255,255,.34); transform: translateY(-1px);}
     .toggle.active{
-      background: rgba(29,78,216,.22);
-      border-color: rgba(29,78,216,.22);
-      color: rgba(15,23,48,.95);
+      background: rgba(29,78,216,.16);
+      border-color: rgba(29,78,216,.16);
+      color: rgba(15,23,48,.92);
     }
 
     /* ===== Pager ===== */
@@ -683,6 +686,7 @@
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
+      margin-bottom: 0 !important; /* ✅ FINAL: no bottom gap */
       background:
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
         radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
@@ -1079,7 +1083,7 @@
   const PAGE_SIZE = 30;
   let page = 1;
 
-  // ✅ cursorByPage will persist with {t,id} pairs
+  // cursorByPage persists with {t,id}
   let cursorByPage = { 1: null };
 
   let lastDoc = null;
@@ -1094,7 +1098,7 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_full_final_patched_v4";
+  const LS_KEY = "epbd_details_state_FINAL_v1";
 
   function getParam(name){
     const u = new URL(location.href);
@@ -1136,8 +1140,8 @@
     }catch(e){}
   }
 
-  /* ✅ IMPORTANT FIX:
-     URL param should ALWAYS win over localStorage (so other page -> subject click works)
+  /* ✅ URL param ALWAYS wins over localStorage
+     (other page -> subject click will show correct subject here)
   */
   function applyUrlOverrides(){
     const urlSubjectId = getParam("subjectId");
@@ -1145,23 +1149,22 @@
     const urlPage = Number(getParam("page") || "1") || 1;
 
     if(urlSubjectId){
-      selectedSubjectId = urlSubjectId;         // ✅ override
+      selectedSubjectId = urlSubjectId;
       page = urlPage > 0 ? urlPage : 1;
-      cursorByPage = { 1: null };              // ✅ reset cursor for new subject
+      cursorByPage = { 1: null };   // reset for new subject
       selectedOptionMap.clear();
     }else{
-      // if no subjectId in URL, only then accept page/mode safely
       if(urlPage > 1) page = urlPage;
     }
 
     if(urlMode && ["mcq","written","model"].includes(urlMode)){
-      mode = urlMode;                           // ✅ override if present
+      mode = urlMode;
     }
 
     document.body.setAttribute("data-mode", mode);
   }
 
-  // ✅ load storage first, then override with URL
+  // load storage first, then override with URL
   loadState();
   applyUrlOverrides();
 
@@ -1744,7 +1747,7 @@
     });
   }
 
-  // ✅ Keep ans bar above footer (no overlap)
+  // ✅ Keep Ans bar above footer (no overlap, no footer gap)
   (function keepAnsBarAboveFooter(){
     const footer = document.querySelector("footer");
     const bar = document.getElementById("ansBarWrap");
