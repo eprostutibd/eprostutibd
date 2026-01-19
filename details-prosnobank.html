@@ -25,7 +25,7 @@
       --ok:#16a34a;
       --danger:#dc2626;
 
-      /* ✅ Footer color changed */
+      /* ✅ Footer colors */
       --footerA:#0b3b2e;
       --footerB:#06261f;
 
@@ -192,11 +192,10 @@
     }
     .subjectSheet .body{
       padding: 12px;
-      overflow:auto; /* ✅ mobile scroll if many */
+      overflow:auto;
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
     }
-    /* ✅ 2 columns */
     .sheetGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -251,7 +250,7 @@
       margin:0 auto;
       padding: 10px clamp(12px, 4vw, 48px);
       display:grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1fr auto auto;
       align-items:center;
       gap:12px;
     }
@@ -269,10 +268,8 @@
       max-width: 36vw;
       font-weight:1000;
     }
-    /* ✅ remove subMeta text completely */
     .subTitle span{ display:none !important; }
 
-    /* Tabs centered */
     .tabs{
       display:flex;
       gap:14px;
@@ -295,13 +292,6 @@
       text-underline-offset: 6px;
     }
 
-    .dockRight{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
     .subBtnMobile{
       display:none;
       border:1px solid rgba(18,28,55,.12);
@@ -317,14 +307,14 @@
     }
     @media (max-width: 980px){
       .subBtnMobile{ display:inline-flex; align-items:center; gap:8px; }
-      .subTitle b{ max-width: 46vw; }
+      .subTitle b{ max-width: 44vw; }
     }
 
     /* ===== Layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 340px 1fr 300px;
-      gap: 12px; /* ✅ more gap between boxes */
+      gap: 12px;
       align-items:start;
       margin-top: 10px;
     }
@@ -387,9 +377,7 @@
       font-size: 13px;
     }
 
-    /* ======================================================
-       ✅ Desktop sidebar: show max ~8 at a time + scroll + all data
-       ====================================================== */
+    /* ===== Desktop sidebar list (scroll + show ~8) ===== */
     @media (min-width: 981px){
       aside.panel.leftDesktop{
         position: sticky;
@@ -403,7 +391,6 @@
         flex-direction:column;
         min-height:0;
       }
-      /* list scroll inside */
       .sList{
         flex: 1;
         min-height: 0;
@@ -412,14 +399,11 @@
         padding-right: 6px;
         display:flex;
         flex-direction:column;
-        gap: 10px;
+        gap: 12px; /* ✅ gap increased */
         scroll-behavior:smooth;
-        /* ✅ ensures not too tall visually; ~8 cards visible depending on screen */
         max-height: calc(100vh - (var(--headerH, 64px) + 240px));
       }
     }
-
-    /* Scrollbar */
     .sList{ scrollbar-width: thin; scrollbar-color: rgba(29,78,216,.35) rgba(15,23,48,.06); }
     .sList::-webkit-scrollbar{ width: 10px; }
     .sList::-webkit-scrollbar-track{ background: rgba(15,23,48,.06); border-radius: 999px; }
@@ -429,15 +413,15 @@
       border: 2px solid rgba(15,23,48,.06);
     }
 
-    /* ✅ Desktop subject card: compact */
+    /* ✅ Desktop subject cards improved (bigger + options visible) */
     .sItem{
-      border: 1px solid rgba(18,28,55,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.88));
-      border-radius: 16px;
-      padding: 9px 11px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.94);
+      border-radius: 18px;
+      padding: 12px 12px;
       cursor:pointer;
       transition: transform .12s, box-shadow .12s, border-color .12s;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
       position:relative;
       overflow:hidden;
     }
@@ -445,48 +429,48 @@
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(460px 110px at 0% 0%, rgba(29,78,216,.11), transparent 62%),
-        radial-gradient(460px 110px at 100% 0%, rgba(14,165,233,.09), transparent 62%);
-      opacity:.9; pointer-events:none;
+        radial-gradient(520px 120px at 0% 0%, rgba(29,78,216,.12), transparent 62%),
+        radial-gradient(520px 120px at 100% 0%, rgba(14,165,233,.10), transparent 62%);
+      opacity:.92; pointer-events:none;
     }
     .sItem:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 16px 36px rgba(15,23,48,.09);
-      border-color: rgba(29,78,216,.16);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(15,23,48,.10);
+      border-color: rgba(29,78,216,.18);
     }
     .sItem b{
       position:relative;
       display:block;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 1000;
-      line-height:1.15;
-      margin-bottom: 8px;
-      letter-spacing: .1px;
+      line-height:1.2;
+      margin-bottom: 10px;
+      letter-spacing: .12px;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .chip{
-      font-size: 11px;
-      padding: 5px 9px;
+      font-size: 11.5px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(18,28,55,.10);
-      background: rgba(245,248,255,.92);
+      background: rgba(245,248,255,.96);
       color: var(--muted);
       white-space: nowrap;
       display:inline-flex;
       gap:6px;
       align-items:center;
     }
-    .chip b{font-size: 11px;margin:0;font-weight:1000;color: var(--text);}
+    .chip b{font-size: 11.5px;margin:0;font-weight:1000;color: var(--text);}
     .sItem.active{
-      border-color: rgba(29,78,216,.24);
-      box-shadow: 0 18px 40px rgba(29,78,216,.12);
+      border-color: rgba(29,78,216,.26);
+      box-shadow: 0 18px 44px rgba(29,78,216,.12);
     }
     .sItem.active::after{
       content:"";
       position:absolute;
-      left:0; top:10px; bottom:10px;
-      width: 5px;
+      left:0; top:12px; bottom:12px;
+      width: 6px;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(29,78,216,.98), rgba(14,165,233,.92));
       box-shadow: 0 10px 22px rgba(29,78,216,.22);
@@ -523,20 +507,20 @@
       flex:1;letter-spacing:.1px;
     }
 
-    /* ✅ Options: question paper style (2 columns on desktop), each option max 2 lines */
+    /* ✅ Options: TWO columns on BOTH mobile & desktop (like paper) */
     .opts{
       margin-top:10px;
       display:grid;
-      grid-template-columns: 1fr;   /* mobile default */
+      grid-template-columns: 1fr 1fr; /* ✅ mobile too */
       gap:10px;
     }
-    @media (min-width: 700px){
-      .opts{ grid-template-columns: 1fr 1fr; } /* ✅ paper-like */
+    @media (max-width: 420px){
+      .opts{ grid-template-columns: 1fr; } /* tiny mobile fallback */
     }
 
     .optLine{
       display:flex;
-      gap:8px;
+      gap:6px;
       align-items:flex-start;
       cursor:pointer;
       user-select:none;
@@ -552,7 +536,8 @@
       line-height:1.6;
       margin-top: 1px;
     }
-    /* ✅ always 2 lines (like paper) */
+
+    /* ✅ always 2 lines */
     .optTxt{
       flex:1;
       font-size:12.5px;
@@ -563,6 +548,8 @@
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
+
+    /* ✅ mark gap reduced + always visible only when needed */
     .optMark{
       flex:0 0 auto;
       width: 18px;
@@ -574,10 +561,11 @@
       font-size:12px;
       margin-top: 2px;
       opacity: 0;
-      transform: translateY(1px);
+      transform: translateY(0);
     }
     .optLine.correct .optTxt{ color: var(--ok); font-weight: 800; }
     .optLine.wrong .optTxt{ color: var(--danger); font-weight: 800; text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55); }
+
     .optLine.correct .optMark{
       opacity: 1;
       color: #fff;
@@ -661,7 +649,7 @@
       font-size:12px;
     }
 
-    /* ✅ Ans controls: sticky ABOVE footer */
+    /* Ans controls above footer */
     .ansBarWrap{
       max-width: 1320px;
       margin: 0 auto;
@@ -729,16 +717,22 @@
       gap: 14px;
       align-items:start;
     }
-    /* ✅ Mobile: footer 3 lines (3 rows) */
+
+    /* ✅ Mobile footer: forced 3 lines (3 blocks) */
     @media (max-width: 560px){
       .foot{
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
       }
-      .footLogo, .footFollow{
-        grid-column: auto;
+      .foot > div{
+        width: 100%;
       }
+      .footLogo{ order:1; }
+      .footLinks1{ order:2; }
+      .footLinks2{ order:3; }
+      .footFollow{ order:4; }
     }
+
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
@@ -758,7 +752,7 @@
       color: rgba(255,255,255,.72);
       font-size:12px;
       text-align:center;
-      white-space:nowrap;
+      white-space:normal; /* ✅ wrap on mobile */
     }
   </style>
 </head>
@@ -822,7 +816,7 @@
   </div>
 </div>
 
-<!-- ✅ Mobile Subject Sheet -->
+<!-- Mobile Subject Sheet -->
 <div class="subjectSheet" id="subjectSheet" aria-hidden="true">
   <div class="backdrop" onclick="closeSubjectSheet()"></div>
   <div class="sheet" role="dialog" aria-label="Subjects">
@@ -836,7 +830,7 @@
   </div>
 </div>
 
-<!-- Sticky Subject line + tabs + subject button on right -->
+<!-- Sticky Subject line + tabs + subject button -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
@@ -850,9 +844,7 @@
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
     </div>
 
-    <div class="dockRight">
-      <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
-    </div>
+    <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
   </div>
 </div>
 
@@ -890,7 +882,6 @@
           <button class="btn" onclick="resetAndReload(true)">Search</button>
         </div>
 
-        <!-- ✅ Body ad option (top) -->
         <div class="inlineAd" style="margin-bottom:12px;">
           <div>
             <div class="tag">Ad Slot</div>
@@ -930,7 +921,7 @@
   </main>
 </div>
 
-<!-- ✅ Ans controls: always above footer -->
+<!-- Ans controls -->
 <div class="ansBarWrap">
   <div class="floatingAns" id="ansFloat">
     <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
@@ -938,7 +929,6 @@
   </div>
 </div>
 
-<!-- Footer (NO ADS) -->
 <footer>
   <div class="foot">
     <div class="footLogo">
@@ -948,7 +938,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="footLinks1">
       <b>দরকারি পেজ</b>
       <a href="#">About</a>
       <a href="#">Privacy Policy</a>
@@ -956,7 +946,7 @@
       <a href="#">Contact</a>
     </div>
 
-    <div>
+    <div class="footLinks2">
       <b>অন্যান্য</b>
       <a href="#">Notice</a>
       <a href="#">Blog</a>
@@ -1044,7 +1034,6 @@
     }
   }
 
-  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -1093,7 +1082,7 @@
   let unsubSubjects = null;
   let unsubRight = null;
 
-  const LS_KEY = "epbd_details_state_v3";
+  const LS_KEY = "epbd_details_state_v4";
 
   function saveState(){
     const payload = {
@@ -1528,7 +1517,6 @@
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
         const box = document.createElement("div");
         box.className = "noteBox";
-
         if(ansMode === "show"){
           box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
         }else{
@@ -1539,7 +1527,6 @@
 
       list.appendChild(card);
 
-      /* Every 10 questions show 1 ad */
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1577,11 +1564,9 @@
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
         selectedSubjectName = found?.name || "";
         $("subName").textContent = selectedSubjectName || "Details";
-
         $("headerTag").textContent = selectedSubjectName
           ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}`
           : "সকল প্রস্তুতি হোক গভীর থেকে";
-
         $("tickerText").textContent = selectedSubjectName
           ? `${selectedSubjectName} • MCQ/Written/Model Test`
           : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
