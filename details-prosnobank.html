@@ -46,6 +46,9 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
+
+      /* ✅ reserve space for fixed Ans bar */
+      padding-bottom: calc(90px + var(--safeBottom));
     }
     a{color:inherit}
 
@@ -295,7 +298,7 @@
     /* ===== Layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 340px minmax(0, 1fr) 280px; /* ✅ center wider look */
+      grid-template-columns: 340px minmax(0, 1fr) 280px;
       gap: 12px;
       align-items:start;
       margin-top: 10px;
@@ -359,7 +362,7 @@
       font-size: 13px;
     }
 
-    /* ===== Desktop Sidebar Scroll (show ~8 cards) ===== */
+    /* ===== Desktop Sidebar Scroll (show ~8 cards area, but all data scroll) ===== */
     @media (min-width: 981px){
       aside.panel.leftDesktop{
         position: sticky;
@@ -376,7 +379,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px; /* ~8 cards */
+        max-height: 520px; /* approx 8 cards visible */
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -429,7 +432,20 @@
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
       padding: 12px;
     }
+
+    /* default list */
     .qList{display:flex;flex-direction:column;gap:10px;}
+
+    /* ✅ Desktop: 2 MCQ cards per row */
+    @media (min-width: 981px){
+      body[data-mode="mcq"] .qList{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      body[data-mode="mcq"] .qCard{height:100%;}
+    }
+
     .qCard{
       border: 1px dashed rgba(18,28,55,.18);
       background: rgba(255,255,255,.94);
@@ -459,7 +475,7 @@
       }
     }
 
-    /* ✅ Answer gap reduced */
+    /* ✅ Answers like question paper (2 lines text) */
     .opts{margin-top:8px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
     @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
@@ -550,16 +566,22 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Ans controls (ABOVE footer) ===== */
+    /* ================================
+       ✅ Fixed Ans Bar (above footer)
+       ================================ */
     .ansBarWrap{
-      max-width: 1320px;
-      margin: 0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-top: 6px;
-      padding-bottom: 6px;
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;
+      z-index: 9999;
+      padding-bottom: calc(10px + var(--safeBottom));
+      pointer-events: none;
     }
+    .ansBarWrap .ansBar{pointer-events:auto;}
+
     .ansBar{
+      max-width: 680px;
+      margin: 0 auto;
       display:flex;
       justify-content:center;
       gap:10px;
@@ -674,10 +696,22 @@
       line-height:1.6;
       white-space:normal;
     }
+
+    /* ✅ Slightly reduce side gap for desktop feel */
+    @media (min-width: 981px){
+      .container{
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .marq span{ animation:none; padding-left:0; }
+    }
   </style>
 </head>
 
-<body>
+<body data-mode="mcq">
 <header>
   <div class="topbar">
     <div class="brand">
@@ -848,7 +882,7 @@
   </main>
 </div>
 
-<!-- ✅ Ans Show / Ans Hide (Above footer, not inside footer) -->
+<!-- ✅ Fixed Ans Show / Ans Hide (always visible, above footer) -->
 <div class="ansBarWrap" id="ansBarWrap">
   <div class="ansBar">
     <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
@@ -1009,7 +1043,7 @@
   let selectedSubjectName = "";
 
   let mode = "mcq";
-  let ansMode = "hide"; /* ✅ restored */
+  let ansMode = "hide";
 
   const PAGE_SIZE = 30;
   let page = 1;
@@ -1026,7 +1060,7 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_latest_v4";
+  const LS_KEY = "epbd_details_state_latest_v_final";
 
   function saveState(){
     const payload = {
@@ -1078,11 +1112,12 @@
 
   function setMode(m){
     mode = m;
+    document.body.setAttribute("data-mode", mode);
+
     $("tabMcq").classList.toggle("active", mode==="mcq");
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
 
-    /* show/hide ans bar */
     $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
     page = 1;
@@ -1170,6 +1205,7 @@
       list.appendChild(el);
     });
   }
+  window.renderSubjectList = renderSubjectList;
 
   function renderSubjectSheet(){
     const grid = $("subjectSheetGrid");
@@ -1396,64 +1432,82 @@
       `;
 
       const note = (it.note ?? it.explain ?? "").toString().trim();
-      const opts = getOptions(it);
-      const correctIndex = getCorrectIndex(it, opts);
-      const chosen = selectedOptionMap.get(it.id);
 
-      const optWrap = document.createElement("div");
-      optWrap.className = "opts";
+      /* MCQ options */
+      if(mode === "mcq"){
+        const opts = getOptions(it);
+        const correctIndex = getCorrectIndex(it, opts);
+        const chosen = selectedOptionMap.get(it.id);
 
-      opts.slice(0,4).forEach((op, oi)=>{
-        const row = document.createElement("div");
-        row.className = "optLine";
-        row.innerHTML = `
-          <span class="optMark"></span>
-          <span class="optKey">${letters[oi]}.</span>
-          <span class="optTxt">${esc(op || "")}</span>
-        `;
+        const optWrap = document.createElement("div");
+        optWrap.className = "opts";
 
-        const mark = row.querySelector(".optMark");
+        opts.slice(0,4).forEach((op, oi)=>{
+          const row = document.createElement("div");
+          row.className = "optLine";
+          row.innerHTML = `
+            <span class="optMark"></span>
+            <span class="optKey">${letters[oi]}.</span>
+            <span class="optTxt">${esc(op || "")}</span>
+          `;
+          const mark = row.querySelector(".optMark");
 
-        /* ✅ show answers always if ansMode=show, otherwise after selecting */
-        if(ansMode === "show"){
-          row.classList.add("locked");
-          if(oi === correctIndex){
-            row.classList.add("correct");
-            mark.textContent = "✓";
-          }
-        }else{
-          if(chosen !== undefined){
+          if(ansMode === "show"){
             row.classList.add("locked");
             if(oi === correctIndex){
               row.classList.add("correct");
               mark.textContent = "✓";
             }
-            if(oi === chosen && chosen !== correctIndex){
-              row.classList.add("wrong");
-              mark.textContent = "✕";
-            }
           }else{
-            row.onclick = ()=>{
-              selectedOptionMap.set(it.id, oi);
-              renderContent();
-            };
+            if(chosen !== undefined){
+              row.classList.add("locked");
+              if(oi === correctIndex){
+                row.classList.add("correct");
+                mark.textContent = "✓";
+              }
+              if(oi === chosen && chosen !== correctIndex){
+                row.classList.add("wrong");
+                mark.textContent = "✕";
+              }
+            }else{
+              row.onclick = ()=>{
+                selectedOptionMap.set(it.id, oi);
+                renderContent();
+              };
+            }
           }
+
+          optWrap.appendChild(row);
+        });
+
+        card.appendChild(optWrap);
+
+        if(note){
+          const nb = document.createElement("div");
+          nb.className = "noteBox";
+          nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
+          card.appendChild(nb);
         }
+      }
 
-        optWrap.appendChild(row);
-      });
+      /* Written */
+      if(mode === "written"){
+        const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
 
-      card.appendChild(optWrap);
+        const wb = document.createElement("div");
+        wb.className = "noteBox";
 
-      if(note){
-        const nb = document.createElement("div");
-        nb.className = "noteBox";
-        nb.innerHTML = `<b>Note:</b> ${esc(note)}`;
-        card.appendChild(nb);
+        if(ansMode === "show"){
+          wb.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}${note ? `<br/><b>Note:</b> ${esc(note)}` : ""}`;
+        }else{
+          wb.innerHTML = note ? `<b>Note:</b> ${esc(note)}` : "";
+        }
+        card.appendChild(wb);
       }
 
       list.appendChild(card);
 
+      /* ✅ Ad every 10 items */
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1518,15 +1572,16 @@
         selectedSubjectId = SUBJECTS[0].id;
       }
 
-      renderSubjectList();
-      renderSubjectSheet();
-
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
       $("ansHideBtn").classList.toggle("active", ansMode==="hide");
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
       $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+      document.body.setAttribute("data-mode", mode);
+
+      renderSubjectList();
+      renderSubjectSheet();
 
       if(selectedSubjectId){
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
@@ -1546,6 +1601,8 @@
     });
   }
 
+  /* init */
+  document.body.setAttribute("data-mode", mode);
   attachSubjects();
   attachLatestModelTests();
 </script>
