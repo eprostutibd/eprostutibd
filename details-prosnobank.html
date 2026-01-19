@@ -35,12 +35,9 @@
       --footText: rgba(255,255,255,.86);
       --footMuted: rgba(255,255,255,.70);
 
-      /* Ans bar height (visual) */
+      /* Ans bar */
       --ansBarH: 56px;
-
-      /* ✅ JS sets these dynamically */
-      --ansBarLift: 0px;   /* lift bar up when footer overlaps */
-      --ansSpace: 0px;     /* space before footer so content not covered */
+      --liftFromFooter: 0px;
     }
 
     *{box-sizing:border-box}
@@ -55,8 +52,8 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
 
-      /* ✅ IMPORTANT: no bottom padding => no footer-below gap */
-      padding-bottom: 0 !important;
+      /* ✅ reserve for fixed Ans bar */
+      padding-bottom: calc(var(--ansBarH) + 36px + var(--safeBottom));
     }
     a{color:inherit}
 
@@ -288,11 +285,7 @@
       transform: translateY(1px);
       flex:0 0 auto;
     }
-    .dockSpacer{
-      width: 42px;
-      flex:0 0 auto;
-      display:none;
-    }
+    .dockSpacer{width: 42px;flex:0 0 auto;display:none;}
     @media (max-width: 980px){
       .dockSpacer{display:block;}
       .subName{font-size:13.5px;}
@@ -429,7 +422,7 @@
     }
     .chip b{font-size:11.5px;color: var(--text);}
 
-    /* ===== Paper ===== */
+    /* ===== Paper feel ===== */
     .paper{
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
@@ -453,7 +446,14 @@
                   radial-gradient(900px 260px at 80% 0%, rgba(14,165,233,.04), transparent 60%);
       pointer-events:none;
     }
-    .qList{display:flex;flex-direction:column;gap:0;position:relative;z-index:1;}
+
+    .qList{
+      display:flex;
+      flex-direction:column;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
 
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
@@ -476,18 +476,53 @@
       .qRow + .qRow{ border-top: 1px solid var(--line2); }
     }
 
-    .qRow{padding:12px 12px;background:transparent;border-radius:0;}
-    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start;}
-    .qNo{
-      flex:0 0 auto;font-size:11px;font-weight:1000;padding:5px 8px;border-radius:999px;
-      border:1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.70);color: var(--muted);white-space:nowrap;
-    }
-    .qText{margin:0;font-weight:800;font-size:12.6px;line-height:1.55;flex:1;letter-spacing:.1px;}
-    @media (min-width: 981px){
-      .qText{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .qRow{
+      padding: 12px 12px;
+      background: transparent;
+      border-radius: 0;
     }
 
-    .noteInline{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.55;}
+    .qHead{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:flex-start;
+    }
+    .qNo{
+      flex:0 0 auto;
+      font-size:11px;
+      font-weight:1000;
+      padding: 5px 8px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .qText{
+      margin:0;
+      font-weight:800;
+      font-size:12.6px;
+      line-height:1.55;
+      flex:1;
+      letter-spacing:.1px;
+    }
+    @media (min-width: 981px){
+      .qText{
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      }
+    }
+
+    /* ✅ Note immediately after question */
+    .noteInline{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
     .noteInline b{color: var(--text);}
 
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
@@ -503,9 +538,18 @@
       padding: 1px 0;
     }
     .optLine.locked{cursor:default;}
-    .optMark{width:18px;height:18px;border-radius:999px;display:grid;place-items:center;font-weight:1000;font-size:12px;opacity:0;}
+    .optMark{
+      width: 18px;height: 18px;border-radius:999px;
+      display:grid;place-items:center;
+      font-weight:1000;font-size:12px;
+      opacity:0;
+    }
     .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
-    .optTxt{font-size:12.5px;line-height:1.5;color: var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: calc(2 * 1.5em);}
+    .optTxt{
+      font-size:12.5px;line-height:1.5;color: var(--text);
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: calc(2 * 1.5em);
+    }
     .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
     .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
     .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
@@ -530,7 +574,15 @@
       padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
-    .empty{display:none;border:1px dashed rgba(18,28,55,.22);background: rgba(255,255,255,.70);border-radius:16px;padding:12px;color: var(--muted);margin-top:12px;font-size:12px;}
+    .empty{
+      display:none;border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-size:12px;
+    }
 
     /* Latest MT */
     .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
@@ -552,19 +604,13 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ======================================================
-       ✅ Floating Ans bar: stays ABOVE footer, no footer-below gap
-       ====================================================== */
+    /* ===== Fixed Ans Bar (always above footer) ===== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
-      bottom: calc(12px + var(--safeBottom));
-      z-index: 2147483647;
+      bottom: calc(12px + var(--safeBottom) + var(--liftFromFooter));
+      z-index: 99999;
       pointer-events: none;
-
-      transform: translateY(calc(-1 * var(--ansBarLift)));
-      transition: transform .12s ease;
-      will-change: transform;
     }
     .ansBar{
       pointer-events:auto;
@@ -601,9 +647,37 @@
       color: rgba(15,23,48,.95);
     }
 
-    /* ✅ spacer before footer (only creates space ABOVE footer) */
-    #ansSpacer{
-      height: var(--ansSpace);
+    /* ===== Pager ===== */
+    .pager{
+      display:flex;
+      gap:6px;
+      align-items:center;
+      justify-content:center;
+      flex: 1;
+      flex-wrap: wrap;
+      min-width: 180px;
+    }
+    .pBtn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      height: 34px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    .pBtn.active{
+      background: rgba(29,78,216,.18);
+      border-color: rgba(29,78,216,.22);
+    }
+    .pDots{
+      color: var(--muted);
+      font-weight:1000;
+      padding: 0 4px;
+      user-select:none;
     }
 
     /* ===== Footer ===== */
@@ -615,9 +689,6 @@
         linear-gradient(180deg, var(--footTop), var(--footBottom));
       border-top: 1px solid var(--footLine);
       color: var(--footText);
-
-      /* ✅ no huge padding => no gap below footer */
-      padding-bottom: var(--safeBottom);
     }
     .footGrid{
       max-width: 1320px;
@@ -639,7 +710,10 @@
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
 
     @media (max-width: 980px){
-      .footGrid{grid-template-columns: repeat(3, minmax(0, 1fr));gap: 10px 10px;}
+      .footGrid{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px 10px;
+      }
       .footBrandCol{display:none !important;}
     }
 
@@ -658,27 +732,10 @@
     @media (min-width: 981px){
       .container{padding-left:16px;padding-right:16px;}
     }
+
     @media (prefers-reduced-motion: reduce){
       .marq span{ animation:none; padding-left:0; }
-      .ansBarWrap{ transition:none; }
     }
-
-    /* ✅ page number pill */
-    .pagePill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.84);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size:12px;
-      font-weight:1000;
-      color: var(--muted);
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      white-space:nowrap;
-    }
-    .pagePill b{color: var(--text);}
   </style>
 </head>
 
@@ -800,9 +857,7 @@
     <section class="panel">
       <div class="panelHead">
         <b id="rightTitle">Questions</b>
-
-        <!-- ✅ Page number pill added -->
-        <span class="pagePill" id="pagePill">Page: <b id="pageNo">1</b></span>
+        <span class="muted" id="pageHint"></span>
       </div>
 
       <div class="panelBody">
@@ -821,8 +876,11 @@
         <div id="content"></div>
         <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
 
-        <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;">
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;">
           <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
+
+          <div id="pager" class="pager" aria-label="Pagination"></div>
+
           <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
         </div>
       </div>
@@ -862,10 +920,7 @@
   </div>
 </div>
 
-<!-- ✅ spacer BEFORE footer (creates space ABOVE footer only) -->
-<div id="ansSpacer" aria-hidden="true"></div>
-
-<footer id="pageFooter">
+<footer>
   <div class="footGrid">
     <div class="footBrandCol">
       <div class="footTitle">eProstutiBD</div>
@@ -974,48 +1029,6 @@
   window.addEventListener("load", syncStickyOffsets);
   syncStickyOffsets();
 
-  /* ======================================================
-     ✅ Footer-safe floating bar + no footer-below gap
-     ====================================================== */
-  function syncAnsBarWithFooter(){
-    const ansWrap = $("ansBarWrap");
-    const footer = $("pageFooter");
-    if(!ansWrap || !footer) return;
-
-    // if hidden (mode=model)
-    if(ansWrap.style.display === "none"){
-      document.documentElement.style.setProperty("--ansBarLift", "0px");
-      document.documentElement.style.setProperty("--ansSpace", "0px");
-      return;
-    }
-
-    // ✅ create space BEFORE footer (not after footer)
-    const ansH = ansWrap.getBoundingClientRect().height || 56;
-    const safeBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--safeBottom")) || 0;
-    const space = ansH + 22 + safeBottom; // 22px breathing
-    document.documentElement.style.setProperty("--ansSpace", space.toFixed(0) + "px");
-
-    // ✅ lift bar when footer overlaps
-    const ansRect = ansWrap.getBoundingClientRect();
-    const footerRect = footer.getBoundingClientRect();
-    const gap = 10;
-    const overlap = (ansRect.bottom + gap) - footerRect.top;
-    const lift = overlap > 0 ? overlap : 0;
-    document.documentElement.style.setProperty("--ansBarLift", lift.toFixed(0) + "px");
-  }
-
-  let _ansRAF = null;
-  function scheduleAnsSync(){
-    if(_ansRAF) return;
-    _ansRAF = requestAnimationFrame(()=>{
-      _ansRAF = null;
-      syncAnsBarWithFooter();
-    });
-  }
-  window.addEventListener("scroll", scheduleAnsSync, {passive:true});
-  window.addEventListener("resize", scheduleAnsSync);
-  window.addEventListener("load", scheduleAnsSync);
-
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
@@ -1028,6 +1041,7 @@
     }
   }
 
+  // debounce for search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -1065,7 +1079,7 @@
   const PAGE_SIZE = 30;
   let page = 1;
 
-  /* ✅ cursorByPage will persist with {t,id} pairs */
+  // ✅ cursorByPage will persist with {t,id} pairs
   let cursorByPage = { 1: null };
 
   let lastDoc = null;
@@ -1080,7 +1094,7 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_paper_final_patched_v2";
+  const LS_KEY = "epbd_details_state_full_final_patched_v3";
 
   function saveState(){
     const payload = {
@@ -1088,7 +1102,7 @@
       mode,
       ansMode,
       page,
-      cursorByPage,
+      cursorByPage, // ✅ persist cursors
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
@@ -1137,10 +1151,6 @@
     history.replaceState({}, "", u.toString());
   }
 
-  function updatePagePill(){
-    if($("pageNo")) $("pageNo").textContent = String(page);
-  }
-
   function setMode(m){
     mode = m;
     document.body.setAttribute("data-mode", mode);
@@ -1154,11 +1164,10 @@
     page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
+
     setUrlState();
     saveState();
-    updatePagePill();
     loadRight();
-    scheduleAnsSync();
   }
   window.setMode = setMode;
 
@@ -1168,7 +1177,6 @@
     $("ansShowBtn").classList.toggle("active", ansMode==="show");
     saveState();
     renderContent();
-    scheduleAnsSync();
   }
   window.setAnsMode = setAnsMode;
 
@@ -1293,9 +1301,7 @@
 
     setUrlState();
     saveState();
-    updatePagePill();
     loadRight();
-    scheduleAnsSync();
 
     if(shouldScrollTop){
       try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
@@ -1307,6 +1313,7 @@
     if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
   }
 
+  // ✅ Patched buildQuery with stable cursor (createdAt + id)
   function buildQuery(){
     const searchText = $("qSearch").value || "";
     const cursor = cursorByPage[page] || null;
@@ -1343,12 +1350,83 @@
     if(!selectedSubjectId){
       $("emptyRight").style.display = "block";
       $("content").innerHTML = "";
-      updatePagePill();
+      $("pageHint").textContent = "";
+      renderPager();
       return;
     }
     loadRight();
   }
   window.resetAndReload = resetAndReload;
+
+  function renderPager(){
+    const wrap = $("pager");
+    if(!wrap) return;
+
+    const keys = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+    let maxVisited = keys.length ? Math.max(...keys) : 1;
+    if(maxVisited < 1) maxVisited = 1;
+
+    const canShowNextNum = hasNext === true;
+
+    const pages = [];
+    for(let i=1;i<=maxVisited;i++) pages.push(i);
+    if(canShowNextNum) pages.push(maxVisited + 1);
+
+    const out = [];
+    const total = pages.length;
+
+    if(total <= 9){
+      out.push(...pages);
+    }else{
+      const last = pages[pages.length-1];
+      out.push(1);
+      if(page > 4) out.push("dots1");
+      const start = Math.max(2, page - 2);
+      const end = Math.min(last - 1, page + 2);
+      for(let p=start; p<=end; p++) out.push(p);
+      if(page < last - 3) out.push("dots2");
+      out.push(last);
+    }
+
+    wrap.innerHTML = "";
+    out.forEach(item=>{
+      if(String(item).startsWith("dots")){
+        const s = document.createElement("span");
+        s.className = "pDots";
+        s.textContent = "…";
+        wrap.appendChild(s);
+        return;
+      }
+
+      const p = item;
+      const b = document.createElement("button");
+      b.className = "pBtn" + (p===page ? " active" : "");
+      b.textContent = String(p);
+
+      b.onclick = ()=>{
+        if(p===page) return;
+
+        const keys2 = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+        let maxV = keys2.length ? Math.max(...keys2) : 1;
+        if(maxV < 1) maxV = 1;
+
+        if(p === maxV + 1){
+          nextPage();
+          return;
+        }
+
+        if(!cursorByPage[p] && p !== 1) return;
+
+        page = p;
+        selectedOptionMap.clear();
+        setUrlState();
+        saveState();
+        loadRight();
+      };
+
+      wrap.appendChild(b);
+    });
+  }
 
   function loadRight(){
     if(!selectedSubjectId) return;
@@ -1356,7 +1434,7 @@
     detachRight();
     $("emptyRight").style.display = "none";
     $("content").innerHTML = "";
-    updatePagePill();
+    $("pageHint").textContent = `Page ${page}`;
 
     const built = buildQuery();
     unsubRight = built.q.onSnapshot((snap)=>{
@@ -1388,14 +1466,16 @@
       $("prevBtn").disabled = page <= 1;
       $("nextBtn").disabled = !hasNext;
 
+      renderPager();
+
       setUrlState();
       saveState();
-      scheduleAnsSync();
     }, (err)=>{
       console.error(err);
       $("content").innerHTML = "";
       $("emptyRight").style.display = "block";
-      scheduleAnsSync();
+      hasNext = false;
+      renderPager();
     });
   }
 
@@ -1405,11 +1485,10 @@
     selectedOptionMap.clear();
     setUrlState();
     saveState();
-    updatePagePill();
     loadRight();
-    scheduleAnsSync();
   }
 
+  // ✅ Patched nextPage to store cursor {t,id} in cursorByPage
   function nextPage(){
     if(!hasNext) return;
     if(lastDoc){
@@ -1423,9 +1502,7 @@
     selectedOptionMap.clear();
     setUrlState();
     saveState();
-    updatePagePill();
     loadRight();
-    scheduleAnsSync();
   }
   window.prevPage = prevPage;
   window.nextPage = nextPage;
@@ -1484,6 +1561,7 @@
       const row = document.createElement("div");
       row.className = "qRow";
 
+      // ✅ Note immediately after question
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
@@ -1532,7 +1610,6 @@
               opt.onclick = ()=>{
                 selectedOptionMap.set(it.id, oi);
                 renderContent();
-                scheduleAnsSync();
               };
             }
           }
@@ -1554,6 +1631,7 @@
 
       list.appendChild(row);
 
+      // ✅ every 10 questions: ad
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1603,8 +1681,6 @@
           `;
           wrap.appendChild(card);
         });
-
-        scheduleAnsSync();
       }, (err)=>console.error(err));
   }
 
@@ -1643,19 +1719,48 @@
 
         setUrlState();
         saveState();
-        updatePagePill();
         loadRight();
+      }else{
+        renderPager();
       }
-
-      scheduleAnsSync();
     });
   }
 
+  // ✅ Lift ans bar when footer enters viewport (never overlaps footer)
+  (function keepAnsBarAboveFooter(){
+    const footer = document.querySelector("footer");
+    const bar = document.getElementById("ansBarWrap");
+    if(!footer || !bar) return;
+
+    let ticking = false;
+
+    function update(){
+      ticking = false;
+
+      if(bar.style.display === "none"){
+        document.documentElement.style.setProperty("--liftFromFooter", "0px");
+        return;
+      }
+
+      const fr = footer.getBoundingClientRect();
+      const overlap = window.innerHeight - fr.top; // footer inside viewport
+      const lift = Math.max(0, overlap);
+      document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
+    }
+
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive:true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  })();
+
   attachSubjects();
   attachLatestModelTests();
-
-  // initial sync after first paint
-  setTimeout(scheduleAnsSync, 0);
 </script>
 </body>
 </html>
