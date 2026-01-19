@@ -52,8 +52,8 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
 
-      /* ✅ reserve for fixed Ans bar */
-      padding-bottom: calc(var(--ansBarH) + 36px + var(--safeBottom));
+      /* ✅ reserve ONLY for fixed Ans bar (no extra footer gap) */
+      padding-bottom: calc(var(--ansBarH) + 18px + var(--safeBottom));
     }
     a{color:inherit}
 
@@ -604,7 +604,7 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Fixed Ans Bar (always above footer) ===== */
+    /* ===== Fixed Ans Bar (always above footer via JS lift) ===== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
@@ -1094,7 +1094,12 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_full_final_patched_v3";
+  const LS_KEY = "epbd_details_state_full_final_patched_v4";
+
+  function getParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name) || "";
+  }
 
   function saveState(){
     const payload = {
@@ -1102,7 +1107,7 @@
       mode,
       ansMode,
       page,
-      cursorByPage, // ✅ persist cursors
+      cursorByPage,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
@@ -1131,17 +1136,34 @@
     }catch(e){}
   }
 
-  function getParam(name){
-    const u = new URL(location.href);
-    return u.searchParams.get(name) || "";
+  /* ✅ IMPORTANT FIX:
+     URL param should ALWAYS win over localStorage (so other page -> subject click works)
+  */
+  function applyUrlOverrides(){
+    const urlSubjectId = getParam("subjectId");
+    const urlMode = getParam("mode");
+    const urlPage = Number(getParam("page") || "1") || 1;
+
+    if(urlSubjectId){
+      selectedSubjectId = urlSubjectId;         // ✅ override
+      page = urlPage > 0 ? urlPage : 1;
+      cursorByPage = { 1: null };              // ✅ reset cursor for new subject
+      selectedOptionMap.clear();
+    }else{
+      // if no subjectId in URL, only then accept page/mode safely
+      if(urlPage > 1) page = urlPage;
+    }
+
+    if(urlMode && ["mcq","written","model"].includes(urlMode)){
+      mode = urlMode;                           // ✅ override if present
+    }
+
+    document.body.setAttribute("data-mode", mode);
   }
-  const urlSubjectId = getParam("subjectId");
-  if(urlSubjectId) selectedSubjectId = urlSubjectId;
 
-  const urlPage = Number(getParam("page") || "1") || 1;
-  if(urlPage > 1) page = urlPage;
-
+  // ✅ load storage first, then override with URL
   loadState();
+  applyUrlOverrides();
 
   function setUrlState(){
     const u = new URL(location.href);
@@ -1313,7 +1335,6 @@
     if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
   }
 
-  // ✅ Patched buildQuery with stable cursor (createdAt + id)
   function buildQuery(){
     const searchText = $("qSearch").value || "";
     const cursor = cursorByPage[page] || null;
@@ -1488,7 +1509,6 @@
     loadRight();
   }
 
-  // ✅ Patched nextPage to store cursor {t,id} in cursorByPage
   function nextPage(){
     if(!hasNext) return;
     if(lastDoc){
@@ -1561,7 +1581,6 @@
       const row = document.createElement("div");
       row.className = "qRow";
 
-      // ✅ Note immediately after question
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
@@ -1631,7 +1650,6 @@
 
       list.appendChild(row);
 
-      // ✅ every 10 questions: ad
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
@@ -1726,7 +1744,7 @@
     });
   }
 
-  // ✅ Lift ans bar when footer enters viewport (never overlaps footer)
+  // ✅ Keep ans bar above footer (no overlap)
   (function keepAnsBarAboveFooter(){
     const footer = document.querySelector("footer");
     const bar = document.getElementById("ansBarWrap");
@@ -1743,7 +1761,7 @@
       }
 
       const fr = footer.getBoundingClientRect();
-      const overlap = window.innerHeight - fr.top; // footer inside viewport
+      const overlap = window.innerHeight - fr.top;
       const lift = Math.max(0, overlap);
       document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
     }
