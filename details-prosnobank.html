@@ -25,9 +25,9 @@
       --ok:#16a34a;
       --danger:#dc2626;
 
-      /* ✅ Footer colors */
-      --footerA:#0b3b2e;
-      --footerB:#06261f;
+      /* ✅ footer colors changed */
+      --footerA:#12315a;
+      --footerB:#0a1f3f;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
       --headerH: 64px;
@@ -147,90 +147,40 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Subject Sheet (mobile) ===== */
-    .subjectSheet{
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index: 99999;
-    }
-    .subjectSheet .backdrop{
-      position:absolute; inset:0;
-      background: rgba(8, 18, 45, .35);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
+    /* ===== Mobile Subject Sheet ===== */
+    .subjectSheet{display:none;position:fixed;inset:0;z-index:99999;}
+    .subjectSheet .backdrop{position:absolute;inset:0;background: rgba(8, 18, 45, .35);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);}
     .subjectSheet .sheet{
-      position:absolute;
-      left: 12px;
-      right: 12px;
+      position:absolute;left:12px;right:12px;
       top: calc(var(--headerH, 64px) + 12px);
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.28);
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 18px 44px rgba(0,0,0,.22);
-      overflow:hidden;
-      max-height: calc(100vh - (var(--headerH, 64px) + 24px));
-      display:flex;
-      flex-direction:column;
+      border-radius: 18px;border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.92);box-shadow: 0 18px 44px rgba(0,0,0,.22);
+      overflow:hidden;max-height: calc(100vh - (var(--headerH, 64px) + 24px));
+      display:flex;flex-direction:column;
     }
-    .subjectSheet .head{
-      padding: 12px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-    }
-    .subjectSheet .head b{ font-size: 13px; font-weight:1000; }
-    .subjectSheet .closeBtn{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.90);
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-weight:1000;
-      cursor:pointer;
-    }
+    .subjectSheet .head{padding: 12px;display:flex;align-items:center;justify-content:space-between;border-bottom: 1px solid rgba(18,28,55,.10);}
+    .subjectSheet .head b{font-size:13px;font-weight:1000;}
+    .subjectSheet .closeBtn{border:1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.90);border-radius: 12px;padding: 8px 10px;font-weight:1000;cursor:pointer;}
     .subjectSheet .body{
       padding: 12px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
+      scroll-behavior:smooth;
+      overscroll-behavior: contain;
     }
-    .sheetGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .sheetGrid{display:grid;grid-template-columns: 1fr 1fr;gap:10px;}
     .sheetItem{
       border:1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.95);
       border-radius: 16px;
-      padding: 10px 10px;
+      padding: 10px;
       cursor:pointer;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
+      display:flex;flex-direction:column;gap:6px;min-width:0;
     }
-    .sheetItem b{
-      font-size: 12.5px;
-      font-weight:1000;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .sheetItem .mini{
-      font-size: 11.5px;
-      color: var(--muted);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .sheetItem.active{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.08);
-    }
+    .sheetItem b{font-size:12.5px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .sheetItem .mini{font-size:11.5px;color: var(--muted);display:flex;gap:8px;flex-wrap:wrap;}
+    .sheetItem.active{border-color: rgba(29,78,216,.28);background: rgba(29,78,216,.08);}
 
     /* ===== Subject Dock ===== */
     .subjectDock{
@@ -254,44 +204,22 @@
       align-items:center;
       gap:12px;
     }
-    .subTitle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
+    .subTitle{display:flex;align-items:center;gap:10px;min-width:0;}
     .subTitle b{
       font-size:14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 36vw;
+      max-width: 40vw;
       font-weight:1000;
     }
-    .subTitle span{ display:none !important; }
+    .subTitle span{display:none !important;}
 
-    .tabs{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-    }
-    .tab{
-      border:none;
-      background: transparent;
-      color: var(--text);
-      padding: 0;
-      font-size: 13px;
-      font-weight: 1000;
-      cursor:pointer;
-    }
-    .tab.active{
-      color: var(--brandA);
-      text-decoration: underline;
-      text-underline-offset: 6px;
-    }
+    .tabs{display:flex;gap:14px;align-items:center;justify-content:center;white-space:nowrap;}
+    .tab{border:none;background: transparent;color: var(--text);padding:0;font-size:13px;font-weight:1000;cursor:pointer;}
+    .tab.active{color: var(--brandA);text-decoration: underline;text-underline-offset: 6px;}
 
+    /* ✅ mobile subject button on the RIGHT of tabs */
     .subBtnMobile{
       display:none;
       border:1px solid rgba(18,28,55,.12);
@@ -306,8 +234,8 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
     }
     @media (max-width: 980px){
-      .subBtnMobile{ display:inline-flex; align-items:center; gap:8px; }
-      .subTitle b{ max-width: 44vw; }
+      .subBtnMobile{display:inline-flex;align-items:center;gap:8px;}
+      .subTitle b{max-width: 46vw;}
     }
 
     /* ===== Layout ===== */
@@ -377,13 +305,15 @@
       font-size: 13px;
     }
 
-    /* ===== Desktop sidebar list (scroll + show ~8) ===== */
+    /* =========================================================
+       ✅ DESKTOP SIDEBAR SCROLL + show ~8 items, smooth
+       ========================================================= */
     @media (min-width: 981px){
       aside.panel.leftDesktop{
         position: sticky;
         top: calc(var(--headerH, 64px) + 12px);
         height: calc(100vh - (var(--headerH, 64px) + 24px));
-        overflow: hidden;
+        overflow: hidden; /* inner list scroll */
       }
       aside.panel.leftDesktop .panelBody{
         height: 100%;
@@ -392,16 +322,17 @@
         min-height:0;
       }
       .sList{
-        flex: 1;
-        min-height: 0;
+        flex:1;
+        min-height:0;
+        max-height: 520px; /* ✅ ~8 items then scroll */
         overflow:auto;
         -webkit-overflow-scrolling: touch;
-        padding-right: 6px;
+        overscroll-behavior: contain;
+        scroll-behavior:smooth;
+        padding-right:6px;
         display:flex;
         flex-direction:column;
-        gap: 12px; /* ✅ gap increased */
-        scroll-behavior:smooth;
-        max-height: calc(100vh - (var(--headerH, 64px) + 240px));
+        gap:14px; /* ✅ gap between cards */
       }
     }
     .sList{ scrollbar-width: thin; scrollbar-color: rgba(29,78,216,.35) rgba(15,23,48,.06); }
@@ -413,12 +344,12 @@
       border: 2px solid rgba(15,23,48,.06);
     }
 
-    /* ✅ Desktop subject cards improved (bigger + options visible) */
+    /* ✅ Desktop subject cards bigger + options visible */
     .sItem{
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.94);
+      background: rgba(255,255,255,.96);
       border-radius: 18px;
-      padding: 12px 12px;
+      padding: 14px 14px; /* ✅ bigger */
       cursor:pointer;
       transition: transform .12s, box-shadow .12s, border-color .12s;
       box-shadow: 0 12px 26px rgba(15,23,48,.06);
@@ -433,25 +364,21 @@
         radial-gradient(520px 120px at 100% 0%, rgba(14,165,233,.10), transparent 62%);
       opacity:.92; pointer-events:none;
     }
-    .sItem:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 18px 44px rgba(15,23,48,.10);
-      border-color: rgba(29,78,216,.18);
-    }
+    .sItem:hover{transform: translateY(-2px);box-shadow: 0 18px 44px rgba(15,23,48,.10);border-color: rgba(29,78,216,.18);}
     .sItem b{
       position:relative;
       display:block;
-      font-size: 14px;
+      font-size: 14.5px; /* ✅ larger */
       font-weight: 1000;
       line-height:1.2;
       margin-bottom: 10px;
       letter-spacing: .12px;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .chips{position:relative;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
     .chip{
-      font-size: 11.5px;
-      padding: 6px 10px;
+      font-size: 12px;              /* ✅ larger so visible */
+      padding: 7px 10px;            /* ✅ larger */
       border-radius: 999px;
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(245,248,255,.96);
@@ -461,7 +388,7 @@
       gap:6px;
       align-items:center;
     }
-    .chip b{font-size: 11.5px;margin:0;font-weight:1000;color: var(--text);}
+    .chip b{font-size: 12px;margin:0;font-weight:1000;color: var(--text);}
     .sItem.active{
       border-color: rgba(29,78,216,.26);
       box-shadow: 0 18px 44px rgba(29,78,216,.12);
@@ -507,39 +434,34 @@
       flex:1;letter-spacing:.1px;
     }
 
-    /* ✅ Options: TWO columns on BOTH mobile & desktop (like paper) */
+    /* ✅ Options always 2 columns on mobile & desktop (like paper) */
     .opts{
       margin-top:10px;
       display:grid;
-      grid-template-columns: 1fr 1fr; /* ✅ mobile too */
+      grid-template-columns: 1fr 1fr;  /* ✅ always 2 column */
       gap:10px;
     }
-    @media (max-width: 420px){
-      .opts{ grid-template-columns: 1fr; } /* tiny mobile fallback */
-    }
 
+    /* ✅ option row: grid so tick/cross stays close (NO huge gap) */
     .optLine{
-      display:flex;
-      gap:6px;
-      align-items:flex-start;
+      display:grid;
+      grid-template-columns: 20px 1fr 18px;
+      column-gap: 6px;
+      align-items:start;
       cursor:pointer;
       user-select:none;
       padding: 2px 0;
     }
     .optLine.locked{cursor:default;}
     .optKey{
-      flex:0 0 auto;
       font-weight:1000;
       font-size:12px;
       color: var(--muted);
-      width: 18px;
       line-height:1.6;
-      margin-top: 1px;
     }
 
-    /* ✅ always 2 lines */
+    /* ✅ always 2 lines (paper style) */
     .optTxt{
-      flex:1;
       font-size:12.5px;
       line-height:1.6;
       color: var(--text);
@@ -547,11 +469,11 @@
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
+      min-height: calc(2 * 1.6em); /* ✅ force 2 line height */
     }
 
-    /* ✅ mark gap reduced + always visible only when needed */
+    /* ✅ tick/cross close, no extra gap */
     .optMark{
-      flex:0 0 auto;
       width: 18px;
       height: 18px;
       border-radius: 999px;
@@ -559,25 +481,12 @@
       place-items:center;
       font-weight:1000;
       font-size:12px;
-      margin-top: 2px;
       opacity: 0;
-      transform: translateY(0);
     }
     .optLine.correct .optTxt{ color: var(--ok); font-weight: 800; }
     .optLine.wrong .optTxt{ color: var(--danger); font-weight: 800; text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55); }
-
-    .optLine.correct .optMark{
-      opacity: 1;
-      color: #fff;
-      background: rgba(22,163,74,.95);
-      box-shadow: 0 8px 18px rgba(22,163,74,.20);
-    }
-    .optLine.wrong .optMark{
-      opacity: 1;
-      color: #fff;
-      background: rgba(220,38,38,.95);
-      box-shadow: 0 8px 18px rgba(220,38,38,.20);
-    }
+    .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);box-shadow: 0 8px 18px rgba(22,163,74,.20);}
+    .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);box-shadow: 0 8px 18px rgba(220,38,38,.20);}
 
     /* Note -> plain text */
     .noteBox{
@@ -585,7 +494,6 @@
       padding: 0;
       border: none;
       background: transparent;
-      border-radius: 0;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.6;
@@ -700,8 +608,8 @@
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
       background:
-        radial-gradient(700px 240px at 20% 0%, rgba(34,197,94,.18), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(96,165,250,.14), transparent 60%),
+        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.14), transparent 60%),
         linear-gradient(180deg, var(--footerA), var(--footerB));
       color: rgba(255,255,255,.92);
     }
@@ -718,19 +626,18 @@
       align-items:start;
     }
 
-    /* ✅ Mobile footer: forced 3 lines (3 blocks) */
+    /* ✅ mobile footer "3 line": brand + links + social (stack) */
     @media (max-width: 560px){
       .foot{
-        grid-template-columns: 1fr !important;
+        display:flex !important;
+        flex-direction:column !important;
         gap: 12px !important;
       }
-      .foot > div{
-        width: 100%;
+      .footLinksWrap{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
       }
-      .footLogo{ order:1; }
-      .footLinks1{ order:2; }
-      .footLinks2{ order:3; }
-      .footFollow{ order:4; }
     }
 
     .foot b{font-size:13px}
@@ -752,7 +659,8 @@
       color: rgba(255,255,255,.72);
       font-size:12px;
       text-align:center;
-      white-space:normal; /* ✅ wrap on mobile */
+      white-space:normal;
+      line-height:1.6;
     }
   </style>
 </head>
@@ -929,6 +837,7 @@
   </div>
 </div>
 
+<!-- Footer (NO ADS) -->
 <footer>
   <div class="foot">
     <div class="footLogo">
@@ -938,20 +847,23 @@
       </div>
     </div>
 
-    <div class="footLinks1">
-      <b>দরকারি পেজ</b>
-      <a href="#">About</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
-    </div>
+    <!-- ✅ wrap for mobile: becomes 2 columns block inside 3 lines -->
+    <div class="footLinksWrap">
+      <div class="footLinks1">
+        <b>দরকারি পেজ</b>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
 
-    <div class="footLinks2">
-      <b>অন্যান্য</b>
-      <a href="#">Notice</a>
-      <a href="#">Blog</a>
-      <a href="#">Career</a>
-      <a href="#">Help</a>
+      <div class="footLinks2">
+        <b>অন্যান্য</b>
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
+      </div>
     </div>
 
     <div class="footFollow">
@@ -965,7 +877,10 @@
     </div>
   </div>
 
-  <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
+  <div class="copy">
+    © <span id="year"></span> eProstutiBD<br/>
+    All rights reserved
+  </div>
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -1082,7 +997,7 @@
   let unsubSubjects = null;
   let unsubRight = null;
 
-  const LS_KEY = "epbd_details_state_v4";
+  const LS_KEY = "epbd_details_state_final";
 
   function saveState(){
     const payload = {
@@ -1116,7 +1031,6 @@
     const u = new URL(location.href);
     return u.searchParams.get(name) || "";
   }
-
   const urlSubjectId = getParam("subjectId");
   if(urlSubjectId) selectedSubjectId = urlSubjectId;
 
@@ -1476,11 +1390,11 @@
           const mark = row.querySelector(".optMark");
 
           if(ansMode === "show"){
+            row.classList.add("locked");
             if(oi === correctIndex){
               row.classList.add("correct");
               mark.textContent = "✓";
             }
-            row.classList.add("locked");
           }else{
             if(chosen !== undefined){
               row.classList.add("locked");
@@ -1527,6 +1441,7 @@
 
       list.appendChild(card);
 
+      /* ✅ every 10 questions show an ad */
       if((idx+1)%10===0 && idx < currentItems.length-1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
