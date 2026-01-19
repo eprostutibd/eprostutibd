@@ -131,7 +131,7 @@
     .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
     @media (prefers-reduced-motion: reduce){
-      .marq span{ animation: none; padding-left: 0; }
+      .marq span{ animation:none; padding-left:0; }
     }
 
     .adBox{
@@ -145,51 +145,6 @@
     }
     .adHead b{color: var(--text)}
     .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
-
-    /* ===== Mobile subject menu bar (button) ===== */
-    .mobileSubjectTop{
-      display:none;
-      margin-top: 10px;
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.82);
-      border-radius: 16px;
-      padding: 10px;
-      box-shadow: 0 10px 24px rgba(15,23,48,.06);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .mobileSubjectTop .left{
-      min-width:0;
-      display:flex;flex-direction:column;gap:3px;
-    }
-    .mobileSubjectTop .left b{
-      font-size: 13px; font-weight: 1000;
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
-      max-width: 70vw;
-    }
-    .mobileSubjectTop .left span{
-      font-size: 12px; color: var(--muted);
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
-      max-width: 70vw;
-    }
-    .mobileSubjectTop .openBtn{
-      flex:0 0 auto;
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(29,78,216,.10);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      white-space:nowrap;
-    }
-
-    @media (max-width: 980px){
-      .mobileSubjectTop{ display:flex; }
-    }
 
     /* ===== Subject Sheet (mobile) ===== */
     .subjectSheet{
@@ -240,7 +195,7 @@
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
     }
-    /* ✅ “2 line” grid => 2 columns */
+    /* ✅ 2 columns (2 line) */
     .sheetGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -291,7 +246,7 @@
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
     }
 
-    /* ✅ Center tabs */
+    /* ✅ Tabs centered + Mobile Subject button on the RIGHT of tabs */
     .subjectDockInner{
       max-width: 1320px;
       margin:0 auto;
@@ -340,7 +295,32 @@
       text-decoration: underline;
       text-underline-offset: 6px;
     }
-    .dockSpacer{width:1px;height:1px;}
+
+    .dockRight{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    /* Only show subject button on mobile */
+    .subBtnMobile{
+      display:none;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(29,78,216,.10);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    @media (max-width: 980px){
+      .subBtnMobile{ display:inline-flex; align-items:center; gap:8px; }
+      .subTitle b{ max-width: 46vw; }
+    }
 
     /* ===== Layout ===== */
     .grid{
@@ -410,67 +390,35 @@
     }
 
     /* ======================================================
-       ✅ DESKTOP SIDEBAR SCROLL + smaller cards
+       ✅ Desktop sidebar scroll "ager moto"
+       - Only the list scrolls with max-height (NOT sticky full height)
        ====================================================== */
-    .grid{ align-items: stretch; }
-
-    @media (min-width: 981px){
-      aside.panel.leftDesktop{
-        position: sticky;
-        top: calc(var(--headerH, 64px) + 12px);
-        height: calc(100vh - (var(--headerH, 64px) + 24px));
-        overflow: hidden;
-      }
-      aside.panel.leftDesktop .panelBody{
-        height: 100%;
-        display:flex;
-        flex-direction:column;
-        min-height:0;
-      }
-
-      #sList.sList{
-        flex: 1;
-        min-height: 0;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-        overscroll-behavior: contain;
-        scrollbar-gutter: stable;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(29,78,216,.35) rgba(15,23,48,.06);
-        padding-right: 6px;
-        padding-bottom: 6px;
-        contain: content;
-      }
-      #sList.sList::-webkit-scrollbar{ width: 10px; }
-      #sList.sList::-webkit-scrollbar-track{
-        background: rgba(15,23,48,.06);
-        border-radius: 999px;
-      }
-      #sList.sList::-webkit-scrollbar-thumb{
-        background: rgba(29,78,216,.32);
-        border-radius: 999px;
-        border: 2px solid rgba(15,23,48,.06);
-      }
-      #sList.sList::-webkit-scrollbar-thumb:hover{ background: rgba(29,78,216,.45); }
-    }
-
-    /* ✅ Subject list container (desktop) */
     .sList{
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 6px;
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap: 12px;                 /* ✅ more gap between cards */
+      max-height: 520px;         /* ✅ old style scroll */
+      scroll-behavior: smooth;
+    }
+    /* Optional: nicer scrollbar */
+    .sList{ scrollbar-width: thin; scrollbar-color: rgba(29,78,216,.35) rgba(15,23,48,.06); }
+    .sList::-webkit-scrollbar{ width: 10px; }
+    .sList::-webkit-scrollbar-track{ background: rgba(15,23,48,.06); border-radius: 999px; }
+    .sList::-webkit-scrollbar-thumb{
+      background: rgba(29,78,216,.32);
+      border-radius: 999px;
+      border: 2px solid rgba(15,23,48,.06);
     }
 
-    /* ✅ Desktop subject card: smaller now */
+    /* ✅ Desktop subject card: smaller */
     .sItem{
       border: 1px solid rgba(18,28,55,.10);
       background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.88));
       border-radius: 18px;
-      padding: 10px 12px; /* smaller */
+      padding: 10px 12px;
       cursor:pointer;
       transition: transform .12s, box-shadow .12s, border-color .12s;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
@@ -493,7 +441,7 @@
     .sItem b{
       position:relative;
       display:block;
-      font-size: 13px; /* smaller */
+      font-size: 13px;
       font-weight: 1000;
       line-height:1.15;
       margin-bottom: 8px;
@@ -502,7 +450,7 @@
     }
     .chips{position:relative;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .chip{
-      font-size: 11px; /* smaller */
+      font-size: 11px;
       padding: 5px 9px;
       border-radius: 999px;
       border: 1px solid rgba(18,28,55,.10);
@@ -559,12 +507,12 @@
       flex:1;letter-spacing:.1px;
     }
 
-    /* ✅ Options: no boxes, just text lines */
+    /* ✅ Options: 2 lines + tick/cross on right */
     .opts{
       margin-top:10px;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:8px;
     }
     .optLine{
       display:flex;
@@ -572,7 +520,7 @@
       align-items:flex-start;
       cursor:pointer;
       user-select:none;
-      padding: 2px 0; /* no box */
+      padding: 2px 0;
     }
     .optLine.locked{cursor:default;}
     .optKey{
@@ -582,26 +530,47 @@
       color: var(--muted);
       width: 18px;
       line-height:1.6;
+      margin-top: 1px;
     }
     .optTxt{
       flex:1;
       font-size:12.5px;
       line-height:1.6;
       color: var(--text);
+      display:-webkit-box;
+      -webkit-line-clamp:2;          /* ✅ two lines */
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
-    .optLine.correct .optTxt{
-      color: var(--ok);
-      font-weight: 800;
+    .optMark{
+      flex:0 0 auto;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      font-weight:1000;
+      font-size:12px;
+      margin-top: 2px;
+      opacity: 0;                 /* hidden by default */
+      transform: translateY(1px);
     }
-    .optLine.wrong .optTxt{
-      color: var(--danger);
-      font-weight: 800;
-      text-decoration: line-through;
-      text-decoration-thickness: 2px;
-      text-decoration-color: rgba(220,38,38,.55);
+    .optLine.correct .optTxt{ color: var(--ok); font-weight: 800; }
+    .optLine.wrong .optTxt{ color: var(--danger); font-weight: 800; text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55); }
+    .optLine.correct .optMark{
+      opacity: 1;
+      color: #fff;
+      background: rgba(22,163,74,.95);
+      box-shadow: 0 8px 18px rgba(22,163,74,.20);
+    }
+    .optLine.wrong .optMark{
+      opacity: 1;
+      color: #fff;
+      background: rgba(220,38,38,.95);
+      box-shadow: 0 8px 18px rgba(220,38,38,.20);
     }
 
-    /* ✅ No note box, just plain text */
+    /* Note box -> plain text (kept) */
     .noteBox{
       margin-top: 8px;
       padding: 0;
@@ -643,7 +612,7 @@
     .mtMeta span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
     .mtActions{position:relative;display:flex;gap:8px;flex-wrap:wrap}
 
-    /* ===== Ads (Body + Side) ===== */
+    /* ===== Ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -671,13 +640,24 @@
       font-size:12px;
     }
 
-    /* ===== Floating Ans controls ===== */
-    .floatingAns{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(14px + var(--safeBottom));
+    /* ✅ Ans controls: sticky ABOVE footer (NOT inside footer) */
+    .ansBarWrap{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      margin-top: 12px;
+      margin-bottom: 12px;
+      position: sticky;
+      bottom: calc(12px + var(--safeBottom));
       z-index: 999;
+      pointer-events:none; /* only buttons clickable */
+    }
+    .floatingAns{
+      pointer-events:auto;
+      width: fit-content;
+      margin-left:auto;
+      margin-right:auto;
       background: rgba(255,255,255,.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -814,15 +794,6 @@
     <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
     <div class="adBody">Paste ad code here</div>
   </div>
-
-  <!-- ✅ Mobile subject menu bar (button opens sheet) -->
-  <div class="mobileSubjectTop" aria-label="Mobile subject menu">
-    <div class="left">
-      <b id="mSubTitle">Subject</b>
-      <span id="mSubHint">সব Subject দেখুন</span>
-    </div>
-    <button class="openBtn" onclick="openSubjectSheet()">☰ Subjects</button>
-  </div>
 </div>
 
 <!-- ✅ Mobile Subject Sheet -->
@@ -839,7 +810,7 @@
   </div>
 </div>
 
-<!-- Sticky Subject line + centered tabs -->
+<!-- Sticky Subject line + centered tabs + mobile subject button on right -->
 <div class="subjectDock" aria-label="Subject navigation">
   <div class="subjectDockInner">
     <div class="subTitle">
@@ -853,7 +824,9 @@
       <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
     </div>
 
-    <div class="dockSpacer"></div>
+    <div class="dockRight">
+      <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
+    </div>
   </div>
 </div>
 
@@ -920,7 +893,6 @@
           </div>
         </div>
 
-        <!-- Extra right side ad option -->
         <div class="inlineAd" style="min-height:180px;margin-top:12px;">
           <div>
             <div class="tag">Ad Slot</div>
@@ -932,10 +904,12 @@
   </main>
 </div>
 
-<!-- Floating ans control -->
-<div class="floatingAns" id="ansFloat">
-  <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
-  <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+<!-- ✅ Ans controls: always above footer -->
+<div class="ansBarWrap">
+  <div class="floatingAns" id="ansFloat">
+    <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+    <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+  </div>
 </div>
 
 <!-- Footer (NO ADS) -->
@@ -1004,6 +978,20 @@
   function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
   function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
   window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
+
+  function openSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "block";
+    ss.setAttribute("aria-hidden","false");
+  }
+  function closeSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "none";
+    ss.setAttribute("aria-hidden","true");
+  }
+  window.openSubjectSheet = openSubjectSheet;
+  window.closeSubjectSheet = closeSubjectSheet;
+
   document.addEventListener("keydown",(e)=>{
     if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
   });
@@ -1018,19 +1006,6 @@
   window.addEventListener("resize", syncStickyOffsets);
   window.addEventListener("load", syncStickyOffsets);
   syncStickyOffsets();
-
-  function openSubjectSheet(){
-    const ss = $("subjectSheet");
-    ss.style.display = "block";
-    ss.setAttribute("aria-hidden","false");
-  }
-  function closeSubjectSheet(){
-    const ss = $("subjectSheet");
-    ss.style.display = "none";
-    ss.setAttribute("aria-hidden","true");
-  }
-  window.openSubjectSheet = openSubjectSheet;
-  window.closeSubjectSheet = closeSubjectSheet;
 
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
@@ -1149,7 +1124,9 @@
     $("tabMcq").classList.toggle("active", mode==="mcq");
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
-    $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
+
+    // model mode => hide ans bar
+    document.querySelector(".ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
     page = 1;
     cursorByPage = { 1: null };
@@ -1285,10 +1262,6 @@
       ? `${selectedSubjectName} • MCQ/Written/Model Test`
       : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
 
-    // mobile top bar text
-    $("mSubTitle").textContent = selectedSubjectName ? selectedSubjectName : "Subject";
-    $("mSubHint").textContent = selectedSubjectName ? "Subjects বদলাতে ট্যাপ করুন" : "সব Subject দেখুন";
-
     renderSubjectList();
     renderSubjectSheet();
 
@@ -1297,12 +1270,8 @@
     loadRight();
 
     if(shouldScrollTop){
-      // smooth scroll to content top area (nice UX)
-      try{
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }catch(e){
-        window.scrollTo(0,0);
-      }
+      try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch(e){ window.scrollTo(0,0); }
     }
   }
 
@@ -1489,16 +1458,29 @@
           row.innerHTML = `
             <span class="optKey">${letters[oi]}.</span>
             <span class="optTxt">${esc(op || "")}</span>
+            <span class="optMark"></span>
           `;
 
+          const mark = row.querySelector(".optMark");
+
           if(ansMode === "show"){
-            if(oi === correctIndex) row.classList.add("correct");
+            // show only correct tick
+            if(oi === correctIndex){
+              row.classList.add("correct");
+              mark.textContent = "✓";
+            }
             row.classList.add("locked");
           }else{
             if(chosen !== undefined){
               row.classList.add("locked");
-              if(oi === correctIndex) row.classList.add("correct");
-              if(oi === chosen && chosen !== correctIndex) row.classList.add("wrong");
+              if(oi === correctIndex){
+                row.classList.add("correct");
+                mark.textContent = "✓";
+              }
+              if(oi === chosen && chosen !== correctIndex){
+                row.classList.add("wrong");
+                mark.textContent = "✕";
+              }
             }else{
               row.onclick = ()=>{
                 selectedOptionMap.set(it.id, oi);
@@ -1519,6 +1501,7 @@
 
       if(mode === "written"){
         const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+
         const box = document.createElement("div");
         box.className = "noteBox";
 
@@ -1561,7 +1544,7 @@
       $("tabModel").classList.toggle("active", mode==="model");
       $("ansHideBtn").classList.toggle("active", ansMode==="hide");
       $("ansShowBtn").classList.toggle("active", ansMode==="show");
-      $("ansFloat").style.display = (mode==="model") ? "none" : "flex";
+      document.querySelector(".ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
       renderSubjectList();
       renderSubjectSheet();
@@ -1578,9 +1561,6 @@
         $("tickerText").textContent = selectedSubjectName
           ? `${selectedSubjectName} • MCQ/Written/Model Test`
           : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
-
-        $("mSubTitle").textContent = selectedSubjectName ? selectedSubjectName : "Subject";
-        $("mSubHint").textContent = selectedSubjectName ? "Subjects বদলাতে ট্যাপ করুন" : "সব Subject দেখুন";
 
         setUrlState();
         saveState();
