@@ -230,7 +230,6 @@
       .subBtnMobile{display:inline-flex;align-items:center;gap:8px;}
     }
 
-    /* ✅ Center group now wraps nicely on mobile */
     .centerGroup{
       flex: 1;
       display:flex;
@@ -251,13 +250,12 @@
       white-space:nowrap;
     }
 
-    /* tabs line */
     .tabsLine{
       display:flex;
       align-items:center;
       justify-content:center;
       gap: 10px;
-      flex-wrap:wrap;           /* ✅ allow wrap */
+      flex-wrap:wrap;
       line-height:1.2;
       max-width: 100%;
     }
@@ -276,16 +274,12 @@
       text-decoration: underline;
       text-underline-offset: 6px;
     }
-
-    /* separators: NO comma */
     .sepDot{
       width: 5px;height: 5px;border-radius:999px;
       background: rgba(18,28,55,.25);
       transform: translateY(1px);
       flex:0 0 auto;
     }
-
-    /* right spacer so center stays centered when left button appears */
     .dockSpacer{
       width: 42px;
       flex:0 0 auto;
@@ -301,7 +295,7 @@
     /* ===== Layout ===== */
     .grid{
       display:grid;
-      grid-template-columns: 340px 1fr 300px;
+      grid-template-columns: 340px minmax(0, 1fr) 280px; /* ✅ center wider look */
       gap: 12px;
       align-items:start;
       margin-top: 10px;
@@ -452,7 +446,18 @@
       color: var(--muted);
       white-space:nowrap;
     }
-    .qText{margin:0;font-weight:700;font-size:12.5px;line-height:1.55;flex:1;letter-spacing:.1px;}
+    .qText{
+      margin:0;font-weight:700;font-size:12.5px;line-height:1.55;flex:1;letter-spacing:.1px;
+    }
+    /* ✅ Desktop question 2 lines */
+    @media (min-width: 981px){
+      .qText{
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      }
+    }
 
     /* ✅ Answer gap reduced */
     .opts{margin-top:8px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
@@ -461,12 +466,11 @@
     .optLine{
       display:grid;
       grid-template-columns: 18px 22px 1fr;
-      column-gap: 5px;      /* ✅ reduced */
-      row-gap: 0;
+      column-gap: 5px;
       align-items:start;
       cursor:pointer;
       user-select:none;
-      padding: 1px 0;       /* ✅ reduced */
+      padding: 1px 0;
     }
     .optLine.locked{cursor:default;}
     .optMark{
@@ -546,8 +550,46 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
+    /* ===== Ans controls (ABOVE footer) ===== */
+    .ansBarWrap{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .ansBar{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(18,28,55,.12);
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 18px 44px rgba(15,23,48,.14);
+      padding: 8px;
+    }
+    .toggle{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      height: 36px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+      white-space:nowrap;
+    }
+    .toggle.active{border-color: rgba(29,78,216,.28); background: rgba(29,78,216,.10);}
+
     /* ======================================================
-       ✅ NORMAL FOOTER (plain, stacked 4 lines, no cards)
+       ✅ FOOTER (4 columns desktop, 2 columns mobile)
        ====================================================== */
     footer{
       margin-top: 14px;
@@ -558,19 +600,25 @@
       border-top: 1px solid var(--footLine);
       color: var(--footText);
     }
-    .footPlain{
+
+    .footGrid{
       max-width: 1320px;
       margin:0 auto;
       padding: 18px clamp(12px, 4vw, 48px) 10px;
-      display:flex;
-      flex-direction:column;   /* ✅ always 4 lines stacked */
-      gap: 12px;
+
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 18px;
+      align-items:start;
     }
-    .footRow{
-      padding-bottom: 12px;
-      border-bottom: 1px dashed rgba(255,255,255,.12);
+
+    @media (max-width: 980px){
+      .footGrid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 14px;
+      }
     }
-    .footRow:last-child{border-bottom:none;padding-bottom:0;}
+
     .footTitle{
       font-weight:1000;
       color:#fff;
@@ -581,13 +629,12 @@
       color: var(--footMuted);
       font-size:12px;
       line-height:1.6;
-      max-width: 70ch;
     }
+
     .footLinks{
       display:flex;
-      flex-wrap:wrap;
-      gap: 10px 14px;
-      align-items:center;
+      flex-direction:column;
+      gap: 8px;
     }
     .footLinks a{
       text-decoration:none;
@@ -596,13 +643,12 @@
     }
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
-    .socialInline{
+    .socialCol{
       display:flex;
-      flex-wrap:wrap;
-      gap: 10px 12px;
-      align-items:center;
+      flex-direction:column;
+      gap: 10px;
     }
-    .socialInline a{
+    .socialCol a{
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -610,8 +656,12 @@
       color: var(--footMuted);
       font-size:12px;
     }
-    .socialInline a:hover{color:#fff;}
-    .socialInline svg{width:18px;height:18px;fill:#fff;opacity:.92}
+    .socialCol a:hover{color:#fff;}
+    .socialCol svg{
+      width:18px;height:18px;
+      fill:#fff;
+      opacity:.92
+    }
 
     .copy{
       max-width: 1320px;
@@ -798,14 +848,22 @@
   </main>
 </div>
 
+<!-- ✅ Ans Show / Ans Hide (Above footer, not inside footer) -->
+<div class="ansBarWrap" id="ansBarWrap">
+  <div class="ansBar">
+    <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+    <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+  </div>
+</div>
+
 <footer>
-  <div class="footPlain">
-    <div class="footRow">
+  <div class="footGrid">
+    <div>
       <div class="footTitle">eProstutiBD</div>
       <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে — বিষয়ভিত্তিক প্রশ্নব্যাংক, মডেল টেস্ট এবং প্রস্তুতি সহায়ক কনটেন্ট।</div>
     </div>
 
-    <div class="footRow">
+    <div>
       <div class="footTitle">দরকারি পেজ</div>
       <div class="footLinks">
         <a href="#">About</a>
@@ -815,7 +873,7 @@
       </div>
     </div>
 
-    <div class="footRow">
+    <div>
       <div class="footTitle">অন্যান্য</div>
       <div class="footLinks">
         <a href="#">Notice</a>
@@ -825,9 +883,9 @@
       </div>
     </div>
 
-    <div class="footRow">
+    <div>
       <div class="footTitle">Social</div>
-      <div class="socialInline" aria-label="Social icons">
+      <div class="socialCol" aria-label="Social icons">
         <a href="#" aria-label="Facebook">
           <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
           Facebook
@@ -951,6 +1009,7 @@
   let selectedSubjectName = "";
 
   let mode = "mcq";
+  let ansMode = "hide"; /* ✅ restored */
 
   const PAGE_SIZE = 30;
   let page = 1;
@@ -967,12 +1026,13 @@
   let unsubRight = null;
   let unsubLatest = null;
 
-  const LS_KEY = "epbd_details_state_latest_v3";
+  const LS_KEY = "epbd_details_state_latest_v4";
 
   function saveState(){
     const payload = {
       subjectId: selectedSubjectId,
       mode,
+      ansMode,
       page,
       q: $("qSearch").value || "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
@@ -988,6 +1048,7 @@
       if(st && typeof st === "object"){
         selectedSubjectId = st.subjectId || selectedSubjectId;
         mode = st.mode || mode;
+        ansMode = st.ansMode || ansMode;
         page = Number(st.page || 1) || 1;
         if($("qSearch")) $("qSearch").value = st.q || "";
         if($("sSearch")) $("sSearch").value = st.s || "";
@@ -1021,6 +1082,9 @@
     $("tabWritten").classList.toggle("active", mode==="written");
     $("tabModel").classList.toggle("active", mode==="model");
 
+    /* show/hide ans bar */
+    $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+
     page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
@@ -1029,6 +1093,15 @@
     loadRight();
   }
   window.setMode = setMode;
+
+  function setAnsMode(m){
+    ansMode = m;
+    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    saveState();
+    renderContent();
+  }
+  window.setAnsMode = setAnsMode;
 
   function relatedMatch(query, text){
     const q = normalize(query);
@@ -1338,23 +1411,33 @@
           <span class="optKey">${letters[oi]}.</span>
           <span class="optTxt">${esc(op || "")}</span>
         `;
+
         const mark = row.querySelector(".optMark");
 
-        if(chosen !== undefined){
+        /* ✅ show answers always if ansMode=show, otherwise after selecting */
+        if(ansMode === "show"){
           row.classList.add("locked");
           if(oi === correctIndex){
             row.classList.add("correct");
             mark.textContent = "✓";
           }
-          if(oi === chosen && chosen !== correctIndex){
-            row.classList.add("wrong");
-            mark.textContent = "✕";
-          }
         }else{
-          row.onclick = ()=>{
-            selectedOptionMap.set(it.id, oi);
-            renderContent();
-          };
+          if(chosen !== undefined){
+            row.classList.add("locked");
+            if(oi === correctIndex){
+              row.classList.add("correct");
+              mark.textContent = "✓";
+            }
+            if(oi === chosen && chosen !== correctIndex){
+              row.classList.add("wrong");
+              mark.textContent = "✕";
+            }
+          }else{
+            row.onclick = ()=>{
+              selectedOptionMap.set(it.id, oi);
+              renderContent();
+            };
+          }
         }
 
         optWrap.appendChild(row);
@@ -1441,6 +1524,9 @@
       $("tabMcq").classList.toggle("active", mode==="mcq");
       $("tabWritten").classList.toggle("active", mode==="written");
       $("tabModel").classList.toggle("active", mode==="model");
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
       if(selectedSubjectId){
         const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
