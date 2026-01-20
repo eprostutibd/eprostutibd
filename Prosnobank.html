@@ -35,7 +35,6 @@
     }
     a{color:inherit}
 
-    /* ✅ Desktop side gap = ~1/2 inch (48px). Mobile = 12px */
     .container{
       max-width: 1320px;
       margin: 0 auto;
@@ -45,7 +44,6 @@
       padding-bottom: 10px;
     }
 
-    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:50;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -114,7 +112,6 @@
     .nav a:hover{background: rgba(255,255,255,.16)}
     .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
-    /* ✅ mobile menu button right side */
     .menuBtn{
       flex:0 0 auto;
       margin-left:auto;
@@ -129,14 +126,12 @@
       cursor:pointer;
       line-height:1;
     }
-
     @media (max-width: 860px){
       .nav{display:none;}
       .menuBtn{display:inline-flex;align-items:center;gap:8px;}
       .brand .tag{max-width: 55vw;}
     }
 
-    /* ===== Mobile Menu (No background panel, outside click hide) ===== */
     .mobileMenu{
       display:none;
       position: fixed;
@@ -146,7 +141,7 @@
     .mobileMenu .overlay{
       position:absolute;
       inset:0;
-      background: transparent; /* ✅ no overlay color */
+      background: transparent;
     }
     .mobileMenu .drawer{
       position:absolute;
@@ -155,17 +150,12 @@
       width: min(320px, calc(100vw - 24px));
       border-radius: 16px;
       padding: 10px;
-
       border: 1px solid rgba(255,255,255,.28);
-
-      /* ✅ readable background */
       background: rgba(8, 20, 55, .78);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-
       box-shadow: 0 18px 38px rgba(0,0,0,.35);
     }
-
     .mobileMenu a{
       display:block;
       text-decoration:none;
@@ -174,21 +164,16 @@
       font-size:13px;
       padding: 12px 12px;
       border-radius: 12px;
-
       border: 1px solid rgba(255,255,255,.16);
-
       background: rgba(255,255,255,.06);
-
       margin-bottom: 8px;
       white-space:nowrap;
     }
-
     .mobileMenu a.active{
       border-color: rgba(255,255,255,.28);
       background: rgba(255,255,255,.12);
     }
 
-    /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top: 10px;
       border: 1px solid var(--line);
@@ -234,7 +219,6 @@
     .adHead b{color: var(--text)}
     .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
-    /* ===== Main layout ===== */
     .grid{
       display:grid;
       grid-template-columns: 1fr 300px;
@@ -334,8 +318,6 @@
       position:relative;margin:0;font-size:14px;font-weight:1000;line-height: 1.2;
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
     }
-
-    /* ✅ One-line counts */
     .counts{
       position:relative;
       margin-top: 8px;
@@ -387,11 +369,7 @@
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
 
-    /* ================================
-       ✅ NEW Model Test design (my design)
-       ================================ */
-
-    /* ✅ 3 per row desktop */
+    /* ✅ Latest Model Test UI */
     .mtGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -446,9 +424,6 @@
       border-radius:12px;
     }
 
-    /* ================================
-       Sidebar
-       ================================ */
     .sidePanel{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -481,7 +456,6 @@
       color: var(--muted);
     }
 
-    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
@@ -503,66 +477,22 @@
       gap: 14px;
       align-items:start;
     }
-
-    /* ✅ Mobile footer: 2 columns */
     @media (max-width: 560px){
-      .foot{
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
+      .foot{ grid-template-columns: 1fr 1fr; gap: 12px; }
       .footLogo{grid-column: 1 / -1;}
       .footFollow{grid-column: 1 / -1;}
     }
-
     .foot b{font-size:13px}
     .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
     .foot a:hover{color:#fff}
-
-    .footBrand{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-    }
-    .footBrand .name{
-      color:#fff;
-      font-weight:1000;
-      letter-spacing:.2px;
-      font-size:15px;
-      line-height:1;
-      white-space:nowrap;
-    }
-    .footBrand .tag{
-      color:rgba(255,255,255,.78);
-      font-size:12px;
-      line-height:1.1;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 320px;
-    }
-
-    /* Social icons one-line, icon only, no box */
-    .socialRow{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:nowrap;
-      margin-top: 10px;
-    }
-    .socialRow a{
-      display:inline-grid;
-      place-items:center;
-      text-decoration:none;
-      opacity:.92;
-      transition: opacity .15s, transform .15s;
-    }
+    .footBrand{display:flex;flex-direction:column;gap:3px;}
+    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+    .socialRow{display:flex;gap:14px;align-items:center;flex-wrap:nowrap;margin-top: 10px;}
+    .socialRow a{display:inline-grid;place-items:center;text-decoration:none;opacity:.92;transition: opacity .15s, transform .15s;}
     .socialRow a:hover{opacity:1; transform: translateY(-1px);}
     .socialRow svg{width:20px;height:20px; fill: rgba(255,255,255,.92);}
-
-    /* Mobile: hide social icons */
-    @media (max-width: 560px){
-      .socialRow{display:none;}
-    }
+    @media (max-width: 560px){ .socialRow{display:none;} }
 
     .copy{
       max-width: 1320px;
@@ -621,7 +551,6 @@
       <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
     </div>
 
-    <!-- ✅ Mobile Menu -->
     <div class="mobileMenu" id="mobileMenu">
       <div class="overlay" onclick="closeMenu()"></div>
       <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
@@ -792,7 +721,6 @@
     const db = firebase.firestore();
     const $ = (id)=>document.getElementById(id);
 
-    // ✅ menu control
     function openMenu(){
       const menu = $("mobileMenu");
       const btn = $("menuBtn");
@@ -856,6 +784,8 @@
     function openSubjectDetails(subjectId){
       window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
     }
+
+    // ✅ Convert/details page for model test (card click)
     function openModelTestDetails(modelTestId){
       window.open(`details-prosnobank.htm?modelTestId=${encodeURIComponent(modelTestId)}`, "_blank", "noopener");
     }
@@ -1043,7 +973,7 @@
       }
     }
 
-    /* ✅ UPDATED: renders model test in my "details page" design with buttons */
+    // ✅ UPDATED: Start + Result buttons + correct pages
     function renderLatestModelTests(docs){
       const wrap = $("latestMT");
       latestMTDocsCache = docs;
@@ -1062,7 +992,6 @@
       docs.forEach(d=>{
         const data = d.data() || {};
         const title = getTitleField(data);
-
         const timeVal = formatTimeMin(getTimeField(data));
         const markVal = getMarkField(data);
 
@@ -1072,7 +1001,17 @@
 
         const card = document.createElement("div");
         card.className = "mtCard";
-        card.setAttribute("role","article");
+        card.setAttribute("role","button");
+        card.setAttribute("tabindex","0");
+
+        // card click -> convert/details page
+        card.onclick = ()=> openModelTestDetails(d.id);
+        card.onkeydown = (e)=>{
+          if(e.key==="Enter" || e.key===" "){
+            e.preventDefault();
+            openModelTestDetails(d.id);
+          }
+        };
 
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
@@ -1082,8 +1021,8 @@
             <span>📌 Q: ${esc(qCount)}</span>
           </div>
           <div class="mtActions">
-            <button class="btn primary" onclick="openModelTestDetails('${esc(d.id)}')">Open</button>
-            <button class="btn" onclick="window.location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">Start</button>
+            <button class="btn primary" onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">Start</button>
+            <button class="btn" onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(d.id)}'">Result</button>
           </div>
         `;
         wrap.appendChild(card);
