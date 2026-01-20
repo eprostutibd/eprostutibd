@@ -6,7 +6,7 @@
   <title>Start Model Test — eProstutiBD</title>
   <meta name="theme-color" content="#1d4ed8" />
 
-  <!-- ✅ Optional: Bengali font for UI (PDF is image-based so it’s safe) -->
+  <!-- UI font (PDF we render as image, so Bangla safe) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&display=swap" rel="stylesheet">
@@ -48,7 +48,6 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
-      padding-bottom:0;
     }
     a{color:inherit}
 
@@ -61,7 +60,7 @@
       padding-bottom: 14px;
     }
 
-    /* ===== Header (same style as your template) ===== */
+    /* ===== Header (template style) ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -81,7 +80,7 @@
     }
     .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
     .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    /* ✅ Header tag will NOT show model test name (your requirement) */
+    /* ✅ DO NOT show model test name here */
     .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
 
     .nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
@@ -118,8 +117,7 @@
     .mobileMenu a{
       display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
       padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);margin-bottom:8px;
-      white-space:nowrap;
+      background: rgba(255,255,255,.06);margin-bottom:8px;white-space:nowrap;
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
@@ -151,29 +149,12 @@
       .sideAd{display:none;}
     }
 
-    /* ✅ plain look: no card/panel for main */
-    .mainArea{min-width:0;}
-
-    /* ===== Meta header (centered info) ===== */
-    .metaCenter{
-      margin-top: 12px;
-      text-align:center;
-    }
-    .metaTitle{
-      font-size: 16px;
-      font-weight: 1000;
-      line-height: 1.25;
-      margin: 0 0 8px;
-    }
+    /* ===== Center meta ===== */
+    .metaCenter{margin-top: 12px;text-align:center;}
+    .metaTitle{font-size: 16px;font-weight: 1000;line-height: 1.25;margin: 0 0 8px;}
     .metaRow{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: var(--muted);
-      font-size:12px;
-      font-weight: 900;
+      display:flex;justify-content:center;gap:10px;flex-wrap:wrap;align-items:center;
+      color: var(--muted);font-size:12px;font-weight: 900;
     }
     .chip{
       border:1px solid rgba(18,28,55,.10);
@@ -182,14 +163,7 @@
       padding: 6px 10px;
       white-space:nowrap;
     }
-    .metaActions{
-      margin-top: 10px;
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .metaActions{margin-top: 10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;align-items:center;}
     .btn{
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
@@ -207,7 +181,7 @@
     .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10); color: rgba(29,78,216,1);}
     .btn.danger{border-color: rgba(220,38,38,.28);background: rgba(220,38,38,.10); color: var(--danger);}
 
-    /* ===== Paper feel (plain text) ===== */
+    /* ===== Paper feel ===== */
     .paper{
       margin-top: 12px;
       background:
@@ -233,14 +207,8 @@
       pointer-events:none;
     }
 
-    /* ✅ Questions list: 2 columns on desktop */
-    .qList{
-      position: relative;
-      z-index: 1;
-      display:flex;
-      flex-direction:column;
-      gap:0;
-    }
+    /* ===== Questions in 2 columns (on screen) ===== */
+    .qList{position: relative;z-index: 1;}
     @media (min-width: 981px){
       .qList{
         display:grid;
@@ -248,65 +216,29 @@
         column-gap: 0;
         row-gap: 0;
       }
-      .qRow:nth-child(2n){
-        border-left: 1px solid var(--line2);
-      }
-      .qRow:nth-child(n+3){
-        border-top: 1px solid var(--line2);
-      }
+      .qRow:nth-child(2n){border-left: 1px solid var(--line2);}
+      .qRow:nth-child(n+3){border-top: 1px solid var(--line2);}
     }
     @media (max-width: 980px){
-      .qRow + .qRow{ border-top: 1px solid var(--line2); }
+      .qList{display:flex;flex-direction:column;}
+      .qRow + .qRow{border-top: 1px solid var(--line2);}
     }
 
-    .qRow{
-      padding: 12px 12px;
-      background: transparent;
-    }
-    .qHead{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      justify-content:flex-start;
-    }
+    .qRow{padding: 12px 12px;background: transparent;}
+    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start;}
     .qNo{
       flex:0 0 auto;
-      font-size:11px;
-      font-weight:1000;
-      padding: 5px 8px;
-      border-radius:999px;
+      font-size:11px;font-weight:1000;padding: 5px 8px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.70);
-      color: var(--muted);
-      white-space:nowrap;
+      color: var(--muted);white-space:nowrap;
     }
     .qText{
-      margin:0;
-      font-weight:800;
-      font-size:12.8px;
-      line-height:1.55;
-      flex:1;
-      letter-spacing:.1px;
-    }
-    .noteInline{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-    .noteInline b{color: var(--text);}
-
-    /* ===== Options (NO box) + tick mark on select ===== */
-    .opts{
-      margin-top:10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
-    }
-    @media (max-width: 560px){
-      .opts{grid-template-columns: 1fr 1fr;}
+      margin:0;font-weight:800;font-size:12.8px;line-height:1.55;flex:1;letter-spacing:.1px;
     }
 
+    /* ===== Options: no box + green/bold + tick ===== */
+    .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap: 6px 12px;}
     .optLine{
       display:grid;
       grid-template-columns: 18px 22px 1fr;
@@ -316,40 +248,21 @@
       user-select:none;
       padding: 2px 0;
     }
-    .optLine.locked{cursor:default;}
     .tick{
-      width: 18px; height: 18px;
-      display:grid; place-items:center;
-      font-weight:1000;
-      font-size:13px;
+      width:18px;height:18px;
+      display:grid;place-items:center;
+      font-weight:1000;font-size:13px;
       color: transparent;
       transform: translateY(1px);
     }
     .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
     .optTxt{font-size:12.6px;line-height:1.5;color: var(--text);}
 
-    /* ✅ selected => green + bold + tick */
     .optLine.selected .tick{color: var(--ok);}
     .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
     .optLine.selected .optKey{color: var(--ok);}
 
-    /* Written */
-    textarea{
-      width:100%;
-      min-height: 110px;
-      resize: vertical;
-      border: 1px solid rgba(18,28,55,.12);
-      border-radius: 12px;
-      padding: 10px 12px;
-      outline: none;
-      background: rgba(255,255,255,.78);
-      font-family: inherit;
-      font-size: 13px;
-      line-height: 1.6;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-    }
-
-    /* ===== Inline Ads inside paper ===== */
+    /* ===== Inline Ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -362,6 +275,7 @@
       color: var(--muted);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
       margin: 12px 0;
+      grid-column: 1 / -1;
     }
     .inlineAd .tag{
       display:inline-block;font-weight:1000;color: var(--text);
@@ -386,14 +300,7 @@
       font-size:12px;color: var(--muted);
     }
     .adHead b{color: var(--text)}
-    .adBody{
-      min-height: 420px;
-      display:grid;
-      place-items:center;
-      padding: 10px;
-      text-align:center;
-      color: var(--muted);
-    }
+    .adBody{min-height: 420px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
 
     /* ===== Toast ===== */
     .toast{
@@ -420,10 +327,9 @@
     .loading{color: var(--muted); font-size:12px; font-weight:900;}
     .err{color: var(--danger); font-size:12px; font-weight:1000;}
 
-    /* ===== Footer (same style as your template) ===== */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
-      margin-bottom: 0 !important;
       background:
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
         radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
@@ -449,12 +355,8 @@
     .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: var(--footMuted);font-size:12px;}
     .socialCol a:hover{color:#fff;}
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
-
     @media (max-width: 980px){
-      .footGrid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px 10px;
-      }
+      .footGrid{grid-template-columns: repeat(3, minmax(0, 1fr));gap: 10px 10px;}
       .footBrandCol{display:none !important;}
     }
     .copy{
@@ -473,34 +375,76 @@
       .marq span{ animation:none; padding-left:0; }
     }
 
-    /* ===== Print/PDF hidden area ===== */
-    .pdfArea{
+    /* ===== Hidden PDF render areas ===== */
+    .pdfPageArea{
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 800px;
+      width: 794px; /* ~A4 width @ 96dpi */
       background:#fff;
       color:#111;
-      padding: 20px;
+      padding: 18px 18px;
       font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     }
-    .pdfTitle{font-size:18px;font-weight:1000;margin:0 0 10px;}
-    .pdfMeta{font-size:12px;color:#333;margin:0 0 12px;display:flex;gap:10px;flex-wrap:wrap;}
-    .pdfQ{
-      font-size:12.5px;
-      line-height:1.55;
-      margin: 10px 0;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
+
+    /* Center header line in PDF */
+    .pdfHeaderLine{
+      text-align:center;
+      font-weight:1000;
+      font-size:14px;
+      margin: 4px 0 12px;
     }
-    .pdfQ b{font-weight:1000}
+
+    /* 2-column question layout in PDF page */
+    .pdfGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+    }
+    .pdfQ{
+      font-size:12px;
+      line-height:1.45;
+    }
+    .pdfQ .qline{
+      font-weight:800;
+      margin-bottom: 4px;
+    }
     .pdfOpt{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4px 10px;
-      margin-top: 6px;
+      gap: 2px 10px;
+      font-size:11.5px;
     }
-    .pdfOpt div{font-size:12px;line-height:1.4;}
+
+    /* Answer sheet layout (2 columns, 30 per page) */
+    .pdfASGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 18px;
+      margin-top: 12px;
+    }
+    .ansRow{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-size:12px;
+      line-height:1.3;
+      white-space:nowrap;
+    }
+    .bubbles{
+      display:flex;
+      gap: 8px;
+      align-items:center;
+    }
+    .bubble{
+      width: 16px; height: 16px;
+      border: 1.6px solid #111;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      font-size: 10px;
+      font-weight: 900;
+    }
   </style>
 </head>
 
@@ -562,9 +506,7 @@
     <aside class="sideAd">
       <div class="adBox">
         <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
-        <div class="adBody" id="ad_left">
-          Paste AdSense / Ad code here
-        </div>
+        <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
       </div>
     </aside>
 
@@ -580,17 +522,15 @@
         </div>
 
         <div class="metaActions">
-          <button class="btn" id="btnPDF" onclick="downloadPDF()">⬇️ PDF Download</button>
-          <button class="btn danger" id="btnReset" onclick="resetAnswers()">Reset Answers</button>
+          <button class="btn" id="btnPDF" onclick="downloadBothPDFs()">⬇️ PDF Download</button>
         </div>
       </div>
 
-      <div class="paper" id="paper">
+      <div class="paper">
         <div id="content">
           <div class="loading">ডাটা লোড হচ্ছে…</div>
         </div>
 
-        <!-- ✅ Submit button must be under all questions -->
         <div style="margin-top:14px; display:flex; justify-content:center;">
           <button class="btn primary" id="btnSubmit" onclick="submitTest()">Submit</button>
         </div>
@@ -601,9 +541,7 @@
     <aside class="sideAd">
       <div class="adBox">
         <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
-        <div class="adBody" id="ad_right">
-          Paste AdSense / Ad code here
-        </div>
+        <div class="adBody" id="ad_right">Paste AdSense / Ad code here</div>
       </div>
     </aside>
   </main>
@@ -611,8 +549,8 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Hidden PDF render area -->
-<div class="pdfArea" id="pdfArea" aria-hidden="true"></div>
+<!-- Hidden PDF render pages -->
+<div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
 <footer>
   <div class="footGrid">
@@ -643,7 +581,7 @@
 
     <div>
       <div class="footTitle">Social</div>
-      <div class="socialCol" aria-label="Social icons">
+      <div class="socialCol">
         <a href="#" aria-label="Facebook">
           <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
           Facebook
@@ -664,21 +602,19 @@
     </div>
   </div>
 
-  <div class="copy">
-    © <span id="year"></span> eProstutiBD — All rights reserved
-  </div>
+  <div class="copy">© <span id="year"></span> eProstutiBD — All rights reserved</div>
 </footer>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
-<!-- ✅ PDF libs (image-based => Bengali safe) -->
+<!-- PDF libs (image-based => Bangla safe) -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <script>
-  // ===== footer year =====
+  // ===== year =====
   document.getElementById("year").textContent = new Date().getFullYear();
 
   // ===== menu =====
@@ -686,7 +622,7 @@
   function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
   function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
   function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-  window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
+  window.toggleMenu = toggleMenu;
   document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
   function showToast(msg){
@@ -711,7 +647,6 @@
     appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
     measurementId: "G-T2G55NMDQT"
   };
-
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
@@ -732,6 +667,9 @@
   }
   const modelTestId = getParam("modelTestId");
 
+  // ✅ requirement #2: reload => everything starts new (no localStorage persistence)
+  // so we DO NOT read/write localStorage for timer or answers.
+
   // ===== helpers =====
   function normalize(s){
     return String(s||"").toLowerCase()
@@ -739,7 +677,6 @@
       .replace(/\s+/g, " ")
       .trim();
   }
-
   function getTitleField(data){
     return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test";
   }
@@ -779,7 +716,6 @@
     if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
     if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
     if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
-
     const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
     const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
     const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
@@ -795,11 +731,11 @@
   let mtDoc = null;
   let questions = [];
 
-  // answers
-  const mcqAns = new Map();     // qid -> optionIndex
-  const writtenAns = new Map(); // qid -> text
+  // answers in-memory only (reset on reload)
+  const mcqAns = new Map();
+  const writtenAns = new Map();
 
-  // ===== timer (persist endAt) =====
+  // ===== timer (in-memory only; reload resets) =====
   let endAtMs = 0;
   let timerHandle = null;
 
@@ -809,7 +745,6 @@
     const s = sec % 60;
     return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
   }
-
   function startTimer(minutes){
     const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
     if(!totalSeconds){
@@ -817,22 +752,8 @@
       return;
     }
 
-    const key = `epbd_mt_end_${modelTestId}`;
-    const saved = localStorage.getItem(key);
-    const now = Date.now();
-
-    if(saved){
-      const v = Number(saved);
-      if(!Number.isNaN(v) && v > now + 3000){
-        endAtMs = v;
-      }else{
-        endAtMs = now + totalSeconds * 1000;
-        localStorage.setItem(key, String(endAtMs));
-      }
-    }else{
-      endAtMs = now + totalSeconds * 1000;
-      localStorage.setItem(key, String(endAtMs));
-    }
+    // ✅ reload resets => endAt always new
+    endAtMs = Date.now() + totalSeconds * 1000;
 
     const tick = ()=>{
       const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
@@ -857,38 +778,6 @@
     timerHandle = setInterval(tick, 1000);
   }
 
-  // ===== persist answers =====
-  function persistAnswers(){
-    const key = `epbd_mt_ans_${modelTestId}`;
-    const payload = {
-      mcq: Array.from(mcqAns.entries()),
-      written: Array.from(writtenAns.entries()),
-      savedAt: Date.now()
-    };
-    localStorage.setItem(key, JSON.stringify(payload));
-  }
-
-  function restoreAnswers(){
-    const key = `epbd_mt_ans_${modelTestId}`;
-    try{
-      const raw = localStorage.getItem(key);
-      if(!raw) return;
-      const st = JSON.parse(raw);
-      (st?.mcq || []).forEach(([qid, v])=> mcqAns.set(qid, v));
-      (st?.written || []).forEach(([qid, v])=> writtenAns.set(qid, v));
-    }catch(e){}
-  }
-
-  function resetAnswers(){
-    if(!confirm("সব Answer মুছে ফেলবেন?")) return;
-    mcqAns.clear();
-    writtenAns.clear();
-    persistAnswers();
-    renderAll();
-    showToast("Reset done");
-  }
-  window.resetAnswers = resetAnswers;
-
   // ===== load data =====
   async function loadModelTestDoc(id){
     const snap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(id).get();
@@ -897,7 +786,6 @@
   }
 
   async function fetchQuestionsFromCollection(colName, mtId){
-    // no pagination, bring all
     try{
       const s = await db.collection(colName)
         .where("modelTestId","==", mtId)
@@ -934,7 +822,7 @@
     $("mtTotalQ").textContent = String(questions.length || 0);
   }
 
-  // ===== render all questions (single page) =====
+  // ===== render all questions =====
   function renderAll(){
     const wrap = $("content");
     wrap.innerHTML = "";
@@ -946,67 +834,63 @@
 
     const list = document.createElement("div");
     list.className = "qList";
+
+    // inline ad positions (2 ads)
+    const total = questions.length;
+    const adPos1 = total >= 6 ? Math.floor(total/3) : 3;
+    const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;
+
     const letters = ["A","B","C","D"];
 
-    // We'll inject 2 inline ads total ( মাঝখানে )
-    const total = questions.length;
-    const adPos1 = total >= 6 ? Math.floor(total/3) : 3;       // approx 1/3
-    const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;  // approx 2/3
-
     questions.forEach((q, i)=>{
-      const qno = i + 1;
-      const qid = q.id;
-
-      // inline ad slot #1
+      // inline ads
       if(i === adPos1){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `
           <div>
             <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #1 (Paste code here)</div>
+            <div style="font-size:12px;">Inline Ad #1</div>
             <div id="ad_inline_1" style="margin-top:8px;">Paste AdSense code here</div>
           </div>
         `;
         list.appendChild(ad);
       }
-
-      // inline ad slot #2
       if(i === adPos2){
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `
           <div>
             <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #2 (Paste code here)</div>
+            <div style="font-size:12px;">Inline Ad #2</div>
             <div id="ad_inline_2" style="margin-top:8px;">Paste AdSense code here</div>
           </div>
         `;
         list.appendChild(ad);
       }
 
+      const qno = i + 1;
+      const qid = q.id;
+
       const row = document.createElement("div");
       row.className = "qRow";
       row.dataset.qid = qid;
 
       const qt = pickQuestionText(q);
-      const noteTxt = (q.note ?? q.explain ?? q.explanation ?? q.noteText ?? "").toString().trim();
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
           <p class="qText">${esc(qt || "(No question text)")}</p>
         </div>
-        <div class="noteInline"><b>Note:</b> ${esc(noteTxt || "-")}</div>
       `;
 
       if(isWrittenQuestion(q)){
+        // written questions => simple textarea (you didn't mention written in this last requirement,
+        // but keeping it safe)
         const ta = document.createElement("textarea");
         ta.placeholder = "আপনার উত্তর লিখুন…";
         ta.value = (writtenAns.get(qid) ?? "").toString();
-        ta.oninput = ()=>{
-          writtenAns.set(qid, ta.value);
-          persistAnswers();
-        };
+        ta.oninput = ()=> writtenAns.set(qid, ta.value);
         row.appendChild(ta);
       }else{
         const opts = getOptions(q);
@@ -1025,9 +909,8 @@
           `;
           opt.onclick = ()=>{
             mcqAns.set(qid, oi);
-            persistAnswers();
-            // update just this question block quickly
-            renderAll(); // simple + safe (you can optimize later)
+            // re-render (simple)
+            renderAll();
           };
           optWrap.appendChild(opt);
         });
@@ -1048,10 +931,10 @@
       const qid = q.id;
       if(isWrittenQuestion(q)){
         const txt = (writtenAns.get(qid) ?? "").toString().trim();
-        if(!txt) missing.push({ index: i, id: qid, type:"written" });
+        if(!txt) missing.push({ index: i, id: qid });
       }else{
         const v = mcqAns.get(qid);
-        if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid, type:"mcq" });
+        if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid });
       }
     });
     return missing;
@@ -1069,16 +952,11 @@
   }
 
   function calcUsedSec(){
-    const mins = getTimeMinFromDoc(mtDoc);
-    const endKey = `epbd_mt_end_${modelTestId}`;
-    const endRaw = localStorage.getItem(endKey);
-    const endMs = endRaw ? Number(endRaw) : 0;
-    const totalMs = mins ? mins*60*1000 : 0;
-    if(!totalMs || !endMs) return null;
-
-    const leftMs = Math.max(0, endMs - Date.now());
-    const usedMs = Math.max(0, totalMs - leftMs);
-    return Math.floor(usedMs/1000);
+    if(!endAtMs) return null;
+    const total = getTimeMinFromDoc(mtDoc) * 60;
+    const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
+    const used = Math.max(0, total - left);
+    return Number.isFinite(used) ? used : null;
   }
 
   function submitTest(isAuto=false){
@@ -1087,7 +965,6 @@
     const missing = getUnanswered();
 
     if(!isAuto && missing.length){
-      // ✅ warning on submit
       const ok = confirm(`আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`);
       if(!ok){
         scrollToQuestion(missing[0].id);
@@ -1103,7 +980,6 @@
       title: getTitleField(mtDoc),
       submittedAt: Date.now(),
       isAuto: !!isAuto,
-      score: null, // you can compute later if needed
       answers: {
         mcq: Array.from(mcqAns.entries()),
         written: Array.from(writtenAns.entries())
@@ -1111,113 +987,173 @@
       usedSec: calcUsedSec()
     };
 
+    // still storing result for next page
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
     location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
   }
   window.submitTest = submitTest;
 
-  // ===== PDF download (Bangla safe => canvas/image based) =====
-  async function downloadPDF(){
+  // ===== PDF helpers (30 questions per page, 2 columns, no note) =====
+  function buildCenterHeaderLine(title, mins, mark, totalQ){
+    // exactly as you asked (middle aligned)
+    return `${title} সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}`;
+  }
+
+  function chunk(arr, size){
+    const out = [];
+    for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+    return out;
+  }
+
+  async function renderPageToCanvas(html){
+    const area = $("pdfPageArea");
+    area.innerHTML = html;
+    const canvas = await html2canvas(area, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true
+    });
+    return canvas;
+  }
+
+  async function canvasToPdfPages(canvases, fileName){
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "pt", "a4");
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+
+    canvases.forEach((canvas, idx)=>{
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+
+      // fit full page
+      if(idx > 0) pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+    });
+
+    pdf.save(fileName);
+  }
+
+  async function downloadQuestionPaperPdf(){
+    const title = getTitleField(mtDoc);
+    const mins = getTimeMinFromDoc(mtDoc) || 0;
+    const mark = getMarkFromDoc(mtDoc);
+    const totalQ = questions.length;
+
+    const headerLine = buildCenterHeaderLine(title, mins, mark, totalQ);
+
+    // pages of 30 questions
+    const pages = chunk(questions, 30);
+    const letters = ["A","B","C","D"];
+
+    const canvases = [];
+
+    for(let p=0;p<pages.length;p++){
+      const pageQs = pages[p];
+
+      const qHtml = pageQs.map((q, idx)=>{
+        const qno = p*30 + idx + 1;
+        const qt = pickQuestionText(q);
+
+        if(isWrittenQuestion(q)){
+          return `
+            <div class="pdfQ">
+              <div class="qline">Q${qno}. ${esc(qt)}</div>
+              <div style="margin-top:8px;">উত্তর: ____________________________</div>
+            </div>
+          `;
+        }
+
+        const opts = getOptions(q);
+        const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
+
+        return `
+          <div class="pdfQ">
+            <div class="qline">Q${qno}. ${esc(qt)}</div>
+            <div class="pdfOpt">${optHtml}</div>
+          </div>
+        `;
+      }).join("");
+
+      const pageHtml = `
+        <div class="pdfHeaderLine">${esc(headerLine)}</div>
+        <div class="pdfGrid">${qHtml}</div>
+      `;
+
+      const canvas = await renderPageToCanvas(pageHtml);
+      canvases.push(canvas);
+    }
+
+    const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "question-paper";
+    await canvasToPdfPages(canvases, `${safeName}-question-paper.pdf`);
+  }
+
+  async function downloadAnswerSheetPdf(){
+    const title = getTitleField(mtDoc);
+    const mins = getTimeMinFromDoc(mtDoc) || 0;
+    const mark = getMarkFromDoc(mtDoc);
+    const totalQ = questions.length;
+    const headerLine = buildCenterHeaderLine(title, mins, mark, totalQ);
+
+    const pages = chunk(questions, 30);
+    const canvases = [];
+    const letters = ["A","B","C","D"];
+
+    for(let p=0;p<pages.length;p++){
+      const pageQs = pages[p];
+
+      // Answer rows: Q1 [A][B][C][D]
+      const rowsHtml = pageQs.map((q, idx)=>{
+        const qno = p*30 + idx + 1;
+
+        // written => blank line
+        if(isWrittenQuestion(q)){
+          return `
+            <div class="ansRow">
+              <b style="min-width:42px;">Q${qno}</b>
+              <span>__________________________</span>
+            </div>
+          `;
+        }
+
+        const bubbles = letters.map(l=>`<span class="bubble">${l}</span>`).join("");
+        return `
+          <div class="ansRow">
+            <b style="min-width:42px;">Q${qno}</b>
+            <div class="bubbles">${bubbles}</div>
+          </div>
+        `;
+      }).join("");
+
+      const pageHtml = `
+        <div class="pdfHeaderLine">${esc(headerLine)}</div>
+        <div style="text-align:center; font-weight:900; margin-top: 4px;">Answer Sheet</div>
+        <div class="pdfASGrid">${rowsHtml}</div>
+      `;
+
+      const canvas = await renderPageToCanvas(pageHtml);
+      canvases.push(canvas);
+    }
+
+    const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "answer-sheet";
+    await canvasToPdfPages(canvases, `${safeName}-answer-sheet.pdf`);
+  }
+
+  async function downloadBothPDFs(){
     try{
       if(!questions.length){
         showToast("কোনো প্রশ্ন নেই");
         return;
       }
-
       showToast("PDF তৈরি হচ্ছে…");
-
-      // build hidden PDF content (simple clean)
-      const pdfArea = $("pdfArea");
-      const title = getTitleField(mtDoc);
-      const mins = getTimeMinFromDoc(mtDoc);
-      const mark = getMarkFromDoc(mtDoc);
-
-      const parts = [];
-      parts.push(`<div class="pdfTitle">${esc(title)}</div>`);
-      parts.push(`<div class="pdfMeta">
-        <span>সময়: ${esc(mins ? mins : "-")} মিনিট</span>
-        <span>মার্ক: ${esc(mark)}</span>
-        <span>মোট প্রশ্ন: ${esc(questions.length)}</span>
-      </div>`);
-
-      const letters = ["A","B","C","D"];
-      questions.forEach((q, i)=>{
-        const qno = i+1;
-        const qt = pickQuestionText(q);
-        const noteTxt = (q.note ?? q.explain ?? q.explanation ?? q.noteText ?? "").toString().trim();
-        const written = isWrittenQuestion(q);
-
-        parts.push(`<div class="pdfQ">
-          <div><b>Q${qno}.</b> ${esc(qt)}</div>
-          <div style="margin-top:4px;color:#555;font-size:11.5px;"><b>Note:</b> ${esc(noteTxt || "-")}</div>
-          ${
-            written
-              ? `<div style="margin-top:8px;font-size:12px;color:#333;"><b>Answer:</b> ____________________________</div>`
-              : (()=> {
-                  const opts = getOptions(q);
-                  const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op || "")}</div>`).join("");
-                  return `<div class="pdfOpt">${optHtml}</div>`;
-                })()
-          }
-        </div>`);
-      });
-
-      pdfArea.innerHTML = parts.join("");
-
-      // render to canvas (raster => Bengali safe)
-      const canvas = await html2canvas(pdfArea, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true
-      });
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "pt", "a4");
-
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-
-      // Fit image to width, split into pages
-      const imgW = pageW;
-      const imgH = (canvas.height * imgW) / canvas.width;
-
-      let y = 0;
-      let page = 0;
-
-      // Create a temp canvas to slice pages
-      const sliceCanvas = document.createElement("canvas");
-      const sliceCtx = sliceCanvas.getContext("2d");
-
-      const scale = canvas.width / imgW; // px per pt
-      const pagePxH = Math.floor(pageH * scale);
-
-      sliceCanvas.width = canvas.width;
-      sliceCanvas.height = pagePxH;
-
-      while(y < canvas.height){
-        sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-        sliceCtx.drawImage(canvas, 0, y, canvas.width, pagePxH, 0, 0, canvas.width, pagePxH);
-
-        const sliceData = sliceCanvas.toDataURL("image/jpeg", 0.95);
-
-        if(page > 0) pdf.addPage();
-        pdf.addImage(sliceData, "JPEG", 0, 0, pageW, pageH);
-
-        y += pagePxH;
-        page++;
-      }
-
-      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "question-paper";
-      pdf.save(`${safeName}.pdf`);
-
+      await downloadQuestionPaperPdf();
+      await downloadAnswerSheetPdf();
       showToast("PDF ডাউনলোড হয়েছে");
     }catch(e){
       console.error(e);
       showToast("PDF তৈরি করতে সমস্যা");
     }
   }
-  window.downloadPDF = downloadPDF;
+  window.downloadBothPDFs = downloadBothPDFs;
 
   // ===== boot =====
   async function loadAll(){
@@ -1226,25 +1162,20 @@
       return;
     }
 
-    restoreAnswers();
-
     try{
-      const mt = await loadModelTestDoc(modelTestId);
-      if(!mt){
+      const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
+      if(!mtSnap.exists){
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
         return;
       }
-      mtDoc = mt;
+      mtDoc = { id: mtSnap.id, ...mtSnap.data() };
 
       // questions: try candidates then subcollection
       let qs = [];
       for(const col of QUESTION_COLLECTION_CANDIDATES){
         try{
           const got = await fetchQuestionsFromCollection(col, modelTestId);
-          if(got && got.length){
-            qs = got;
-            break;
-          }
+          if(got && got.length){ qs = got; break; }
         }catch(e){}
       }
       if(!qs.length){
@@ -1254,22 +1185,15 @@
       questions = qs || [];
       setMetaHeader();
 
-      // start timer
-      const mins = getTimeMinFromDoc(mtDoc);
-      startTimer(mins);
+      // timer starts fresh on every load
+      startTimer(getTimeMinFromDoc(mtDoc));
 
       renderAll();
-      persistAnswers();
     }catch(err){
       console.error(err);
       $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
     }
   }
-
-  // save on exit
-  window.addEventListener("beforeunload", ()=> {
-    try{ persistAnswers(); }catch(e){}
-  });
 
   loadAll();
 </script>
