@@ -181,7 +181,7 @@
       .sideAd{display:none;}
     }
 
-    /* ✅ Sticky meta (won't scroll away) */
+    /* ✅ Sticky meta */
     .metaSticky{
       position: sticky;
       top: calc(var(--headerH) + 10px);
@@ -202,7 +202,6 @@
       text-align:center;
     }
 
-    /* ✅ Mobile download next to title */
     .mtTitleRow{
       display:flex;
       align-items:center;
@@ -306,7 +305,6 @@
     }
     .qText{margin:0;font-weight:900;font-size:14.5px;line-height:1.65;flex:1;letter-spacing:.1px;}
 
-    /* options */
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap: 8px 14px;}
     .optLine{
       display:grid;
@@ -331,7 +329,6 @@
     .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
     .optLine.selected .optKey{color: var(--ok);}
 
-    /* inline ads inside body (2 ads) */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
@@ -352,7 +349,6 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
-    /* ===== Sidebars: stacked sticky ===== */
     .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
     .sideStack{
       height: 100%;
@@ -397,7 +393,6 @@
       color: var(--muted);
     }
 
-    /* ✅ PDF box always visible at top of right sidebar */
     .pdfBox{
       border:1px dashed rgba(18,28,55,.22);
       border-radius:16px;
@@ -425,7 +420,6 @@
     }
     .btnPdf svg{width:18px;height:18px;fill: rgba(29,78,216,1);}
 
-    /* ✅ Recent model tests box under LEFT ad */
     .recentBox{
       border:1px dashed rgba(18,28,55,.22);
       border-radius:16px;
@@ -462,7 +456,6 @@
     .recentTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
     .recentMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
 
-    /* submit under all questions */
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
     .btnDanger{
       border:1px solid rgba(220,38,38,.28);
@@ -477,7 +470,6 @@
       white-space:nowrap;
     }
 
-    /* toast */
     .toast{
       position: fixed;
       left: 50%;
@@ -602,7 +594,7 @@
       white-space:nowrap;
     }
 
-    /* ===== Confirm modal (submit warning) ===== */
+    /* ===== Confirm modal ===== */
     .confirmModal{
       position: fixed;
       inset: 0;
@@ -632,7 +624,7 @@
     .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
     .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
 
-    /* ===== Result modal (after submit) ===== */
+    /* ===== Result modal ===== */
     .resultModal{
       position: fixed;
       inset: 0;
@@ -759,7 +751,6 @@
     }
     .pdfHeaderLine1{text-align:center;font-weight:1000;font-size:15px;margin: 4px 0 2px;}
     .pdfHeaderLine2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 12px;}
-
     .pdfGridWrap{position: relative;padding-top: 2px;}
     .pdfGridWrap::after{
       content:"";
@@ -771,7 +762,6 @@
     .pdfQ{font-size:12px;line-height:1.45;}
     .pdfQ .qline{font-weight:900;margin-bottom: 4px;}
     .pdfOpt{display:grid;grid-template-columns: 1fr 1fr;gap: 2px 10px;font-size:11.6px;}
-
     .pdfASGrid{display:grid;grid-template-columns: 1fr 1fr;gap: 8px 18px;margin-top: 12px;}
     .ansRow{display:flex;align-items:center;gap: 10px;font-size:12px;line-height:1.3;white-space:nowrap;}
     .bubbles{display:flex;gap: 8px;align-items:center;}
@@ -848,8 +838,7 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
-
-      <!-- LEFT sidebar: Ad + Recent -->
+      <!-- LEFT sidebar -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
 
@@ -873,7 +862,6 @@
         <div class="metaSticky">
           <div class="mtTitleRow">
             <h2 class="metaTitle" id="mtName" style="margin:0;">Loading…</h2>
-            <!-- ✅ Mobile-only download beside title -->
             <button class="mobileDl" type="button" onclick="downloadCombinedPDF()">Download</button>
           </div>
 
@@ -904,11 +892,10 @@
         </article>
       </section>
 
-      <!-- RIGHT sidebar: PDF ALWAYS visible + Ad -->
+      <!-- RIGHT sidebar -->
       <aside class="sideAd" aria-label="Right sidebar">
         <div class="sideStack">
 
-          <!-- ✅ fixed: PDF first, never hides -->
           <div class="pdfBox" aria-label="PDF download">
             <div class="adHead"><b>PDF</b><span>Download</span></div>
             <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
@@ -926,11 +913,10 @@
 
         </div>
       </aside>
-
     </main>
   </div>
 
-  <!-- Name gate modal (can close; but answering requires submit) -->
+  <!-- Name gate modal -->
   <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name and District">
     <div class="overlay" onclick="closeNameModal()"></div>
     <div class="modalCard" onclick="event.stopPropagation()">
@@ -955,13 +941,12 @@
     </div>
   </div>
 
-  <!-- Submit confirm modal (Yes/No) -->
+  <!-- Confirm modal -->
   <div class="confirmModal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Confirm submit">
     <div class="overlay" onclick="confirmNo()"></div>
     <div class="confirmCard" onclick="event.stopPropagation()">
       <p class="confirmTitle" id="confirmTitle">Confirm</p>
       <p class="confirmText" id="confirmText">...</p>
-
       <div class="confirmActions">
         <button class="btnGhost" type="button" onclick="confirmNo()">No</button>
         <button class="btnPrimary" type="button" onclick="confirmYes()">Yes</button>
@@ -969,9 +954,9 @@
     </div>
   </div>
 
-  <!-- Result modal (after submit) -->
+  <!-- Result modal -->
   <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
-    <div class="overlay" onclick="/* no close by overlay */ null"></div>
+    <div class="overlay"></div>
     <div class="resultCard" onclick="event.stopPropagation()">
       <div class="resultHead">
         <div>
@@ -1110,12 +1095,6 @@
     function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
     window.confirmYes = confirmYes;
     window.confirmNo = confirmNo;
-    document.addEventListener("keydown",(e)=>{
-      if(e.key==="Escape"){
-        if($("confirmModal")?.classList.contains("show")) confirmNo();
-        if($("nameModal")?.classList.contains("show")) closeNameModal();
-      }
-    });
 
     // ===== utils =====
     function getParam(name){
@@ -1137,7 +1116,7 @@
     const db = firebase.firestore();
 
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODEL_TEST_RESULT = "model test result"; // ✅ as requested
+    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ updated (no space)
     const QUESTION_COLLECTION_CANDIDATES = [
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
@@ -1188,9 +1167,8 @@
     }
     window.submitName = submitName;
 
-    // ✅ Requirement 1:
-    // - Modal can be closed anytime to view questions
-    // - But answering requires submit; trying to answer shows modal again
+    // ✅ Modal can be closed to view questions.
+    // ✅ But answering requires submit; trying to answer opens modal again.
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
@@ -1454,10 +1432,8 @@
       const n = Number(v);
       return Number.isFinite(n) ? n : null;
     }
-
     function computeResult(){
       const totalQ = questions.length || 0;
-
       let totalMcq = 0;
       let right = 0;
       let wrong = 0;
@@ -1472,8 +1448,6 @@
         if(Number.isFinite(ci) && ci >= 0){
           if(Number(chosen) === Number(ci)) right++;
           else wrong++;
-        }else{
-          // if correct not set, treat answered as wrong? better treat as wrong=0; keep neutral
         }
       });
 
@@ -1483,18 +1457,18 @@
         : (totalMcq || totalQ);
 
       const perQ = (totalMcq > 0) ? (totalMark / totalMcq) : 0;
-      const obtained = Math.round((right * perQ) * 100) / 100; // 2 decimal safe
+      const obtained = Math.round((right * perQ) * 100) / 100;
 
       return { totalQ, totalMcq, right, wrong, totalMark, obtained };
     }
 
-    // ===== Save to Firebase =====
     async function saveResultToFirebase(payload){
       try{
         const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
         return ref.id;
       }catch(e){
-        console.error(e);
+        console.error("Firestore write failed:", e);
+        showToast("Firebase save হয়নি", e?.message || "Permission / Rules issue");
         return "";
       }
     }
@@ -1519,7 +1493,6 @@
 
     function goResultDetails(){
       if(!modelTestId) return;
-      // keep docId if needed later
       localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
       if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
       location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
@@ -1561,7 +1534,7 @@
         submittedAt: Date.now(),
         isAuto: !!isAuto,
         studentName,
-        studentDistrict, // ✅ Zila
+        studentDistrict,
         answers: {
           mcq: Array.from(mcqAns.entries()),
           written: Array.from(writtenAns.entries())
@@ -1576,13 +1549,11 @@
         }
       };
 
-      // Save locally (so details page can show even if firebase write fails)
       localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
       _lastResultPayload = payload;
 
       showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
 
-      // ✅ Save to Firebase (collection: "model test result")
       _lastResultDocId = await saveResultToFirebase(payload);
 
       showToast("Submit সম্পন্ন", "Result দেখুন");
@@ -1590,7 +1561,7 @@
     }
     window.submitTest = submitTest;
 
-    // ===== PDF helpers (combined single PDF) =====
+    // ===== PDF (combined single PDF multi-page) =====
     function chunk(arr, size){
       const out = [];
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
@@ -1755,9 +1726,9 @@
       try{
         let snap = null;
         try{
-          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
+          snap = await db.collection("subject_model_tests").orderBy("createdAt","desc").limit(5).get();
         }catch(e){
-          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
+          snap = await db.collection("subject_model_tests").limit(5).get();
         }
 
         const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
@@ -1810,17 +1781,13 @@
         return;
       }
 
-      // ✅ Requirement 1: Do NOT force modal on load (user can view questions)
-      // Only open modal when trying to answer/submit
-      // openNameModal();
-
       $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
       $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
 
       loadRecentModelTests();
 
       try{
-        const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
+        const mtSnap = await db.collection("subject_model_tests").doc(modelTestId).get();
         if(!mtSnap.exists){
           $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
           return;
