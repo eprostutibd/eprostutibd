@@ -1,15 +1,15 @@
+
 <!doctype html>
 <html lang="bn">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Start Model Test — eProstutiBD</title>
-  <meta name="theme-color" content="#1d4ed8" />
+  <title>eProstutiBD প্রশ্নব্যাংক — Details</title>
 
-  <!-- ✅ Optional: Bengali font for UI (PDF is image-based so it’s safe) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&display=swap" rel="stylesheet">
+  <meta name="description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সম্পূর্ণ ফ্রি প্রশ্নব্যাংক — eProstutiBD" />
+  <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#1d4ed8" />
 
   <style>
     :root{
@@ -35,6 +35,10 @@
       --footLine: rgba(255,255,255,.14);
       --footText: rgba(255,255,255,.86);
       --footMuted: rgba(255,255,255,.70);
+
+      /* Ans bar */
+      --ansBarH: 56px;
+      --liftFromFooter: 0px;
     }
 
     *{box-sizing:border-box}
@@ -48,7 +52,9 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
-      padding-bottom:0;
+
+      /* ✅ FINAL: no extra footer gap */
+      padding-bottom: 0;
     }
     a{color:inherit}
 
@@ -58,10 +64,10 @@
       padding-left: clamp(12px, 4vw, 48px);
       padding-right: clamp(12px, 4vw, 48px);
       padding-top: 10px;
-      padding-bottom: 14px;
+      padding-bottom: 18px;
     }
 
-    /* ===== Header (same style as your template) ===== */
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -81,7 +87,6 @@
     }
     .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
     .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    /* ✅ Header tag will NOT show model test name (your requirement) */
     .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
 
     .nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
@@ -105,6 +110,7 @@
       .brand .tag{max-width: 55vw;}
     }
 
+    /* ===== Mobile Menu ===== */
     .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
     .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
     .mobileMenu .drawer{
@@ -119,11 +125,10 @@
       display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
       padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.06);margin-bottom:8px;
-      white-space:nowrap;
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
-    /* ===== Notice bar ===== */
+    /* ===== Notice + Header Ad ===== */
     .noticeBar{
       margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
       border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
@@ -138,64 +143,202 @@
     .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
-    /* ===== Layout (Side Ads + Main) ===== */
-    .grid{
-      display:grid;
-      grid-template-columns: 280px minmax(0, 1fr) 280px;
-      gap: 12px;
-      align-items:start;
-      margin-top: 12px;
+    .adBox{
+      margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
+      background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
     }
-    @media (max-width: 1100px){
-      .grid{grid-template-columns: 1fr;}
-      .sideAd{display:none;}
+    .adHead{
+      padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
+    }
+    .adHead b{color: var(--text)}
+    .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+
+    /* ===== Mobile Subject Sheet ===== */
+    .subjectSheet{display:none;position:fixed;inset:0;z-index:99999;}
+    .subjectSheet .backdrop{position:absolute;inset:0;background: rgba(8, 18, 45, .35);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);}
+    .subjectSheet .sheet{
+      position:absolute;left:12px;right:12px;
+      top: calc(var(--headerH, 64px) + 12px);
+      border-radius: 18px;border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.94);box-shadow: 0 18px 44px rgba(0,0,0,.22);
+      overflow:hidden;
+      max-height: calc(100vh - (var(--headerH, 64px) + 24px));
+      display:flex;flex-direction:column;min-height:0;
+    }
+    .subjectSheet .head{
+      padding: 12px;
+      display:flex;align-items:center;justify-content:space-between;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      flex:0 0 auto;
+    }
+    .subjectSheet .head b{font-size:13px;font-weight:1000;}
+    .subjectSheet .closeBtn{border:1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.90);border-radius: 12px;padding: 8px 10px;font-weight:1000;cursor:pointer;}
+    .subjectSheet .body{
+      padding: 12px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+      min-height:0;
+    }
+    .sheetGrid{display:grid;grid-template-columns: 1fr 1fr;gap:10px;}
+    .sheetItem{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.97);
+      border-radius: 16px;
+      padding: 10px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      display:flex;flex-direction:column;gap:6px;min-width:0;
+    }
+    .sheetItem b{font-size:12.5px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .sheetItem .mini{font-size:11.5px;color: var(--muted);display:flex;gap:8px;flex-wrap:wrap;}
+    .sheetItem.active{border-color: rgba(29,78,216,.28);background: rgba(29,78,216,.08);}
+
+    /* ===== Subject Dock ===== */
+    .subjectDock{
+      position: sticky;
+      top: var(--headerH, 64px);
+      z-index: 58;
+      margin-top: 10px;
+      background: rgba(246,248,255,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(18,28,55,.08);
+      border-radius: 16px;
+      box-shadow: 0 14px 34px rgba(15,23,48,.08);
+    }
+    .subjectDockInner{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 10px clamp(12px, 4vw, 48px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height: 52px;
+    }
+    .subBtnMobile{
+      display:none;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(29,78,216,.10);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      flex:0 0 auto;
+    }
+    @media (max-width: 980px){
+      .subBtnMobile{display:inline-flex;align-items:center;gap:8px;}
     }
 
-    /* ✅ plain look: no card/panel for main */
-    .mainArea{min-width:0;}
-
-    /* ===== Meta header (centered info) ===== */
-    .metaCenter{
-      margin-top: 12px;
+    .centerGroup{
+      flex: 1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 6px;
+      min-width:0;
       text-align:center;
     }
-    .metaTitle{
-      font-size: 16px;
-      font-weight: 1000;
-      line-height: 1.25;
-      margin: 0 0 8px;
-    }
-    .metaRow{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: var(--muted);
-      font-size:12px;
-      font-weight: 900;
-    }
-    .chip{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.72);
-      border-radius: 999px;
-      padding: 6px 10px;
+    .subName{
+      font-size:14px;
+      font-weight:1000;
+      line-height:1.2;
+      max-width: 100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
       white-space:nowrap;
     }
-    .metaActions{
-      margin-top: 10px;
+    .tabsLine{
       display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
       align-items:center;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      line-height:1.2;
+      max-width: 100%;
     }
+    .tab{
+      border:none;
+      background: transparent;
+      color: var(--text);
+      padding: 0;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .tab.active{
+      color: var(--brandA);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+    .sepDot{
+      width: 5px;height: 5px;border-radius:999px;
+      background: rgba(18,28,55,.25);
+      transform: translateY(1px);
+      flex:0 0 auto;
+    }
+    .dockSpacer{width: 42px;flex:0 0 auto;display:none;}
+    @media (max-width: 980px){
+      .dockSpacer{display:block;}
+      .subName{font-size:13.5px;}
+      .tab{font-size:12.8px;}
+      .subjectDockInner{gap:10px;}
+    }
+
+    /* ===== Layout ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 340px minmax(0, 1fr) 280px;
+      gap: 12px;
+      align-items:start;
+      margin-top: 10px;
+    }
+    @media (max-width: 1100px){
+      .grid{grid-template-columns: 340px 1fr;}
+      .rightAd{display:none;}
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+      .leftDesktop{display:none;}
+      .rightAd{display:block;}
+    }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead b{font-size:14px}
+    .panelHead .muted{font-size:12px;color:var(--muted)}
+    .panelBody{padding: 12px 14px}
+    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
+
     .btn{
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);
       color: var(--text);
-      border-radius: 999px;
-      padding: 9px 12px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      height: 36px;
       font-size:12px;
       font-weight:1000;
       cursor:pointer;
@@ -203,13 +346,85 @@
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       transition:.15s;
     }
-    .btn:disabled{opacity:.55; cursor:not-allowed;}
-    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10); color: rgba(29,78,216,1);}
-    .btn.danger{border-color: rgba(220,38,38,.28);background: rgba(220,38,38,.10); color: var(--danger);}
+    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
 
-    /* ===== Paper feel (plain text) ===== */
+    .searchMini{display:flex;gap:8px;align-items:center;}
+    .searchMini input{
+      width: 100%;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 14px;
+      outline:none;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-size: 13px;
+    }
+
+    /* ===== Desktop Sidebar Scroll ===== */
+    @media (min-width: 981px){
+      aside.panel.leftDesktop{
+        position: sticky;
+        top: calc(var(--headerH, 64px) + 12px);
+        height: calc(100vh - (var(--headerH, 64px) + 24px));
+        overflow: hidden;
+      }
+      aside.panel.leftDesktop .panelBody{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+      }
+      .sList{
+        flex:1;
+        min-height:0;
+        max-height: 520px; /* shows around ~8 cards depending on size */
+        overflow:auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        scroll-behavior:smooth;
+        padding-right:6px;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+      }
+    }
+
+    .sItem{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.97);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+      transition:.15s;
+    }
+    .sItem:hover{transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08);}
+    .sItem.active{border-color: rgba(29,78,216,.28);background: rgba(29,78,216,.08);}
+    .sItem b{
+      font-size:13.5px;
+      font-weight:1000;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      margin:0;
+    }
+    .chips{display:flex;gap:8px;flex-wrap:wrap;}
+    .chip{
+      font-size:11.5px;
+      padding: 6px 9px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .chip b{font-size:11.5px;color: var(--text);}
+
+    /* ===== Paper feel ===== */
     .paper{
-      margin-top: 12px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
@@ -223,7 +438,7 @@
       box-shadow: 0 18px 50px rgba(15,23,48,.10);
       padding: 14px;
       position: relative;
-      overflow:hidden;
+      overflow: hidden;
     }
     .paper::before{
       content:"";
@@ -233,25 +448,29 @@
       pointer-events:none;
     }
 
-    /* ✅ Questions list: 2 columns on desktop */
     .qList{
-      position: relative;
-      z-index: 1;
       display:flex;
       flex-direction:column;
-      gap:0;
+      gap: 0;
+      position: relative;
+      z-index: 1;
     }
+
+    /* Desktop: 2 columns + divider lines */
     @media (min-width: 981px){
-      .qList{
+      body[data-mode="mcq"] .qList,
+      body[data-mode="written"] .qList{
         display:grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: 0;
         row-gap: 0;
       }
-      .qRow:nth-child(2n){
+      body[data-mode="mcq"] .qRow:nth-child(2n),
+      body[data-mode="written"] .qRow:nth-child(2n){
         border-left: 1px solid var(--line2);
       }
-      .qRow:nth-child(n+3){
+      body[data-mode="mcq"] .qRow:nth-child(n+3),
+      body[data-mode="written"] .qRow:nth-child(n+3){
         border-top: 1px solid var(--line2);
       }
     }
@@ -262,7 +481,9 @@
     .qRow{
       padding: 12px 12px;
       background: transparent;
+      border-radius: 0;
     }
+
     .qHead{
       display:flex;
       gap:10px;
@@ -283,11 +504,21 @@
     .qText{
       margin:0;
       font-weight:800;
-      font-size:12.8px;
+      font-size:12.6px;
       line-height:1.55;
       flex:1;
       letter-spacing:.1px;
     }
+    @media (min-width: 981px){
+      .qText{
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      }
+    }
+
+    /* ✅ Note immediately after question */
     .noteInline{
       margin-top: 6px;
       color: var(--muted);
@@ -296,64 +527,43 @@
     }
     .noteInline b{color: var(--text);}
 
-    /* ===== Options (NO box) + tick mark on select ===== */
-    .opts{
-      margin-top:10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
-    }
-    @media (max-width: 560px){
-      .opts{grid-template-columns: 1fr 1fr;}
-    }
+    .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
+    @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
+    /* ✅ Paper-like options (2 lines) + tight tick/cross */
     .optLine{
       display:grid;
-      grid-template-columns: 18px 22px 1fr;
-      column-gap: 6px;
+      grid-template-columns: 16px 22px 1fr;
+      column-gap: 4px;
       align-items:start;
       cursor:pointer;
       user-select:none;
-      padding: 2px 0;
+      padding: 1px 0;
     }
     .optLine.locked{cursor:default;}
-    .tick{
-      width: 18px; height: 18px;
-      display:grid; place-items:center;
-      font-weight:1000;
-      font-size:13px;
-      color: transparent;
+    .optMark{
+      width: 16px;height: 16px;border-radius:999px;
+      display:grid;place-items:center;
+      font-weight:1000;font-size:11px;
+      opacity:0;
       transform: translateY(1px);
     }
     .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
-    .optTxt{font-size:12.6px;line-height:1.5;color: var(--text);}
-
-    /* ✅ selected => green + bold + tick */
-    .optLine.selected .tick{color: var(--ok);}
-    .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
-    .optLine.selected .optKey{color: var(--ok);}
-
-    /* Written */
-    textarea{
-      width:100%;
-      min-height: 110px;
-      resize: vertical;
-      border: 1px solid rgba(18,28,55,.12);
-      border-radius: 12px;
-      padding: 10px 12px;
-      outline: none;
-      background: rgba(255,255,255,.78);
-      font-family: inherit;
-      font-size: 13px;
-      line-height: 1.6;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    .optTxt{
+      font-size:12.5px;line-height:1.5;color: var(--text);
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: calc(2 * 1.5em);
     }
+    .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
+    .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
+    .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
+    .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);}
 
-    /* ===== Inline Ads inside paper ===== */
+    /* ===== Ads ===== */
     .inlineAd{
       border: 1px dashed rgba(18,28,55,.22);
       background: rgba(255,255,255,.78);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 12px;
       min-height: 86px;
       display:grid;
@@ -368,62 +578,116 @@
       padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
-
-    /* ===== Side Ads slots ===== */
-    .adBox{
-      border:1px dashed rgba(18,28,55,.22);
-      border-radius:16px;
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position: sticky;
-      top: calc(var(--headerH, 64px) + 12px);
-    }
-    .adHead{
-      padding:10px 12px;
-      border-bottom:1px solid rgba(18,28,55,.10);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      font-size:12px;color: var(--muted);
-    }
-    .adHead b{color: var(--text)}
-    .adBody{
-      min-height: 420px;
-      display:grid;
-      place-items:center;
-      padding: 10px;
-      text-align:center;
+    .empty{
+      display:none;border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
       color: var(--muted);
+      margin-top: 12px;
+      font-size:12px;
     }
 
-    /* ===== Toast ===== */
-    .toast{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 82px;
-      z-index: 99999;
-      background: rgba(255,255,255,.92);
-      border:1px solid rgba(18,28,55,.12);
-      border-radius: 999px;
-      padding: 10px 14px;
-      box-shadow: 0 18px 44px rgba(15,23,48,.12);
-      font-size: 12px;
-      font-weight: 1000;
-      color: var(--text);
-      display:none;
-      max-width: calc(100vw - 24px);
-      white-space:nowrap;
+    /* Latest MT */
+    .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
+    .latestMT{display:flex;flex-direction:column;gap:10px;}
+    .mtCardMini{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
       overflow:hidden;
-      text-overflow:ellipsis;
+    }
+    .mtCardMini h4{
+      margin:0 0 8px;font-size:13px;font-weight:1000;line-height:1.25;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .mtMetaMini{display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;margin-bottom:10px;}
+    .mtMetaMini span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
+    .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
+    .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
+
+    /* ===== Fixed Ans Bar (watermark floating) ===== */
+    .ansBarWrap{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: calc(12px + var(--safeBottom) + var(--liftFromFooter));
+      z-index: 99999;
+      pointer-events: none;
+    }
+    .ansBar{
+      pointer-events:auto;
+      max-width: 680px;
+      margin: 0 auto;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0 10px;
+    }
+    .toggle{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.20);
+      color: rgba(15,23,48,.75);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      height: 36px;
+      box-shadow: 0 14px 34px rgba(15,23,48,.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition:.15s;
+      white-space:nowrap;
+    }
+    .toggle:hover{background: rgba(255,255,255,.34); transform: translateY(-1px);}
+    .toggle.active{
+      background: rgba(29,78,216,.16);
+      border-color: rgba(29,78,216,.16);
+      color: rgba(15,23,48,.92);
     }
 
-    .loading{color: var(--muted); font-size:12px; font-weight:900;}
-    .err{color: var(--danger); font-size:12px; font-weight:1000;}
+    /* ===== Pager ===== */
+    .pager{
+      display:flex;
+      gap:6px;
+      align-items:center;
+      justify-content:center;
+      flex: 1;
+      flex-wrap: wrap;
+      min-width: 180px;
+    }
+    .pBtn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      height: 34px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    .pBtn.active{
+      background: rgba(29,78,216,.18);
+      border-color: rgba(29,78,216,.22);
+    }
+    .pDots{
+      color: var(--muted);
+      font-weight:1000;
+      padding: 0 4px;
+      user-select:none;
+    }
 
-    /* ===== Footer (same style as your template) ===== */
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
-      margin-bottom: 0 !important;
+      margin-bottom: 0 !important; /* ✅ FINAL: no bottom gap */
       background:
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
         radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
@@ -457,6 +721,7 @@
       }
       .footBrandCol{display:none !important;}
     }
+
     .copy{
       max-width: 1320px;
       margin:0 auto;
@@ -469,42 +734,17 @@
       white-space:normal;
     }
 
+    @media (min-width: 981px){
+      .container{padding-left:16px;padding-right:16px;}
+    }
+
     @media (prefers-reduced-motion: reduce){
       .marq span{ animation:none; padding-left:0; }
     }
-
-    /* ===== Print/PDF hidden area ===== */
-    .pdfArea{
-      position: fixed;
-      left: -99999px;
-      top: 0;
-      width: 800px;
-      background:#fff;
-      color:#111;
-      padding: 20px;
-      font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    }
-    .pdfTitle{font-size:18px;font-weight:1000;margin:0 0 10px;}
-    .pdfMeta{font-size:12px;color:#333;margin:0 0 12px;display:flex;gap:10px;flex-wrap:wrap;}
-    .pdfQ{
-      font-size:12.5px;
-      line-height:1.55;
-      margin: 10px 0;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    .pdfQ b{font-weight:1000}
-    .pdfOpt{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px 10px;
-      margin-top: 6px;
-    }
-    .pdfOpt div{font-size:12px;line-height:1.4;}
   </style>
 </head>
 
-<body>
+<body data-mode="mcq">
 <header>
   <div class="topbar">
     <div class="brand">
@@ -550,69 +790,140 @@
 <div class="container">
   <div class="noticeBar" role="region" aria-label="Notice">
     <div class="noticeRow">
-      <span class="noticeTag">Model Test</span>
+      <span class="noticeTag">Details</span>
       <div class="marq">
-        <span id="tickerText">Test শুরু হয়েছে • সময়ের দিকে খেয়াল রাখুন • Submit করার আগে সব প্রশ্ন দেখে নিন</span>
+        <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে ট্যাব ব্যবহার করুন</span>
       </div>
     </div>
   </div>
 
+  <div class="adBox">
+    <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
+    <div class="adBody">Paste ad code here</div>
+  </div>
+</div>
+
+<!-- Mobile Subject Sheet -->
+<div class="subjectSheet" id="subjectSheet" aria-hidden="true">
+  <div class="backdrop" onclick="closeSubjectSheet()"></div>
+  <div class="sheet" role="dialog" aria-label="Subjects">
+    <div class="head">
+      <b>সব Subject</b>
+      <button class="closeBtn" onclick="closeSubjectSheet()">Close</button>
+    </div>
+    <div class="body">
+      <div class="sheetGrid" id="subjectSheetGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Subject Dock -->
+<div class="subjectDock" aria-label="Subject navigation">
+  <div class="subjectDockInner">
+    <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Subjects</button>
+
+    <div class="centerGroup" aria-label="Selected subject and tabs">
+      <div class="subName" id="subName">Details</div>
+      <div class="tabsLine" aria-label="Tabs">
+        <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+        <span class="sepDot" aria-hidden="true"></span>
+        <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+        <span class="sepDot" aria-hidden="true"></span>
+        <button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
+      </div>
+    </div>
+
+    <div class="dockSpacer" aria-hidden="true"></div>
+  </div>
+</div>
+
+<div class="container">
   <main class="grid">
-    <!-- LEFT AD -->
-    <aside class="sideAd">
-      <div class="adBox">
-        <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
-        <div class="adBody" id="ad_left">
-          Paste AdSense / Ad code here
+    <!-- LEFT DESKTOP ONLY -->
+    <aside class="panel leftDesktop">
+      <div class="panelHead">
+        <b>সকল Subject</b>
+        <span class="muted" id="leftHint">Loading…</span>
+      </div>
+      <div class="panelBody">
+        <div class="searchMini">
+          <input id="sSearch" placeholder="Search subject…" oninput="renderSubjectList()" />
+          <button class="btn" onclick="renderSubjectList()">Search</button>
         </div>
+
+        <div class="divider"></div>
+
+        <div id="sList" class="sList"></div>
+        <div id="sEmpty" class="empty">কোনো Subject পাওয়া যায়নি।</div>
       </div>
     </aside>
 
     <!-- MAIN -->
-    <section class="mainArea">
-      <div class="metaCenter">
-        <h1 class="metaTitle" id="mtName">Loading…</h1>
-        <div class="metaRow">
-          <span class="chip">⏱ Time: <b id="mtTime">--</b> min</span>
-          <span class="chip">🧮 Mark: <b id="mtMark">--</b></span>
-          <span class="chip">📌 Total Q: <b id="mtTotalQ">0</b></span>
-          <span class="chip">⏳ Left: <b id="timeLeft">--:--</b></span>
-        </div>
-
-        <div class="metaActions">
-          <button class="btn" id="btnPDF" onclick="downloadPDF()">⬇️ PDF Download</button>
-          <button class="btn danger" id="btnReset" onclick="resetAnswers()">Reset Answers</button>
-        </div>
+    <section class="panel">
+      <div class="panelHead">
+        <b id="rightTitle">Questions</b>
+        <span class="muted" id="pageHint"></span>
       </div>
 
-      <div class="paper" id="paper">
-        <div id="content">
-          <div class="loading">ডাটা লোড হচ্ছে…</div>
+      <div class="panelBody">
+        <div class="searchMini" style="margin-bottom:12px;">
+          <input id="qSearch" placeholder="Search question…" oninput="debouncedSearch()" />
+          <button class="btn" onclick="resetAndReload(true)">Search</button>
         </div>
 
-        <!-- ✅ Submit button must be under all questions -->
-        <div style="margin-top:14px; display:flex; justify-content:center;">
-          <button class="btn primary" id="btnSubmit" onclick="submitTest()">Submit</button>
+        <div class="inlineAd">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Mid Content Ad</div>
+          </div>
+        </div>
+
+        <div id="content"></div>
+        <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
+
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
+
+          <div id="pager" class="pager" aria-label="Pagination"></div>
+
+          <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT AD -->
-    <aside class="sideAd">
-      <div class="adBox">
-        <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
-        <div class="adBody" id="ad_right">
-          Paste AdSense / Ad code here
+    <!-- RIGHT -->
+    <aside class="panel rightAd">
+      <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
+      <div class="panelBody">
+        <div class="inlineAd" style="min-height:240px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 1</div>
+          </div>
         </div>
+
+        <div class="inlineAd" style="min-height:180px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 2</div>
+          </div>
+        </div>
+
+        <div class="latestBoxTitle">Latest Model Tests</div>
+        <div class="latestMT" id="latestMT"></div>
+        <div class="empty" id="latestEmpty">কোনো Model Test পাওয়া যায়নি।</div>
       </div>
     </aside>
   </main>
 </div>
 
-<div class="toast" id="toast"></div>
-
-<!-- Hidden PDF render area -->
-<div class="pdfArea" id="pdfArea" aria-hidden="true"></div>
+<!-- Floating Ans Buttons -->
+<div class="ansBarWrap" id="ansBarWrap">
+  <div class="ansBar">
+    <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+    <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+  </div>
+</div>
 
 <footer>
   <div class="footGrid">
@@ -669,39 +980,10 @@
   </div>
 </footer>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
-<!-- ✅ PDF libs (image-based => Bengali safe) -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
 <script>
-  // ===== footer year =====
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  // ===== menu =====
-  const $ = (id)=>document.getElementById(id);
-  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-  window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
-  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
-
-  function showToast(msg){
-    const t = $("toast");
-    t.textContent = msg;
-    t.style.display = "block";
-    clearTimeout(showToast._tm);
-    showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 1700);
-  }
-
-  function esc(str){
-    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-  }
-
-  // ===== Firebase config =====
   const firebaseConfig = {
     apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
     authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -712,566 +994,795 @@
     measurementId: "G-T2G55NMDQT"
   };
 
+  const COL_SUBJECTS = "subjects";
+  const COL_SUBJECT_QUESTIONS = "subject_questions";
+  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
 
-  // ===== Collections =====
-  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-  const QUESTION_COLLECTION_CANDIDATES = [
-    "modeltest_questions",
-    "model_test_questions",
-    "modeltest_question",
-    "modelTest_questions",
-    "modeltestQuestions"
-  ];
+  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+  window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
 
-  // ===== Query params =====
+  function openSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "block";
+    ss.setAttribute("aria-hidden","false");
+  }
+  function closeSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "none";
+    ss.setAttribute("aria-hidden","true");
+  }
+  window.openSubjectSheet = openSubjectSheet;
+  window.closeSubjectSheet = closeSubjectSheet;
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
+  });
+
+  $("year").textContent = new Date().getFullYear();
+
+  function syncStickyOffsets(){
+    const h = document.querySelector("header")?.offsetHeight || 64;
+    document.documentElement.style.setProperty("--headerH", h + "px");
+  }
+  window.addEventListener("resize", syncStickyOffsets);
+  window.addEventListener("load", syncStickyOffsets);
+  syncStickyOffsets();
+
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+  function normalize(s){
+    s = String(s||"").toLowerCase();
+    try{
+      return s.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+    }catch(e){
+      return s.replace(/[^a-z0-9\u0980-\u09FF\s]+/g, " ").replace(/\s+/g, " ").trim();
+    }
+  }
+
+  // debounce for search
+  let searchTimer = null;
+  function debouncedSearch(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(()=>resetAndReload(true), 350);
+  }
+  window.debouncedSearch = debouncedSearch;
+
+  function getOptions(doc){
+    if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+    return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+  }
+  function getCorrectIndex(doc, opts){
+    if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+    const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+    if(!ra) return -1;
+
+    const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
+    const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
+    if(map[low] !== undefined) return map[low];
+
+    const nra = normalize(ra);
+    for(let i=0;i<opts.length;i++){
+      if(normalize(opts[i]) === nra) return i;
+    }
+    return -1;
+  }
+
+  let SUBJECTS = [];
+  let selectedSubjectId = "";
+  let selectedSubjectName = "";
+
+  let mode = "mcq";
+  let ansMode = "hide";
+
+  const PAGE_SIZE = 30;
+  let page = 1;
+
+  // cursorByPage persists with {t,id}
+  let cursorByPage = { 1: null };
+
+  let lastDoc = null;
+  let hasNext = false;
+
+  let selectedOptionMap = new Map();
+
+  const mtCountMap = new Map();
+  const mtUnsubMap = new Map();
+
+  let unsubSubjects = null;
+  let unsubRight = null;
+  let unsubLatest = null;
+
+  const LS_KEY = "epbd_details_state_FINAL_v1";
+
   function getParam(name){
     const u = new URL(location.href);
     return u.searchParams.get(name) || "";
   }
-  const modelTestId = getParam("modelTestId");
 
-  // ===== helpers =====
-  function normalize(s){
-    return String(s||"").toLowerCase()
-      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  function getTitleField(data){
-    return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test";
-  }
-  function getTimeMinFromDoc(data){
-    const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
-    for(const k of keys){
-      const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
-      const n = Number(v);
-      if(!Number.isNaN(n) && n > 0) return n;
-    }
-    return 0;
-  }
-  function getMarkFromDoc(data){
-    const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
-    for(const k of keys){
-      const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
-      return v;
-    }
-    return "-";
-  }
-  function pickQuestionText(q){
-    return (
-      q.question ??
-      q.questionText ??
-      q.q ??
-      q.title ??
-      q.name ??
-      q.ques ??
-      q.qus ??
-      q.question_title ??
-      ""
-    ).toString();
-  }
-  function getOptions(q){
-    if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
-
-    const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
-    const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
-    const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
-    const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
-    return [o1,o2,o3,o4].map(x=>String(x ?? ""));
-  }
-  function isWrittenQuestion(q){
-    const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
-    return t === "written" || t === "cq" || t === "short" || t === "essay";
-  }
-
-  // ===== state =====
-  let mtDoc = null;
-  let questions = [];
-
-  // answers
-  const mcqAns = new Map();     // qid -> optionIndex
-  const writtenAns = new Map(); // qid -> text
-
-  // ===== timer (persist endAt) =====
-  let endAtMs = 0;
-  let timerHandle = null;
-
-  function formatMMSS(sec){
-    sec = Math.max(0, Math.floor(sec));
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
-  }
-
-  function startTimer(minutes){
-    const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
-    if(!totalSeconds){
-      $("timeLeft").textContent = "--:--";
-      return;
-    }
-
-    const key = `epbd_mt_end_${modelTestId}`;
-    const saved = localStorage.getItem(key);
-    const now = Date.now();
-
-    if(saved){
-      const v = Number(saved);
-      if(!Number.isNaN(v) && v > now + 3000){
-        endAtMs = v;
-      }else{
-        endAtMs = now + totalSeconds * 1000;
-        localStorage.setItem(key, String(endAtMs));
-      }
-    }else{
-      endAtMs = now + totalSeconds * 1000;
-      localStorage.setItem(key, String(endAtMs));
-    }
-
-    const tick = ()=>{
-      const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
-      $("timeLeft").textContent = formatMMSS(left);
-
-      if(left <= 60){
-        $("timeLeft").style.color = "var(--danger)";
-      }else{
-        $("timeLeft").style.color = "var(--text)";
-      }
-
-      if(left <= 0){
-        clearInterval(timerHandle);
-        timerHandle = null;
-        showToast("সময় শেষ! অটো সাবমিট হচ্ছে…");
-        setTimeout(()=>submitTest(true), 350);
-      }
-    };
-
-    tick();
-    clearInterval(timerHandle);
-    timerHandle = setInterval(tick, 1000);
-  }
-
-  // ===== persist answers =====
-  function persistAnswers(){
-    const key = `epbd_mt_ans_${modelTestId}`;
+  function saveState(){
     const payload = {
-      mcq: Array.from(mcqAns.entries()),
-      written: Array.from(writtenAns.entries()),
-      savedAt: Date.now()
+      subjectId: selectedSubjectId,
+      mode,
+      ansMode,
+      page,
+      cursorByPage,
+      q: $("qSearch").value || "",
+      s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
-    localStorage.setItem(key, JSON.stringify(payload));
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
   }
 
-  function restoreAnswers(){
-    const key = `epbd_mt_ans_${modelTestId}`;
+  function loadState(){
     try{
-      const raw = localStorage.getItem(key);
+      const raw = localStorage.getItem(LS_KEY);
       if(!raw) return;
       const st = JSON.parse(raw);
-      (st?.mcq || []).forEach(([qid, v])=> mcqAns.set(qid, v));
-      (st?.written || []).forEach(([qid, v])=> writtenAns.set(qid, v));
+      if(st && typeof st === "object"){
+        selectedSubjectId = st.subjectId || selectedSubjectId;
+        mode = st.mode || mode;
+        ansMode = st.ansMode || ansMode;
+        page = Number(st.page || 1) || 1;
+
+        if(st.cursorByPage && typeof st.cursorByPage === "object"){
+          cursorByPage = st.cursorByPage;
+          if(!cursorByPage[1]) cursorByPage[1] = null;
+        }
+
+        if($("qSearch")) $("qSearch").value = st.q || "";
+        if($("sSearch")) $("sSearch").value = st.s || "";
+      }
     }catch(e){}
   }
 
-  function resetAnswers(){
-    if(!confirm("সব Answer মুছে ফেলবেন?")) return;
-    mcqAns.clear();
-    writtenAns.clear();
-    persistAnswers();
-    renderAll();
-    showToast("Reset done");
-  }
-  window.resetAnswers = resetAnswers;
+  /* ✅ URL param ALWAYS wins over localStorage
+     (other page -> subject click will show correct subject here)
+  */
+  function applyUrlOverrides(){
+    const urlSubjectId = getParam("subjectId");
+    const urlMode = getParam("mode");
+    const urlPage = Number(getParam("page") || "1") || 1;
 
-  // ===== load data =====
-  async function loadModelTestDoc(id){
-    const snap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(id).get();
-    if(snap.exists) return { id: snap.id, ...snap.data() };
-    return null;
+    if(urlSubjectId){
+      selectedSubjectId = urlSubjectId;
+      page = urlPage > 0 ? urlPage : 1;
+      cursorByPage = { 1: null };   // reset for new subject
+      selectedOptionMap.clear();
+    }else{
+      if(urlPage > 1) page = urlPage;
+    }
+
+    if(urlMode && ["mcq","written","model"].includes(urlMode)){
+      mode = urlMode;
+    }
+
+    document.body.setAttribute("data-mode", mode);
   }
 
-  async function fetchQuestionsFromCollection(colName, mtId){
-    // no pagination, bring all
-    try{
-      const s = await db.collection(colName)
-        .where("modelTestId","==", mtId)
-        .orderBy("createdAt","asc")
-        .get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
-      const s = await db.collection(colName)
-        .where("modelTestId","==", mtId)
-        .get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+  // load storage first, then override with URL
+  loadState();
+  applyUrlOverrides();
+
+  function setUrlState(){
+    const u = new URL(location.href);
+    if(selectedSubjectId) u.searchParams.set("subjectId", selectedSubjectId);
+    u.searchParams.set("page", String(page));
+    u.searchParams.set("mode", mode);
+    history.replaceState({}, "", u.toString());
+  }
+
+  function setMode(m){
+    mode = m;
+    document.body.setAttribute("data-mode", mode);
+
+    $("tabMcq").classList.toggle("active", mode==="mcq");
+    $("tabWritten").classList.toggle("active", mode==="written");
+    $("tabModel").classList.toggle("active", mode==="model");
+
+    $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  window.setMode = setMode;
+
+  function setAnsMode(m){
+    ansMode = m;
+    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    saveState();
+    renderContent();
+  }
+  window.setAnsMode = setAnsMode;
+
+  function relatedMatch(query, text){
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
+  }
+
+  function syncModelTestListeners(){
+    const alive = new Set(SUBJECTS.map(s=>s.id));
+    for(const [sid, unsub] of mtUnsubMap.entries()){
+      if(!alive.has(sid)){
+        try{unsub();}catch(e){}
+        mtUnsubMap.delete(sid);
+        mtCountMap.delete(sid);
+      }
+    }
+    SUBJECTS.forEach(s=>{
+      if(mtUnsubMap.has(s.id)) return;
+      const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", s.id)
+        .onSnapshot((snap)=>{
+          mtCountMap.set(s.id, snap.size || 0);
+          renderSubjectList();
+          renderSubjectSheet();
+        });
+      mtUnsubMap.set(s.id, unsub);
+    });
+  }
+
+  function renderSubjectList(){
+    const list = $("sList");
+    if(!list) return;
+
+    const q = $("sSearch").value || "";
+    const filtered = SUBJECTS
+      .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
+      .filter(s => !q ? true : s._score >= 0.25)
+      .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
+
+    $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
+    $("sEmpty").style.display = filtered.length ? "none" : "block";
+
+    list.innerHTML = "";
+    filtered.forEach(s=>{
+      const mcq = s.counts?.mcq || 0;
+      const written = s.counts?.written || 0;
+      const mt = mtCountMap.get(s.id) ?? 0;
+
+      const el = document.createElement("div");
+      el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
+      el.onclick = ()=> selectSubject(s.id, true);
+      el.innerHTML = `
+        <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+        <div class="chips">
+          <span class="chip">MCQ <b>${mcq}</b></span>
+          <span class="chip">Written <b>${written}</b></span>
+          <span class="chip">Model <b>${mt}</b></span>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  window.renderSubjectList = renderSubjectList;
+
+  function renderSubjectSheet(){
+    const grid = $("subjectSheetGrid");
+    if(!grid) return;
+
+    grid.innerHTML = "";
+    const sorted = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+
+    sorted.forEach(s=>{
+      const mcq = s.counts?.mcq || 0;
+      const written = s.counts?.written || 0;
+      const mt = mtCountMap.get(s.id) ?? 0;
+
+      const it = document.createElement("div");
+      it.className = "sheetItem" + (s.id===selectedSubjectId ? " active" : "");
+      it.onclick = ()=>{
+        selectSubject(s.id, true);
+        closeSubjectSheet();
+      };
+      it.innerHTML = `
+        <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+        <div class="mini">
+          <span>MCQ: ${mcq}</span>
+          <span>W: ${written}</span>
+          <span>M: ${mt}</span>
+        </div>
+      `;
+      grid.appendChild(it);
+    });
+  }
+
+  function selectSubject(id, shouldScrollTop){
+    selectedSubjectId = id;
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+
+    const found = SUBJECTS.find(s=>s.id===id);
+    selectedSubjectName = found?.name || "";
+
+    $("subName").textContent = selectedSubjectName || "Details";
+    $("headerTag").textContent = selectedSubjectName
+      ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}`
+      : "সকল প্রস্তুতি হোক গভীর থেকে";
+    $("tickerText").textContent = selectedSubjectName
+      ? `${selectedSubjectName} • MCQ/Written/Model Test`
+      : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
+
+    renderSubjectList();
+    renderSubjectSheet();
+
+    setUrlState();
+    saveState();
+    loadRight();
+
+    if(shouldScrollTop){
+      try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch(e){ window.scrollTo(0,0); }
     }
   }
 
-  async function fetchQuestionsFromSubcollection(mtId){
-    const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
-    try{
-      const s = await ref.orderBy("createdAt","asc").get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
-      const s = await ref.get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+  function detachRight(){
+    if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
+  }
+
+  function buildQuery(){
+    const searchText = $("qSearch").value || "";
+    const cursor = cursorByPage[page] || null;
+
+    if(mode === "model"){
+      let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", selectedSubjectId)
+        .orderBy("createdAt","desc")
+        .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+        .limit(PAGE_SIZE + 1);
+
+      if(cursor && cursor.t && cursor.id){
+        q = q.startAfter(new Date(cursor.t), cursor.id);
+      }
+      return { q, searchText, kind:"model" };
     }
+
+    let q = db.collection(COL_SUBJECT_QUESTIONS)
+      .where("subjectId","==", selectedSubjectId)
+      .where("type","==", mode)
+      .orderBy("createdAt","desc")
+      .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+      .limit(PAGE_SIZE + 1);
+
+    if(cursor && cursor.t && cursor.id){
+      q = q.startAfter(new Date(cursor.t), cursor.id);
+    }
+    return { q, searchText, kind:"q" };
   }
 
-  function setMetaHeader(){
-    const title = getTitleField(mtDoc);
-    $("mtName").textContent = title;
-    $("tickerText").textContent = `${title} • Test চলছে • Submit করার আগে সব প্রশ্ন দেখে নিন`;
+  let currentItems = [];
 
-    const mins = getTimeMinFromDoc(mtDoc);
-    $("mtTime").textContent = mins ? String(mins) : "--";
-    $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
-    $("mtTotalQ").textContent = String(questions.length || 0);
+  function resetAndReload(){
+    if(!selectedSubjectId){
+      $("emptyRight").style.display = "block";
+      $("content").innerHTML = "";
+      $("pageHint").textContent = "";
+      renderPager();
+      return;
+    }
+    loadRight();
+  }
+  window.resetAndReload = resetAndReload;
+
+  function renderPager(){
+    const wrap = $("pager");
+    if(!wrap) return;
+
+    const keys = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+    let maxVisited = keys.length ? Math.max(...keys) : 1;
+    if(maxVisited < 1) maxVisited = 1;
+
+    const canShowNextNum = hasNext === true;
+
+    const pages = [];
+    for(let i=1;i<=maxVisited;i++) pages.push(i);
+    if(canShowNextNum) pages.push(maxVisited + 1);
+
+    const out = [];
+    const total = pages.length;
+
+    if(total <= 9){
+      out.push(...pages);
+    }else{
+      const last = pages[pages.length-1];
+      out.push(1);
+      if(page > 4) out.push("dots1");
+      const start = Math.max(2, page - 2);
+      const end = Math.min(last - 1, page + 2);
+      for(let p=start; p<=end; p++) out.push(p);
+      if(page < last - 3) out.push("dots2");
+      out.push(last);
+    }
+
+    wrap.innerHTML = "";
+    out.forEach(item=>{
+      if(String(item).startsWith("dots")){
+        const s = document.createElement("span");
+        s.className = "pDots";
+        s.textContent = "…";
+        wrap.appendChild(s);
+        return;
+      }
+
+      const p = item;
+      const b = document.createElement("button");
+      b.className = "pBtn" + (p===page ? " active" : "");
+      b.textContent = String(p);
+
+      b.onclick = ()=>{
+        if(p===page) return;
+
+        const keys2 = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+        let maxV = keys2.length ? Math.max(...keys2) : 1;
+        if(maxV < 1) maxV = 1;
+
+        if(p === maxV + 1){
+          nextPage();
+          return;
+        }
+
+        if(!cursorByPage[p] && p !== 1) return;
+
+        page = p;
+        selectedOptionMap.clear();
+        setUrlState();
+        saveState();
+        loadRight();
+      };
+
+      wrap.appendChild(b);
+    });
   }
 
-  // ===== render all questions (single page) =====
-  function renderAll(){
+  function loadRight(){
+    if(!selectedSubjectId) return;
+
+    detachRight();
+    $("emptyRight").style.display = "none";
+    $("content").innerHTML = "";
+    $("pageHint").textContent = `Page ${page}`;
+
+    const built = buildQuery();
+    unsubRight = built.q.onSnapshot((snap)=>{
+      let docs = snap.docs;
+
+      hasNext = docs.length > PAGE_SIZE;
+      if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+
+      lastDoc = docs.length ? docs[docs.length-1] : null;
+      currentItems = docs.map(d=>({id:d.id, ...d.data()}));
+
+      const qtxt = normalize(built.searchText);
+      if(qtxt){
+        currentItems = currentItems
+          .map(it => ({
+            ...it,
+            _score: relatedMatch(qtxt, built.kind==="model"
+              ? (it.title || it.name || "")
+              : (it.question || "")
+            )
+          }))
+          .filter(it => it._score >= 0.25)
+          .sort((a,b)=> (b._score - a._score));
+      }
+
+      renderContent();
+
+      $("emptyRight").style.display = currentItems.length ? "none" : "block";
+      $("prevBtn").disabled = page <= 1;
+      $("nextBtn").disabled = !hasNext;
+
+      renderPager();
+
+      setUrlState();
+      saveState();
+    }, (err)=>{
+      console.error(err);
+      $("content").innerHTML = "";
+      $("emptyRight").style.display = "block";
+      hasNext = false;
+      renderPager();
+    });
+  }
+
+  function prevPage(){
+    if(page <= 1) return;
+    page -= 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+
+  function nextPage(){
+    if(!hasNext) return;
+    if(lastDoc){
+      const data = lastDoc.data() || {};
+      const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
+      if(ts){
+        cursorByPage[page+1] = { t: ts, id: lastDoc.id };
+      }
+    }
+    page += 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  window.prevPage = prevPage;
+  window.nextPage = nextPage;
+
+  function renderContent(){
     const wrap = $("content");
     wrap.innerHTML = "";
 
-    if(!questions.length){
-      wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+    $("rightTitle").textContent =
+      mode==="mcq" ? "MCQ প্রশ্ন" :
+      mode==="written" ? "Written প্রশ্ন" :
+      "Subject Model Tests";
+
+    if(!currentItems.length) return;
+
+    if(mode === "model"){
+      const grid = document.createElement("div");
+      grid.className = "latestMT";
+      currentItems.forEach((mt)=>{
+        const title = mt.title ?? mt.name ?? "Subject Model Test";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+        const counts = mt.counts || {};
+        const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+        const card = document.createElement("div");
+        card.className = "mtCardMini";
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="mtMetaMini">
+            <span>⏱ ${esc(time)} min</span>
+            <span>🧮 Mark: ${esc(marks)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="mtActionsMini">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+            <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      wrap.appendChild(grid);
       return;
     }
 
+    const paper = document.createElement("div");
+    paper.className = "paper";
     const list = document.createElement("div");
     list.className = "qList";
     const letters = ["A","B","C","D"];
 
-    // We'll inject 2 inline ads total ( মাঝখানে )
-    const total = questions.length;
-    const adPos1 = total >= 6 ? Math.floor(total/3) : 3;       // approx 1/3
-    const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;  // approx 2/3
-
-    questions.forEach((q, i)=>{
-      const qno = i + 1;
-      const qid = q.id;
-
-      // inline ad slot #1
-      if(i === adPos1){
-        const ad = document.createElement("div");
-        ad.className = "inlineAd";
-        ad.innerHTML = `
-          <div>
-            <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #1 (Paste code here)</div>
-            <div id="ad_inline_1" style="margin-top:8px;">Paste AdSense code here</div>
-          </div>
-        `;
-        list.appendChild(ad);
-      }
-
-      // inline ad slot #2
-      if(i === adPos2){
-        const ad = document.createElement("div");
-        ad.className = "inlineAd";
-        ad.innerHTML = `
-          <div>
-            <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #2 (Paste code here)</div>
-            <div id="ad_inline_2" style="margin-top:8px;">Paste AdSense code here</div>
-          </div>
-        `;
-        list.appendChild(ad);
-      }
+    currentItems.forEach((it, idx)=>{
+      const qno = ((page-1)*PAGE_SIZE) + (idx+1);
+      const note = (it.note ?? it.explain ?? "").toString().trim();
 
       const row = document.createElement("div");
       row.className = "qRow";
-      row.dataset.qid = qid;
 
-      const qt = pickQuestionText(q);
-      const noteTxt = (q.note ?? q.explain ?? q.explanation ?? q.noteText ?? "").toString().trim();
       row.innerHTML = `
         <div class="qHead">
           <span class="qNo">Q${qno}</span>
-          <p class="qText">${esc(qt || "(No question text)")}</p>
+          <p class="qText">${esc(it.question || "")}</p>
         </div>
-        <div class="noteInline"><b>Note:</b> ${esc(noteTxt || "-")}</div>
+        ${note ? `<div class="noteInline"><b>Note:</b> ${esc(note)}</div>` : ``}
       `;
 
-      if(isWrittenQuestion(q)){
-        const ta = document.createElement("textarea");
-        ta.placeholder = "আপনার উত্তর লিখুন…";
-        ta.value = (writtenAns.get(qid) ?? "").toString();
-        ta.oninput = ()=>{
-          writtenAns.set(qid, ta.value);
-          persistAnswers();
-        };
-        row.appendChild(ta);
-      }else{
-        const opts = getOptions(q);
-        const chosen = mcqAns.get(qid);
+      if(mode === "mcq"){
+        const opts = getOptions(it);
+        const correctIndex = getCorrectIndex(it, opts);
+        const chosen = selectedOptionMap.get(it.id);
 
         const optWrap = document.createElement("div");
         optWrap.className = "opts";
 
         opts.slice(0,4).forEach((op, oi)=>{
           const opt = document.createElement("div");
-          opt.className = "optLine" + (chosen === oi ? " selected" : "");
+          opt.className = "optLine";
+
           opt.innerHTML = `
-            <span class="tick">✓</span>
+            <span class="optMark"></span>
             <span class="optKey">${letters[oi]}.</span>
             <span class="optTxt">${esc(op || "")}</span>
           `;
-          opt.onclick = ()=>{
-            mcqAns.set(qid, oi);
-            persistAnswers();
-            // update just this question block quickly
-            renderAll(); // simple + safe (you can optimize later)
-          };
+          const mark = opt.querySelector(".optMark");
+
+          if(ansMode === "show"){
+            opt.classList.add("locked");
+            if(oi === correctIndex){
+              opt.classList.add("correct");
+              mark.textContent = "✓";
+            }
+          }else{
+            if(chosen !== undefined){
+              opt.classList.add("locked");
+              if(oi === correctIndex){
+                opt.classList.add("correct");
+                mark.textContent = "✓";
+              }
+              if(oi === chosen && chosen !== correctIndex){
+                opt.classList.add("wrong");
+                mark.textContent = "✕";
+              }
+            }else{
+              opt.onclick = ()=>{
+                selectedOptionMap.set(it.id, oi);
+                renderContent();
+              };
+            }
+          }
           optWrap.appendChild(opt);
         });
 
         row.appendChild(optWrap);
       }
 
+      if(mode === "written"){
+        const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+        if(ansMode === "show"){
+          const box = document.createElement("div");
+          box.className = "noteInline";
+          box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
+          row.appendChild(box);
+        }
+      }
+
       list.appendChild(row);
+
+      if((idx+1)%10===0 && idx < currentItems.length-1){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad (Every 10)</div></div>`;
+        list.appendChild(ad);
+      }
     });
 
-    wrap.appendChild(list);
+    paper.appendChild(list);
+    wrap.appendChild(paper);
   }
 
-  // ===== unanswered detection + submit warning =====
-  function getUnanswered(){
-    const missing = [];
-    questions.forEach((q, i)=>{
-      const qid = q.id;
-      if(isWrittenQuestion(q)){
-        const txt = (writtenAns.get(qid) ?? "").toString().trim();
-        if(!txt) missing.push({ index: i, id: qid, type:"written" });
+  function attachLatestModelTests(){
+    if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
+
+    unsubLatest = db.collection(COL_SUBJECT_MODEL_TESTS)
+      .orderBy("createdAt","desc")
+      .limit(10)
+      .onSnapshot((snap)=>{
+        const wrap = $("latestMT");
+        const empty = $("latestEmpty");
+        wrap.innerHTML = "";
+
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Subject Model Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+          const counts = mt.counts || {};
+          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMetaMini">
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+              <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }, (err)=>console.error(err));
+  }
+
+  function attachSubjects(){
+    if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
+
+    unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      syncModelTestListeners();
+
+      if(!selectedSubjectId && SUBJECTS.length){
+        selectedSubjectId = SUBJECTS[0].id;
+      }
+
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+      document.body.setAttribute("data-mode", mode);
+
+      renderSubjectList();
+      renderSubjectSheet();
+
+      if(selectedSubjectId){
+        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        selectedSubjectName = found?.name || "";
+        $("subName").textContent = selectedSubjectName || "Details";
+        $("headerTag").textContent = selectedSubjectName
+          ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}`
+          : "সকল প্রস্তুতি হোক গভীর থেকে";
+        $("tickerText").textContent = selectedSubjectName
+          ? `${selectedSubjectName} • MCQ/Written/Model Test`
+          : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
+
+        setUrlState();
+        saveState();
+        loadRight();
       }else{
-        const v = mcqAns.get(qid);
-        if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid, type:"mcq" });
+        renderPager();
       }
     });
-    return missing;
   }
 
-  function scrollToQuestion(qid){
-    const el = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
-    if(el){
-      try{ el.scrollIntoView({behavior:"smooth", block:"center"}); }
-      catch(e){ el.scrollIntoView(); }
-      el.style.outline = "2px solid rgba(220,38,38,.35)";
-      el.style.outlineOffset = "4px";
-      setTimeout(()=>{ el.style.outline=""; el.style.outlineOffset=""; }, 1800);
-    }
-  }
+  // ✅ Keep Ans bar above footer (no overlap, no footer gap)
+  (function keepAnsBarAboveFooter(){
+    const footer = document.querySelector("footer");
+    const bar = document.getElementById("ansBarWrap");
+    if(!footer || !bar) return;
 
-  function calcUsedSec(){
-    const mins = getTimeMinFromDoc(mtDoc);
-    const endKey = `epbd_mt_end_${modelTestId}`;
-    const endRaw = localStorage.getItem(endKey);
-    const endMs = endRaw ? Number(endRaw) : 0;
-    const totalMs = mins ? mins*60*1000 : 0;
-    if(!totalMs || !endMs) return null;
+    let ticking = false;
 
-    const leftMs = Math.max(0, endMs - Date.now());
-    const usedMs = Math.max(0, totalMs - leftMs);
-    return Math.floor(usedMs/1000);
-  }
+    function update(){
+      ticking = false;
 
-  function submitTest(isAuto=false){
-    if(!modelTestId) return;
-
-    const missing = getUnanswered();
-
-    if(!isAuto && missing.length){
-      // ✅ warning on submit
-      const ok = confirm(`আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`);
-      if(!ok){
-        scrollToQuestion(missing[0].id);
-        return;
-      }
-    }else if(!isAuto){
-      const ok = confirm("আপনি কি নিশ্চিতভাবে Submit করতে চান?");
-      if(!ok) return;
-    }
-
-    const payload = {
-      modelTestId,
-      title: getTitleField(mtDoc),
-      submittedAt: Date.now(),
-      isAuto: !!isAuto,
-      score: null, // you can compute later if needed
-      answers: {
-        mcq: Array.from(mcqAns.entries()),
-        written: Array.from(writtenAns.entries())
-      },
-      usedSec: calcUsedSec()
-    };
-
-    localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
-    location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
-  }
-  window.submitTest = submitTest;
-
-  // ===== PDF download (Bangla safe => canvas/image based) =====
-  async function downloadPDF(){
-    try{
-      if(!questions.length){
-        showToast("কোনো প্রশ্ন নেই");
+      if(bar.style.display === "none"){
+        document.documentElement.style.setProperty("--liftFromFooter", "0px");
         return;
       }
 
-      showToast("PDF তৈরি হচ্ছে…");
-
-      // build hidden PDF content (simple clean)
-      const pdfArea = $("pdfArea");
-      const title = getTitleField(mtDoc);
-      const mins = getTimeMinFromDoc(mtDoc);
-      const mark = getMarkFromDoc(mtDoc);
-
-      const parts = [];
-      parts.push(`<div class="pdfTitle">${esc(title)}</div>`);
-      parts.push(`<div class="pdfMeta">
-        <span>সময়: ${esc(mins ? mins : "-")} মিনিট</span>
-        <span>মার্ক: ${esc(mark)}</span>
-        <span>মোট প্রশ্ন: ${esc(questions.length)}</span>
-      </div>`);
-
-      const letters = ["A","B","C","D"];
-      questions.forEach((q, i)=>{
-        const qno = i+1;
-        const qt = pickQuestionText(q);
-        const noteTxt = (q.note ?? q.explain ?? q.explanation ?? q.noteText ?? "").toString().trim();
-        const written = isWrittenQuestion(q);
-
-        parts.push(`<div class="pdfQ">
-          <div><b>Q${qno}.</b> ${esc(qt)}</div>
-          <div style="margin-top:4px;color:#555;font-size:11.5px;"><b>Note:</b> ${esc(noteTxt || "-")}</div>
-          ${
-            written
-              ? `<div style="margin-top:8px;font-size:12px;color:#333;"><b>Answer:</b> ____________________________</div>`
-              : (()=> {
-                  const opts = getOptions(q);
-                  const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op || "")}</div>`).join("");
-                  return `<div class="pdfOpt">${optHtml}</div>`;
-                })()
-          }
-        </div>`);
-      });
-
-      pdfArea.innerHTML = parts.join("");
-
-      // render to canvas (raster => Bengali safe)
-      const canvas = await html2canvas(pdfArea, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true
-      });
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "pt", "a4");
-
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-
-      // Fit image to width, split into pages
-      const imgW = pageW;
-      const imgH = (canvas.height * imgW) / canvas.width;
-
-      let y = 0;
-      let page = 0;
-
-      // Create a temp canvas to slice pages
-      const sliceCanvas = document.createElement("canvas");
-      const sliceCtx = sliceCanvas.getContext("2d");
-
-      const scale = canvas.width / imgW; // px per pt
-      const pagePxH = Math.floor(pageH * scale);
-
-      sliceCanvas.width = canvas.width;
-      sliceCanvas.height = pagePxH;
-
-      while(y < canvas.height){
-        sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-        sliceCtx.drawImage(canvas, 0, y, canvas.width, pagePxH, 0, 0, canvas.width, pagePxH);
-
-        const sliceData = sliceCanvas.toDataURL("image/jpeg", 0.95);
-
-        if(page > 0) pdf.addPage();
-        pdf.addImage(sliceData, "JPEG", 0, 0, pageW, pageH);
-
-        y += pagePxH;
-        page++;
-      }
-
-      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "question-paper";
-      pdf.save(`${safeName}.pdf`);
-
-      showToast("PDF ডাউনলোড হয়েছে");
-    }catch(e){
-      console.error(e);
-      showToast("PDF তৈরি করতে সমস্যা");
-    }
-  }
-  window.downloadPDF = downloadPDF;
-
-  // ===== boot =====
-  async function loadAll(){
-    if(!modelTestId){
-      $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: Start-model-test.html?modelTestId=XXXX</div>`;
-      return;
+      const fr = footer.getBoundingClientRect();
+      const overlap = window.innerHeight - fr.top;
+      const lift = Math.max(0, overlap);
+      document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
     }
 
-    restoreAnswers();
-
-    try{
-      const mt = await loadModelTestDoc(modelTestId);
-      if(!mt){
-        $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
-        return;
-      }
-      mtDoc = mt;
-
-      // questions: try candidates then subcollection
-      let qs = [];
-      for(const col of QUESTION_COLLECTION_CANDIDATES){
-        try{
-          const got = await fetchQuestionsFromCollection(col, modelTestId);
-          if(got && got.length){
-            qs = got;
-            break;
-          }
-        }catch(e){}
-      }
-      if(!qs.length){
-        try{ qs = await fetchQuestionsFromSubcollection(modelTestId); }catch(e){}
-      }
-
-      questions = qs || [];
-      setMetaHeader();
-
-      // start timer
-      const mins = getTimeMinFromDoc(mtDoc);
-      startTimer(mins);
-
-      renderAll();
-      persistAnswers();
-    }catch(err){
-      console.error(err);
-      $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
     }
-  }
 
-  // save on exit
-  window.addEventListener("beforeunload", ()=> {
-    try{ persistAnswers(); }catch(e){}
-  });
+    window.addEventListener("scroll", onScroll, { passive:true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  })();
 
-  loadAll();
+  attachSubjects();
+  attachLatestModelTests();
 </script>
 </body>
 </html>
