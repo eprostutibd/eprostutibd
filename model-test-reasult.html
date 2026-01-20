@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Model Test Result — eProstutiBD</title>
+
+  <meta name="description" content="eProstutiBD Model Test Result — Summary + Details" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --line: rgba(18, 28, 55, .10);
+      --text:#0f1730; --muted:#5a6685;
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+      --brandA:#1d4ed8; --brandB:#0ea5e9;
+      --ok:#16a34a; --danger:#dc2626; --warn:#f59e0b;
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+      --headerH: 64px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px clamp(10px, 2vw, 18px) 22px;
+    }
+
+    header{
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
+    }
+    .topbar{
+      max-width: 1100px;
+      margin:0 auto;
+      padding: 10px clamp(10px, 2vw, 18px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brand{display:flex;flex-direction:column;gap:2px;}
+    .brand .name{color:#fff;font-weight:1000;font-size:15px;line-height:1;}
+    .brand .tag{color:rgba(255,255,255,.85);font-size:12px;font-weight:900;line-height:1.2;}
+    .topActions{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;}
+    .btn{
+      border-radius:999px;
+      padding: 9px 14px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.24);
+      background: rgba(255,255,255,.14);
+      color:#fff;
+    }
+    .btn:hover{background: rgba(255,255,255,.20);}
+    .btnAlt{
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+    }
+
+    .card{
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(18,28,55,.12);
+      border-radius: 18px;
+      box-shadow: var(--shadow2);
+      padding: 14px;
+    }
+    .title{
+      margin:0;
+      font-size: 18px;
+      font-weight: 1000;
+      line-height:1.3;
+    }
+    .sub{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12.8px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns: 1fr;}
+    }
+
+    .kv{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .k{font-size:12px;color:var(--muted);font-weight:1000;}
+    .v{margin-top:4px;font-size:14px;font-weight:1000;}
+
+    .pillRow{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .pill{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight:1000;
+      color: var(--text);
+    }
+    .pill.ok{border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); color: rgba(22,163,74,1);}
+    .pill.bad{border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); color: rgba(220,38,38,1);}
+    .pill.warn{border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); color: rgba(245,158,11,1);}
+
+    .sectionHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-top: 14px;
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size: 15px;
+      font-weight: 1000;
+    }
+    .smallBtn{
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 1000;
+      cursor:pointer;
+      border:1px solid rgba(29,78,216,.22);
+      background: rgba(29,78,216,.10);
+      color: rgba(29,78,216,1);
+    }
+
+    .list{
+      margin-top: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .qCard{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.80);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .qTop{display:flex; gap:10px; align-items:flex-start;}
+    .qNo{
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:1000;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .qText{margin:0; font-weight: 1000; font-size: 14px; line-height: 1.6;}
+    .ansLine{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width: 860px){
+      .ansLine{grid-template-columns: 1fr;}
+    }
+    .box{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.84);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .box .lbl{font-size:12px;color:var(--muted);font-weight:1000;}
+    .box .val{margin-top:4px;font-size:13px;font-weight:1000;line-height:1.5;}
+    .val.ok{color: rgba(22,163,74,1);}
+    .val.bad{color: rgba(220,38,38,1);}
+
+    .loading{
+      color: var(--muted);
+      font-weight: 1000;
+      font-size: 13px;
+      padding: 10px 2px;
+    }
+    .err{
+      color: var(--danger);
+      font-weight: 1000;
+      font-size: 13px;
+      padding: 10px 2px;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(18px + var(--safeBottom));
+      z-index: 99999;
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(18,28,55,.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 18px 44px rgba(15,23,48,.14);
+      font-size: 12.8px;
+      font-weight: 1000;
+      color: var(--text);
+      display:none;
+      max-width: min(620px, calc(100vw - 24px));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .toastSub{font-size:12px;color: var(--muted);font-weight: 900;margin-top: 2px;}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag">Model Test Result</div>
+      </div>
+
+      <div class="topActions">
+        <button class="btn btnAlt" type="button" onclick="backToTest()">Back to Test</button>
+        <button class="btn" type="button" onclick="downloadResultJSON()">Download Result (JSON)</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h1 class="title" id="pageTitle">Result লোড হচ্ছে…</h1>
+      <p class="sub" id="pageSub">অনুগ্রহ করে অপেক্ষা করুন</p>
+
+      <div class="grid" style="margin-top:12px;">
+        <div class="kv">
+          <div class="k">Name</div>
+          <div class="v" id="kvName">--</div>
+        </div>
+        <div class="kv">
+          <div class="k">District</div>
+          <div class="v" id="kvDistrict">--</div>
+        </div>
+        <div class="kv">
+          <div class="k">Model Test</div>
+          <div class="v" id="kvTest">--</div>
+        </div>
+        <div class="kv">
+          <div class="k">Submitted</div>
+          <div class="v" id="kvTime">--</div>
+        </div>
+      </div>
+
+      <div class="pillRow" id="pillRow">
+        <!-- summary pills -->
+      </div>
+    </div>
+
+    <div class="sectionHead">
+      <h2>Details</h2>
+      <button class="smallBtn" type="button" onclick="toggleOnlyWrong()" id="btnFilter">Show Only Wrong</button>
+    </div>
+
+    <div class="list" id="detailList">
+      <div class="loading">লোড হচ্ছে…</div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+
+    // ===== toast =====
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+    function showToast(msg, sub=""){
+      const t = $("toast");
+      t.innerHTML = `<div>${esc(msg)}</div>${sub?`<div class="toastSub">${esc(sub)}</div>`:""}`;
+      t.style.display = "block";
+      clearTimeout(showToast._tm);
+      showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2200);
+    }
+
+    // ===== url param =====
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name) || "";
+    }
+    const modelTestId = getParam("modelTestId");
+
+    // ===== Firebase =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const COL_RESULTS = "model_test_result";
+    const COL_MODELTESTS = "subject_model_tests";
+
+    // ===== state =====
+    let resultPayload = null;
+    let onlyWrong = false;
+    let mtDoc = null;
+
+    function backToTest(){
+      if(!modelTestId){
+        location.href = "Start-model-test.html";
+        return;
+      }
+      location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.backToTest = backToTest;
+
+    function fmtTime(ms){
+      const n = Number(ms);
+      if(!Number.isFinite(n) || n <= 0) return "--";
+      const d = new Date(n);
+      return d.toLocaleString("bn-BD", { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+    }
+
+    function makePill(text, cls=""){
+      const s = document.createElement("span");
+      s.className = "pill " + cls;
+      s.textContent = text;
+      return s;
+    }
+
+    function renderSummary(){
+      const p = resultPayload || {};
+      const r = p.result || {};
+
+      $("pageTitle").textContent = (p.modelTestName || "Model Test") + " — Result";
+      $("pageSub").textContent = `${p.studentName || "--"} (${p.studentDistrict || "--"}) • ID: ${modelTestId || "--"}`;
+
+      $("kvName").textContent = p.studentName || "--";
+      $("kvDistrict").textContent = p.studentDistrict || "--";
+      $("kvTest").textContent = p.modelTestName || "--";
+      $("kvTime").textContent = fmtTime(p.submittedAt);
+
+      const row = $("pillRow");
+      row.innerHTML = "";
+      row.appendChild(makePill(`Total Q: ${r.totalQuestion ?? "--"}`));
+      row.appendChild(makePill(`Right: ${r.right ?? "--"}`, "ok"));
+      row.appendChild(makePill(`Wrong: ${r.wrong ?? "--"}`, "bad"));
+      row.appendChild(makePill(`Mark: ${(r.obtainedMark ?? "--")} / ${(r.totalMark ?? "--")}`, "warn"));
+
+      if(p.isAuto) row.appendChild(makePill("Auto Submit", "warn"));
+    }
+
+    // helper to read answer maps
+    function getMcqAnswerMap(payload){
+      // Start-model-test page saves answers.mcq as object now
+      const obj = payload?.answers?.mcq;
+      if(obj && typeof obj === "object" && !Array.isArray(obj)) return obj;
+      return {};
+    }
+    function getWrittenAnswerMap(payload){
+      const obj = payload?.answers?.written;
+      if(obj && typeof obj === "object" && !Array.isArray(obj)) return obj;
+      return {};
+    }
+
+    function getQText(q){
+      return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
+    }
+    function getOptions(q){
+      if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
+      if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
+      if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
+      const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
+      const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
+      const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
+      const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
+      return [o1,o2,o3,o4].map(x=>String(x ?? ""));
+    }
+    function getCorrectIndex(q){
+      const v = Number(q.correctIndex);
+      return Number.isFinite(v) ? v : -1;
+    }
+    function isWrittenQuestion(q){
+      const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
+      return t === "written" || t === "cq" || t === "short" || t === "essay";
+    }
+
+    async function fetchQuestions(modelTestId){
+      // same logic: try candidate collections then subcollection
+      const candidates = [
+        "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
+      ];
+
+      for(const col of candidates){
+        try{
+          let s = null;
+          try{
+            s = await db.collection(col).where("modelTestId","==", modelTestId).orderBy("createdAt","asc").get();
+          }catch(e){
+            s = await db.collection(col).where("modelTestId","==", modelTestId).get();
+          }
+          const list = s.docs.map(d=>({ id:d.id, ...d.data() }));
+          if(list.length) return list;
+        }catch(e){}
+      }
+
+      // subcollection fallback
+      try{
+        const ref = db.collection(COL_MODELTESTS).doc(modelTestId).collection("questions");
+        let s = null;
+        try{
+          s = await ref.orderBy("createdAt","asc").get();
+        }catch(e){
+          s = await ref.get();
+        }
+        return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      }catch(e){
+        return [];
+      }
+    }
+
+    function renderDetails(questions){
+      const list = $("detailList");
+      const p = resultPayload || {};
+      const mcqMap = getMcqAnswerMap(p);
+      const wrMap = getWrittenAnswerMap(p);
+
+      if(!questions.length){
+        list.innerHTML = `<div class="err">Details দেখানোর জন্য প্রশ্ন পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      const letters = ["A","B","C","D"];
+
+      const cards = [];
+
+      questions.forEach((q, idx)=>{
+        const qid = q.id;
+        const qText = getQText(q) || "(No question text)";
+        const isW = isWrittenQuestion(q);
+
+        let status = "skipped";
+        let chosenTxt = "--";
+        let correctTxt = "--";
+
+        if(isW){
+          const w = (wrMap[qid] ?? "").toString().trim();
+          chosenTxt = w ? w : "(No Answer)";
+          correctTxt = "(Written)";
+          status = w ? "answered" : "skipped";
+        }else{
+          const opts = getOptions(q);
+          const chosenIdx = Number(mcqMap[qid]);
+          const correctIdx = getCorrectIndex(q);
+
+          if(Number.isFinite(chosenIdx) && chosenIdx >= 0){
+            chosenTxt = `${letters[chosenIdx]}. ${opts[chosenIdx] ?? ""}`.trim();
+          }else{
+            chosenTxt = "(No Answer)";
+          }
+
+          if(Number.isFinite(correctIdx) && correctIdx >= 0){
+            correctTxt = `${letters[correctIdx]}. ${opts[correctIdx] ?? ""}`.trim();
+          }else{
+            correctTxt = "(No Correct Key)";
+          }
+
+          if(!(Number.isFinite(chosenIdx) && chosenIdx >= 0)) status = "skipped";
+          else if(Number.isFinite(correctIdx) && correctIdx >= 0 && chosenIdx === correctIdx) status = "right";
+          else status = "wrong";
+        }
+
+        if(onlyWrong && status !== "wrong") return;
+
+        const card = document.createElement("div");
+        card.className = "qCard";
+        card.innerHTML = `
+          <div class="qTop">
+            <span class="qNo">Q${idx+1}</span>
+            <p class="qText">${esc(qText)}</p>
+          </div>
+
+          <div class="ansLine">
+            <div class="box">
+              <div class="lbl">Your Answer</div>
+              <div class="val ${status==="right"?"ok":(status==="wrong"?"bad":"")}">${esc(chosenTxt)}</div>
+            </div>
+            <div class="box">
+              <div class="lbl">Correct</div>
+              <div class="val">${esc(correctTxt)}</div>
+            </div>
+          </div>
+        `;
+        cards.push(card);
+      });
+
+      list.innerHTML = "";
+      if(!cards.length){
+        list.innerHTML = `<div class="err">Wrong কোনো প্রশ্ন নেই (বা filter চালু আছে)।</div>`;
+        return;
+      }
+      cards.forEach(c=>list.appendChild(c));
+    }
+
+    function toggleOnlyWrong(){
+      onlyWrong = !onlyWrong;
+      $("btnFilter").textContent = onlyWrong ? "Show All" : "Show Only Wrong";
+      if(resultPayload?._questionsCache){
+        renderDetails(resultPayload._questionsCache);
+      }
+    }
+    window.toggleOnlyWrong = toggleOnlyWrong;
+
+    function downloadResultJSON(){
+      if(!resultPayload){
+        showToast("Result পাওয়া যায়নি");
+        return;
+      }
+      const file = {
+        ...resultPayload
+      };
+      delete file._questionsCache;
+
+      const blob = new Blob([JSON.stringify(file, null, 2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `result_${modelTestId || "modeltest"}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 800);
+    }
+    window.downloadResultJSON = downloadResultJSON;
+
+    // ===== load result =====
+    async function loadFromLocal(){
+      if(!modelTestId) return null;
+      const raw = localStorage.getItem(`epbd_result_${modelTestId}`);
+      if(!raw) return null;
+      try{
+        const obj = JSON.parse(raw);
+        if(obj && obj.modelTestId) return obj;
+        return null;
+      }catch(e){
+        return null;
+      }
+    }
+
+    async function loadLatestFromFirestore(){
+      if(!modelTestId) return null;
+      // latest doc for this modelTestId
+      const snap = await db.collection(COL_RESULTS)
+        .where("modelTestId","==", modelTestId)
+        .orderBy("submittedAt","desc")
+        .limit(1)
+        .get();
+
+      if(snap.empty) return null;
+      const d = snap.docs[0];
+      return { id: d.id, ...d.data() };
+    }
+
+    async function loadModelTestDoc(){
+      if(!modelTestId) return null;
+      try{
+        const s = await db.collection(COL_MODELTESTS).doc(modelTestId).get();
+        if(!s.exists) return null;
+        return { id:s.id, ...s.data() };
+      }catch(e){
+        return null;
+      }
+    }
+
+    async function boot(){
+      if(!modelTestId){
+        $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
+        $("pageSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
+        $("detailList").innerHTML = `<div class="err">Invalid URL.</div>`;
+        return;
+      }
+
+      // 1) try local
+      let p = await loadFromLocal();
+
+      // 2) fallback firestore
+      if(!p){
+        showToast("Local result নেই", "Firestore থেকে আনা হচ্ছে…");
+        try{
+          p = await loadLatestFromFirestore();
+        }catch(e){
+          console.error(e);
+          p = null;
+        }
+      }
+
+      if(!p){
+        $("pageTitle").textContent = "Result পাওয়া যায়নি";
+        $("pageSub").textContent = "এই modelTestId এর কোনো result Firestore এ নেই।";
+        $("detailList").innerHTML = `<div class="err">No result found.</div>`;
+        return;
+      }
+
+      resultPayload = p;
+
+      // load test doc (optional)
+      mtDoc = await loadModelTestDoc();
+
+      renderSummary();
+
+      // Load questions for details
+      $("detailList").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
+      const qs = await fetchQuestions(modelTestId);
+      resultPayload._questionsCache = qs;
+      renderDetails(qs);
+
+      showToast("Result Ready ✅", "Details দেখুন");
+    }
+
+    boot();
+  </script>
+</body>
+</html>
