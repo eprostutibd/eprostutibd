@@ -9,16 +9,10 @@
   <style>
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
-      --line: rgba(18, 28, 55, .10);
       --text:#0f1730; --muted:#5a6685;
-
-      --shadow: 0 16px 44px rgba(15,23,48,.12);
-      --shadow2: 0 10px 26px rgba(15,23,48,.08);
-
-      --brandA:#1d4ed8;
-      --danger:#dc2626;
+      --brand:#1d4ed8;
       --ok:#16a34a;
-
+      --danger:#dc2626;
       --safeBottom: env(safe-area-inset-bottom, 0px);
     }
 
@@ -26,7 +20,7 @@
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", "Hind Siliguri", sans-serif;
       color:var(--text);
       background:
         radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
@@ -35,34 +29,29 @@
       min-height:100vh;
     }
 
+    /* ===== Header ===== */
     header{
-      position:sticky; top:0; z-index:60;
+      position: sticky;
+      top:0;
+      z-index: 60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
       border-bottom: 1px solid rgba(255,255,255,.22);
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
       max-width: 1320px;
-      margin:0 auto;
+      margin: 0 auto;
       padding: 10px clamp(12px, 4vw, 48px);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
     }
-    .brand{
-      display:flex; flex-direction:column; gap:3px; min-width:0;
-    }
-    .brand .name{
-      color:#fff; font-weight:1000; font-size:15px; line-height:1;
-      white-space:nowrap;
-    }
-    /* ✅ header এ test name দেখাবে না */
-    .brand .tag{
-      display:none;
-    }
+    .brand{display:flex; flex-direction:column; gap:2px; min-width:0;}
+    .brand .name{color:#fff; font-weight:1000; font-size:15px; line-height:1; white-space:nowrap;}
+    .brand .tag{display:none;} /* ✅ header এ test name দেখাবে না */
 
-    .pillRow{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+    .headRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
     .pill{
       background: rgba(255,255,255,.14);
       border: 1px solid rgba(255,255,255,.22);
@@ -76,88 +65,62 @@
       align-items:center;
       white-space:nowrap;
     }
+    .pill b{font-weight:1100}
 
-    .container{
+    /* ===== Layout with side ads ===== */
+    .page{
       max-width: 1320px;
       margin: 0 auto;
       padding: 12px clamp(12px, 4vw, 48px) 18px;
+      display:grid;
+      grid-template-columns: 220px 1fr 220px; /* ✅ left ads | content | right ads */
+      gap: 14px;
+      align-items:start;
     }
 
-    /* ===== Center Meta Panel ===== */
-    .metaPanel{
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,.74);
-      box-shadow: var(--shadow2);
-      padding: 12px 14px;
+    @media (max-width: 1100px){
+      .page{grid-template-columns: 1fr; }
+      .sideAd{display:none;} /* mobile এ side ads hide */
+    }
+
+    .sideAd{
+      position: sticky;
+      top: 92px;
+      align-self:start;
+    }
+    .adBox{
+      border: 1px dashed rgba(18,28,55,.22);
+      border-radius: 14px;
+      background: rgba(255,255,255,.55);
+      min-height: 520px;
+      padding: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 1000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-align:center;
     }
-    .metaTitle{
-      font-size: 14px;
-      font-weight: 1100;
-      margin: 2px 0 8px;
-    }
-    .metaRow{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+
+    /* ===== Center meta (no card/box) ===== */
+    .metaCenter{text-align:center; margin: 10px 0 12px;}
+    .metaTitle{font-size: 14px; font-weight: 1100; margin: 0 0 6px;}
+    .metaLine{
+      font-size: 12px;
       color: var(--muted);
-      font-size:12px;
       font-weight: 900;
-    }
-    .chip{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.82);
-      border-radius: 999px;
-      padding: 7px 11px;
-      white-space:nowrap;
-    }
-
-    /* ===== PDF button ===== */
-    .actionsRow{
-      margin-top: 10px;
       display:flex;
       justify-content:center;
-      gap:10px;
+      gap:14px;
       flex-wrap:wrap;
     }
-    .btn{
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.92);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.12s;
-      white-space:nowrap;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .btn.primary{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.12);
-      color: var(--brandA);
-    }
-    .btn.danger{
-      border-color: rgba(220,38,38,.28);
-      background: rgba(220,38,38,.10);
-      color: var(--danger);
-    }
 
-    /* ===== Paper body ===== */
-    .paper{
-      margin-top: 12px;
+    /* ===== Paper (plain text inside, no question cards) ===== */
+    .paperWrap{
+      position: relative;
       padding: 16px;
       border-radius: 18px;
-      border: 1px solid rgba(18,28,55,.10);
-      box-shadow: var(--shadow);
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
@@ -166,10 +129,9 @@
           rgba(0,0,0,0) 24px,
           rgba(18,28,55,.055) 25px
         );
-      position: relative;
       overflow:hidden;
     }
-    .paper::before{
+    .paperWrap::before{
       content:"";
       position:absolute; inset:0;
       background: radial-gradient(900px 260px at 20% 0%, rgba(29,78,216,.05), transparent 60%),
@@ -177,66 +139,71 @@
       pointer-events:none;
     }
 
-    /* ===== All questions 2-column ===== */
-    .qGrid{
-      position:relative;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      z-index:1;
+    /* PDF button right side inside paper */
+    .pdfDock{
+      position: sticky;
+      top: 92px;
+      float: right;
+      z-index: 5;
+      margin-left: 12px;
     }
     @media (max-width: 860px){
-      .qGrid{grid-template-columns: 1fr;}
+      .pdfDock{float:none; position: sticky; top: 72px; margin: 0 0 10px; display:flex; justify-content:flex-end;}
     }
 
-    .qBlock{
-      padding: 12px 12px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.76);
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-    }
-
-    .qTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 6px;
-      flex-wrap:wrap;
-    }
-    .qNo, .qType{
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.84);
+    .btn{
+      border: 1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.92);
+      color: var(--text);
       border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      font-weight:1000;
-      color: var(--muted);
+      padding: 9px 14px;
+      font-size:12px;
+      font-weight:1100;
+      cursor:pointer;
       white-space:nowrap;
     }
-    .qText{
-      margin:0;
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.65;
+    .btn.primary{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.12);
+      color: var(--brand);
     }
-    .noteInline{
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
+    .btn.danger{
+      border-color: rgba(220,38,38,.28);
+      background: rgba(220,38,38,.10);
+      color: var(--danger);
     }
-    .noteInline b{color: var(--text)}
 
-    /* ✅ options: no box; click -> tick mark */
-    .opts{
-      margin-top: 10px;
+    /* Questions 2 columns, plain text */
+    .qGrid{
+      position: relative;
+      z-index: 1;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px 14px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(18,28,55,.12);
+      gap: 12px 26px;
+      align-items:start;
+    }
+    @media (max-width: 860px){ .qGrid{grid-template-columns: 1fr;} }
+
+    .qItem{padding: 2px 0;}
+    .qHead{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 4px;
+    }
+    .qNo,.qType{font-size:12px; color: var(--muted); font-weight:1000; white-space:nowrap;}
+    .qText{margin: 0; font-size: 13px; font-weight: 900; line-height: 1.65;}
+    .note{margin-top: 4px; font-size: 12px; line-height: 1.6; color: var(--muted);}
+    .note b{color: var(--text)}
+
+    /* MCQ options: no boxes */
+    .opts{
+      margin-top: 8px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
     }
     .opt{
       display:flex;
@@ -244,68 +211,80 @@
       align-items:flex-start;
       cursor:pointer;
       user-select:none;
-      padding: 2px 2px;
+      padding: 2px 0;
     }
     .tick{
-      width: 18px;
-      flex:0 0 18px;
+      width: 16px;
+      flex:0 0 16px;
       margin-top: 2px;
-      font-weight: 1100;
-      color: transparent; /* hidden by default */
+      font-weight: 1200;
+      color: transparent;
+      line-height:1;
     }
     .badge{
-      width: 26px;height:26px;
+      width: 24px;
+      height: 24px;
       border-radius: 999px;
-      border:1px solid rgba(18,28,55,.14);
-      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
       display:grid;
       place-items:center;
-      font-weight:1000;
+      font-weight:1100;
       color: var(--muted);
       flex: 0 0 auto;
       margin-top: 1px;
+      background: rgba(255,255,255,.8);
     }
-    .opt .txt{
-      font-size: 12.6px;
-      line-height: 1.65;
-      color: var(--text);
-      flex:1;
-    }
-    .opt.selected .tick{color: var(--ok);}
-    .opt.selected .badge{
-      border-color: rgba(29,78,216,.35);
-      background: rgba(29,78,216,.10);
-      color: var(--brandA);
-    }
-    .opt.selected .txt{font-weight: 900;}
+    .opt .txt{font-size: 12.6px; line-height: 1.65; color: var(--text); flex:1;}
 
-    .writtenBox{margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(18,28,55,.12);}
+    /* ✅ Selected = green + bold + green mark */
+    .opt.selected .tick{color: var(--ok);}
+    .opt.selected .txt{color: var(--ok); font-weight: 1200;}
+    .opt.selected .badge{border-color: rgba(22,163,74,.45); color: var(--ok);}
+
+    /* Written answer */
+    .writtenBox{margin-top: 8px;}
     textarea{
       width:100%;
-      min-height: 120px;
+      min-height: 110px;
       resize: vertical;
-      border: 1px solid rgba(18,28,55,.12);
-      border-radius: 14px;
+      border: 1px solid rgba(18,28,55,.14);
+      border-radius: 12px;
       padding: 10px 12px;
       outline: none;
       background: rgba(255,255,255,.92);
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
       font-family: inherit;
       font-size: 13px;
       line-height: 1.6;
     }
 
-    .loading{color: var(--muted); font-size:12px; text-align:center; padding: 14px;}
-    .err{color: var(--danger); font-size:12px; font-weight:1000; text-align:center; padding: 14px;}
-
-    /* ✅ Submit will be at bottom of all questions */
-    .submitWrap{
-      margin-top: 14px;
+    /* Inline ads between questions (2 ads) */
+    .adSlot{
+      grid-column: 1 / -1;
+      border-top: 1px dashed rgba(18,28,55,.18);
+      border-bottom: 1px dashed rgba(18,28,55,.18);
+      padding: 10px 0;
+      margin: 6px 0;
       display:flex;
       justify-content:center;
-      position:relative;
-      z-index:1;
+      align-items:center;
+      min-height: 90px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 1000;
+      text-align:center;
     }
+
+    .submitArea{
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      display:flex;
+      justify-content:center;
+      padding-bottom: calc(10px + var(--safeBottom));
+    }
+
+    .loading{color: var(--muted); font-size:12px; text-align:center; padding: 14px;}
+    .err{color: var(--danger); font-size:12px; font-weight:1100; text-align:center; padding: 14px;}
 
     .toast{
       position: fixed;
@@ -327,6 +306,31 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
+    /* Footer */
+    footer{
+      margin-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(11,27,69,.96), rgba(7,22,53,.98));
+      color: rgba(255,255,255,.92);
+    }
+    .footInner{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 14px clamp(12px, 4vw, 48px);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      color: rgba(255,255,255,.78);
+      font-weight: 900;
+    }
+
+    /* For PDF render: remove floats */
+    .pdfMode .pdfDock{display:none !important;}
+    .pdfMode .sideAd{display:none !important;}
+    .pdfMode body{background:#fff !important;}
   </style>
 </head>
 
@@ -335,46 +339,77 @@
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
-        <div class="tag" id="headerTag">Model Test</div>
+        <div class="tag" id="headerTag"></div>
       </div>
 
-      <div class="pillRow">
+      <div class="headRight">
         <div class="pill">Time Left: <b id="timeLeft">--:--</b></div>
         <div class="pill">Answered: <b id="answeredCount">0</b>/<b id="qTotalTop">0</b></div>
       </div>
     </div>
   </header>
 
-  <div class="container">
-    <!-- ✅ Center meta info -->
-    <div class="metaPanel">
-      <div class="metaTitle" id="mtTitle">Loading…</div>
-      <div class="metaRow">
-        <span class="chip" id="mtTime">⏱ -- min</span>
-        <span class="chip" id="mtMark">🧮 Mark: --</span>
-        <span class="chip">Total Q: <b id="qTotal">0</b></span>
+  <div class="page">
+    <!-- ✅ Left Side Ad -->
+    <aside class="sideAd" aria-label="Left Ad">
+      <div class="adBox" id="leftAdBox">
+        Left Side Ad<br/>
+        (Paste AdSense/Adstra code here)
+      </div>
+    </aside>
+
+    <!-- ✅ Main Content -->
+    <main>
+      <div class="metaCenter">
+        <div class="metaTitle" id="mtTitle">Loading…</div>
+        <div class="metaLine">
+          <span id="mtTime">⏱ -- min</span>
+          <span id="mtMark">🧮 Mark: --</span>
+          <span>Total Q: <b id="qTotal">0</b></span>
+        </div>
       </div>
 
-      <!-- ✅ PDF download option -->
-      <div class="actionsRow">
-        <a class="btn primary" id="pdfBtn" href="#" target="_blank" rel="noopener" style="display:none;">⬇️ PDF Download</a>
-      </div>
-    </div>
+      <!-- This wrapper will be captured for PDF -->
+      <div class="paperWrap" id="paperForPdf">
+        <div class="pdfDock">
+          <button class="btn primary" id="pdfBtn" onclick="downloadPDF()">⬇️ PDF Download</button>
+        </div>
 
-    <!-- ✅ Paper body -->
-    <div class="paper">
-      <div id="content">
-        <div class="loading">ডাটা লোড হচ্ছে…</div>
+        <div id="content">
+          <div class="loading">ডাটা লোড হচ্ছে…</div>
+        </div>
       </div>
-    </div>
+    </main>
+
+    <!-- ✅ Right Side Ad -->
+    <aside class="sideAd" aria-label="Right Ad">
+      <div class="adBox" id="rightAdBox">
+        Right Side Ad<br/>
+        (Paste AdSense/Adstra code here)
+      </div>
+    </aside>
   </div>
 
   <div class="toast" id="toast"></div>
 
+  <footer>
+    <div class="footInner">
+      <div>© <span id="year"></span> eProstutiBD</div>
+      <div>All rights reserved</div>
+    </div>
+  </footer>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
+  <!-- ✅ PDF with perfect Bangla: html2canvas + jsPDF -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ===== Firebase config =====
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -460,6 +495,7 @@
       return t === "written" || t === "cq" || t === "short" || t === "essay";
     }
 
+    // ===== state =====
     const modelTestId = getParam("modelTestId");
     let mtDoc = null;
     let questions = [];
@@ -487,17 +523,6 @@
       }catch(e){}
     }
 
-    // ===== timer (your input time count) =====
-    let endAtMs = 0;
-    let timerHandle = null;
-
-    function formatMMSS(sec){
-      sec = Math.max(0, Math.floor(sec));
-      const m = Math.floor(sec / 60);
-      const s = sec % 60;
-      return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
-    }
-
     function countAnswered(){
       let done = 0;
       for(const q of questions){
@@ -510,7 +535,6 @@
       }
       return done;
     }
-
     function updateAnsweredUI(){
       $("answeredCount").textContent = String(countAnswered());
       $("qTotalTop").textContent = String(questions.length);
@@ -530,6 +554,17 @@
       return list;
     }
 
+    // ===== timer =====
+    let endAtMs = 0;
+    let timerHandle = null;
+
+    function formatMMSS(sec){
+      sec = Math.max(0, Math.floor(sec));
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+    }
+
     function startTimer(minutes){
       const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
       if(!totalSeconds){
@@ -537,7 +572,6 @@
         return;
       }
 
-      // persist end time (reload করলে একই টাইম থাকবে)
       const key = `epbd_mt_end_${modelTestId}`;
       const saved = localStorage.getItem(key);
       const now = Date.now();
@@ -577,7 +611,7 @@
       timerHandle = setInterval(tick, 1000);
     }
 
-    function setHeader(){
+    function setMeta(){
       const title = getTitleField(mtDoc);
       $("mtTitle").textContent = title;
 
@@ -587,15 +621,13 @@
       $("qTotal").textContent = String(questions.length || 0);
 
       updateAnsweredUI();
+    }
 
-      // ✅ PDF download button (doc field-based)
-      // supports: pdfUrl / pdf / pdf_link / pdfLink
-      const pdfUrl = (mtDoc?.pdfUrl ?? mtDoc?.pdf ?? mtDoc?.pdf_link ?? mtDoc?.pdfLink ?? "").toString().trim();
-      if(pdfUrl){
-        const a = $("pdfBtn");
-        a.href = pdfUrl;
-        a.style.display = "inline-flex";
-      }
+    // ===== Two inline ads positions =====
+    function adPositions(total){
+      const p1 = Math.min(4, Math.max(1, Math.floor(total/3)));
+      const p2 = Math.min(10, Math.max(p1+1, Math.floor((2*total)/3)));
+      return [p1, p2];
     }
 
     function renderAll(){
@@ -611,32 +643,32 @@
       grid.className = "qGrid";
 
       const letters = ["A","B","C","D"];
+      const [adAfter1, adAfter2] = adPositions(questions.length);
 
       questions.forEach((q, i)=>{
         const qid = q.id;
         const written = isWrittenQuestion(q);
         const typeLabel = written ? "Written" : "MCQ";
 
-        const block = document.createElement("div");
-        block.className = "qBlock";
-        block.id = `q_${qid}`;
+        const item = document.createElement("div");
+        item.className = "qItem";
+        item.id = `q_${qid}`;
 
-        const top = document.createElement("div");
-        top.className = "qTop";
-        top.innerHTML = `<span class="qNo">Q${i+1}</span><span class="qType">${esc(typeLabel)}</span>`;
-        block.appendChild(top);
+        const head = document.createElement("div");
+        head.className = "qHead";
+        head.innerHTML = `<span class="qNo">Q${i+1}</span><span class="qType">${esc(typeLabel)}</span>`;
+        item.appendChild(head);
 
-        const qt = pickQuestionText(q);
         const p = document.createElement("p");
         p.className = "qText";
-        p.innerHTML = esc(qt || "(No question text)");
-        block.appendChild(p);
+        p.innerHTML = esc(pickQuestionText(q) || "(No question text)");
+        item.appendChild(p);
 
         const noteTxt = (q.note ?? q.explain ?? q.explanation ?? q.noteText ?? "").toString().trim();
         const note = document.createElement("div");
-        note.className = "noteInline";
+        note.className = "note";
         note.innerHTML = `<b>Note:</b> ${esc(noteTxt || "-")}`;
-        block.appendChild(note);
+        item.appendChild(note);
 
         if(written){
           const wb = document.createElement("div");
@@ -650,7 +682,7 @@
             updateAnsweredUI();
           });
           wb.appendChild(ta);
-          block.appendChild(wb);
+          item.appendChild(wb);
         }else{
           const opts = getOptions(q);
           const chosen = mcqAns.get(qid);
@@ -666,34 +698,45 @@
               <span class="badge">${letters[oi]}</span>
               <div class="txt">${esc(op || "")}</div>
             `;
-
             opt.addEventListener("click", ()=>{
               mcqAns.set(qid, oi);
               persistAnswers();
 
-              // update UI ticks in this question block only
               Array.from(ow.querySelectorAll(".opt")).forEach((el)=>el.classList.remove("selected"));
               opt.classList.add("selected");
 
               updateAnsweredUI();
             });
-
             ow.appendChild(opt);
           });
 
-          block.appendChild(ow);
+          item.appendChild(ow);
         }
 
-        grid.appendChild(block);
+        grid.appendChild(item);
+
+        // 2 inline ad slots
+        const qNo = i+1;
+        if(qNo === adAfter1 || qNo === adAfter2){
+          const ad = document.createElement("div");
+          ad.className = "adSlot";
+          ad.innerHTML = `
+            <div>
+              Inline Ad Slot (${qNo === adAfter1 ? "1" : "2"})<br/>
+              (Paste your AdSense/Adstra code here)
+            </div>
+          `;
+          grid.appendChild(ad);
+        }
       });
 
       wrap.appendChild(grid);
 
-      // ✅ submit button at the bottom of all questions
-      const submitWrap = document.createElement("div");
-      submitWrap.className = "submitWrap";
-      submitWrap.innerHTML = `<button class="btn danger" onclick="submitTest()">Submit</button>`;
-      wrap.appendChild(submitWrap);
+      // Submit bottom
+      const submitArea = document.createElement("div");
+      submitArea.className = "submitArea";
+      submitArea.innerHTML = `<button class="btn danger" onclick="submitTest()">Submit</button>`;
+      wrap.appendChild(submitArea);
 
       updateAnsweredUI();
     }
@@ -731,7 +774,6 @@
     function submitTest(isAuto=false){
       if(!modelTestId) return;
 
-      // ✅ Unanswered warning (manual submit only)
       if(!isAuto){
         const un = getUnansweredList();
         if(un.length){
@@ -840,7 +882,7 @@
 
         questions = qs;
 
-        setHeader();
+        setMeta();
 
         const mins = getTimeMinFromDoc(mtDoc);
         startTimer(mins);
@@ -864,6 +906,68 @@
     window.addEventListener("beforeunload", ()=> {
       try{ persistAnswers(); }catch(e){}
     });
+
+    // ===== PDF Download (Bangla-perfect via screenshot PDF) =====
+    async function downloadPDF(){
+      try{
+        const paper = document.getElementById("paperForPdf");
+        if(!paper){ showToast("Paper পাওয়া যায়নি"); return; }
+
+        // Temporarily hide interactive elements if needed
+        const pdfBtn = document.getElementById("pdfBtn");
+        const prevDisplay = pdfBtn ? pdfBtn.style.display : "";
+        if(pdfBtn) pdfBtn.style.display = "none";
+
+        // High quality render
+        const canvas = await html2canvas(paper, {
+          scale: 2.2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          scrollX: 0,
+          scrollY: -window.scrollY
+        });
+
+        if(pdfBtn) pdfBtn.style.display = prevDisplay;
+
+        const imgData = canvas.toDataURL("image/jpeg", 0.92);
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+
+        // Calculate image size in PDF
+        const imgW = pageW;
+        const imgH = (canvas.height * imgW) / canvas.width;
+
+        let y = 0;
+        if(imgH <= pageH){
+          pdf.addImage(imgData, "JPEG", 0, 0, imgW, imgH);
+        }else{
+          // Multi-page slicing
+          let remaining = imgH;
+          let position = 0;
+
+          while(remaining > 0){
+            pdf.addImage(imgData, "JPEG", 0, position, imgW, imgH);
+            remaining -= pageH;
+            position -= pageH;
+
+            if(remaining > 0){
+              pdf.addPage();
+            }
+          }
+        }
+
+        const title = (mtDoc ? (getTitleField(mtDoc) || "Model Test") : "Model Test").toString();
+        const safeName = title.replace(/[\\/:*?"<>|]+/g, " ").trim() || "model-test";
+        pdf.save(`${safeName}.pdf`);
+      }catch(e){
+        console.error(e);
+        showToast("PDF তৈরি করা যায়নি");
+      }
+    }
+    window.downloadPDF = downloadPDF;
 
     loadAll();
   </script>
