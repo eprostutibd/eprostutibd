@@ -201,6 +201,31 @@
       margin: 0 0 10px;
       text-align:center;
     }
+
+    /* ✅ Mobile download next to title */
+    .mtTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mobileDl{
+      display:none;
+      border:1px solid rgba(29,78,216,.22);
+      background: rgba(29,78,216,.12);
+      color: rgba(29,78,216,1);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    @media (max-width: 980px){
+      .mobileDl{display:inline-flex;}
+    }
+
     .metaRow{
       display:flex;
       justify-content:center;
@@ -553,6 +578,46 @@
     }
     .btnPrimary:disabled{opacity:.55; cursor:not-allowed;}
 
+    /* ===== Confirm modal (submit) ===== */
+    .confirmModal{
+      position: fixed;
+      inset: 0;
+      z-index: 999998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .confirmModal.show{display:flex;}
+    .confirmModal .overlay{
+      position:absolute; inset:0;
+      background: rgba(10,18,40,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .confirmCard{
+      position:relative;
+      width: min(520px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      padding: 14px;
+    }
+    .confirmTitle{margin:0;font-size:14px;font-weight:1000;}
+    .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
+    .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
+    .btnGhost{
+      border:1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.70);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+    }
+
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
@@ -727,8 +792,13 @@
       <!-- MAIN -->
       <section aria-label="Questions">
         <div class="metaSticky">
-          <h2 class="metaTitle" id="mtName">Loading…</h2>
-          <div class="metaRow" aria-label="Test meta">
+          <div class="mtTitleRow">
+            <h2 class="metaTitle" id="mtName" style="margin:0;">Loading…</h2>
+            <!-- ✅ Mobile-only download beside title -->
+            <button class="mobileDl" type="button" onclick="downloadBothPDFs()">Download</button>
+          </div>
+
+          <div class="metaRow" aria-label="Test meta" style="margin-top:10px;">
             <span class="chip">⏱ Time: <b id="mtTime">--</b> min</span>
             <span class="chip">🧮 Mark: <b id="mtMark">--</b></span>
             <span class="chip">📌 Total Q: <b id="mtTotalQ">0</b></span>
@@ -787,16 +857,34 @@
     <div class="modalCard">
       <div class="modalHead">
         <div>
-          <p class="modalTitle">শুরু করার আগে নাম লিখুন</p>
-          <p class="modalText">নাম Submit না করা পর্যন্ত কোনো প্রশ্নে উত্তর দেওয়া যাবে না।</p>
+          <p class="modalTitle">শুরু করার আগে নাম ও জেলা লিখুন</p>
+          <p class="modalText">নাম/জেলা Submit না করা পর্যন্ত কোনো প্রশ্নে উত্তর দেওয়া যাবে না।</p>
         </div>
       </div>
       <div class="modalBody">
         <label for="studentName">আপনার নাম</label>
         <input id="studentName" type="text" placeholder="যেমন: Md Ebadot Hossen" autocomplete="name" />
+
+        <!-- ✅ District (Zila) manual typing -->
+        <label for="studentDistrict" style="margin-top:10px;">আপনার জেলা</label>
+        <input id="studentDistrict" type="text" placeholder="যেমন: Dhaka / Rajshahi / Cumilla" autocomplete="address-level2" />
       </div>
       <div class="modalActions">
         <button class="btnPrimary" id="btnNameSubmit" type="button" onclick="submitName()">Start Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Submit confirm modal -->
+  <div class="confirmModal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Confirm submit">
+    <div class="overlay" onclick="confirmNo()"></div>
+    <div class="confirmCard" onclick="event.stopPropagation()">
+      <p class="confirmTitle" id="confirmTitle">Confirm</p>
+      <p class="confirmText" id="confirmText">...</p>
+
+      <div class="confirmActions">
+        <button class="btnGhost" type="button" onclick="confirmNo()">No</button>
+        <button class="btnPrimary" type="button" onclick="confirmYes()">Yes</button>
       </div>
     </div>
   </div>
@@ -869,6 +957,8 @@
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
+
+    // Keep ESC behavior: close menu; confirm modal also handles ESC separately
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
     // ===== toast =====
@@ -890,6 +980,39 @@
       clearTimeout(showToast._tm);
       showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 1900);
     }
+
+    // ===== Confirm modal (custom Yes/No) =====
+    let _confirmResolver = null;
+
+    function openConfirm(title, text){
+      $("confirmTitle").textContent = title || "Confirm";
+      $("confirmText").textContent = text || "";
+      $("confirmModal").classList.add("show");
+      return new Promise((resolve)=>{
+        _confirmResolver = resolve;
+      });
+    }
+    function closeConfirm(){
+      $("confirmModal").classList.remove("show");
+    }
+    function confirmYes(){
+      closeConfirm();
+      if(_confirmResolver) _confirmResolver(true);
+      _confirmResolver = null;
+    }
+    function confirmNo(){
+      closeConfirm();
+      if(_confirmResolver) _confirmResolver(false);
+      _confirmResolver = null;
+    }
+    window.confirmYes = confirmYes;
+    window.confirmNo = confirmNo;
+
+    document.addEventListener("keydown",(e)=>{
+      if(e.key==="Escape"){
+        if($("confirmModal")?.classList.contains("show")) confirmNo();
+      }
+    });
 
     // ===== utils =====
     function getParam(name){
@@ -926,6 +1049,7 @@
 
     // Name gate
     let studentName = "";
+    let studentDistrict = ""; // ✅ add district (Zila)
     let nameUnlocked = false;
 
     function openNameModal(){
@@ -939,15 +1063,25 @@
 
     function submitName(){
       const v = ($("studentName").value || "").trim();
+      const d = ($("studentDistrict").value || "").trim();
+
       if(!v){
         showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
         $("studentName").focus();
         return;
       }
+      if(!d){
+        showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন");
+        $("studentDistrict").focus();
+        return;
+      }
+
       studentName = v;
+      studentDistrict = d;
+
       nameUnlocked = true;
       closeNameModal();
-      showToast("Test শুরু হলো", `শুভকামনা, ${studentName}!`);
+      showToast("Test শুরু হলো", `শুভকামনা, ${studentName} (${studentDistrict})!`);
     }
     window.submitName = submitName;
 
@@ -955,7 +1089,7 @@
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
-      showToast("নাম Submit করুন", "তারপর উত্তর দিতে পারবেন");
+      showToast("নাম/জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
       return false;
     }
 
@@ -1210,26 +1344,31 @@
       }
     }
 
-    function submitTest(isAuto=false){
+    // ✅ async submitTest so we can show custom Yes/No modal
+    async function submitTest(isAuto=false){
       if(!modelTestId) return;
 
-      // if name not submitted, prevent submit too
+      // if name/district not submitted, prevent submit too
       if(!nameUnlocked){
         openNameModal();
-        showToast("নাম Submit করুন", "তারপর Submit করতে পারবেন");
+        showToast("নাম/জেলা Submit করুন", "তারপর Submit করতে পারবেন");
         return;
       }
 
       const missing = getUnanswered();
+
       if(!isAuto && missing.length){
-        const ok = confirm(`আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`);
+        const ok = await openConfirm(
+          "Submit করার আগে",
+          `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
+        );
         if(!ok){
           scrollToQuestion(missing[0].id);
           showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
           return;
         }
       }else if(!isAuto){
-        const ok = confirm("আপনি কি নিশ্চিতভাবে Submit করতে চান?");
+        const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
         if(!ok) return;
       }
 
@@ -1238,7 +1377,8 @@
         title: getTitleField(mtDoc),
         submittedAt: Date.now(),
         isAuto: !!isAuto,
-        studentName, // ✅ name will show in result page
+        studentName,       // ✅ name will show in result page
+        studentDistrict,   // ✅ district will show in result page
         answers: {
           mcq: Array.from(mcqAns.entries()),
           written: Array.from(writtenAns.entries())
@@ -1406,22 +1546,23 @@
     async function loadRecentModelTests(){
       const wrap = $("recentList");
       try{
-        // ✅ latest 6 tests
+        // ✅ latest 5 tests
         let snap = null;
         try{
-          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(6).get();
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
         }catch(e){
           // fallback: if createdAt missing or index problem, just limit
-          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(6).get();
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
         }
 
         const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+        wrap.innerHTML = "";
+
         if(!docs.length){
           wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
           return;
         }
 
-        wrap.innerHTML = "";
         docs.forEach(doc=>{
           const title = getTitleField(doc);
           const mins = getTimeMinFromDoc(doc) || "--";
@@ -1439,6 +1580,19 @@
           wrap.appendChild(a);
         });
 
+        // ✅ See more -> premium page
+        const more = document.createElement("a");
+        more.className = "recentItem";
+        more.href = "premium-model-test.html";
+        more.innerHTML = `
+          <span class="recentDot"></span>
+          <div>
+            <div class="recentTitle">See more</div>
+            <div class="recentMeta">Premium model tests দেখুন</div>
+          </div>
+        `;
+        wrap.appendChild(more);
+
       }catch(err){
         console.error(err);
         wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
@@ -1452,9 +1606,11 @@
         return;
       }
 
-      // show modal immediately (must submit name before answering)
+      // show modal immediately (must submit name + district before answering)
       openNameModal();
+
       $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+      $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
 
       // recent list load
       loadRecentModelTests();
@@ -1482,7 +1638,7 @@
         setMetaHeader();
         startTimer(getTimeMinFromDoc(mtDoc));
         renderAll();
-        showToast("Test প্রস্তুত", "নাম Submit করলে উত্তর দিতে পারবেন");
+        showToast("Test প্রস্তুত", "নাম/জেলা Submit করলে উত্তর দিতে পারবেন");
       }catch(err){
         console.error(err);
         $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
