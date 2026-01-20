@@ -198,7 +198,7 @@
       font-size: 16px;
       font-weight: 1000;
       line-height: 1.25;
-      margin: 0 0 10px;
+      margin: 0;
       text-align:center;
     }
 
@@ -234,6 +234,7 @@
       color: var(--muted);
       font-size:12px;
       font-weight: 900;
+      margin-top: 10px;
     }
     .chip{
       border:1px solid rgba(18,28,55,.10);
@@ -280,10 +281,7 @@
     /* ✅ 2-column questions */
     .qList{position: relative;z-index: 1;}
     @media (min-width: 981px){
-      .qList{
-        display:grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+      .qList{display:grid;grid-template-columns: repeat(2, minmax(0, 1fr));}
       .qRow:nth-child(2n){border-left: 1px solid var(--line2);}
       .qRow:nth-child(n+3){border-top: 1px solid var(--line2);}
     }
@@ -324,7 +322,6 @@
     }
     .optKey{font-weight:1000;font-size:13px;color: var(--muted);line-height:1.5;}
     .optTxt{font-size:13.5px;line-height:1.6;color: var(--text);}
-
     .optLine.selected .tick{color: var(--ok);}
     .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
     .optLine.selected .optKey{color: var(--ok);}
@@ -349,21 +346,10 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
+    /* ===== Sidebars ===== */
     .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
-    .sideStack{
-      height: 100%;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      overflow: hidden !important;
-      overscroll-behavior: none;
-    }
-
-    .adBox, .adBody, .pdfBox, .recentBox{
-      overflow: hidden !important;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: auto;
-    }
+    .sideStack{height: 100%;display:flex;flex-direction:column;gap: 10px;overflow: hidden !important;overscroll-behavior: none;}
+    .adBox, .adBody, .pdfBox, .recentBox{overflow: hidden !important;overscroll-behavior: none;-webkit-overflow-scrolling: auto;}
 
     .adBox{
       border:1px dashed rgba(18,28,55,.22);
@@ -428,12 +414,7 @@
       overflow:hidden;
       flex: 0 0 auto;
     }
-    .recentList{
-      padding: 10px;
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-    }
+    .recentList{padding: 10px;display:flex;flex-direction:column;gap: 8px;}
     .recentItem{
       text-decoration:none;
       display:flex;
@@ -470,6 +451,7 @@
       white-space:nowrap;
     }
 
+    /* toast */
     .toast{
       position: fixed;
       left: 50%;
@@ -838,6 +820,7 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
+
       <!-- LEFT sidebar -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
@@ -861,11 +844,12 @@
       <section aria-label="Questions">
         <div class="metaSticky">
           <div class="mtTitleRow">
-            <h2 class="metaTitle" id="mtName" style="margin:0;">Loading…</h2>
+            <h2 class="metaTitle" id="mtName">Loading…</h2>
+            <!-- ✅ mobile download beside test name -->
             <button class="mobileDl" type="button" onclick="downloadCombinedPDF()">Download</button>
           </div>
 
-          <div class="metaRow" aria-label="Test meta" style="margin-top:10px;">
+          <div class="metaRow" aria-label="Test meta">
             <span class="chip">⏱ Time: <b id="mtTime">--</b> min</span>
             <span class="chip">🧮 Mark: <b id="mtMark">--</b></span>
             <span class="chip">📌 Total Q: <b id="mtTotalQ">0</b></span>
@@ -931,7 +915,7 @@
         <label for="studentName">আপনার নাম</label>
         <input id="studentName" type="text" placeholder="যেমন: Md Ebadot Hossen" autocomplete="name" />
 
-        <label for="studentDistrict" style="margin-top:10px;">আপনার জেলা</label>
+        <label for="studentDistrict" style="margin-top:10px;">আপনার জেলা (Zila)</label>
         <input id="studentDistrict" type="text" placeholder="যেমন: Dhaka / Rajshahi / Cumilla" autocomplete="address-level2" />
       </div>
       <div class="modalActions">
@@ -1051,7 +1035,6 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
-    // year
     document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
@@ -1079,7 +1062,7 @@
       `;
       t.style.display = "block";
       clearTimeout(showToast._tm);
-      showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 1900);
+      showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2100);
     }
 
     // ===== Confirm modal (custom Yes/No) =====
@@ -1116,12 +1099,11 @@
     const db = firebase.firestore();
 
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ updated (no space)
+    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ NO space
     const QUESTION_COLLECTION_CANDIDATES = [
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
-    // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
 
     // ===== state =====
@@ -1167,8 +1149,7 @@
     }
     window.submitName = submitName;
 
-    // ✅ Modal can be closed to view questions.
-    // ✅ But answering requires submit; trying to answer opens modal again.
+    // ✅ Modal close allowed; but answering requires submit.
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
@@ -1465,10 +1446,11 @@
     async function saveResultToFirebase(payload){
       try{
         const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
+        console.log("✅ Firestore saved:", ref.id);
         return ref.id;
       }catch(e){
-        console.error("Firestore write failed:", e);
-        showToast("Firebase save হয়নি", e?.message || "Permission / Rules issue");
+        console.error("❌ Firestore write failed:", e);
+        showToast("Firebase save হয়নি ❌", String(e?.message || e));
         return "";
       }
     }
@@ -1528,6 +1510,10 @@
 
       const summary = computeResult();
 
+      // ✅ IMPORTANT: Firestore doesn't allow nested arrays -> store as objects
+      const answersMcqObj = Object.fromEntries(mcqAns);
+      const answersWrittenObj = Object.fromEntries(writtenAns);
+
       const payload = {
         modelTestId,
         modelTestName: getTitleField(mtDoc),
@@ -1536,8 +1522,8 @@
         studentName,
         studentDistrict,
         answers: {
-          mcq: Array.from(mcqAns.entries()),
-          written: Array.from(writtenAns.entries())
+          mcq: answersMcqObj,
+          written: answersWrittenObj
         },
         result: {
           totalQuestion: summary.totalQ,
@@ -1720,15 +1706,15 @@
     }
     window.downloadCombinedPDF = downloadCombinedPDF;
 
-    // ===== Recent Model Tests =====
+    // ===== Recent Model Tests (5 + see more) =====
     async function loadRecentModelTests(){
       const wrap = $("recentList");
       try{
         let snap = null;
         try{
-          snap = await db.collection("subject_model_tests").orderBy("createdAt","desc").limit(5).get();
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
         }catch(e){
-          snap = await db.collection("subject_model_tests").limit(5).get();
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
         }
 
         const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
@@ -1787,7 +1773,7 @@
       loadRecentModelTests();
 
       try{
-        const mtSnap = await db.collection("subject_model_tests").doc(modelTestId).get();
+        const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
         if(!mtSnap.exists){
           $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
           return;
@@ -1809,6 +1795,9 @@
         setMetaHeader();
         startTimer(getTimeMinFromDoc(mtDoc));
         renderAll();
+
+        // ✅ show modal initially (user can close)
+        openNameModal();
         showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
       }catch(err){
         console.error(err);
