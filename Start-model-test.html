@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Start Model Test — eProstutiBD</title>
+
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <style>
+    :root{
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --line: rgba(18, 28, 55, .10);
+      --text:#0f1730; --muted:#5a6685;
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+      --brandA:#1d4ed8;
+      --ok:#16a34a;
+      --danger:#dc2626;
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit}
+
+    .container{
+      max-width: 1100px;
+      margin:0 auto;
+      padding: 12px clamp(12px, 4vw, 42px) 14px;
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
+    }
+    .topbar{
+      max-width: 1100px;
+      margin:0 auto;
+      padding: 10px clamp(12px, 4vw, 42px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-width:0;
+    }
+    .brand .name{color:#fff;font-weight:1000;font-size:15px;line-height:1}
+    .brand .tag{color:rgba(255,255,255,.86);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 70vw;}
+
+    .headRight{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .pill{
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      padding: 8px 10px;
+      color:#fff;
+      font-weight:1000;
+      font-size:12px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      white-space:nowrap;
+    }
+    .pill b{font-size:12px}
+    .pill .dot{
+      width:8px;height:8px;border-radius:999px;background: rgba(255,255,255,.9);
+    }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.74);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .panelHead h1{
+      margin:0;
+      font-size:14px;
+      font-weight:1000;
+      line-height:1.25;
+    }
+    .metaRow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .chip{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space:nowrap;
+    }
+
+    /* Paper feel */
+    .paper{
+      padding: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0px,
+          rgba(0,0,0,0) 24px,
+          rgba(18,28,55,.055) 25px
+        );
+      position: relative;
+    }
+    .paper::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 260px at 20% 0%, rgba(29,78,216,.05), transparent 60%),
+                  radial-gradient(900px 260px at 80% 0%, rgba(14,165,233,.04), transparent 60%);
+      pointer-events:none;
+    }
+
+    .qWrap{position:relative;}
+    .qTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .qNo{
+      flex:0 0 auto;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.84);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight:1000;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .qType{
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.84);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight:1000;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .qText{
+      margin:0;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.65;
+      letter-spacing: .1px;
+    }
+    .noteInline{
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .noteInline b{color: var(--text)}
+
+    /* options 2-line layout (paper style) */
+    .opts{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(18,28,55,.12);
+    }
+    @media (max-width: 640px){
+      .opts{grid-template-columns: 1fr; gap:10px;}
+    }
+    .opt{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+      user-select:none;
+    }
+    .opt .badge{
+      width: 26px;height:26px;
+      border-radius: 999px;
+      border:1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.92);
+      display:grid;
+      place-items:center;
+      font-weight:1000;
+      color: var(--muted);
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+    .opt .txt{
+      font-size: 12.6px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .opt.selected .badge{
+      border-color: rgba(29,78,216,.35);
+      background: rgba(29,78,216,.10);
+      color: var(--brandA);
+    }
+    .opt.selected .txt{font-weight: 900;}
+    .opt.disabled{cursor: default; opacity: .95;}
+
+    /* written */
+    .writtenBox{
+      margin-top: 10px;
+      border-top: 1px solid rgba(18,28,55,.12);
+      padding-top: 10px;
+    }
+    textarea{
+      width:100%;
+      min-height: 140px;
+      resize: vertical;
+      border: 1px solid rgba(18,28,55,.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      outline: none;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* bottom fixed control bar */
+    .bottomBar{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 10px;
+      bottom: calc(10px + var(--safeBottom));
+      z-index: 9999;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .barInner{
+      pointer-events:auto;
+      width: min(1100px, calc(100vw - 24px));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 18px 46px rgba(15,23,48,.14);
+    }
+    .barLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .barMid{
+      font-size:12px;
+      color: var(--muted);
+      font-weight: 900;
+      white-space:nowrap;
+    }
+    .barBtns{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .btn{
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.12s;
+      white-space:nowrap;
+    }
+    .btn:disabled{opacity:.55; cursor:not-allowed;}
+    .btn.primary{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.12);
+      color: var(--brandA);
+    }
+    .btn.danger{
+      border-color: rgba(220,38,38,.28);
+      background: rgba(220,38,38,.10);
+      color: var(--danger);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 82px;
+      z-index: 99999;
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(18,28,55,.12);
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: 0 18px 44px rgba(15,23,48,.12);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--text);
+      display:none;
+      max-width: calc(100vw - 24px);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .loading{
+      padding: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .err{
+      padding: 14px;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    /* ensure content doesn't hide under bottom bar */
+    .spacer{
+      height: 88px;
+      height: calc(88px + var(--safeBottom));
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag" id="headTag">Model Test</div>
+      </div>
+
+      <div class="headRight">
+        <div class="pill" title="সময় বাকি">
+          <span class="dot"></span>
+          <span>Time:</span>
+          <b id="timeLeft">--:--</b>
+        </div>
+        <div class="pill" title="প্রশ্ন">
+          <span class="dot"></span>
+          <span>Q:</span>
+          <b id="qTotal">0</b>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="panel" aria-label="Model test">
+      <div class="panelHead">
+        <div>
+          <h1 id="mtTitle">Loading…</h1>
+          <div class="metaRow">
+            <span class="chip" id="mtTime">⏱ -- min</span>
+            <span class="chip" id="mtMark">🧮 Mark: --</span>
+          </div>
+        </div>
+        <div class="metaRow" style="justify-content:flex-end;">
+          <span class="chip" id="mtProgress">Q 0/0</span>
+        </div>
+      </div>
+
+      <div class="paper">
+        <div id="content" class="qWrap">
+          <div class="loading">ডাটা লোড হচ্ছে…</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+  </div>
+
+  <!-- bottom bar -->
+  <div class="bottomBar" aria-label="Controls">
+    <div class="barInner">
+      <div class="barLeft">
+        <button class="btn" id="btnPrev" onclick="prevQ()">Prev</button>
+        <button class="btn" id="btnNext" onclick="nextQ()">Next</button>
+      </div>
+
+      <div class="barMid" id="pageInfo">Page 1</div>
+
+      <div class="barBtns">
+        <button class="btn danger" id="btnSubmit" onclick="submitTest()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ===== Firebase config =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+
+    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_MODELTEST_QUESTIONS = "modeltest_questions";
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const $ = (id)=>document.getElementById(id);
+
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+    function normalize(s){
+      return String(s||"").toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name) || "";
+    }
+
+    function showToast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(showToast._tm);
+      showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 1600);
+    }
+
+    function getTimeMinFromDoc(data){
+      const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
+      for(const k of keys){
+        const v = data?.[k];
+        if(v === undefined || v === null || v === "") continue;
+        const n = Number(v);
+        if(!Number.isNaN(n) && n > 0) return n;
+      }
+      return 0;
+    }
+    function getMarkFromDoc(data){
+      const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+      for(const k of keys){
+        const v = data?.[k];
+        if(v === undefined || v === null || v === "") continue;
+        return v;
+      }
+      return "-";
+    }
+
+    function getOptions(doc){
+      if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+      return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+    }
+
+    function getCorrectIndex(doc, opts){
+      if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+      const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+      if(!ra) return -1;
+      const map = { a:0, b:1, c:2, d:3 };
+      const low = ra.toLowerCase();
+      if(map[low] !== undefined) return map[low];
+
+      const nra = normalize(ra);
+      for(let i=0;i<opts.length;i++){
+        if(normalize(opts[i]) === nra) return i;
+      }
+      return -1;
+    }
+
+    // ===== state =====
+    const modelTestId = getParam("modelTestId");
+    let mtDoc = null;
+    let questions = [];
+    let idx = 0;
+
+    // answers
+    const mcqAns = new Map();     // qid -> optionIndex
+    const writtenAns = new Map(); // qid -> text
+
+    // timer
+    let totalSeconds = 0;
+    let endAtMs = 0;
+    let timerHandle = null;
+
+    function formatMMSS(sec){
+      sec = Math.max(0, Math.floor(sec));
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      const mm = String(m).padStart(2,"0");
+      const ss = String(s).padStart(2,"0");
+      return mm + ":" + ss;
+    }
+
+    function startTimer(minutes){
+      totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
+      if(!totalSeconds){
+        $("timeLeft").textContent = "--:--";
+        return;
+      }
+
+      // persist end time so reload keeps same timer
+      const key = `epbd_mt_end_${modelTestId}`;
+      const saved = localStorage.getItem(key);
+      const now = Date.now();
+
+      if(saved){
+        const v = Number(saved);
+        if(!Number.isNaN(v) && v > now + 3000){
+          endAtMs = v;
+        }else{
+          endAtMs = now + totalSeconds * 1000;
+          localStorage.setItem(key, String(endAtMs));
+        }
+      }else{
+        endAtMs = now + totalSeconds * 1000;
+        localStorage.setItem(key, String(endAtMs));
+      }
+
+      const tick = ()=>{
+        const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
+        $("timeLeft").textContent = formatMMSS(left);
+
+        // change dot color feel (simple)
+        if(left <= 60){
+          $("timeLeft").style.color = "var(--danger)";
+        }else{
+          $("timeLeft").style.color = "#fff";
+        }
+
+        if(left <= 0){
+          clearInterval(timerHandle);
+          timerHandle = null;
+          showToast("সময় শেষ! অটো সাবমিট হচ্ছে…");
+          setTimeout(()=>submitTest(true), 350);
+        }
+      };
+
+      tick();
+      clearInterval(timerHandle);
+      timerHandle = setInterval(tick, 1000);
+    }
+
+    function persistAnswers(){
+      const key = `epbd_mt_ans_${modelTestId}`;
+      const payload = {
+        idx,
+        mcq: Array.from(mcqAns.entries()),
+        written: Array.from(writtenAns.entries()),
+        savedAt: Date.now()
+      };
+      localStorage.setItem(key, JSON.stringify(payload));
+    }
+
+    function restoreAnswers(){
+      const key = `epbd_mt_ans_${modelTestId}`;
+      try{
+        const raw = localStorage.getItem(key);
+        if(!raw) return;
+        const st = JSON.parse(raw);
+        if(st && typeof st === "object"){
+          idx = Number(st.idx || 0) || 0;
+          (st.mcq || []).forEach(([qid, v])=> mcqAns.set(qid, v));
+          (st.written || []).forEach(([qid, v])=> writtenAns.set(qid, v));
+        }
+      }catch(e){}
+    }
+
+    function setHeader(){
+      const title = mtDoc?.title ?? mtDoc?.name ?? "Model Test";
+      $("mtTitle").textContent = title;
+      $("headTag").textContent = title;
+      const mins = getTimeMinFromDoc(mtDoc);
+      $("mtTime").textContent = `⏱ ${mins ? mins : "--"} min`;
+      $("mtMark").textContent = `🧮 Mark: ${getMarkFromDoc(mtDoc)}`;
+      $("qTotal").textContent = String(questions.length || 0);
+    }
+
+    function updateProgress(){
+      $("mtProgress").textContent = `Q ${Math.min(questions.length, idx+1)}/${questions.length}`;
+      $("pageInfo").textContent = `Page ${idx+1}`;
+      $("btnPrev").disabled = idx <= 0;
+      $("btnNext").disabled = idx >= questions.length - 1;
+    }
+
+    function renderCurrent(){
+      const wrap = $("content");
+      wrap.innerHTML = "";
+
+      if(!questions.length){
+        wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      idx = Math.max(0, Math.min(idx, questions.length-1));
+      const q = questions[idx];
+      const qid = q.id;
+
+      const typeRaw = (q.type || q.qType || q.questionType || "").toString().toLowerCase();
+      const isWritten = typeRaw === "written" || typeRaw === "cq" || typeRaw === "short" || typeRaw === "essay";
+      const typeLabel = isWritten ? "Written" : "MCQ";
+
+      const top = document.createElement("div");
+      top.className = "qTop";
+      top.innerHTML = `
+        <span class="qNo">Q${idx+1}</span>
+        <span class="qType">${esc(typeLabel)}</span>
+      `;
+
+      const p = document.createElement("p");
+      p.className = "qText";
+      p.innerHTML = esc(q.question || q.q || q.title || "");
+
+      // ✅ note after question (as you want)
+      const noteTxt = (q.note ?? q.explain ?? q.explanation ?? "").toString().trim();
+      const note = document.createElement("div");
+      note.className = "noteInline";
+      note.innerHTML = `<b>Note:</b> ${esc(noteTxt || "-")}`;
+
+      wrap.appendChild(top);
+      wrap.appendChild(p);
+      wrap.appendChild(note);
+
+      if(isWritten){
+        const wb = document.createElement("div");
+        wb.className = "writtenBox";
+        const ta = document.createElement("textarea");
+        ta.placeholder = "আপনার উত্তর লিখুন…";
+        ta.value = (writtenAns.get(qid) ?? "").toString();
+        ta.oninput = ()=>{
+          writtenAns.set(qid, ta.value);
+          persistAnswers();
+        };
+        wb.appendChild(ta);
+        wrap.appendChild(wb);
+
+        updateProgress();
+        return;
+      }
+
+      const opts = getOptions(q);
+      const chosen = mcqAns.get(qid);
+      const letters = ["A","B","C","D"];
+
+      const ow = document.createElement("div");
+      ow.className = "opts";
+
+      opts.slice(0,4).forEach((op, oi)=>{
+        const opt = document.createElement("div");
+        opt.className = "opt" + (chosen === oi ? " selected" : "");
+        opt.innerHTML = `
+          <span class="badge">${letters[oi]}</span>
+          <div class="txt">${esc(op || "")}</div>
+        `;
+        opt.onclick = ()=>{
+          mcqAns.set(qid, oi);
+          persistAnswers();
+          renderCurrent();
+        };
+        ow.appendChild(opt);
+      });
+
+      wrap.appendChild(ow);
+      updateProgress();
+    }
+
+    function prevQ(){
+      if(idx <= 0) return;
+      idx -= 1;
+      persistAnswers();
+      renderCurrent();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    function nextQ(){
+      if(idx >= questions.length-1) return;
+      idx += 1;
+      persistAnswers();
+      renderCurrent();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    window.prevQ = prevQ;
+    window.nextQ = nextQ;
+
+    function calcMcqScore(){
+      let correct = 0;
+      let totalMcq = 0;
+
+      for(const q of questions){
+        const typeRaw = (q.type || q.qType || q.questionType || "").toString().toLowerCase();
+        const isWritten = typeRaw === "written" || typeRaw === "cq" || typeRaw === "short" || typeRaw === "essay";
+        if(isWritten) continue;
+
+        totalMcq++;
+        const opts = getOptions(q);
+        const ci = getCorrectIndex(q, opts);
+        const ch = mcqAns.get(q.id);
+        if(ci >= 0 && ch === ci) correct++;
+      }
+      return { correct, totalMcq };
+    }
+
+    function submitTest(isAuto=false){
+      if(!modelTestId) return;
+
+      if(!isAuto){
+        const ok = confirm("আপনি কি নিশ্চিতভাবে Submit করতে চান?");
+        if(!ok) return;
+      }
+
+      const mins = getTimeMinFromDoc(mtDoc);
+      const endKey = `epbd_mt_end_${modelTestId}`;
+      const endRaw = localStorage.getItem(endKey);
+      const endMs = endRaw ? Number(endRaw) : 0;
+      const usedSec = (mins ? mins*60 : 0) ? Math.max(0, Math.floor(((mins*60*1000) - Math.max(0, endMs - Date.now()))/1000)) : null;
+
+      const score = calcMcqScore();
+      const payload = {
+        modelTestId,
+        title: mtDoc?.title ?? mtDoc?.name ?? "Model Test",
+        submittedAt: Date.now(),
+        isAuto: !!isAuto,
+        score,
+        answers: {
+          mcq: Array.from(mcqAns.entries()),
+          written: Array.from(writtenAns.entries())
+        },
+        usedSec
+      };
+
+      // save result
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
+
+      // clear running timer end (optional)
+      // localStorage.removeItem(endKey);
+
+      // go to result page
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.submitTest = submitTest;
+
+    async function loadData(){
+      if(!modelTestId){
+        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL ঠিক আছে তো? <br/>Start-model-test.html?modelTestId=XXXX</div>`;
+        return;
+      }
+
+      // restore previous answers + idx first
+      restoreAnswers();
+
+      // load model test doc
+      try{
+        const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
+        if(!mtSnap.exists){
+          $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+        mtDoc = { id: mtSnap.id, ...mtSnap.data() };
+
+        // load questions
+        let qSnap = null;
+        try{
+          qSnap = await db.collection(COL_MODELTEST_QUESTIONS)
+            .where("modelTestId","==", modelTestId)
+            .orderBy("createdAt","asc")
+            .get();
+        }catch(e){
+          // fallback without orderBy (if no index)
+          qSnap = await db.collection(COL_MODELTEST_QUESTIONS)
+            .where("modelTestId","==", modelTestId)
+            .get();
+        }
+
+        questions = qSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        // safety: keep idx in range
+        idx = Math.max(0, Math.min(idx, Math.max(0, questions.length-1)));
+
+        setHeader();
+        updateProgress();
+        renderCurrent();
+
+        // start timer
+        const mins = getTimeMinFromDoc(mtDoc);
+        startTimer(mins);
+
+        // persist current state
+        persistAnswers();
+
+      }catch(err){
+        console.error(err);
+        $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
+      }
+    }
+
+    // also persist idx when leaving
+    window.addEventListener("beforeunload", ()=> {
+      try{ persistAnswers(); }catch(e){}
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
