@@ -352,7 +352,7 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
-    /* ===== Sidebars: stacked sticky (fix download under ads issue) ===== */
+    /* ===== Sidebars: stacked sticky ===== */
     .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
     .sideStack{
       height: 100%;
@@ -377,7 +377,7 @@
       display:flex;
       flex-direction:column;
       min-height: 140px;
-      flex: 1 1 auto; /* ✅ take remaining height */
+      flex: 1 1 auto;
     }
     .adHead{
       padding:10px 12px;
@@ -404,7 +404,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
-      flex: 0 0 auto; /* ✅ don't shrink away */
+      flex: 0 0 auto;
     }
     .btnPdf{
       width: calc(100% - 20px);
@@ -509,7 +509,6 @@
     }
     .toastMsg{line-height:1.45;}
     .toastSub{font-size:12px;color: var(--muted);font-weight: 900;margin-top: 2px;}
-
     .loading{color: var(--muted); font-size:12px; font-weight:900;}
     .err{color: var(--danger); font-size:12px; font-weight:1000;}
 
@@ -547,6 +546,19 @@
     }
     .modalTitle{font-size:14px;font-weight:1000;margin:0;}
     .modalText{color: var(--muted); font-size:12.5px; font-weight: 900; line-height:1.5; margin:6px 0 0;}
+    .modalClose{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      flex:0 0 auto;
+      align-self:flex-start;
+    }
     .modalBody{padding: 12px 6px 6px;}
     .modalBody label{display:block;font-size:12px;color:var(--muted);font-weight:1000;margin-bottom:6px;}
     .modalBody input{
@@ -563,6 +575,7 @@
     .modalActions{
       display:flex;gap:10px;justify-content:flex-end;align-items:center;
       padding: 10px 6px 6px;
+      flex-wrap:wrap;
     }
     .btnPrimary{
       border: 1px solid rgba(29,78,216,.28);
@@ -577,8 +590,19 @@
       white-space:nowrap;
     }
     .btnPrimary:disabled{opacity:.55; cursor:not-allowed;}
+    .btnGhost{
+      border:1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.70);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
 
-    /* ===== Confirm modal (submit) ===== */
+    /* ===== Confirm modal (submit warning) ===== */
     .confirmModal{
       position: fixed;
       inset: 0;
@@ -607,15 +631,70 @@
     .confirmTitle{margin:0;font-size:14px;font-weight:1000;}
     .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
     .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
-    .btnGhost{
-      border:1px solid rgba(18,28,55,.14);
-      background: rgba(255,255,255,.70);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size:12.5px;
-      font-weight:1000;
-      cursor:pointer;
+
+    /* ===== Result modal (after submit) ===== */
+    .resultModal{
+      position: fixed;
+      inset: 0;
+      z-index: 999997;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .resultModal.show{display:flex;}
+    .resultModal .overlay{
+      position:absolute; inset:0;
+      background: rgba(10,18,40,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .resultCard{
+      position:relative;
+      width: min(560px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+      padding: 14px;
+    }
+    .resultHead{
+      padding: 6px 6px 10px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .resultTitle{margin:0;font-size:14px;font-weight:1000;}
+    .resultSub{margin:6px 0 0;color:var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
+    .resultGrid{
+      padding: 12px 6px 4px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .resultGrid{grid-template-columns: 1fr;}
+    }
+    .stat{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.75);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .statLabel{font-size:12px;color:var(--muted);font-weight:1000;}
+    .statVal{margin-top:4px;font-size:15px;font-weight:1000;color:var(--text);}
+    .resultActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      padding: 10px 6px 6px;
+      border-top: 1px solid rgba(18,28,55,.10);
+      margin-top: 8px;
     }
 
     /* ===== Footer ===== */
@@ -625,8 +704,8 @@
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
         radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
         linear-gradient(180deg, var(--footTop), var(--footBottom));
-      border-top: 1px solid var(--footLine);
-      color: var(--footText);
+      border-top: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.86);
     }
     .footGrid{
       max-width: 1320px;
@@ -638,12 +717,12 @@
       align-items:start;
     }
     .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
-    .footText{color: var(--footMuted);font-size:12px;line-height:1.6;}
+    .footText{color: rgba(255,255,255,.70);font-size:12px;line-height:1.6;}
     .footLinks{display:flex;flex-direction:column;gap: 8px;}
-    .footLinks a{text-decoration:none;color: var(--footMuted);font-size:12px;}
+    .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
     .socialCol{display:flex;flex-direction:column;gap: 10px;}
-    .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: var(--footMuted);font-size:12px;}
+    .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
     .socialCol a:hover{color:#fff;}
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
     @media (max-width: 980px){
@@ -795,7 +874,7 @@
           <div class="mtTitleRow">
             <h2 class="metaTitle" id="mtName" style="margin:0;">Loading…</h2>
             <!-- ✅ Mobile-only download beside title -->
-            <button class="mobileDl" type="button" onclick="downloadBothPDFs()">Download</button>
+            <button class="mobileDl" type="button" onclick="downloadCombinedPDF()">Download</button>
           </div>
 
           <div class="metaRow" aria-label="Test meta" style="margin-top:10px;">
@@ -832,11 +911,11 @@
           <!-- ✅ fixed: PDF first, never hides -->
           <div class="pdfBox" aria-label="PDF download">
             <div class="adHead"><b>PDF</b><span>Download</span></div>
-            <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadBothPDFs()">
+            <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
               </svg>
-              Download question and answer sheet
+              Download (Question + Answer)
             </button>
           </div>
 
@@ -851,31 +930,32 @@
     </main>
   </div>
 
-  <!-- Name gate modal -->
-  <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name">
-    <div class="overlay"></div>
-    <div class="modalCard">
+  <!-- Name gate modal (can close; but answering requires submit) -->
+  <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name and District">
+    <div class="overlay" onclick="closeNameModal()"></div>
+    <div class="modalCard" onclick="event.stopPropagation()">
       <div class="modalHead">
         <div>
-          <p class="modalTitle">শুরু করার আগে নাম ও জেলা লিখুন</p>
-          <p class="modalText">নাম/জেলা Submit না করা পর্যন্ত কোনো প্রশ্নে উত্তর দেওয়া যাবে না।</p>
+          <p class="modalTitle">নাম ও জেলা লিখুন</p>
+          <p class="modalText">Submit না করলে উত্তর দেওয়া যাবে না। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
         </div>
+        <button class="modalClose" type="button" onclick="closeNameModal()">এখন নয়</button>
       </div>
       <div class="modalBody">
         <label for="studentName">আপনার নাম</label>
         <input id="studentName" type="text" placeholder="যেমন: Md Ebadot Hossen" autocomplete="name" />
 
-        <!-- ✅ District (Zila) manual typing -->
         <label for="studentDistrict" style="margin-top:10px;">আপনার জেলা</label>
         <input id="studentDistrict" type="text" placeholder="যেমন: Dhaka / Rajshahi / Cumilla" autocomplete="address-level2" />
       </div>
       <div class="modalActions">
+        <button class="btnGhost" type="button" onclick="closeNameModal()">প্রশ্ন দেখুন</button>
         <button class="btnPrimary" id="btnNameSubmit" type="button" onclick="submitName()">Start Test</button>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Submit confirm modal -->
+  <!-- Submit confirm modal (Yes/No) -->
   <div class="confirmModal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Confirm submit">
     <div class="overlay" onclick="confirmNo()"></div>
     <div class="confirmCard" onclick="event.stopPropagation()">
@@ -885,6 +965,44 @@
       <div class="confirmActions">
         <button class="btnGhost" type="button" onclick="confirmNo()">No</button>
         <button class="btnPrimary" type="button" onclick="confirmYes()">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result modal (after submit) -->
+  <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
+    <div class="overlay" onclick="/* no close by overlay */ null"></div>
+    <div class="resultCard" onclick="event.stopPropagation()">
+      <div class="resultHead">
+        <div>
+          <p class="resultTitle" id="resTitle">Result</p>
+          <p class="resultSub" id="resSub">...</p>
+        </div>
+        <button class="modalClose" type="button" onclick="closeResultModal()">Close</button>
+      </div>
+
+      <div class="resultGrid">
+        <div class="stat">
+          <div class="statLabel">মোট প্রশ্ন</div>
+          <div class="statVal" id="resTotalQ">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">সঠিক (Right)</div>
+          <div class="statVal" id="resRight">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">ভুল (Wrong)</div>
+          <div class="statVal" id="resWrong">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">প্রাপ্ত নম্বর</div>
+          <div class="statVal" id="resMark">0</div>
+        </div>
+      </div>
+
+      <div class="resultActions">
+        <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
+        <button class="btnPrimary" type="button" onclick="goResultDetails()">View details</button>
       </div>
     </div>
   </div>
@@ -943,7 +1061,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
-  <!-- PDF libs (Bangla-safe by image rendering) -->
+  <!-- PDF libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
@@ -957,8 +1075,6 @@
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
-
-    // Keep ESC behavior: close menu; confirm modal also handles ESC separately
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
     // ===== toast =====
@@ -983,34 +1099,21 @@
 
     // ===== Confirm modal (custom Yes/No) =====
     let _confirmResolver = null;
-
     function openConfirm(title, text){
       $("confirmTitle").textContent = title || "Confirm";
       $("confirmText").textContent = text || "";
       $("confirmModal").classList.add("show");
-      return new Promise((resolve)=>{
-        _confirmResolver = resolve;
-      });
+      return new Promise((resolve)=>{ _confirmResolver = resolve; });
     }
-    function closeConfirm(){
-      $("confirmModal").classList.remove("show");
-    }
-    function confirmYes(){
-      closeConfirm();
-      if(_confirmResolver) _confirmResolver(true);
-      _confirmResolver = null;
-    }
-    function confirmNo(){
-      closeConfirm();
-      if(_confirmResolver) _confirmResolver(false);
-      _confirmResolver = null;
-    }
+    function closeConfirm(){ $("confirmModal").classList.remove("show"); }
+    function confirmYes(){ closeConfirm(); if(_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
+    function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
     window.confirmYes = confirmYes;
     window.confirmNo = confirmNo;
-
     document.addEventListener("keydown",(e)=>{
       if(e.key==="Escape"){
         if($("confirmModal")?.classList.contains("show")) confirmNo();
+        if($("nameModal")?.classList.contains("show")) closeNameModal();
       }
     });
 
@@ -1034,6 +1137,7 @@
     const db = firebase.firestore();
 
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_MODEL_TEST_RESULT = "model test result"; // ✅ as requested
     const QUESTION_COLLECTION_CANDIDATES = [
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
@@ -1041,7 +1145,7 @@
     // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
 
-    // ===== state (NO persistence; reload resets) =====
+    // ===== state =====
     let mtDoc = null;
     let questions = [];
     const mcqAns = new Map();
@@ -1049,17 +1153,17 @@
 
     // Name gate
     let studentName = "";
-    let studentDistrict = ""; // ✅ add district (Zila)
+    let studentDistrict = "";
     let nameUnlocked = false;
 
     function openNameModal(){
-      const m = $("nameModal");
-      m.classList.add("show");
-      setTimeout(()=>{ $("studentName").focus(); }, 50);
+      $("nameModal").classList.add("show");
+      setTimeout(()=>{ $("studentName").focus(); }, 40);
     }
     function closeNameModal(){
       $("nameModal").classList.remove("show");
     }
+    window.closeNameModal = closeNameModal;
 
     function submitName(){
       const v = ($("studentName").value || "").trim();
@@ -1078,18 +1182,19 @@
 
       studentName = v;
       studentDistrict = d;
-
       nameUnlocked = true;
       closeNameModal();
-      showToast("Test শুরু হলো", `শুভকামনা, ${studentName} (${studentDistrict})!`);
+      showToast("Start সফল", `${studentName} (${studentDistrict})`);
     }
     window.submitName = submitName;
 
-    // block any answering until unlocked
+    // ✅ Requirement 1:
+    // - Modal can be closed anytime to view questions
+    // - But answering requires submit; trying to answer shows modal again
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
-      showToast("নাম/জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
+      showToast("নাম ও জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
       return false;
     }
 
@@ -1137,7 +1242,7 @@
       return t === "written" || t === "cq" || t === "short" || t === "essay";
     }
 
-    // ===== timer (reload resets) =====
+    // ===== timer =====
     let endAtMs = 0;
     let timerHandle = null;
 
@@ -1344,14 +1449,90 @@
       }
     }
 
-    // ✅ async submitTest so we can show custom Yes/No modal
+    // ===== Result compute (MCQ based) =====
+    function toNumberMaybe(v){
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function computeResult(){
+      const totalQ = questions.length || 0;
+
+      let totalMcq = 0;
+      let right = 0;
+      let wrong = 0;
+
+      questions.forEach((q)=>{
+        if(isWrittenQuestion(q)) return;
+        totalMcq++;
+        const qid = q.id;
+        const chosen = mcqAns.get(qid);
+        if(chosen === undefined || chosen === null || chosen === "") return;
+        const ci = getCorrectIndex(q);
+        if(Number.isFinite(ci) && ci >= 0){
+          if(Number(chosen) === Number(ci)) right++;
+          else wrong++;
+        }else{
+          // if correct not set, treat answered as wrong? better treat as wrong=0; keep neutral
+        }
+      });
+
+      const totalMarkDoc = toNumberMaybe(getMarkFromDoc(mtDoc));
+      const totalMark = (totalMarkDoc !== null && totalMarkDoc > 0)
+        ? totalMarkDoc
+        : (totalMcq || totalQ);
+
+      const perQ = (totalMcq > 0) ? (totalMark / totalMcq) : 0;
+      const obtained = Math.round((right * perQ) * 100) / 100; // 2 decimal safe
+
+      return { totalQ, totalMcq, right, wrong, totalMark, obtained };
+    }
+
+    // ===== Save to Firebase =====
+    async function saveResultToFirebase(payload){
+      try{
+        const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
+        return ref.id;
+      }catch(e){
+        console.error(e);
+        return "";
+      }
+    }
+
+    // ===== Result modal =====
+    let _lastResultPayload = null;
+    let _lastResultDocId = "";
+
+    function openResultModal(summary){
+      $("resTitle").textContent = "Result Published";
+      $("resSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
+      $("resTotalQ").textContent = String(summary.totalQ);
+      $("resRight").textContent = String(summary.right);
+      $("resWrong").textContent = String(summary.wrong);
+      $("resMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
+      $("resultModal").classList.add("show");
+    }
+    function closeResultModal(){
+      $("resultModal").classList.remove("show");
+    }
+    window.closeResultModal = closeResultModal;
+
+    function goResultDetails(){
+      if(!modelTestId) return;
+      // keep docId if needed later
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
+      if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.goResultDetails = goResultDetails;
+
+    // ===== Submit =====
     async function submitTest(isAuto=false){
       if(!modelTestId) return;
 
-      // if name/district not submitted, prevent submit too
       if(!nameUnlocked){
         openNameModal();
-        showToast("নাম/জেলা Submit করুন", "তারপর Submit করতে পারবেন");
+        showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
         return;
       }
 
@@ -1372,25 +1553,44 @@
         if(!ok) return;
       }
 
+      const summary = computeResult();
+
       const payload = {
         modelTestId,
-        title: getTitleField(mtDoc),
+        modelTestName: getTitleField(mtDoc),
         submittedAt: Date.now(),
         isAuto: !!isAuto,
-        studentName,       // ✅ name will show in result page
-        studentDistrict,   // ✅ district will show in result page
+        studentName,
+        studentDistrict, // ✅ Zila
         answers: {
           mcq: Array.from(mcqAns.entries()),
           written: Array.from(writtenAns.entries())
+        },
+        result: {
+          totalQuestion: summary.totalQ,
+          totalMcq: summary.totalMcq,
+          right: summary.right,
+          wrong: summary.wrong,
+          totalMark: summary.totalMark,
+          obtainedMark: summary.obtained
         }
       };
 
+      // Save locally (so details page can show even if firebase write fails)
       localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
-      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+      _lastResultPayload = payload;
+
+      showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
+
+      // ✅ Save to Firebase (collection: "model test result")
+      _lastResultDocId = await saveResultToFirebase(payload);
+
+      showToast("Submit সম্পন্ন", "Result দেখুন");
+      openResultModal(summary);
     }
     window.submitTest = submitTest;
 
-    // ===== PDF helpers =====
+    // ===== PDF helpers (combined single PDF) =====
     function chunk(arr, size){
       const out = [];
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
@@ -1406,20 +1606,8 @@
       const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
       return canvas;
     }
-    async function canvasesToPdf(canvases, fileName){
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "pt", "a4");
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      canvases.forEach((canvas, idx)=>{
-        const imgData = canvas.toDataURL("image/jpeg", 0.95);
-        if(idx > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
-      });
-      pdf.save(fileName);
-    }
 
-    async function downloadQuestionPaperPdf(){
+    async function buildQuestionPaperCanvases(){
       const title = getTitleField(mtDoc);
       const mins = getTimeMinFromDoc(mtDoc) || 0;
       const mark = getMarkFromDoc(mtDoc);
@@ -1461,6 +1649,7 @@
           <div class="pdfFrame">
             <div class="pdfHeaderLine1">${esc(line1)}</div>
             <div class="pdfHeaderLine2">${esc(line2)}</div>
+            <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
             <div class="pdfGridWrap">
               <div class="pdfGrid">${qHtml}</div>
             </div>
@@ -1468,12 +1657,10 @@
         `;
         canvases.push(await renderPageToCanvas(pageHtml));
       }
-
-      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "question-paper";
-      await canvasesToPdf(canvases, `${safeName}-question-paper.pdf`);
+      return canvases;
     }
 
-    async function downloadAnswerSheetPdf(){
+    async function buildAnswerSheetCanvases(){
       const title = getTitleField(mtDoc);
       const mins = getTimeMinFromDoc(mtDoc) || 0;
       const mark = getMarkFromDoc(mtDoc);
@@ -1523,35 +1710,53 @@
         `;
         canvases.push(await renderPageToCanvas(pageHtml));
       }
-
-      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "answer-sheet";
-      await canvasesToPdf(canvases, `${safeName}-answer-sheet-correct.pdf`);
+      return canvases;
     }
 
-    async function downloadBothPDFs(){
+    async function downloadCombinedPDF(){
       try{
         if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
-        showToast("PDF তৈরি হচ্ছে…", "একটু অপেক্ষা করুন");
-        await downloadQuestionPaperPdf();
-        await downloadAnswerSheetPdf();
-        showToast("ডাউনলোড সম্পন্ন", "Question & Answer Sheet ডাউনলোড হয়েছে");
+        showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
+
+        const qCanvases = await buildQuestionPaperCanvases();
+        const aCanvases = await buildAnswerSheetCanvases();
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "pt", "a4");
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+
+        let first = true;
+        const addCanvas = (canvas)=>{
+          const imgData = canvas.toDataURL("image/jpeg", 0.95);
+          if(!first) pdf.addPage();
+          first = false;
+          pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+        };
+
+        qCanvases.forEach(addCanvas);
+        aCanvases.forEach(addCanvas);
+
+        const title = getTitleField(mtDoc);
+        const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "model-test";
+        pdf.save(`${safeName}-question+answer.pdf`);
+
+        showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
       }catch(e){
         console.error(e);
         showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
       }
     }
-    window.downloadBothPDFs = downloadBothPDFs;
+    window.downloadCombinedPDF = downloadCombinedPDF;
 
-    // ===== Recent Model Tests (left sidebar under ad) =====
+    // ===== Recent Model Tests =====
     async function loadRecentModelTests(){
       const wrap = $("recentList");
       try{
-        // ✅ latest 5 tests
         let snap = null;
         try{
           snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
         }catch(e){
-          // fallback: if createdAt missing or index problem, just limit
           snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
         }
 
@@ -1580,7 +1785,6 @@
           wrap.appendChild(a);
         });
 
-        // ✅ See more -> premium page
         const more = document.createElement("a");
         more.className = "recentItem";
         more.href = "premium-model-test.html";
@@ -1606,13 +1810,13 @@
         return;
       }
 
-      // show modal immediately (must submit name + district before answering)
-      openNameModal();
+      // ✅ Requirement 1: Do NOT force modal on load (user can view questions)
+      // Only open modal when trying to answer/submit
+      // openNameModal();
 
       $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
       $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
 
-      // recent list load
       loadRecentModelTests();
 
       try{
@@ -1638,7 +1842,7 @@
         setMetaHeader();
         startTimer(getTimeMinFromDoc(mtDoc));
         renderAll();
-        showToast("Test প্রস্তুত", "নাম/জেলা Submit করলে উত্তর দিতে পারবেন");
+        showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
       }catch(err){
         console.error(err);
         $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
