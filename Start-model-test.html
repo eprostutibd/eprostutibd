@@ -17,12 +17,9 @@
 
       --brandA:#1d4ed8;
       --danger:#dc2626;
-
-      --footerA:#0b1b45;
-      --footerB:#071635;
+      --ok:#16a34a;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
-      --liftFromFooter: 0px;
     }
 
     *{box-sizing:border-box}
@@ -38,7 +35,6 @@
       min-height:100vh;
     }
 
-    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -51,136 +47,117 @@
       padding: 10px clamp(12px, 4vw, 48px);
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:10px;
     }
-    .brand{display:flex; flex-direction:column; gap:3px; min-width:0;}
-    .brand .name{color:#fff; font-weight:1000; font-size:15px; line-height:1; white-space:nowrap;}
-    .brand .tag{color:rgba(255,255,255,.88); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 420px;}
-    .nav{display:flex; gap:8px; overflow:auto; -webkit-overflow-scrolling: touch; scrollbar-width:none; padding-bottom:2px; flex:1;}
-    .nav::-webkit-scrollbar{display:none}
-    .nav a{
-      flex:0 0 auto; text-decoration:none; color:#fff;
-      font-size:12px; font-weight:1000;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
+    .brand{
+      display:flex; flex-direction:column; gap:3px; min-width:0;
+    }
+    .brand .name{
+      color:#fff; font-weight:1000; font-size:15px; line-height:1;
       white-space:nowrap;
     }
-    .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
-    .menuBtn{
-      margin-left:auto; display:none;
-      border:1px solid rgba(255,255,255,.22);
+    /* ✅ header এ test name দেখাবে না */
+    .brand .tag{
+      display:none;
+    }
+
+    .pillRow{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+    .pill{
       background: rgba(255,255,255,.14);
-      color:#fff;
-      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
       padding: 8px 10px;
+      color:#fff;
       font-weight:1000;
       font-size:12px;
-      cursor:pointer;
-      line-height:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      white-space:nowrap;
     }
-    @media (max-width: 860px){ .nav{display:none;} .menuBtn{display:inline-flex;} .brand .tag{max-width:55vw;} }
 
-    .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
-    .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
-    .mobileMenu .drawer{
-      position:absolute; top:64px; right:12px;
-      width:min(320px, calc(100vw - 24px));
-      border-radius:16px; padding:10px;
-      border:1px solid rgba(255,255,255,.28);
-      background: rgba(8, 20, 55, .78);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 18px 38px rgba(0,0,0,.35);
-    }
-    .mobileMenu a{
-      display:block; text-decoration:none; color:#fff;
-      font-weight:1000; font-size:13px;
-      padding:12px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      margin-bottom:8px;
-    }
-    .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
-
-    /* ===== Layout with side ads ===== */
-    .layout{
+    .container{
       max-width: 1320px;
       margin: 0 auto;
-      padding: 10px clamp(12px, 4vw, 48px);
-      display:grid;
-      grid-template-columns: 240px 1fr 240px; /* left ad, content, right ad */
-      gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 1120px){
-      .layout{grid-template-columns: 1fr;} /* hide side ads on smaller screens */
-      .sideAd{display:none;}
+      padding: 12px clamp(12px, 4vw, 48px) 18px;
     }
 
-    .sideAd{
-      position: sticky;
-      top: 86px; /* below header */
-      border: 1px dashed rgba(18,28,55,.20);
-      border-radius: 16px;
-      background: rgba(255,255,255,.62);
-      padding: 10px;
-      box-shadow: var(--shadow2);
-      min-height: 600px;
-      overflow:hidden;
-    }
-    .sideAd .label{
-      font-size:12px;
-      font-weight:1000;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    /* ===== Notice ===== */
-    .noticeBar{
+    /* ===== Center Meta Panel ===== */
+    .metaPanel{
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      border-radius: 16px;
-      overflow:hidden;
+      border-radius: 18px;
+      background: rgba(255,255,255,.74);
       box-shadow: var(--shadow2);
-      margin-bottom: 12px;
-    }
-    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
-    .noticeTag{
-      font-size:12px; font-weight:1000;
-      padding: 6px 10px; border-radius: 999px;
-      background: rgba(29,78,216,.10);
-      border: 1px solid rgba(29,78,216,.18);
-      white-space:nowrap;
-    }
-    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
-    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
-    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
-
-    /* ===== Main panel ===== */
-    .panel{
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(255,255,255,.70);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .panelHead{
       padding: 12px 14px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
+      text-align:center;
     }
-    .panelBody{padding: 12px 14px}
-    .metaRow{display:flex; gap:8px; flex-wrap:wrap; align-items:center; color: var(--muted); font-size:12px;}
+    .metaTitle{
+      font-size: 14px;
+      font-weight: 1100;
+      margin: 2px 0 8px;
+    }
+    .metaRow{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      color: var(--muted);
+      font-size:12px;
+      font-weight: 900;
+    }
     .chip{
       border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.82);
       border-radius: 999px;
-      padding: 6px 10px;
+      padding: 7px 11px;
       white-space:nowrap;
     }
 
+    /* ===== PDF button ===== */
+    .actionsRow{
+      margin-top: 10px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.12s;
+      white-space:nowrap;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn.primary{
+      border-color: rgba(29,78,216,.28);
+      background: rgba(29,78,216,.12);
+      color: var(--brandA);
+    }
+    .btn.danger{
+      border-color: rgba(220,38,38,.28);
+      background: rgba(220,38,38,.10);
+      color: var(--danger);
+    }
+
+    /* ===== Paper body ===== */
     .paper{
+      margin-top: 12px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(18,28,55,.10);
+      box-shadow: var(--shadow);
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
@@ -189,10 +166,6 @@
           rgba(0,0,0,0) 24px,
           rgba(18,28,55,.055) 25px
         );
-      border: 1px solid rgba(18,28,55,.10);
-      border-radius: 18px;
-      box-shadow: 0 12px 26px rgba(15,23,48,.06);
-      padding: 14px;
       position: relative;
       overflow:hidden;
     }
@@ -204,19 +177,33 @@
       pointer-events:none;
     }
 
-    .qWrap{position:relative;}
-    .qBlock{
-      position: relative;
-      padding: 12px 12px 14px;
-      border: 1px solid rgba(18,28,55,.10);
-      border-radius: 16px;
-      background: rgba(255,255,255,.78);
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      margin-bottom: 12px;
+    /* ===== All questions 2-column ===== */
+    .qGrid{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      z-index:1;
     }
+    @media (max-width: 860px){
+      .qGrid{grid-template-columns: 1fr;}
+    }
+
+    .qBlock{
+      padding: 12px 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.76);
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+
     .qTop{
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:10px; margin-bottom: 6px; flex-wrap:wrap;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 6px;
+      flex-wrap:wrap;
     }
     .qNo, .qType{
       border: 1px solid rgba(18,28,55,.12);
@@ -228,30 +215,45 @@
       color: var(--muted);
       white-space:nowrap;
     }
-    .qText{margin:0; font-size: 13px; font-weight: 800; line-height: 1.65;}
-    .noteInline{margin-top: 6px; font-size: 12px; color: var(--muted); line-height: 1.6;}
+    .qText{
+      margin:0;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+    .noteInline{
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
     .noteInline b{color: var(--text)}
 
+    /* ✅ options: no box; click -> tick mark */
     .opts{
       margin-top: 10px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px 18px;
+      gap: 10px 14px;
       padding-top: 10px;
       border-top: 1px solid rgba(18,28,55,.12);
     }
-    @media (max-width: 640px){ .opts{grid-template-columns: 1fr; gap:10px;} }
     .opt{
-      display:flex; gap:10px; align-items:flex-start;
-      cursor:pointer; user-select:none;
-      padding: 8px 10px;
-      border-radius: 14px;
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.84);
-      transition:.12s;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+      user-select:none;
+      padding: 2px 2px;
     }
-    .opt:hover{background: rgba(29,78,216,.06); border-color: rgba(29,78,216,.16);}
-    .opt .badge{
+    .tick{
+      width: 18px;
+      flex:0 0 18px;
+      margin-top: 2px;
+      font-weight: 1100;
+      color: transparent; /* hidden by default */
+    }
+    .badge{
       width: 26px;height:26px;
       border-radius: 999px;
       border:1px solid rgba(18,28,55,.14);
@@ -263,11 +265,13 @@
       flex: 0 0 auto;
       margin-top: 1px;
     }
-    .opt .txt{font-size: 12.6px; line-height: 1.65; color: var(--text); flex:1;}
-    .opt.selected{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.08);
+    .opt .txt{
+      font-size: 12.6px;
+      line-height: 1.65;
+      color: var(--text);
+      flex:1;
     }
+    .opt.selected .tick{color: var(--ok);}
     .opt.selected .badge{
       border-color: rgba(29,78,216,.35);
       background: rgba(29,78,216,.10);
@@ -278,7 +282,7 @@
     .writtenBox{margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(18,28,55,.12);}
     textarea{
       width:100%;
-      min-height: 140px;
+      min-height: 120px;
       resize: vertical;
       border: 1px solid rgba(18,28,55,.12);
       border-radius: 14px;
@@ -291,63 +295,17 @@
       line-height: 1.6;
     }
 
-    .loading{color: var(--muted); font-size:12px;}
-    .err{color: var(--danger); font-size:12px; font-weight:1000;}
+    .loading{color: var(--muted); font-size:12px; text-align:center; padding: 14px;}
+    .err{color: var(--danger); font-size:12px; font-weight:1000; text-align:center; padding: 14px;}
 
-    /* Bottom bar */
-    .bottomBar{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(12px + var(--safeBottom) + var(--liftFromFooter));
-      z-index: 99999;
-      max-width: calc(100vw - 24px);
-      pointer-events:none;
-    }
-    .barInner{
-      pointer-events:auto;
-      width: min(1320px, calc(100vw - 24px));
+    /* ✅ Submit will be at bottom of all questions */
+    .submitWrap{
+      margin-top: 14px;
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 10px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.72);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(18,28,55,.14);
-      box-shadow: 0 18px 46px rgba(15,23,48,.14);
+      justify-content:center;
+      position:relative;
+      z-index:1;
     }
-    .barLeft{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-    .barMid{font-size:12px;color: var(--muted);font-weight:1000;white-space:nowrap;}
-    .barBtns{display:flex;gap:8px;align-items:center;flex:0 0 auto;}
-
-    .btn{
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.92);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size:12px;
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition:.12s;
-      white-space:nowrap;
-    }
-    .btn:disabled{opacity:.55; cursor:not-allowed;}
-    .btn.danger{
-      border-color: rgba(220,38,38,.28);
-      background: rgba(220,38,38,.10);
-      color: var(--danger);
-    }
-    .btn.primary{
-      border-color: rgba(29,78,216,.28);
-      background: rgba(29,78,216,.12);
-      color: var(--brandA);
-    }
-
-    .spacer{height: 92px; height: calc(92px + var(--safeBottom));}
 
     .toast{
       position: fixed;
@@ -369,25 +327,6 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-
-    footer{
-      margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,.18);
-      background:
-        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
-        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
-        linear-gradient(180deg, var(--footerA), var(--footerB));
-      color: rgba(255,255,255,.92);
-    }
-    .copy{
-      max-width: 1320px;
-      margin:0 auto;
-      padding: 0 clamp(12px, 4vw, 48px) 14px;
-      color: rgba(255,255,255,.72);
-      font-size:12px;
-      text-align:center;
-      white-space:nowrap;
-    }
   </style>
 </head>
 
@@ -399,131 +338,43 @@
         <div class="tag" id="headerTag">Model Test</div>
       </div>
 
-      <nav class="nav" aria-label="Main navigation">
-        <a href="#">একাডেমী</a>
-        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
-        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
-        <a href="#">মডেল টেস্ট</a>
-        <a href="#">কারেন্ট এফেয়ার্স</a>
-        <a href="#">IELTS</a>
-        <a href="#">BCS</a>
-        <a href="#">নোটিশ</a>
-        <a href="#">ব্লগ</a>
-        <a href="#">ক্যারিয়ার</a>
-      </nav>
-
-      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
-    </div>
-
-    <div class="mobileMenu" id="mobileMenu">
-      <div class="overlay" onclick="closeMenu()"></div>
-      <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
-        <a href="#">একাডেমী</a>
-        <a class="active" href="#">প্রশ্ন ব্যাঙ্ক</a>
-        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
-        <a href="#">মডেল টেস্ট</a>
-        <a href="#">কারেন্ট এফেয়ার্স</a>
-        <a href="#">IELTS</a>
-        <a href="#">BCS</a>
-        <a href="#">নোটিশ</a>
-        <a href="#">ব্লগ</a>
-        <a href="#">ক্যারিয়ার</a>
+      <div class="pillRow">
+        <div class="pill">Time Left: <b id="timeLeft">--:--</b></div>
+        <div class="pill">Answered: <b id="answeredCount">0</b>/<b id="qTotalTop">0</b></div>
       </div>
     </div>
   </header>
 
-  <div class="layout">
-    <!-- LEFT AD SLOT -->
-    <aside class="sideAd" aria-label="Left Ad">
-      <div class="label">Ad Slot (Left) — AdSense/Adstra</div>
-      <!-- ✅ AdSense example placeholder:
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXX"
-           data-ad-slot="1234567890"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      -->
-      <!-- ✅ Adstra placeholder:
-      <div id="adstra-left"></div>
-      -->
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main>
-      <div class="noticeBar" role="region" aria-label="Notice">
-        <div class="noticeRow">
-          <span class="noticeTag">Model Test</span>
-          <div class="marq">
-            <span id="tickerText">Test শুরু হয়েছে • সময়ের দিকে খেয়াল রাখুন • Submit করার আগে সব প্রশ্ন দেখে নিন</span>
-          </div>
-        </div>
+  <div class="container">
+    <!-- ✅ Center meta info -->
+    <div class="metaPanel">
+      <div class="metaTitle" id="mtTitle">Loading…</div>
+      <div class="metaRow">
+        <span class="chip" id="mtTime">⏱ -- min</span>
+        <span class="chip" id="mtMark">🧮 Mark: --</span>
+        <span class="chip">Total Q: <b id="qTotal">0</b></span>
       </div>
 
-      <section class="panel" aria-label="Model Test">
-        <div class="panelHead">
-          <div>
-            <b id="mtTitle">Loading…</b>
-            <div class="metaRow" style="margin-top:8px;">
-              <span class="chip" id="mtTime">⏱ -- min</span>
-              <span class="chip" id="mtMark">🧮 Mark: --</span>
-              <span class="chip">Total Q: <b id="qTotal">0</b></span>
-            </div>
-          </div>
-          <div class="metaRow" style="justify-content:flex-end;">
-            <span class="chip">Time Left: <b id="timeLeft">--:--</b></span>
-            <span class="chip" id="mtProgress">Answered: 0/0</span>
-          </div>
-        </div>
-
-        <div class="panelBody">
-          <div class="paper">
-            <div id="content" class="qWrap">
-              <div class="loading">ডাটা লোড হচ্ছে…</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="spacer"></div>
-    </main>
-
-    <!-- RIGHT AD SLOT -->
-    <aside class="sideAd" aria-label="Right Ad">
-      <div class="label">Ad Slot (Right) — AdSense/Adstra</div>
-      <!-- ✅ AdSense placeholder / Adstra placeholder here -->
-    </aside>
-  </div>
-
-  <div class="bottomBar" aria-label="Controls">
-    <div class="barInner">
-      <div class="barLeft">
-        <button class="btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Top</button>
-        <button class="btn" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Bottom</button>
+      <!-- ✅ PDF download option -->
+      <div class="actionsRow">
+        <a class="btn primary" id="pdfBtn" href="#" target="_blank" rel="noopener" style="display:none;">⬇️ PDF Download</a>
       </div>
+    </div>
 
-      <div class="barMid" id="pageInfo">All Questions</div>
-
-      <div class="barBtns">
-        <button class="btn danger" id="btnSubmit" onclick="submitTest()">Submit</button>
+    <!-- ✅ Paper body -->
+    <div class="paper">
+      <div id="content">
+        <div class="loading">ডাটা লোড হচ্ছে…</div>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <footer>
-    <div class="copy">© <span id="year"></span> eProstutiBD All rights reserved</div>
-  </footer>
-
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -546,13 +397,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const $ = (id)=>document.getElementById(id);
-
-    // menu
-    function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-    function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-    function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-    window.openMenu=openMenu; window.closeMenu=closeMenu; window.toggleMenu=toggleMenu;
-    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
     function esc(str){
       return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
@@ -600,7 +444,6 @@
     function pickQuestionText(q){
       return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
     }
-
     function getOptions(q){
       if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
       if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
@@ -612,13 +455,11 @@
       const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
       return [o1,o2,o3,o4].map(x=>String(x ?? ""));
     }
-
     function isWrittenQuestion(q){
       const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
       return t === "written" || t === "cq" || t === "short" || t === "essay";
     }
 
-    // ===== state =====
     const modelTestId = getParam("modelTestId");
     let mtDoc = null;
     let questions = [];
@@ -635,7 +476,6 @@
       };
       localStorage.setItem(key, JSON.stringify(payload));
     }
-
     function restoreAnswers(){
       const key = `epbd_mt_ans_${modelTestId}`;
       try{
@@ -647,7 +487,7 @@
       }catch(e){}
     }
 
-    // ===== timer =====
+    // ===== timer (your input time count) =====
     let endAtMs = 0;
     let timerHandle = null;
 
@@ -671,6 +511,11 @@
       return done;
     }
 
+    function updateAnsweredUI(){
+      $("answeredCount").textContent = String(countAnswered());
+      $("qTotalTop").textContent = String(questions.length);
+    }
+
     function getUnansweredList(){
       const list = [];
       questions.forEach((q, i)=>{
@@ -692,6 +537,7 @@
         return;
       }
 
+      // persist end time (reload করলে একই টাইম থাকবে)
       const key = `epbd_mt_end_${modelTestId}`;
       const saved = localStorage.getItem(key);
       const now = Date.now();
@@ -714,9 +560,9 @@
         $("timeLeft").textContent = formatMMSS(left);
 
         if(left <= 60) $("timeLeft").style.color = "var(--danger)";
-        else $("timeLeft").style.color = "var(--text)";
+        else $("timeLeft").style.color = "#fff";
 
-        $("mtProgress").textContent = `Answered: ${countAnswered()}/${questions.length}`;
+        updateAnsweredUI();
 
         if(left <= 0){
           clearInterval(timerHandle);
@@ -734,14 +580,22 @@
     function setHeader(){
       const title = getTitleField(mtDoc);
       $("mtTitle").textContent = title;
-      $("headerTag").textContent = `সকল প্রস্তুতি হোক গভীর থেকে • ${title}`;
-      $("tickerText").textContent = `${title} • Test চলছে • Submit করার আগে সব প্রশ্ন দেখে নিন`;
 
       const mins = getTimeMinFromDoc(mtDoc);
       $("mtTime").textContent = `⏱ ${mins ? mins : "--"} min`;
       $("mtMark").textContent = `🧮 Mark: ${getMarkFromDoc(mtDoc)}`;
       $("qTotal").textContent = String(questions.length || 0);
-      $("mtProgress").textContent = `Answered: ${countAnswered()}/${questions.length}`;
+
+      updateAnsweredUI();
+
+      // ✅ PDF download button (doc field-based)
+      // supports: pdfUrl / pdf / pdf_link / pdfLink
+      const pdfUrl = (mtDoc?.pdfUrl ?? mtDoc?.pdf ?? mtDoc?.pdf_link ?? mtDoc?.pdfLink ?? "").toString().trim();
+      if(pdfUrl){
+        const a = $("pdfBtn");
+        a.href = pdfUrl;
+        a.style.display = "inline-flex";
+      }
     }
 
     function renderAll(){
@@ -752,6 +606,9 @@
         wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
         return;
       }
+
+      const grid = document.createElement("div");
+      grid.className = "qGrid";
 
       const letters = ["A","B","C","D"];
 
@@ -790,7 +647,7 @@
           ta.addEventListener("input", ()=>{
             writtenAns.set(qid, ta.value);
             persistAnswers();
-            $("mtProgress").textContent = `Answered: ${countAnswered()}/${questions.length}`;
+            updateAnsweredUI();
           });
           wb.appendChild(ta);
           block.appendChild(wb);
@@ -805,31 +662,44 @@
             const opt = document.createElement("div");
             opt.className = "opt" + (chosen === oi ? " selected" : "");
             opt.innerHTML = `
+              <span class="tick">✓</span>
               <span class="badge">${letters[oi]}</span>
               <div class="txt">${esc(op || "")}</div>
             `;
+
             opt.addEventListener("click", ()=>{
               mcqAns.set(qid, oi);
               persistAnswers();
+
+              // update UI ticks in this question block only
               Array.from(ow.querySelectorAll(".opt")).forEach((el)=>el.classList.remove("selected"));
               opt.classList.add("selected");
-              $("mtProgress").textContent = `Answered: ${countAnswered()}/${questions.length}`;
+
+              updateAnsweredUI();
             });
+
             ow.appendChild(opt);
           });
 
           block.appendChild(ow);
         }
 
-        wrap.appendChild(block);
+        grid.appendChild(block);
       });
 
-      $("mtProgress").textContent = `Answered: ${countAnswered()}/${questions.length}`;
+      wrap.appendChild(grid);
+
+      // ✅ submit button at the bottom of all questions
+      const submitWrap = document.createElement("div");
+      submitWrap.className = "submitWrap";
+      submitWrap.innerHTML = `<button class="btn danger" onclick="submitTest()">Submit</button>`;
+      wrap.appendChild(submitWrap);
+
+      updateAnsweredUI();
     }
 
     function getCorrectIndex(q, opts){
       if(Number.isFinite(q.correctIndex)) return q.correctIndex;
-
       const ra = (q.rightAns ?? q.right_ans ?? q.answer ?? q.correct ?? q.correctAns ?? q.correct_ans ?? "").toString().trim();
       if(!ra) return -1;
 
@@ -861,15 +731,14 @@
     function submitTest(isAuto=false){
       if(!modelTestId) return;
 
-      // ✅ Unanswered warning only for manual submit
+      // ✅ Unanswered warning (manual submit only)
       if(!isAuto){
         const un = getUnansweredList();
         if(un.length){
           const preview = un.slice(0, 20).join(", ");
           const more = un.length > 20 ? ` … (+${un.length - 20})` : "";
-          const ok = confirm(`আপনার ${un.length}টি প্রশ্নের উত্তর দেয়া হয়নি (Q: ${preview}${more}).\nতবুও Submit করতে চান?`);
+          const ok = confirm(`Unanswered questions আছে: ${un.length}টি (Q: ${preview}${more}).\nতবুও Submit করতে চান?`);
           if(!ok){
-            // nice UX: scroll to first unanswered
             const first = un[0] - 1;
             if(questions[first]){
               const el = document.getElementById(`q_${questions[first].id}`);
@@ -977,16 +846,9 @@
         startTimer(mins);
 
         if(!questions.length){
-          $("content").innerHTML = `
-            <div class="err">
-              কোনো প্রশ্ন পাওয়া যায়নি।<br/>
-              <span style="color:var(--muted);font-weight:700;">
-                (আমি modeltest_questions / model_test_questions / subcollection questions — সব জায়গায় খুঁজেছি)
-              </span>
-            </div>
-          `;
-          $("mtProgress").textContent = `Answered: 0/0`;
+          $("content").innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
           $("qTotal").textContent = "0";
+          updateAnsweredUI();
           return;
         }
 
@@ -998,29 +860,6 @@
         $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। Console এ error দেখুন।</div>`;
       }
     }
-
-    // bottom bar lift above footer
-    (function keepBarAboveFooter(){
-      const footer = document.querySelector("footer");
-      if(!footer) return;
-
-      let ticking = false;
-      function update(){
-        ticking = false;
-        const fr = footer.getBoundingClientRect();
-        const overlap = window.innerHeight - fr.top;
-        const lift = Math.max(0, overlap);
-        document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
-      }
-      function onScroll(){
-        if(ticking) return;
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-      window.addEventListener("scroll", onScroll, {passive:true});
-      window.addEventListener("resize", onScroll);
-      onScroll();
-    })();
 
     window.addEventListener("beforeunload", ()=> {
       try{ persistAnswers(); }catch(e){}
