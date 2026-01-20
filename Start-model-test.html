@@ -5,33 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>মডেল টেস্ট শুরু করুন — eProstutiBD</title>
 
-  <!-- ✅ SEO (SPA-friendly best effort) -->
-  <meta name="description" content="eProstutiBD মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Bangla-support সহ Question Paper + Teacher Answer Sheet PDF ডাউনলোড।" />
+  <!-- ✅ SEO -->
+  <meta name="description" content="eProstutiBD মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Bangla-support সহ Question Paper + Answer Sheet (Correct) PDF ডাউনলোড।" />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <link rel="canonical" href="./Start-model-test.html" />
 
   <!-- ✅ Social -->
   <meta property="og:title" content="মডেল টেস্ট শুরু করুন — eProstutiBD" />
-  <meta property="og:description" content="সকল প্রশ্ন একপেজে। Question Paper + Teacher Answer Sheet PDF ডাউনলোড (Bangla support)।" />
+  <meta property="og:description" content="সকল প্রশ্ন একপেজে। Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="bn_BD" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="মডেল টেস্ট শুরু করুন — eProstutiBD" />
-  <meta name="twitter:description" content="সকল প্রশ্ন একপেজে। Question Paper + Teacher Answer Sheet PDF ডাউনলোড (Bangla support)।" />
+  <meta name="twitter:description" content="সকল প্রশ্ন একপেজে। Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।" />
 
   <meta name="theme-color" content="#1d4ed8" />
 
-  <!-- ✅ Performance hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://www.gstatic.com" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
-  <!-- ✅ Bangla font -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&display=swap" rel="stylesheet">
 
-  <!-- ✅ Structured Data -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -69,7 +66,7 @@
       --footMuted: rgba(255,255,255,.70);
 
       --sideW: 240px;
-      --gap: 8px; /* a little tighter */
+      --gap: 8px;
     }
 
     *{box-sizing:border-box}
@@ -85,11 +82,7 @@
       min-height:100vh;
     }
     a{color:inherit}
-
-    .srOnly{
-      position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-      clip:rect(0,0,0,0);white-space:nowrap;border:0;
-    }
+    .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
     .container{
       max-width: 1320px;
@@ -226,7 +219,7 @@
       white-space:nowrap;
     }
 
-    /* ===== Paper body (plain, no cards) ===== */
+    /* ===== Paper body ===== */
     .paper{
       margin-top: 12px;
       background:
@@ -237,10 +230,10 @@
           rgba(0,0,0,0) 26px,
           rgba(18,28,55,.055) 27px
         );
-      border: 2px solid rgba(18,28,55,.14); /* ✅ stronger border */
+      border: 2px solid rgba(18,28,55,.14);
       border-radius: 16px;
       box-shadow: 0 18px 50px rgba(15,23,48,.10);
-      padding: 22px; /* ✅ bigger paper feel */
+      padding: 22px;
       position: relative;
       overflow:hidden;
     }
@@ -254,13 +247,13 @@
     .paperFrame{
       position: relative;
       z-index: 1;
-      border: 1.6px solid rgba(18,28,55,.18); /* ✅ inner border like a page */
+      border: 1.6px solid rgba(18,28,55,.18);
       border-radius: 14px;
       padding: 16px;
       background: rgba(255,255,255,.55);
     }
 
-    /* ✅ 2-column questions on page */
+    /* ✅ 2-column questions */
     .qList{position: relative;z-index: 1;}
     @media (min-width: 981px){
       .qList{
@@ -288,7 +281,7 @@
     }
     .qText{margin:0;font-weight:900;font-size:14.5px;line-height:1.65;flex:1;letter-spacing:.1px;}
 
-    /* options — no boxes */
+    /* options */
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap: 8px 14px;}
     .optLine{
       display:grid;
@@ -309,7 +302,6 @@
     .optKey{font-weight:1000;font-size:13px;color: var(--muted);line-height:1.5;}
     .optTxt{font-size:13.5px;line-height:1.6;color: var(--text);}
 
-    /* ✅ selected green + bold + tick */
     .optLine.selected .tick{color: var(--ok);}
     .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
     .optLine.selected .optKey{color: var(--ok);}
@@ -335,22 +327,32 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
-    /* ===== Side ads (sticky + NOT scroll) ===== */
-    .sideAd, .adBox, .adBody{
+    /* ===== Sidebars: stacked sticky (fix download under ads issue) ===== */
+    .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
+    .sideStack{
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      overflow: hidden !important;
+      overscroll-behavior: none;
+    }
+
+    .adBox, .adBody, .pdfBox, .recentBox{
       overflow: hidden !important;
       overscroll-behavior: none;
       -webkit-overflow-scrolling: auto;
     }
+
     .adBox{
       border:1px dashed rgba(18,28,55,.22);
       border-radius:16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
-      position: sticky;
-      top: calc(var(--headerH) + 10px);
-      height: calc(100vh - (var(--headerH) + 22px));
       display:flex;
       flex-direction:column;
+      min-height: 140px;
+      flex: 1 1 auto; /* ✅ take remaining height */
     }
     .adHead{
       padding:10px 12px;
@@ -370,20 +372,18 @@
       color: var(--muted);
     }
 
-    /* ✅ PDF download button */
+    /* ✅ PDF box always visible at top of right sidebar */
     .pdfBox{
       border:1px dashed rgba(18,28,55,.22);
       border-radius:16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
-      position: sticky;
-      top: calc(var(--headerH) + 10px);
       overflow:hidden;
-      margin-bottom: 10px;
+      flex: 0 0 auto; /* ✅ don't shrink away */
     }
-    .pdfBox .adHead{border-bottom:1px solid rgba(18,28,55,.10);}
     .btnPdf{
-      width:100%;
+      width: calc(100% - 20px);
+      margin: 10px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -397,10 +397,45 @@
       font-size: 12.6px;
       cursor:pointer;
       box-shadow: 0 14px 34px rgba(29,78,216,.12);
-      margin: 10px;
     }
     .btnPdf svg{width:18px;height:18px;fill: rgba(29,78,216,1);}
-    .btnPdf:hover{filter: brightness(1.02);}
+
+    /* ✅ Recent model tests box under LEFT ad */
+    .recentBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .recentList{
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .recentItem{
+      text-decoration:none;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 14px;
+      padding: 10px;
+      transition: .12s;
+    }
+    .recentItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
+    .recentDot{
+      width:10px;height:10px;border-radius:999px;
+      background: rgba(29,78,216,.28);
+      border:1px solid rgba(29,78,216,.20);
+      flex:0 0 auto;
+      margin-top: 5px;
+    }
+    .recentTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
+    .recentMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
 
     /* submit under all questions */
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
@@ -417,7 +452,7 @@
       white-space:nowrap;
     }
 
-    /* toast — সুন্দর pop-up */
+    /* toast */
     .toast{
       position: fixed;
       left: 50%;
@@ -452,6 +487,71 @@
 
     .loading{color: var(--muted); font-size:12px; font-weight:900;}
     .err{color: var(--danger); font-size:12px; font-weight:1000;}
+
+    /* ===== Name gate modal ===== */
+    .modal{
+      position: fixed;
+      inset:0;
+      z-index: 999999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+    }
+    .modal.show{display:flex;}
+    .modal .overlay{
+      position:absolute;inset:0;
+      background: rgba(10, 18, 40, .55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .modalCard{
+      position:relative;
+      width: min(520px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+      padding: 14px;
+    }
+    .modalHead{
+      display:flex;align-items:flex-start;justify-content:space-between;gap: 10px;
+      padding: 6px 6px 10px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+    }
+    .modalTitle{font-size:14px;font-weight:1000;margin:0;}
+    .modalText{color: var(--muted); font-size:12.5px; font-weight: 900; line-height:1.5; margin:6px 0 0;}
+    .modalBody{padding: 12px 6px 6px;}
+    .modalBody label{display:block;font-size:12px;color:var(--muted);font-weight:1000;margin-bottom:6px;}
+    .modalBody input{
+      width:100%;
+      border:1px solid rgba(18,28,55,.14);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-size:13px;
+      font-weight: 900;
+      outline:none;
+      background: rgba(255,255,255,.96);
+      font-family: inherit;
+    }
+    .modalActions{
+      display:flex;gap:10px;justify-content:flex-end;align-items:center;
+      padding: 10px 6px 6px;
+    }
+    .btnPrimary{
+      border: 1px solid rgba(29,78,216,.28);
+      background: rgba(29,78,216,.14);
+      color: rgba(29,78,216,1);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      white-space:nowrap;
+    }
+    .btnPrimary:disabled{opacity:.55; cursor:not-allowed;}
 
     /* ===== Footer ===== */
     footer{
@@ -496,25 +596,21 @@
       white-space:normal;
     }
 
-    @media (prefers-reduced-motion: reduce){
-      .marq span{ animation:none; padding-left:0; }
-    }
-
-    /* ===== PDF render area (hidden offscreen) ===== */
+    /* ===== PDF render area ===== */
     .pdfPageArea{
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 794px; /* a4 width @ 96dpi approx */
+      width: 794px;
       background:#fff;
       color:#111;
       padding: 16px;
       font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     }
     .pdfFrame{
-      border: 2px solid #111; /* ✅ full-page border */
+      border: 2px solid #111;
       padding: 14px;
-      min-height: 1040px; /* a4-ish */
+      min-height: 1040px;
       background:#fff;
     }
     .pdfHeaderLine1{text-align:center;font-weight:1000;font-size:15px;margin: 4px 0 2px;}
@@ -608,11 +704,23 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
-      <!-- LEFT AD -->
-      <aside class="sideAd" aria-label="Left advertisement">
-        <div class="adBox">
-          <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
-          <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
+
+      <!-- LEFT sidebar: Ad + Recent -->
+      <aside class="sideAd" aria-label="Left sidebar">
+        <div class="sideStack">
+
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
+            <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
+          </div>
+
+          <div class="recentBox" aria-label="Recent model tests">
+            <div class="adHead"><b>Recent Model Test</b><span>Latest</span></div>
+            <div class="recentList" id="recentList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
         </div>
       </aside>
 
@@ -647,24 +755,50 @@
         </article>
       </section>
 
-      <!-- RIGHT: PDF button on top + right ad below -->
-      <aside class="sideAd" aria-label="Right advertisement">
-        <div class="pdfBox" aria-label="PDF download">
-          <div class="adHead"><b>PDF</b><span>Download</span></div>
-          <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadBothPDFs()">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
-            </svg>
-            Download question and answer sheet
-          </button>
-        </div>
+      <!-- RIGHT sidebar: PDF ALWAYS visible + Ad -->
+      <aside class="sideAd" aria-label="Right sidebar">
+        <div class="sideStack">
 
-        <div class="adBox">
-          <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
-          <div class="adBody" id="ad_right">Paste AdSense / Ad code here</div>
+          <!-- ✅ fixed: PDF first, never hides -->
+          <div class="pdfBox" aria-label="PDF download">
+            <div class="adHead"><b>PDF</b><span>Download</span></div>
+            <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadBothPDFs()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+              </svg>
+              Download question and answer sheet
+            </button>
+          </div>
+
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
+            <div class="adBody" id="ad_right">Paste AdSense / Ad code here</div>
+          </div>
+
         </div>
       </aside>
+
     </main>
+  </div>
+
+  <!-- Name gate modal -->
+  <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name">
+    <div class="overlay"></div>
+    <div class="modalCard">
+      <div class="modalHead">
+        <div>
+          <p class="modalTitle">শুরু করার আগে নাম লিখুন</p>
+          <p class="modalText">নাম Submit না করা পর্যন্ত কোনো প্রশ্নে উত্তর দেওয়া যাবে না।</p>
+        </div>
+      </div>
+      <div class="modalBody">
+        <label for="studentName">আপনার নাম</label>
+        <input id="studentName" type="text" placeholder="যেমন: Md Ebadot Hossen" autocomplete="name" />
+      </div>
+      <div class="modalActions">
+        <button class="btnPrimary" id="btnNameSubmit" type="button" onclick="submitName()">Start Test</button>
+      </div>
+    </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -726,6 +860,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
+    // year
     document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
@@ -737,6 +872,9 @@
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
     // ===== toast =====
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
     function showToast(msg, sub=""){
       const t = $("toast");
       t.innerHTML = `
@@ -754,15 +892,12 @@
     }
 
     // ===== utils =====
-    function esc(str){
-      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
     function getParam(name){
       const u = new URL(location.href);
       return u.searchParams.get(name) || "";
     }
 
-    // ===== Firebase config =====
+    // ===== Firebase =====
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -783,10 +918,49 @@
     // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
 
-    // ===== robust field helpers =====
-    function getTitleField(data){
-      return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test";
+    // ===== state (NO persistence; reload resets) =====
+    let mtDoc = null;
+    let questions = [];
+    const mcqAns = new Map();
+    const writtenAns = new Map();
+
+    // Name gate
+    let studentName = "";
+    let nameUnlocked = false;
+
+    function openNameModal(){
+      const m = $("nameModal");
+      m.classList.add("show");
+      setTimeout(()=>{ $("studentName").focus(); }, 50);
     }
+    function closeNameModal(){
+      $("nameModal").classList.remove("show");
+    }
+
+    function submitName(){
+      const v = ($("studentName").value || "").trim();
+      if(!v){
+        showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
+        $("studentName").focus();
+        return;
+      }
+      studentName = v;
+      nameUnlocked = true;
+      closeNameModal();
+      showToast("Test শুরু হলো", `শুভকামনা, ${studentName}!`);
+    }
+    window.submitName = submitName;
+
+    // block any answering until unlocked
+    function guardAnswering(){
+      if(nameUnlocked) return true;
+      openNameModal();
+      showToast("নাম Submit করুন", "তারপর উত্তর দিতে পারবেন");
+      return false;
+    }
+
+    // ===== helpers =====
+    function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test"; }
     function getTimeMinFromDoc(data){
       const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
       for(const k of keys){
@@ -813,32 +987,21 @@
       if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
       if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
       if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
-
       const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
       const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
       const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
       const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
       return [o1,o2,o3,o4].map(x=>String(x ?? ""));
     }
-
-    // ✅ correctIndex is guaranteed (0-3)
     function getCorrectIndex(q){
       if(Number.isFinite(q.correctIndex)) return q.correctIndex;
-      // fallback safe
       const v = Number(q.correctIndex);
       return Number.isFinite(v) ? v : -1;
     }
-
     function isWrittenQuestion(q){
       const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
       return t === "written" || t === "cq" || t === "short" || t === "essay";
     }
-
-    // ===== state (NO persistence; reload resets everything) =====
-    let mtDoc = null;
-    let questions = [];
-    const mcqAns = new Map();
-    const writtenAns = new Map();
 
     // ===== timer (reload resets) =====
     let endAtMs = 0;
@@ -852,10 +1015,7 @@
     }
     function startTimer(minutes){
       const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
-      if(!totalSeconds){
-        $("timeLeft").textContent = "--:--";
-        return;
-      }
+      if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
       endAtMs = Date.now() + totalSeconds * 1000;
 
       const tick = ()=>{
@@ -869,7 +1029,6 @@
           setTimeout(()=>submitTest(true), 350);
         }
       };
-
       tick();
       clearInterval(timerHandle);
       timerHandle = setInterval(tick, 1000);
@@ -877,15 +1036,10 @@
 
     async function fetchQuestionsFromCollection(colName, mtId){
       try{
-        const s = await db.collection(colName)
-          .where("modelTestId","==", mtId)
-          .orderBy("createdAt","asc")
-          .get();
+        const s = await db.collection(colName).where("modelTestId","==", mtId).orderBy("createdAt","asc").get();
         return s.docs.map(d=>({ id:d.id, ...d.data() }));
       }catch(e){
-        const s = await db.collection(colName)
-          .where("modelTestId","==", mtId)
-          .get();
+        const s = await db.collection(colName).where("modelTestId","==", mtId).get();
         return s.docs.map(d=>({ id:d.id, ...d.data() }));
       }
     }
@@ -910,11 +1064,10 @@
       $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
       $("mtTotalQ").textContent = String(questions.length || 0);
 
-      // SEO: update title/desc dynamically (best-effort)
       document.title = `${title} — Model Test | eProstutiBD`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if(metaDesc){
-        metaDesc.setAttribute("content", `${title} মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Question Paper + Teacher Answer Sheet PDF ডাউনলোড (Bangla support)।`);
+        metaDesc.setAttribute("content", `${title} মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।`);
       }
     }
 
@@ -937,7 +1090,6 @@
       const letters = ["A","B","C","D"];
 
       questions.forEach((q, i)=>{
-        // inline ad #1
         if(i === adPos1){
           const ad = document.createElement("div");
           ad.className = "inlineAd";
@@ -950,8 +1102,6 @@
           `;
           list.appendChild(ad);
         }
-
-        // inline ad #2
         if(i === adPos2){
           const ad = document.createElement("div");
           ad.className = "inlineAd";
@@ -981,7 +1131,6 @@
         `;
 
         if(isWrittenQuestion(q)){
-          // written (kept minimal; but your model test is MCQ usually)
           const ta = document.createElement("textarea");
           ta.style.width = "100%";
           ta.style.minHeight = "120px";
@@ -993,7 +1142,10 @@
           ta.style.fontSize = "13px";
           ta.placeholder = "আপনার উত্তর লিখুন…";
           ta.value = (writtenAns.get(qid) ?? "").toString();
-          ta.oninput = ()=> writtenAns.set(qid, ta.value);
+          ta.oninput = ()=>{
+            if(!guardAnswering()) return;
+            writtenAns.set(qid, ta.value);
+          };
           row.appendChild(ta);
         }else{
           const opts = getOptions(q);
@@ -1014,8 +1166,9 @@
               <span class="optTxt">${esc(op || "")}</span>
             `;
             const pick = ()=>{
+              if(!guardAnswering()) return;
               mcqAns.set(qid, oi);
-              renderAll(); // rerender to reflect green/tick
+              renderAll();
             };
             opt.onclick = pick;
             opt.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
@@ -1060,6 +1213,13 @@
     function submitTest(isAuto=false){
       if(!modelTestId) return;
 
+      // if name not submitted, prevent submit too
+      if(!nameUnlocked){
+        openNameModal();
+        showToast("নাম Submit করুন", "তারপর Submit করতে পারবেন");
+        return;
+      }
+
       const missing = getUnanswered();
       if(!isAuto && missing.length){
         const ok = confirm(`আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`);
@@ -1078,6 +1238,7 @@
         title: getTitleField(mtDoc),
         submittedAt: Date.now(),
         isAuto: !!isAuto,
+        studentName, // ✅ name will show in result page
         answers: {
           mcq: Array.from(mcqAns.entries()),
           written: Array.from(writtenAns.entries())
@@ -1095,43 +1256,29 @@
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
       return out;
     }
-
-    // ✅ header line2 format exactly as you wanted
     function buildPdfHeaderLines(title, mins, mark, totalQ){
-      return {
-        line1: title,
-        line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}`
-      };
+      return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
     }
-
     async function renderPageToCanvas(html){
       const area = $("pdfPageArea");
       area.innerHTML = html;
       try{ await document.fonts.ready; }catch(e){}
-      const canvas = await html2canvas(area, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true
-      });
+      const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
       return canvas;
     }
-
     async function canvasesToPdf(canvases, fileName){
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF("p", "pt", "a4");
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
-
       canvases.forEach((canvas, idx)=>{
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
         if(idx > 0) pdf.addPage();
         pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
       });
-
       pdf.save(fileName);
     }
 
-    // ✅ Question paper: 2-column, 30 per page, middle line, border
     async function downloadQuestionPaperPdf(){
       const title = getTitleField(mtDoc);
       const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -1179,7 +1326,6 @@
             </div>
           </div>
         `;
-
         canvases.push(await renderPageToCanvas(pageHtml));
       }
 
@@ -1187,8 +1333,7 @@
       await canvasesToPdf(canvases, `${safeName}-question-paper.pdf`);
     }
 
-    // ✅ Teacher Answer Sheet: auto correct answer marked (NOT student selection)
-    async function downloadTeacherAnswerSheetPdf(){
+    async function downloadAnswerSheetPdf(){
       const title = getTitleField(mtDoc);
       const mins = getTimeMinFromDoc(mtDoc) || 0;
       const mark = getMarkFromDoc(mtDoc);
@@ -1214,7 +1359,7 @@
             `;
           }
 
-          const correctIdx = getCorrectIndex(q); // ✅ correctIndex (0-3)
+          const correctIdx = getCorrectIndex(q);
           const bubbles = letters.map((l, i)=>{
             const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
             return `<span class="bubble ${sel}">${l}</span>`;
@@ -1232,28 +1377,24 @@
           <div class="pdfFrame">
             <div class="pdfHeaderLine1">${esc(line1)}</div>
             <div class="pdfHeaderLine2">${esc(line2)}</div>
-            <div style="text-align:center; font-weight:1000; margin-top: 4px;">Teacher Answer Sheet (Correct)</div>
+            <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
             <div class="pdfASGrid">${rowsHtml}</div>
           </div>
         `;
-
         canvases.push(await renderPageToCanvas(pageHtml));
       }
 
       const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "answer-sheet";
-      await canvasesToPdf(canvases, `${safeName}-teacher-answer-sheet.pdf`);
+      await canvasesToPdf(canvases, `${safeName}-answer-sheet-correct.pdf`);
     }
 
     async function downloadBothPDFs(){
       try{
-        if(!questions.length){
-          showToast("কোনো প্রশ্ন নেই");
-          return;
-        }
+        if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
         showToast("PDF তৈরি হচ্ছে…", "একটু অপেক্ষা করুন");
         await downloadQuestionPaperPdf();
-        await downloadTeacherAnswerSheetPdf();
-        showToast("ডাউনলোড সম্পন্ন", "Question & Teacher Answer Sheet ডাউনলোড হয়েছে");
+        await downloadAnswerSheetPdf();
+        showToast("ডাউনলোড সম্পন্ন", "Question & Answer Sheet ডাউনলোড হয়েছে");
       }catch(e){
         console.error(e);
         showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
@@ -1261,12 +1402,62 @@
     }
     window.downloadBothPDFs = downloadBothPDFs;
 
+    // ===== Recent Model Tests (left sidebar under ad) =====
+    async function loadRecentModelTests(){
+      const wrap = $("recentList");
+      try{
+        // ✅ latest 6 tests
+        let snap = null;
+        try{
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(6).get();
+        }catch(e){
+          // fallback: if createdAt missing or index problem, just limit
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(6).get();
+        }
+
+        const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+        if(!docs.length){
+          wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        wrap.innerHTML = "";
+        docs.forEach(doc=>{
+          const title = getTitleField(doc);
+          const mins = getTimeMinFromDoc(doc) || "--";
+          const mark = getMarkFromDoc(doc);
+          const a = document.createElement("a");
+          a.className = "recentItem";
+          a.href = `Start-model-test.html?modelTestId=${encodeURIComponent(doc.id)}`;
+          a.innerHTML = `
+            <span class="recentDot"></span>
+            <div>
+              <div class="recentTitle">${esc(title)}</div>
+              <div class="recentMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+            </div>
+          `;
+          wrap.appendChild(a);
+        });
+
+      }catch(err){
+        console.error(err);
+        wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
+      }
+    }
+
     // ===== boot =====
     async function loadAll(){
       if(!modelTestId){
         $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: Start-model-test.html?modelTestId=XXXX</div>`;
         return;
       }
+
+      // show modal immediately (must submit name before answering)
+      openNameModal();
+      $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+
+      // recent list load
+      loadRecentModelTests();
 
       try{
         const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
@@ -1291,7 +1482,7 @@
         setMetaHeader();
         startTimer(getTimeMinFromDoc(mtDoc));
         renderAll();
-        showToast("Test শুরু হয়েছে", "সকল প্রশ্ন একসাথে দেখানো হচ্ছে");
+        showToast("Test প্রস্তুত", "নাম Submit করলে উত্তর দিতে পারবেন");
       }catch(err){
         console.error(err);
         $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
