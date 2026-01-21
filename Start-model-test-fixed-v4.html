@@ -1,0 +1,1927 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>মডেল টেস্ট শুরু করুন — eProstutiBD</title>
+
+  <!-- ✅ SEO -->
+  <meta name="description" content="eProstutiBD মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Bangla-support সহ Question Paper + Answer Sheet (Correct) PDF ডাউনলোড।" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="./Start-model-test.html" />
+
+  <!-- ✅ Social -->
+  <meta property="og:title" content="মডেল টেস্ট শুরু করুন — eProstutiBD" />
+  <meta property="og:description" content="সকল প্রশ্ন একপেজে। Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="bn_BD" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="মডেল টেস্ট শুরু করুন — eProstutiBD" />
+  <meta name="twitter:description" content="সকল প্রশ্ন একপেজে। Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।" />
+
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.gstatic.com" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"eProstutiBD Model Test",
+    "inLanguage":"bn-BD",
+    "description":"eProstutiBD মডেল টেস্ট — সকল প্রশ্ন একপেজে, সময় গণনা, এবং PDF ডাউনলোড।",
+    "publisher":{"@type":"Organization","name":"eProstutiBD"}
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --line: rgba(18, 28, 55, .10);
+      --line2: rgba(18, 28, 55, .08);
+      --text:#0f1730; --muted:#5a6685;
+
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --brandA:#1d4ed8;
+      --brandB:#0ea5e9;
+
+      --ok:#16a34a;
+      --danger:#dc2626;
+
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+      --headerH: 64px;
+
+      --footTop:#0b1f3f;
+      --footBottom:#07152e;
+      --footLine: rgba(255,255,255,.14);
+      --footText: rgba(255,255,255,.86);
+      --footMuted: rgba(255,255,255,.70);
+
+      --sideW: 240px;
+      --gap: 8px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+    .container{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(8px, 2vw, 20px);
+      padding-right: clamp(8px, 2vw, 20px);
+      padding-top: 10px;
+      padding-bottom: 14px;
+    }
+
+    /* ===== Header ===== */
+    header{
+      position:sticky; top:0; z-index:60;
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
+    }
+    .topbar{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(8px, 2vw, 20px);
+      padding-right: clamp(8px, 2vw, 20px);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
+    .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
+
+    nav.nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
+    nav.nav::-webkit-scrollbar{display:none}
+    nav.nav a{
+      flex:0 0 auto;text-decoration:none;color:#fff;font-size:12px;font-weight:1000;
+      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);white-space:nowrap;transition:.15s;
+    }
+    nav.nav a:hover{background: rgba(255,255,255,.16)}
+    nav.nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
+
+    .menuBtn{
+      flex:0 0 auto;margin-left:auto;display:none;
+      border:1px solid rgba(255,255,255,.22);background: rgba(255,255,255,.14);color:#fff;
+      border-radius: 12px;padding: 8px 10px;font-weight:1000;font-size:12px;cursor:pointer;line-height:1;
+    }
+    @media (max-width: 860px){
+      nav.nav{display:none;}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
+      .brand .tag{max-width: 55vw;}
+    }
+
+    .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
+    .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
+    .mobileMenu .drawer{
+      position:absolute;top:64px;right:12px;width:min(320px, calc(100vw - 24px));
+      border-radius:16px;padding:10px;border:1px solid rgba(255,255,255,.28);
+      background: rgba(8, 20, 55, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 18px 38px rgba(0,0,0,.35);
+    }
+    .mobileMenu a{
+      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
+      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);margin-bottom:8px;white-space:nowrap;
+    }
+    .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
+
+    /* ===== Notice ===== */
+    .noticeBar{
+      margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
+      border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
+    }
+    .noticeRow{display:flex;align-items:center;gap:10px;padding:10px 12px;}
+    .noticeTag{
+      font-size:12px;font-weight:1000;padding:6px 10px;border-radius:999px;
+      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);white-space:nowrap;
+    }
+    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
+    .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
+    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
+
+    /* ===== Layout Grid ===== */
+    main.grid{
+      display:grid;
+      grid-template-columns: var(--sideW) minmax(0, 1fr) var(--sideW);
+      gap: var(--gap);
+      align-items:start;
+      margin-top: 12px;
+    }
+    @media (max-width: 1100px){
+      main.grid{grid-template-columns: 1fr;}
+      .sideAd{display:none;}
+    }
+
+    /* ✅ Sticky meta */
+    .metaSticky{
+      position: sticky;
+      top: calc(var(--headerH) + 10px);
+      z-index: 30;
+      background: rgba(246,248,255,.92);
+      border: 1px solid rgba(18,28,55,.10);
+      border-radius: 16px;
+      box-shadow: var(--shadow2);
+      padding: 12px 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .metaTitle{
+      font-size: 16px;
+      font-weight: 1000;
+      line-height: 1.25;
+      margin: 0 0 10px;
+      text-align:center;
+    }
+
+    .mtTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mobileDl{
+      display:none;
+      border:1px solid rgba(29,78,216,.22);
+      background: rgba(29,78,216,.12);
+      color: rgba(29,78,216,1);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    @media (max-width: 980px){
+      .mobileDl{display:inline-flex;}
+    }
+
+    .metaRow{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      color: var(--muted);
+      font-size:12px;
+      font-weight: 900;
+    }
+    .chip{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space:nowrap;
+    }
+
+    /* ===== Paper body ===== */
+    .paper{
+      margin-top: 12px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0px,
+          rgba(0,0,0,0) 26px,
+          rgba(18,28,55,.055) 27px
+        );
+      border: 2px solid rgba(18,28,55,.14);
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(15,23,48,.10);
+      padding: 22px;
+      position: relative;
+      overflow:hidden;
+    }
+    .paper::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 260px at 20% 0%, rgba(29,78,216,.05), transparent 60%),
+                  radial-gradient(900px 260px at 80% 0%, rgba(14,165,233,.04), transparent 60%);
+      pointer-events:none;
+    }
+    .paperFrame{
+      position: relative;
+      z-index: 1;
+      border: 1.6px solid rgba(18,28,55,.18);
+      border-radius: 14px;
+      padding: 16px;
+      background: rgba(255,255,255,.55);
+    }
+
+    /* ✅ 2-column questions */
+    .qList{position: relative;z-index: 1;}
+    @media (min-width: 981px){
+      .qList{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .qRow:nth-child(2n){border-left: 1px solid var(--line2);}
+      .qRow:nth-child(n+3){border-top: 1px solid var(--line2);}
+    }
+    @media (max-width: 980px){
+      .qList{display:flex;flex-direction:column;}
+      .qRow + .qRow{border-top: 1px solid var(--line2);}
+    }
+
+    .qRow{padding: 14px 14px;background: transparent;}
+    .qHead{display:flex;gap:10px;align-items:flex-start;}
+    .qNo{
+      flex:0 0 auto;
+      font-size:12px;font-weight:1000;
+      padding: 6px 9px;border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--muted);white-space:nowrap;
+      transform: translateY(1px);
+    }
+    .qText{margin:0;font-weight:900;font-size:14.5px;line-height:1.65;flex:1;letter-spacing:.1px;}
+
+    .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap: 8px 14px;}
+    .optLine{
+      display:grid;
+      grid-template-columns: 18px 22px 1fr;
+      column-gap: 6px;
+      align-items:start;
+      cursor:pointer;
+      user-select:none;
+      padding: 2px 0;
+    }
+    .tick{
+      width:18px;height:18px;
+      display:grid;place-items:center;
+      font-weight:1000;font-size:14px;
+      color: transparent;
+      transform: translateY(1px);
+    }
+    .optKey{font-weight:1000;font-size:13px;color: var(--muted);line-height:1.5;}
+    .optTxt{font-size:13.5px;line-height:1.6;color: var(--text);}
+
+    .optLine.selected .tick{color: var(--ok);}
+    .optLine.selected .optTxt{color: var(--ok); font-weight: 1000;}
+    .optLine.selected .optKey{color: var(--ok);}
+
+    .inlineAd{
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.78);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 90px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color: var(--muted);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      margin: 12px 0;
+      grid-column: 1 / -1;
+    }
+    .inlineAd .tag{
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
+    }
+
+    .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
+    .sideStack{
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      overflow: hidden !important;
+      overscroll-behavior: none;
+    }
+
+    .adBox, .adBody, .pdfBox, .recentBox{
+      overflow: hidden !important;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: auto;
+    }
+
+    .adBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      display:flex;
+      flex-direction:column;
+      min-height: 140px;
+      flex: 1 1 auto;
+    }
+    .adHead{
+      padding:10px 12px;
+      border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
+      background: rgba(255,255,255,.78);
+      flex: 0 0 auto;
+    }
+    .adHead b{color: var(--text)}
+    .adBody{
+      flex: 1 1 auto;
+      display:grid;
+      place-items:center;
+      padding: 10px;
+      text-align:center;
+      color: var(--muted);
+    }
+
+    .pdfBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .btnPdf{
+      width: calc(100% - 20px);
+      margin: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(29,78,216,.25);
+      background: linear-gradient(135deg, rgba(29,78,216,.18), rgba(14,165,233,.16));
+      color: rgba(29,78,216,1);
+      font-weight: 1000;
+      font-size: 12.6px;
+      cursor:pointer;
+      box-shadow: 0 14px 34px rgba(29,78,216,.12);
+    }
+    .btnPdf svg{width:18px;height:18px;fill: rgba(29,78,216,1);}
+
+    .recentBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .recentList{
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .recentItem{
+      text-decoration:none;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 14px;
+      padding: 10px;
+      transition: .12s;
+    }
+    .recentItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
+    .recentDot{
+      width:10px;height:10px;border-radius:999px;
+      background: rgba(29,78,216,.28);
+      border:1px solid rgba(29,78,216,.20);
+      flex:0 0 auto;
+      margin-top: 5px;
+    }
+    .recentTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
+    .recentMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
+
+    .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
+    .btnDanger{
+      border:1px solid rgba(220,38,38,.28);
+      background: rgba(220,38,38,.10);
+      color: var(--danger);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      white-space:nowrap;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(18px + var(--safeBottom));
+      z-index: 99999;
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(18,28,55,.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 18px 44px rgba(15,23,48,.14);
+      font-size: 12.8px;
+      font-weight: 1000;
+      color: var(--text);
+      display:none;
+      max-width: min(560px, calc(100vw - 24px));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .toastRow{display:flex;align-items:flex-start;gap:10px;}
+    .toastIcon{
+      width: 30px;height:30px;border-radius: 999px;
+      background: rgba(29,78,216,.12);
+      border: 1px solid rgba(29,78,216,.18);
+      display:grid;place-items:center;
+      color: rgba(29,78,216,1);
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+    .toastMsg{line-height:1.45;}
+    .toastSub{font-size:12px;color: var(--muted);font-weight: 900;margin-top: 2px;}
+    .loading{color: var(--muted); font-size:12px; font-weight:900;}
+    .err{color: var(--danger); font-size:12px; font-weight:1000;}
+
+    /* ===== Name gate modal ===== */
+    .modal{
+      position: fixed;
+      inset:0;
+      z-index: 999999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+    }
+    .modal.show{display:flex;}
+    .modal .overlay{
+      position:absolute;inset:0;
+      background: rgba(10, 18, 40, .55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .modalCard{
+      position:relative;
+      width: min(520px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+      padding: 14px;
+    }
+    .modalHead{
+      display:flex;align-items:flex-start;justify-content:space-between;gap: 10px;
+      padding: 6px 6px 10px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+    }
+    .modalTitle{font-size:14px;font-weight:1000;margin:0;}
+    .modalText{color: var(--muted); font-size:12.5px; font-weight: 900; line-height:1.5; margin:6px 0 0;}
+    .modalClose{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      flex:0 0 auto;
+      align-self:flex-start;
+    }
+    .modalBody{padding: 12px 6px 6px;}
+    .modalBody label{display:block;font-size:12px;color:var(--muted);font-weight:1000;margin-bottom:6px;}
+    .modalBody input{
+      width:100%;
+      border:1px solid rgba(18,28,55,.14);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-size:13px;
+      font-weight: 900;
+      outline:none;
+      background: rgba(255,255,255,.96);
+      font-family: inherit;
+    }
+    .modalActions{
+      display:flex;gap:10px;justify-content:flex-end;align-items:center;
+      padding: 10px 6px 6px;
+      flex-wrap:wrap;
+    }
+    .btnPrimary{
+      border: 1px solid rgba(29,78,216,.28);
+      background: rgba(29,78,216,.14);
+      color: rgba(29,78,216,1);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      white-space:nowrap;
+    }
+    .btnPrimary:disabled{opacity:.55; cursor:not-allowed;}
+    .btnGhost{
+      border:1px solid rgba(18,28,55,.14);
+      background: rgba(255,255,255,.70);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size:12.5px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    /* ===== Confirm modal ===== */
+    .confirmModal{
+      position: fixed;
+      inset: 0;
+      z-index: 999998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .confirmModal.show{display:flex;}
+    .confirmModal .overlay{
+      position:absolute; inset:0;
+      background: rgba(10,18,40,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .confirmCard{
+      position:relative;
+      width: min(520px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      padding: 14px;
+    }
+    .confirmTitle{margin:0;font-size:14px;font-weight:1000;}
+    .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
+    .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
+
+    /* ===== Result modal ===== */
+    .resultModal{
+      position: fixed;
+      inset: 0;
+      z-index: 999997;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .resultModal.show{display:flex;}
+    .resultModal .overlay{
+      position:absolute; inset:0;
+      background: rgba(10,18,40,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .resultCard{
+      position:relative;
+      width: min(560px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+      padding: 14px;
+    }
+    .resultHead{
+      padding: 6px 6px 10px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .resultTitle{margin:0;font-size:14px;font-weight:1000;}
+    .resultSub{margin:6px 0 0;color:var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
+    .resultGrid{
+      padding: 12px 6px 4px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .resultGrid{grid-template-columns: 1fr;}
+    }
+    .stat{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.75);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .statLabel{font-size:12px;color:var(--muted);font-weight:1000;}
+    .statVal{margin-top:4px;font-size:15px;font-weight:1000;color:var(--text);}
+    .resultActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      padding: 10px 6px 6px;
+      border-top: 1px solid rgba(18,28,55,.10);
+      margin-top: 8px;
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      margin-top: 14px;
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
+        radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
+        linear-gradient(180deg, var(--footTop), var(--footBottom));
+      border-top: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.86);
+    }
+    .footGrid{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 18px clamp(8px, 2vw, 20px) 10px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 18px;
+      align-items:start;
+    }
+    .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
+    .footText{color: rgba(255,255,255,.70);font-size:12px;line-height:1.6;}
+    .footLinks{display:flex;flex-direction:column;gap: 8px;}
+    .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
+    .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
+    .socialCol{display:flex;flex-direction:column;gap: 10px;}
+    .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
+    .socialCol a:hover{color:#fff;}
+    .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
+    @media (max-width: 980px){
+      .footGrid{grid-template-columns: repeat(2, minmax(0, 1fr));gap: 10px 10px;}
+    }
+    .copy{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 12px clamp(8px, 2vw, 20px) 14px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      text-align:center;
+      line-height:1.6;
+      white-space:normal;
+    }
+
+    /* ===== PDF render area ===== */
+    .pdfPageArea{
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 794px;
+      background:#fff;
+      color:#111;
+      padding: 16px;
+      font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .pdfFrame{
+      border: 2px solid #111;
+      padding: 14px;
+      min-height: 1040px;
+      background:#fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .pdfWatermark{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      opacity: .12;
+      transform: rotate(-28deg);
+      font-size: 72px;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      color: #000;
+      text-transform: none;
+      user-select:none;
+    }
+    .pdfHeaderLine1{text-align:center;font-weight:1000;font-size:15px;margin: 4px 0 2px;}
+    .pdfHeaderLine2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 12px;}
+    .pdfGridWrap{position: relative;padding-top: 2px;}
+    .pdfGridWrap::after{
+      content:"";
+      position:absolute;top:0;bottom:0;left:50%;
+      width: 1px;background: rgba(0,0,0,.50);
+      transform: translateX(-0.5px);
+    }
+    .pdfGrid{display:grid;grid-template-columns: 1fr 1fr;gap: 10px 18px;}
+    .pdfQ{font-size:12px;line-height:1.45;}
+    .pdfQ .qline{font-weight:900;margin-bottom: 4px;}
+    .pdfOpt{display:grid;grid-template-columns: 1fr 1fr;gap: 2px 10px;font-size:11.6px;}
+    .pdfASGrid{display:grid;grid-template-columns: 1fr 1fr;gap: 8px 18px;margin-top: 12px;}
+    .ansRow{display:flex;align-items:center;gap: 10px;font-size:12px;line-height:1.3;white-space:nowrap;}
+    .bubbles{display:flex;gap: 8px;align-items:center;}
+    .bubble{
+      width: 16px; height: 16px;
+      border: 1.6px solid #111;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      font-size: 10px;
+      font-weight: 1000;
+    }
+    .bubble.selected{
+      background: rgba(22,163,74,.18);
+      border-color: rgba(22,163,74,1);
+      color: rgba(22,163,74,1);
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="srOnly">eProstutiBD মডেল টেস্ট</h1>
+
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#">একাডেমী</a>
+        <a class="active" href="#" aria-current="page">প্রশ্ন ব্যাঙ্ক</a>
+        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </nav>
+
+      <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="mobileMenu" id="mobileMenu">
+      <div class="overlay" onclick="closeMenu()"></div>
+      <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+        <a href="#">একাডেমী</a>
+        <a class="active" href="#" aria-current="page">প্রশ্ন ব্যাঙ্ক</a>
+        <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="noticeBar" role="region" aria-label="Notice">
+      <div class="noticeRow">
+        <span class="noticeTag">Model Test</span>
+        <div class="marq">
+          <span id="tickerText">Test শুরু হয়েছে • সময়ের দিকে খেয়াল রাখুন • Submit করার আগে সব প্রশ্ন দেখে নিন</span>
+        </div>
+      </div>
+    </div>
+
+    <main class="grid" id="main" aria-label="Model test content">
+      <!-- LEFT sidebar -->
+      <aside class="sideAd" aria-label="Left sidebar">
+        <div class="sideStack">
+
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
+            <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
+          </div>
+
+          <div class="recentBox" aria-label="Recent model tests">
+            <div class="adHead"><b>Recent Model Test</b><span>Latest</span></div>
+            <div class="recentList" id="recentList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <section aria-label="Questions">
+        <div class="metaSticky">
+          <div class="mtTitleRow">
+            <h2 class="metaTitle" id="mtName" style="margin:0;">Loading…</h2>
+            <button class="mobileDl" type="button" onclick="downloadCombinedPDF()">Download</button>
+          </div>
+
+          <div class="metaRow" aria-label="Test meta" style="margin-top:10px;">
+            <span class="chip">⏱ Time: <b id="mtTime">--</b> min</span>
+            <span class="chip">🧮 Mark: <b id="mtMark">--</b></span>
+            <span class="chip">📌 Total Q: <b id="mtTotalQ">0</b></span>
+            <span class="chip">⏳ Left: <b id="timeLeft">--:--</b></span>
+          </div>
+        </div>
+
+        <article class="paper" aria-label="Question paper">
+          <div class="paperFrame">
+            <div id="content">
+              <div class="loading">ডাটা লোড হচ্ছে…</div>
+            </div>
+
+            <div class="submitWrap">
+              <button class="btnDanger" id="btnSubmit" onclick="submitTest()">Submit</button>
+            </div>
+
+            <noscript>
+              <p class="err" style="margin-top:12px;">
+                এই পেজটি চালাতে JavaScript প্রয়োজন। অনুগ্রহ করে JavaScript চালু করুন।
+              </p>
+            </noscript>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT sidebar -->
+      <aside class="sideAd" aria-label="Right sidebar">
+        <div class="sideStack">
+
+          <div class="pdfBox" aria-label="PDF download">
+            <div class="adHead"><b>PDF</b><span>Download</span></div>
+            <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+              </svg>
+              Download (Question + Answer)
+            </button>
+          </div>
+
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
+            <div class="adBody" id="ad_right">Paste AdSense / Ad code here</div>
+          </div>
+
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Name gate modal -->
+  <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name and District">
+    <div class="overlay" onclick="closeNameModal()"></div>
+    <div class="modalCard" onclick="event.stopPropagation()">
+      <div class="modalHead">
+        <div>
+          <p class="modalTitle">নাম ও জেলা লিখুন</p>
+          <p class="modalText">Submit না করলে উত্তর দেওয়া যাবে না। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
+        </div>
+        <button class="modalClose" type="button" onclick="closeNameModal()">এখন নয়</button>
+      </div>
+      <div class="modalBody">
+        <label for="studentName">আপনার নাম</label>
+        <input id="studentName" type="text" placeholder="যেমন: Md Ebadot Hossen" autocomplete="name" />
+
+        <label for="studentDistrict" style="margin-top:10px;">আপনার জেলা</label>
+        <input id="studentDistrict" type="text" placeholder="যেমন: Dhaka / Rajshahi / Cumilla" autocomplete="address-level2" />
+      </div>
+      <div class="modalActions">
+        <button class="btnGhost" type="button" onclick="closeNameModal()">প্রশ্ন দেখুন</button>
+        <button class="btnPrimary" id="btnNameSubmit" type="button" onclick="submitName()">Start Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm modal -->
+  <div class="confirmModal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Confirm submit">
+    <div class="overlay" onclick="confirmNo()"></div>
+    <div class="confirmCard" onclick="event.stopPropagation()">
+      <p class="confirmTitle" id="confirmTitle">Confirm</p>
+      <p class="confirmText" id="confirmText">...</p>
+      <div class="confirmActions">
+        <button class="btnGhost" type="button" onclick="confirmNo()">No</button>
+        <button class="btnPrimary" type="button" onclick="confirmYes()">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result modal -->
+  <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
+    <div class="overlay"></div>
+    <div class="resultCard" onclick="event.stopPropagation()">
+      <div class="resultHead">
+        <div>
+          <p class="resultTitle" id="resTitle">Result</p>
+          <p class="resultSub" id="resSub">...</p>
+        </div>
+        <button class="modalClose" type="button" onclick="closeResultModal()">Close</button>
+      </div>
+
+      <div class="resultGrid">
+        <div class="stat">
+          <div class="statLabel">মোট MCQ</div>
+          <div class="statVal" id="resTotalQ">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">সঠিক (Right)</div>
+          <div class="statVal" id="resRight">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">ভুল (Wrong)</div>
+          <div class="statVal" id="resWrong">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">অনুত্তর (No Ans)</div>
+          <div class="statVal" id="resNoAns">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">প্রাপ্ত নম্বর</div>
+          <div class="statVal" id="resMark">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">সময় (Taken)</div>
+          <div class="statVal" id="resTimeTaken">--:--</div>
+        </div>
+</div>
+
+      <div class="resultActions">
+        <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
+        <button class="btnPrimary" type="button" onclick="goResultDetails()">View details</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- hidden offscreen for PDF rendering -->
+  <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
+
+  <footer>
+    <div class="footGrid">
+      <div>
+        <div class="footTitle">eProstutiBD</div>
+        <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      </div>
+
+      <div>
+        <div class="footTitle">দরকারি পেজ</div>
+        <div class="footLinks">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footTitle">অন্যান্য</div>
+        <div class="footLinks">
+          <a href="#">Notice</a>
+          <a href="#">Blog</a>
+          <a href="#">Career</a>
+          <a href="#">Help</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footTitle">Social</div>
+        <div class="socialCol">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+            Facebook
+          </a>
+
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.97v5.69H9.32V9h3.41v1.56h.05c.47-.9 1.63-1.86 3.35-1.86 3.58 0 4.24 2.36 4.24 5.43v6.32ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+            LinkedIn
+          </a>
+
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+            YouTube
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy">© <span id="year"></span> eProstutiBD — All rights reserved</div>
+  </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <!-- PDF libs -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+    // year
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const $ = (id)=>document.getElementById(id);
+
+    // ===== menu =====
+    function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+    function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+    function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+    window.toggleMenu = toggleMenu;
+    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+
+    // ===== toast =====
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+    function showToast(msg, sub=""){
+      const t = $("toast");
+      t.innerHTML = `
+        <div class="toastRow">
+          <div class="toastIcon">✓</div>
+          <div class="toastMsg">
+            <div>${esc(msg)}</div>
+            ${sub ? `<div class="toastSub">${esc(sub)}</div>` : ""}
+          </div>
+        </div>
+      `;
+      t.style.display = "block";
+      clearTimeout(showToast._tm);
+      showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2000);
+    }
+
+    // ===== Confirm modal (custom Yes/No) =====
+    let _confirmResolver = null;
+    function openConfirm(title, text){
+      $("confirmTitle").textContent = title || "Confirm";
+      $("confirmText").textContent = text || "";
+      $("confirmModal").classList.add("show");
+      return new Promise((resolve)=>{ _confirmResolver = resolve; });
+    }
+    function closeConfirm(){ $("confirmModal").classList.remove("show"); }
+    function confirmYes(){ closeConfirm(); if(_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
+    function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
+    window.confirmYes = confirmYes;
+    window.confirmNo = confirmNo;
+
+    // ===== utils =====
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name) || "";
+    }
+
+    // ===== Firebase =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ Firestore-safe name
+    const QUESTION_COLLECTION_CANDIDATES = [
+      "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
+    ];
+
+    // ===== modelTestId from URL =====
+    const modelTestId = getParam("modelTestId");
+
+    
+
+    // ✅ current page filename for internal links
+    const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
+// ===== state =====
+    let mtDoc = null;
+    let questions = [];
+    const mcqAns = new Map();
+    const writtenAns = new Map();
+
+    // Name gate
+    let studentName = "";
+    let studentDistrict = "";
+    let nameUnlocked = false;
+
+    function openNameModal(){
+      $("nameModal").classList.add("show");
+      setTimeout(()=>{ $("studentName").focus(); }, 40);
+    }
+    function closeNameModal(){
+      $("nameModal").classList.remove("show");
+    }
+    window.closeNameModal = closeNameModal;
+
+    function submitName(){
+      const v = ($("studentName").value || "").trim();
+      const d = ($("studentDistrict").value || "").trim();
+
+      if(!v){
+        showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
+        $("studentName").focus();
+        return;
+      }
+      if(!d){
+        showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন");
+        $("studentDistrict").focus();
+        return;
+      }
+
+      studentName = v;
+      studentDistrict = d;
+      nameUnlocked = true;
+      closeNameModal();
+
+      // ✅ Start countdown only after Name + District submitted
+      if(!timerStarted && mtDoc){
+        const __mins = getTimeMinFromDoc(mtDoc) || 0;
+        if(__mins){ startTimer(__mins); }
+      }
+
+      showToast("Start সফল", `${studentName} (${studentDistrict})`);
+    }
+    window.submitName = submitName;
+
+    // ✅ Modal can be closed to view questions.
+    // ✅ But answering requires submit; trying to answer opens modal again.
+    function guardAnswering(){
+      if(nameUnlocked) return true;
+      openNameModal();
+      showToast("নাম ও জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
+      return false;
+    }
+
+    // ===== helpers =====
+    function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test"; }
+    function getTimeMinFromDoc(data){
+      const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
+      for(const k of keys){
+        const v = data?.[k];
+        if(v === undefined || v === null || v === "") continue;
+        const n = Number(v);
+        if(!Number.isNaN(n) && n > 0) return n;
+      }
+      return 0;
+    }
+    function getMarkFromDoc(data){
+      const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+      for(const k of keys){
+        const v = data?.[k];
+        if(v === undefined || v === null || v === "") continue;
+        return v;
+      }
+      return "-";
+    }
+    function pickQuestionText(q){
+      return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
+    }
+    function getOptions(q){
+      if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
+      if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
+      if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
+      const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
+      const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
+      const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
+      const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
+      return [o1,o2,o3,o4].map(x=>String(x ?? ""));
+    }
+    function getCorrectIndex(q){
+      if(Number.isFinite(q.correctIndex)) return q.correctIndex;
+      const v = Number(q.correctIndex);
+      return Number.isFinite(v) ? v : -1;
+    }
+    function isWrittenQuestion(q){
+      const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
+      return t === "written" || t === "cq" || t === "short" || t === "essay";
+    }
+
+    // ===== timer =====
+    let endAtMs = 0;
+    let timerHandle = null;
+    let testStartAtMs = 0;        // ✅ when timer started
+    let totalAllowedSeconds = 0;  // ✅ test duration in seconds
+    let timerStarted = false;     // ✅ starts after Name+District submit
+
+    function formatMMSS(sec){
+      sec = Math.max(0, Math.floor(sec));
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+    }
+    function startTimer(minutes){
+      if(timerStarted) return;
+      const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
+      if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
+
+      timerStarted = true;
+      totalAllowedSeconds = totalSeconds; // ✅ NEW
+      testStartAtMs = Date.now();           // ✅ NEW
+      endAtMs = testStartAtMs + totalSeconds * 1000;
+
+      const tick = ()=>{
+        const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
+        $("timeLeft").textContent = formatMMSS(left);
+        $("timeLeft").style.color = (left <= 60) ? "var(--danger)" : "var(--text)";
+        if(left <= 0){
+          clearInterval(timerHandle);
+          timerHandle = null;
+          showToast("সময় শেষ!", "অটো সাবমিট হচ্ছে…");
+          setTimeout(()=>submitTest(true), 350);
+        }
+      };
+      tick();
+      clearInterval(timerHandle);
+      timerHandle = setInterval(tick, 1000);
+    }
+
+    async function fetchQuestionsFromCollection(colName, mtId){
+      try{
+        const s = await db.collection(colName).where("modelTestId","==", mtId).orderBy("createdAt","asc").get();
+        return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      }catch(e){
+        const s = await db.collection(colName).where("modelTestId","==", mtId).get();
+        return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      }
+    }
+    async function fetchQuestionsFromSubcollection(mtId){
+      const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
+      try{
+        const s = await ref.orderBy("createdAt","asc").get();
+        return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      }catch(e){
+        const s = await ref.get();
+        return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      }
+    }
+
+    function setMetaHeader(){
+      const title = getTitleField(mtDoc);
+      $("mtName").textContent = title;
+      $("tickerText").textContent = `${title} • Test চলছে • Submit করার আগে সব প্রশ্ন দেখে নিন`;
+
+      const mins = getTimeMinFromDoc(mtDoc) || 0;
+      $("mtTime").textContent = mins ? String(mins) : "--";
+      $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
+      $("mtTotalQ").textContent = String(questions.length || 0);
+
+      document.title = `${title} — Model Test | eProstutiBD`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if(metaDesc){
+        metaDesc.setAttribute("content", `${title} মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।`);
+      }
+    }
+
+    function renderAll(){
+      const wrap = $("content");
+      wrap.innerHTML = "";
+
+      if(!questions.length){
+        wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      const list = document.createElement("div");
+      list.className = "qList";
+
+      const total = questions.length;
+      const adPos1 = total >= 6 ? Math.floor(total/3) : 3;
+      const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;
+
+      const letters = ["A","B","C","D"];
+
+      questions.forEach((q, i)=>{
+        if(i === adPos1){
+          const ad = document.createElement("div");
+          ad.className = "inlineAd";
+          ad.innerHTML = `
+            <div>
+              <div class="tag">Ad Slot</div>
+              <div style="font-size:12px;">Inline Ad #1</div>
+              <div id="ad_inline_1" style="margin-top:8px;">Paste AdSense code here</div>
+            </div>
+          `;
+          list.appendChild(ad);
+        }
+        if(i === adPos2){
+          const ad = document.createElement("div");
+          ad.className = "inlineAd";
+          ad.innerHTML = `
+            <div>
+              <div class="tag">Ad Slot</div>
+              <div style="font-size:12px;">Inline Ad #2</div>
+              <div id="ad_inline_2" style="margin-top:8px;">Paste AdSense code here</div>
+            </div>
+          `;
+          list.appendChild(ad);
+        }
+
+        const qno = i + 1;
+        const qid = q.id;
+
+        const row = document.createElement("div");
+        row.className = "qRow";
+        row.dataset.qid = qid;
+
+        const qt = pickQuestionText(q);
+        row.innerHTML = `
+          <div class="qHead">
+            <span class="qNo">Q${qno}</span>
+            <p class="qText">${esc(qt || "(No question text)")}</p>
+          </div>
+        `;
+
+        if(isWrittenQuestion(q)){
+          const ta = document.createElement("textarea");
+          ta.style.width = "100%";
+          ta.style.minHeight = "120px";
+          ta.style.marginTop = "10px";
+          ta.style.border = "1px solid rgba(18,28,55,.12)";
+          ta.style.borderRadius = "12px";
+          ta.style.padding = "10px 12px";
+          ta.style.fontFamily = "inherit";
+          ta.style.fontSize = "13px";
+          ta.placeholder = "আপনার উত্তর লিখুন…";
+          ta.value = (writtenAns.get(qid) ?? "").toString();
+          ta.oninput = ()=>{
+            if(!guardAnswering()) return;
+            writtenAns.set(qid, ta.value);
+          };
+          row.appendChild(ta);
+        }else{
+          const opts = getOptions(q);
+          const chosen = mcqAns.get(qid);
+
+          const optWrap = document.createElement("div");
+          optWrap.className = "opts";
+
+          opts.slice(0,4).forEach((op, oi)=>{
+            const opt = document.createElement("div");
+            opt.className = "optLine" + (chosen === oi ? " selected" : "");
+            opt.setAttribute("role","button");
+            opt.setAttribute("tabindex","0");
+            opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
+            opt.innerHTML = `
+              <span class="tick">✓</span>
+              <span class="optKey">${letters[oi]}.</span>
+              <span class="optTxt">${esc(op || "")}</span>
+            `;
+            const pick = ()=>{
+              if(!guardAnswering()) return;
+              mcqAns.set(qid, oi);
+              renderAll();
+            };
+            opt.onclick = pick;
+            opt.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
+            optWrap.appendChild(opt);
+          });
+
+          row.appendChild(optWrap);
+        }
+
+        list.appendChild(row);
+      });
+
+      wrap.appendChild(list);
+    }
+
+    function getUnanswered(){
+      const missing = [];
+      questions.forEach((q, i)=>{
+        const qid = q.id;
+        if(isWrittenQuestion(q)){
+          const txt = (writtenAns.get(qid) ?? "").toString().trim();
+          if(!txt) missing.push({ index: i, id: qid });
+        }else{
+          const v = mcqAns.get(qid);
+          if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid });
+        }
+      });
+      return missing;
+    }
+
+    function scrollToQuestion(qid){
+      const el = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
+      if(el){
+        try{ el.scrollIntoView({behavior:"smooth", block:"center"}); }
+        catch(e){ el.scrollIntoView(); }
+        el.style.outline = "2px solid rgba(220,38,38,.35)";
+        el.style.outlineOffset = "4px";
+        setTimeout(()=>{ el.style.outline=""; el.style.outlineOffset=""; }, 1800);
+      }
+    }
+
+    // ===== Result compute (MCQ based) =====
+    function toNumberMaybe(v){
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    }
+    function computeResult(){
+      // ✅ Result should match Result Sheet (Ranking):
+      // totalQuestion = total MCQ (written প্রশ্নগুলো result গণনায় ধরবে না)
+      const totalAllQ = questions.length || 0;
+
+      let totalMcq = 0;
+      let answeredMcq = 0;
+      let right = 0;
+      let wrong = 0;
+
+      questions.forEach((q)=>{
+        if(isWrittenQuestion(q)) return;
+
+        totalMcq++;
+        const qid = q.id;
+        const chosen = mcqAns.get(qid);
+
+        // unanswered MCQ
+        if(chosen === undefined || chosen === null || chosen === "") return;
+
+        answeredMcq++;
+
+        const ci = getCorrectIndex(q);
+        if(Number.isFinite(ci) && ci >= 0){
+          if(Number(chosen) === Number(ci)) right++;
+          else wrong++;
+        }
+      });
+
+      const noAnswer = Math.max(0, totalMcq - answeredMcq);
+
+      const totalMarkDoc = toNumberMaybe(getMarkFromDoc(mtDoc));
+      const totalMark = (totalMarkDoc !== null && totalMarkDoc > 0)
+        ? totalMarkDoc
+        : (totalMcq || totalAllQ);
+
+      const perQ = (totalMcq > 0) ? (totalMark / totalMcq) : 0;
+      const obtained = Math.round((right * perQ) * 100) / 100;
+
+      return {
+        totalAllQ,   // MCQ + Written (for info)
+        totalMcq,    // totalQuestion in ranking
+        answeredMcq,
+        noAnswer,
+        right,
+        wrong,
+        totalMark,
+        obtained
+      };
+    }
+
+    async function saveResultToFirebase(payload){
+      try{
+        const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
+        showToast("Firebase saved ✅", `Doc ID: ${ref.id}`);
+        return ref.id;
+      }catch(e){
+        console.error("Firestore write failed:", e);
+        showToast("Firebase save হয়নি ❌", e?.message || String(e));
+        return "";
+      }
+    }
+
+    // ===== Result modal =====
+    let _lastResultPayload = null;
+    let _lastResultDocId = "";
+    let _lastTimeTakenText = "";
+
+    function openResultModal(summary){
+      $("resTitle").textContent = "Result Published";
+      $("resSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
+      $("resTotalQ").textContent = String(summary.totalMcq);
+      $("resRight").textContent = String(summary.right);
+      $("resWrong").textContent = String(summary.wrong);
+      $("resNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq||0) - ((summary.right||0)+(summary.wrong||0))));
+      $("resMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
+      $("resTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
+      $("resultModal").classList.add("show");
+    }
+    function closeResultModal(){
+      $("resultModal").classList.remove("show");
+    }
+    window.closeResultModal = closeResultModal;
+
+    function goResultDetails(){
+      if(!modelTestId) return;
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
+      if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.goResultDetails = goResultDetails;
+
+    // ===== Submit =====
+    async function submitTest(isAuto=false){
+      if(!modelTestId) return;
+
+      if(!nameUnlocked){
+        openNameModal();
+        showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
+        return;
+      }
+
+      const missing = getUnanswered();
+
+      if(!isAuto && missing.length){
+        const ok = await openConfirm(
+          "Submit করার আগে",
+          `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
+        );
+        if(!ok){
+          scrollToQuestion(missing[0].id);
+          showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
+          return;
+        }
+      }else if(!isAuto){
+        const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
+        if(!ok) return;
+      }
+
+      const summary = computeResult();
+
+      // ✅ Visitor took how long to submit (MM:SS)
+      const nowMs = Date.now();
+      const timeTakenSeconds = Math.min(
+        totalAllowedSeconds || 999999,
+        Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
+      );
+      const timeTakenText = formatMMSS(timeTakenSeconds); // e.g. "30:31"
+      _lastTimeTakenText = timeTakenText;
+
+      // ✅ Firestore-safe payload (NO nested arrays!)
+      const payload = {
+        modelTestId,
+        modelTestName: getTitleField(mtDoc),
+        submittedAt: Date.now(),
+        timeTakenText, // ✅ Visitor time (MM:SS)
+        isAuto: !!isAuto,
+        studentName,
+        studentDistrict,
+        answers: {
+          mcq: Object.fromEntries(mcqAns),        // ✅ FIXED
+          written: Object.fromEntries(writtenAns) // ✅ FIXED
+        },
+        result: {
+          // ✅ Result Sheet (Ranking) compatible fields
+          totalQuestion: summary.totalMcq,      // MCQ total (ranking uses this)
+          totalAllQuestion: summary.totalAllQ,  // info only (MCQ + Written)
+          totalMcq: summary.totalMcq,
+          answeredMcq: summary.answeredMcq,
+          noAnswer: summary.noAnswer,
+          right: summary.right,
+          wrong: summary.wrong,
+          totalMark: summary.totalMark,
+          obtainedMark: summary.obtained
+        }
+      };
+
+      _lastResultPayload = payload;
+
+      showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
+
+      _lastResultDocId = await saveResultToFirebase(payload);
+
+      // local cache for result page
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
+
+      if(!_lastResultDocId){
+        // save failed; still show modal so user can view local result
+        showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
+      }else{
+        showToast("Submit সম্পন্ন", "Result দেখুন");
+      }
+
+      openResultModal(summary);
+    }
+    window.submitTest = submitTest;
+
+    // ===== PDF (combined single PDF multi-page) =====
+    function chunk(arr, size){
+      const out = [];
+      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+      return out;
+    }
+    function buildPdfHeaderLines(title, mins, mark, totalQ){
+      return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
+    }
+    async function renderPageToCanvas(html){
+      const area = $("pdfPageArea");
+      area.innerHTML = html;
+      try{ await document.fonts.ready; }catch(e){}
+      const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      return canvas;
+    }
+
+    async function buildQuestionPaperCanvases(){
+      const title = getTitleField(mtDoc);
+      const mins = getTimeMinFromDoc(mtDoc) || 0;
+      const mark = getMarkFromDoc(mtDoc);
+      const totalQ = questions.length;
+      const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+      const pages = chunk(questions, 30);
+      const letters = ["A","B","C","D"];
+      const canvases = [];
+
+      for(let p=0;p<pages.length;p++){
+        const pageQs = pages[p];
+
+        const qHtml = pageQs.map((q, idx)=>{
+          const qno = p*30 + idx + 1;
+          const qt = pickQuestionText(q);
+
+          if(isWrittenQuestion(q)){
+            return `
+              <div class="pdfQ">
+                <div class="qline">Q${qno}. ${esc(qt)}</div>
+                <div style="margin-top:8px;">উত্তর: ____________________________</div>
+              </div>
+            `;
+          }
+
+          const opts = getOptions(q);
+          const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
+
+          return `
+            <div class="pdfQ">
+              <div class="qline">Q${qno}. ${esc(qt)}</div>
+              <div class="pdfOpt">${optHtml}</div>
+            </div>
+          `;
+        }).join("");
+
+        const pageHtml = `
+          <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
+            <div class="pdfHeaderLine1">${esc(line1)}</div>
+            <div class="pdfHeaderLine2">${esc(line2)}</div>
+            <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
+            <div class="pdfGridWrap">
+              <div class="pdfGrid">${qHtml}</div>
+            </div>
+          </div>
+        `;
+        canvases.push(await renderPageToCanvas(pageHtml));
+      }
+      return canvases;
+    }
+
+    async function buildAnswerSheetCanvases(){
+      const title = getTitleField(mtDoc);
+      const mins = getTimeMinFromDoc(mtDoc) || 0;
+      const mark = getMarkFromDoc(mtDoc);
+      const totalQ = questions.length;
+      const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+      const pages = chunk(questions, 30);
+      const canvases = [];
+      const letters = ["A","B","C","D"];
+
+      for(let p=0;p<pages.length;p++){
+        const pageQs = pages[p];
+
+        const rowsHtml = pageQs.map((q, idx)=>{
+          const qno = p*30 + idx + 1;
+
+          if(isWrittenQuestion(q)){
+            return `
+              <div class="ansRow">
+                <b style="min-width:42px;">Q${qno}</b>
+                <span>__________________________</span>
+              </div>
+            `;
+          }
+
+          const correctIdx = getCorrectIndex(q);
+          const bubbles = letters.map((l, i)=>{
+            const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
+            return `<span class="bubble ${sel}">${l}</span>`;
+          }).join("");
+
+          return `
+            <div class="ansRow">
+              <b style="min-width:42px;">Q${qno}</b>
+              <div class="bubbles">${bubbles}</div>
+            </div>
+          `;
+        }).join("");
+
+        const pageHtml = `
+          <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
+            <div class="pdfHeaderLine1">${esc(line1)}</div>
+            <div class="pdfHeaderLine2">${esc(line2)}</div>
+            <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
+            <div class="pdfASGrid">${rowsHtml}</div>
+          </div>
+        `;
+        canvases.push(await renderPageToCanvas(pageHtml));
+      }
+      return canvases;
+    }
+
+    async function downloadCombinedPDF(){
+      try{
+        if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
+        showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
+
+        const qCanvases = await buildQuestionPaperCanvases();
+        const aCanvases = await buildAnswerSheetCanvases();
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "pt", "a4");
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+
+        let first = true;
+        const addCanvas = (canvas)=>{
+          const imgData = canvas.toDataURL("image/jpeg", 0.95);
+          if(!first) pdf.addPage();
+          first = false;
+          pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+        };
+
+        qCanvases.forEach(addCanvas);
+        aCanvases.forEach(addCanvas);
+
+        const title = getTitleField(mtDoc);
+        const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "model-test";
+        pdf.save(`${safeName}-question+answer.pdf`);
+
+        showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
+      }catch(e){
+        console.error(e);
+        showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
+      }
+    }
+    window.downloadCombinedPDF = downloadCombinedPDF;
+
+    // ===== Recent Model Tests =====
+    async function loadRecentModelTests(){
+      const wrap = $("recentList");
+      try{
+        let snap = null;
+        try{
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
+        }catch(e){
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
+        }
+
+        const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+        wrap.innerHTML = "";
+
+        if(!docs.length){
+          wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        docs.forEach(doc=>{
+          const title = getTitleField(doc);
+          const mins = getTimeMinFromDoc(doc) || "--";
+          const mark = getMarkFromDoc(doc);
+          const a = document.createElement("a");
+          a.className = "recentItem";
+          a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+          a.innerHTML = `
+            <span class="recentDot"></span>
+            <div>
+              <div class="recentTitle">${esc(title)}</div>
+              <div class="recentMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+            </div>
+          `;
+          wrap.appendChild(a);
+        });
+
+        const more = document.createElement("a");
+        more.className = "recentItem";
+        more.href = "premium-model-test.html";
+        more.innerHTML = `
+          <span class="recentDot"></span>
+          <div>
+            <div class="recentTitle">See more</div>
+            <div class="recentMeta">Premium model tests দেখুন</div>
+          </div>
+        `;
+        wrap.appendChild(more);
+
+      }catch(err){
+        console.error(err);
+        wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
+      }
+    }
+
+    // ===== boot =====
+    async function loadAll(){
+      if(!modelTestId){
+        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: ${BASE_PAGE}?modelTestId=XXXX</div>`;
+        return;
+      }
+
+      $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+      $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+
+      loadRecentModelTests();
+
+      try{
+        const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).get();
+        if(!mtSnap.exists){
+          $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+        mtDoc = { id: mtSnap.id, ...mtSnap.data() };
+
+        let qs = [];
+        for(const col of QUESTION_COLLECTION_CANDIDATES){
+          try{
+            const got = await fetchQuestionsFromCollection(col, modelTestId);
+            if(got && got.length){ qs = got; break; }
+          }catch(e){}
+        }
+        if(!qs.length){
+          try{ qs = await fetchQuestionsFromSubcollection(modelTestId); }catch(e){}
+        }
+
+        questions = qs || [];
+        setMetaHeader();
+
+        // ✅ Do NOT start countdown before Name+District submit
+        const __mins = getTimeMinFromDoc(mtDoc) || 0;
+        if(__mins){ $("timeLeft").textContent = formatMMSS(__mins*60); }
+
+        renderAll();
+        showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
+      }catch(err){
+        console.error(err);
+        $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
+      }
+    }
+
+    loadAll();
+  </script>
+</body>
+</html>
