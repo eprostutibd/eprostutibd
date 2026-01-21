@@ -212,8 +212,7 @@
       margin-top: 12px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
-        repeating-linear-gradient(
-          to bottom,
+        repeating-linear-gradient(to bottom,
           rgba(0,0,0,0) 0px,
           rgba(0,0,0,0) 26px,
           rgba(18,28,55,.055) 27px
@@ -236,7 +235,7 @@
       min-height: 220px;
     }
 
-    /* ✅ top actions in details (Download moved UP) */
+    /* Download button top */
     .detailsTopBar{
       display:flex;
       justify-content:flex-end;
@@ -245,7 +244,7 @@
       margin-bottom: 6px;
     }
 
-    /* ✅ details header centered */
+    /* details header centered */
     .sheetHead{
       display:flex;
       flex-direction:column;
@@ -261,10 +260,10 @@
     .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
     .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
 
-    /* ✅ mark on LEFT, handwriting vibe + PASS/FAIL */
+    /* Mark on LEFT (handwriting) + PASS/FAIL */
     .markStamp{
       position:absolute;
-      top: 56px;          /* leave room for topbar */
+      top: 56px;
       left: 14px;
       transform: rotate(-10deg);
       padding: 10px 12px 8px;
@@ -304,19 +303,26 @@
       text-align:left;
     }
 
-    /* ✅ Web details: 1 column options so "1 page a sokol kisu thakbe" feel */
+    /* ✅ Web details: TWO COLUMN (your request) */
     .qList{
-      display:block;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
       border: 1px solid rgba(18,28,55,.10);
       border-radius: 14px;
       overflow:hidden;
       background: rgba(255,255,255,.60);
     }
+    @media (max-width: 980px){ .qList{grid-template-columns: 1fr;} }
     .qRow{
       padding: 12px 12px;
       border-bottom: 1px solid rgba(18,28,55,.08);
     }
-    .qRow:last-child{border-bottom:none;}
+    @media (min-width: 981px){
+      .qRow:nth-child(2n){border-left: 1px solid rgba(18,28,55,.08);}
+      .qRow:nth-last-child(-n+2){border-bottom:none;}
+    }
+    @media (max-width: 980px){ .qRow:last-child{border-bottom:none;} }
 
     .qHead{display:flex;gap:10px;align-items:flex-start;}
     .qNo{
@@ -333,13 +339,13 @@
     .opts{
       margin-top:10px;
       display:grid;
-      grid-template-columns: 1fr;  /* ✅ 1 column */
-      gap: 6px;
+      grid-template-columns: 1fr 1fr; /* options 2-col inside */
+      gap: 8px 14px;
     }
     .optLine{
       display:grid;
       grid-template-columns: 20px 20px 1fr;
-      gap: 8px;
+      gap: 6px;
       align-items:flex-start;
       padding: 2px 0;
       font-size: 13px;
@@ -377,7 +383,7 @@
     .optTxt.bad{color: rgba(220,38,38,1);}
     .optTxt.warn{color: rgba(245,158,11,1);}
 
-    /* ✅ no answer note = just red text (no box) */
+    /* no answer note = just red text */
     .noAnsText{
       margin-top: 8px;
       font-weight: 1000;
@@ -393,7 +399,7 @@
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 794px; /* A4-ish */
+      width: 794px;
       background:#fff;
       color:#111;
       padding: 16px;
@@ -425,6 +431,7 @@
       white-space:nowrap;
     }
 
+    /* PDF mark (left) */
     .pdfMark{
       position:absolute;
       top: 16px;
@@ -452,7 +459,7 @@
     .pdfMark .pf.pass{ color: #16a34a; }
     .pdfMark .pf.fail{ color: #dc2626; }
 
-    .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 48px 0 2px;} /* leave space for mark */
+    .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 52px 0 2px;}
     .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
     .pdfMetaRow{
       display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
@@ -460,11 +467,11 @@
     }
     .pdfMetaRow span{white-space:nowrap;}
 
-    /* PDF questions 2-column */
+    /* Page 2 questions only */
     .pdfQuestions{
       column-count: 2;
       column-gap: 16px;
-      margin-top: 8px;
+      margin-top: 0;
     }
     .pdfQ{
       break-inside: avoid;
@@ -488,7 +495,6 @@
     .pdfOpt .warn{color: #f59e0b; font-weight:1000;}
     .pdfOpt .dim{color: #111;}
 
-    /* ✅ no answer note in PDF = red text (no box) */
     .pdfNoAns{
       margin-top: 4px;
       font-weight: 1000;
@@ -557,7 +563,8 @@
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
-        <div class="tag" id="headerTag">Result Sheet (Ranking)</div>
+        <!-- ✅ slogan here (no test name in header) -->
+        <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
 
       <nav class="nav" aria-label="Main navigation">
@@ -596,7 +603,7 @@
   </header>
 
   <div class="container">
-    <!-- ONLY ONE BOX: Result Sheet (Ranking) -->
+    <!-- Ranking -->
     <section class="card" aria-label="Result sheet">
       <h2 class="title" id="pageTitle">Result Sheet (Ranking)</h2>
       <p class="sub" id="rankSub">সব রেজাল্ট লোড হচ্ছে…</p>
@@ -628,11 +635,11 @@
       </div>
     </section>
 
-    <!-- DETAILS (Only shows after clicking Details) -->
+    <!-- Details -->
     <section class="detailSheet" id="detailSheet" aria-label="Details sheet">
       <article class="paper">
         <div class="paperFrame" id="paperFrame">
-          <!-- ✅ Download moved UP -->
+
           <div class="detailsTopBar">
             <button class="btn btnDanger" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
           </div>
@@ -780,7 +787,7 @@
     }
     window.backToTest = backToTest;
 
-    // ===== reading answers (object) =====
+    // ===== answers map =====
     function getMcqMap(p){
       const o = p?.answers?.mcq;
       if(o && typeof o === "object" && !Array.isArray(o)) return o;
@@ -874,7 +881,6 @@
       }
       return "--";
     }
-
     function getPassFail(obtained, total){
       const o = safeNum(obtained, 0);
       const t = safeNum(total, 0);
@@ -915,7 +921,6 @@
       const r = resultPayload?.result || {};
       const obtained = (r.obtainedMark ?? "--");
       const total = (r.totalMark ?? "--");
-
       const pf = getPassFail(r.obtainedMark, r.totalMark);
 
       const el = $("markStamp");
@@ -934,7 +939,6 @@
       const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "Model Test";
 
-      $("headerTag").textContent = `${test} • Result Sheet`;
       $("sheetTitle").textContent = `${test} — Details Sheet`;
       $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
 
@@ -1002,10 +1006,6 @@
           let iconTxt = "";
           let txtCls = "";
 
-          // rule:
-          // - no answer => correct yellow
-          // - answered => correct green
-          // - chosen wrong => chosen red
           if(!hasChosen && isCorrect){
             iconCls = "warn"; iconTxt = "✓"; txtCls = "warn";
           }else if(hasChosen && isCorrect){
@@ -1133,13 +1133,7 @@
       }
     }
 
-    // ===== PDF =====
-    function chunk(arr, size){
-      const out = [];
-      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
-      return out;
-    }
-
+    // ===== PDF helpers =====
     async function renderPageToCanvas(html){
       const area = $("pdfPageArea");
       area.innerHTML = html;
@@ -1160,95 +1154,112 @@
       `;
     }
 
-    function buildMarkedQuestionPages(){
+    // ✅ PAGE 1 = only Result + details header + stats + mark
+    function buildPdfPage1_ResultOnly(){
       const p = resultPayload || {};
       const r = p.result || {};
       const name = p.studentName || "--";
       const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "--";
 
+      return `
+        <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          ${buildPdfMark()}
+
+          <div class="pdfH1">${esc(test)} — Result</div>
+          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))}</div>
+
+          <div class="pdfMetaRow">
+            <span>Total Q: ${esc(r.totalQuestion ?? "--")}</span>
+            <span>Right: ${esc(r.right ?? "--")} • Wrong: ${esc(r.wrong ?? "--")} • No Ans: ${esc(calcNoAns(r))}</span>
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;">
+            <tr>
+              <th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Field</th>
+              <th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Value</th>
+            </tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">ModelTestId</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(modelTestId || "--")}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Submitted</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(fmtTime(p.submittedAt))}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Score</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</td></tr>
+          </table>
+
+          <div class="pdfFooter">
+            <span>eProstutiBD</span>
+            <span>Generated: ${esc(fmtTime(Date.now()))}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ✅ PAGE 2 = ONLY questions/options (nothing else)
+    function buildPdfPage2_QuestionsOnly(){
+      const p = resultPayload || {};
       const mcqMap = getMcqMap(p);
       const wrMap = getWrittenMap(p);
       const letters = ["A","B","C","D"];
 
-      const pages = chunk(questions, 26);
+      const qHtml = questions.map((q, idx)=>{
+        const qno = idx + 1;
+        const qt = getQText(q) || "(No question text)";
+        const qid = q.id;
 
-      return pages.map((pageQs, pageIndex)=>{
-        const qHtml = pageQs.map((q, idx)=>{
-          const qno = pageIndex * 26 + idx + 1;
-          const qt = getQText(q) || "(No question text)";
-          const qid = q.id;
-
-          if(isWrittenQuestion(q)){
-            const ans = (wrMap[qid] ?? "").toString().trim();
-            return `
-              <div class="pdfQ">
-                <div class="qline">Q${qno}. ${esc(qt)}</div>
-                <div class="pdfOpt">
-                  <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
-                </div>
-              </div>
-            `;
-          }
-
-          const opts = getOptions(q);
-          const correctIdx = getCorrectIndex(q);
-          const chosenIdx = Number(mcqMap[qid]);
-          const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
-          const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
-
-          const optHtml = opts.slice(0,4).map((op, oi)=>{
-            const isCorrect = (hasCorrect && oi === correctIdx);
-            const isChosen = (hasChosen && oi === chosenIdx);
-
-            let cls = "dim";
-            let prefix = `${letters[oi]}. `;
-
-            if(!hasChosen && isCorrect){
-              cls = "warn"; prefix = `✓ ${letters[oi]}. `;
-            }else if(hasChosen && isCorrect){
-              cls = "ok"; prefix = `✓ ${letters[oi]}. `;
-            }
-            if(isChosen && !isCorrect){
-              cls = "bad"; prefix = `✗ ${letters[oi]}. `;
-            }
-
-            return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
-          }).join("");
-
-          const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
-
+        if(isWrittenQuestion(q)){
+          const ans = (wrMap[qid] ?? "").toString().trim();
           return `
             <div class="pdfQ">
               <div class="qline">Q${qno}. ${esc(qt)}</div>
-              <div class="pdfOpt">${optHtml}</div>
-              ${noAns}
+              <div class="pdfOpt">
+                <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
+              </div>
             </div>
           `;
+        }
+
+        const opts = getOptions(q);
+        const correctIdx = getCorrectIndex(q);
+        const chosenIdx = Number(mcqMap[qid]);
+        const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
+        const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
+
+        const optHtml = opts.slice(0,4).map((op, oi)=>{
+          const isCorrect = (hasCorrect && oi === correctIdx);
+          const isChosen = (hasChosen && oi === chosenIdx);
+
+          let cls = "dim";
+          let prefix = `${letters[oi]}. `;
+
+          // no answer => correct yellow
+          if(!hasChosen && isCorrect){
+            cls = "warn"; prefix = `✓ ${letters[oi]}. `;
+          }else if(hasChosen && isCorrect){
+            cls = "ok"; prefix = `✓ ${letters[oi]}. `;
+          }
+          if(isChosen && !isCorrect){
+            cls = "bad"; prefix = `✗ ${letters[oi]}. `;
+          }
+
+          return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
         }).join("");
 
+        const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
+
         return `
-          <div class="pdfFrame">
-            <div class="pdfWatermark"><span>eProstutiBD</span></div>
-            ${buildPdfMark()}
-
-            <div class="pdfH1">${esc(test)} — Marked Question Paper</div>
-            <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))}</div>
-
-            <div class="pdfMetaRow">
-              <span>Total Q: ${esc(r.totalQuestion ?? "--")} • Right: ${esc(r.right ?? "--")} • Wrong: ${esc(r.wrong ?? "--")} • No Ans: ${esc(calcNoAns(r))}</span>
-              <span>Page: ${pageIndex+1} / ${pages.length}</span>
-            </div>
-
-            <div class="pdfQuestions">${qHtml}</div>
-
-            <div class="pdfFooter">
-              <span>eProstutiBD</span>
-              <span>ModelTestId: ${esc(modelTestId || "--")}</span>
-            </div>
+          <div class="pdfQ">
+            <div class="qline">Q${qno}. ${esc(qt)}</div>
+            <div class="pdfOpt">${optHtml}</div>
+            ${noAns}
           </div>
         `;
-      });
+      }).join("");
+
+      return `
+        <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          <div class="pdfQuestions">${qHtml}</div>
+        </div>
+      `;
     }
 
     async function downloadResultPDF(){
@@ -1272,10 +1283,10 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // ✅ Requirement #5: no separate first summary page
-        for(const html of buildMarkedQuestionPages()){
-          addCanvas(await renderPageToCanvas(html));
-        }
+        // Page 1
+        addCanvas(await renderPageToCanvas(buildPdfPage1_ResultOnly()));
+        // Page 2 (questions only)
+        addCanvas(await renderPageToCanvas(buildPdfPage2_QuestionsOnly()));
 
         const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
         const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
@@ -1299,7 +1310,6 @@
       loadResultSheet();
       loadQuestionsOnce().catch(()=>{});
 
-      // shareable link: auto open
       if(resultIdFromUrl){
         openDetailsByResultId(resultIdFromUrl);
       }
