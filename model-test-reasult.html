@@ -21,17 +21,24 @@
       --bg1:#f6f8ff; --bg2:#eef6ff;
       --line: rgba(18, 28, 55, .10);
       --text:#0f1730; --muted:#5a6685;
+
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
       --ok:#16a34a;
       --danger:#dc2626;
       --warn:#f59e0b;
+
       --footTop:#0b1f3f;
       --footBottom:#07152e;
 
-      /* ✅ compact */
-      --tblFont: 12px;
-      --tblPadY: 9px;
-      --tblPadX: 10px;
+      --adW: 190px;  /* ✅ side ads width */
+      --adGap: 16px;
+
+      /* ✅ bigger body width (details dekhate) */
+      --pageMax: 1440px;
+
+      /* ✅ header height auto (JS will set exact) */
+      --headerH: 76px;
     }
 
     *{box-sizing:border-box}
@@ -45,15 +52,72 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
+      overflow-x:hidden; /* ✅ no side overflow */
     }
     a{color:inherit}
     .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
+    /* ✅ Side Ads (fixed, no scroll) */
+    .adSide{
+      position: fixed;
+      top: calc(var(--headerH) + 12px);              /* ✅ header height-aware */
+      height: calc(100vh - var(--headerH) - 24px);  /* ✅ fixed full height without scroll */
+      width: var(--adW);
+      z-index: 40;
+      display: none; /* default off until body.adsOn */
+      border: 1px solid rgba(18,28,55,.12);
+      border-radius: 18px;
+      background: rgba(255,255,255,.75);
+      box-shadow: 0 14px 34px rgba(15,23,48,.08);
+      overflow: hidden; /* ✅ no scroll */
+      padding: 10px;
+      transform: translateZ(0); /* ✅ smoother fixed */
+      will-change: transform;
+    }
+    body.adsOn .adSide{ display:block; }
+
+    .adLeft{ left: 12px; }
+    .adRight{ right: 12px; }
+
+    .adBox{
+      height: 100%;
+      border-radius: 14px;
+      border: 1px dashed rgba(18,28,55,.18);
+      background:
+        radial-gradient(520px 160px at 10% 0%, rgba(29,78,216,.10), transparent 60%),
+        radial-gradient(520px 160px at 90% 0%, rgba(14,165,233,.10), transparent 60%),
+        rgba(255,255,255,.65);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 10px;
+      color: rgba(90,102,133,.95);
+      font-weight: 1000;
+      line-height: 1.5;
+      user-select:none;
+      overflow:hidden; /* ✅ no internal scroll */
+    }
+
+    /* ✅ Hide ads on smaller screens (mobile a body scroll thakbe) */
+    @media (max-width: 1180px){
+      body.adsOn .adSide{ display:none; }
+      body.adsOn .container{ padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
+    }
+
     .container{
-      max-width: 1780px;
+      max-width: var(--pageMax);
       margin: 0 auto;
-      --pad: clamp(10px, 2vw, 24px);
-      padding: 12px var(--pad) 18px;
+      --pad: clamp(8px, 2vw, 20px);
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+      padding-top: 12px;
+      padding-bottom: 18px;
+    }
+    /* ✅ When ads enabled, add padding so content doesn't overlap */
+    body.adsOn .container{
+      padding-left: calc(var(--pad) + var(--adW) + var(--adGap));
+      padding-right: calc(var(--pad) + var(--adW) + var(--adGap));
     }
 
     /* ===== Header ===== */
@@ -64,33 +128,18 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: 1780px;
+      max-width: var(--pageMax);
       margin:0 auto;
       padding: 10px clamp(8px, 2vw, 20px);
       display:flex;
       align-items:center;
       gap:10px;
     }
-
-    /* ✅ Center header items (desktop) */
-    .topbar{
-      justify-content:center;
-    }
-    .brand{
-      display:flex;flex-direction:column;gap:3px;
-      min-width:0;
-      align-items:center; /* ✅ center */
-      text-align:center;  /* ✅ center */
-      flex:0 0 auto;
-    }
+    .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
     .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
     .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 520px;}
 
-    nav.nav{
-      display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;
-      flex:1;
-      justify-content:center; /* ✅ center */
-    }
+    nav.nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
     nav.nav::-webkit-scrollbar{display:none}
     nav.nav a{
       flex:0 0 auto;text-decoration:none;color:#fff;font-size:12px;font-weight:1000;
@@ -101,17 +150,13 @@
     nav.nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
     .menuBtn{
-      flex:0 0 auto;
-      margin-left:auto;
-      display:none;
+      flex:0 0 auto;margin-left:auto;display:none;
       border:1px solid rgba(255,255,255,.22);background: rgba(255,255,255,.14);color:#fff;
       border-radius: 12px;padding: 8px 10px;font-weight:1000;font-size:12px;cursor:pointer;line-height:1;
     }
     @media (max-width: 860px){
-      .topbar{justify-content:space-between;} /* ✅ mobile normal */
       nav.nav{display:none;}
       .menuBtn{display:inline-flex;align-items:center;gap:8px;}
-      .brand{align-items:flex-start;text-align:left;}
       .brand .tag{max-width: 55vw;}
     }
 
@@ -124,8 +169,6 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 18px 38px rgba(0,0,0,.35);
-      max-height: calc(100vh - 84px);
-      overflow:auto;
     }
     .mobileMenu a{
       display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
@@ -144,74 +187,58 @@
       overflow:hidden;
     }
     .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
-    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; text-align:center; }
+    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; }
 
-    /* ✅ Table: ALWAYS allow scroll if needed (desktop + mobile) */
     .tableWrap{
       margin-top: 12px;
       border:1px solid rgba(18,28,55,.10);
       border-radius: 16px;
-      overflow:auto;                /* ✅ important */
-      -webkit-overflow-scrolling:touch;
+      overflow:auto;
       background: rgba(255,255,255,.75);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
-
-    table{
-      width:100%;
-      min-width: 1220px;            /* ✅ ensures Details column exists */
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
+    table{ width:100%; border-collapse: collapse; }
     th, td{
-      padding: var(--tblPadY) var(--tblPadX);
+      padding: 12px 12px;
       border-bottom: 1px solid rgba(18,28,55,.08);
-      font-size: var(--tblFont);
+      font-size: 13px;
       vertical-align: top;
-      overflow-wrap:anywhere;
-      word-break: break-word;
     }
     th{
+      text-align:left;
       color: var(--muted);
       font-weight: 1000;
       background: rgba(29,78,216,.06);
-      text-align:center;            /* ✅ center table headers */
       white-space:nowrap;
     }
     td{
       font-weight: 1000;
       color: var(--text);
       background: rgba(255,255,255,.64);
-      text-align:center;
     }
-    /* ✅ keep name/address a bit readable */
-    td.colName, td.colAddr{ text-align:left; }
-
     tr:last-child td{border-bottom:none;}
-
-    /* ✅ Column widths (keep Details visible) */
-    th:nth-child(1), td:nth-child(1){width:60px;}
-    th:nth-child(2), td:nth-child(2){width:170px;}
-    th:nth-child(3), td:nth-child(3){width:190px;}
-    th:nth-child(4), td:nth-child(4){width:120px;} /* date only */
-    th:nth-child(5), td:nth-child(5),
-    th:nth-child(6), td:nth-child(6),
-    th:nth-child(7), td:nth-child(7){width:74px;}
-    th:nth-child(8), td:nth-child(8){width:80px;}
-    th:nth-child(9), td:nth-child(9){width:110px;}
-    th:nth-child(10), td:nth-child(10){width:90px;}
-    th:nth-child(11), td:nth-child(11){width:120px;} /* ✅ Details */
 
     /* ✅ Zebra rows */
     #rankBody tr:nth-child(odd) td{ background: rgba(22,163,74,.06) !important; }
     #rankBody tr:nth-child(even) td{ background: rgba(255,255,255,.70) !important; }
 
+    /* ✅ Highlight selected row (from resultId) */
+    #rankBody tr.hl td{
+      background: rgba(245,158,11,.22) !important;
+      box-shadow: inset 0 0 0 2px rgba(245,158,11,.55);
+    }
+    #rankBody tr.hl{ animation: popHL 1.15s ease-in-out 1; }
+    @keyframes popHL{
+      0%{transform: scale(1);}
+      40%{transform: scale(1.01);}
+      100%{transform: scale(1);}
+    }
+
     .badge{
       display:inline-flex;align-items:center;gap:8px;
-      padding: 5px 9px;
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight:1000;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
@@ -221,6 +248,7 @@
     .badge.bad{border-color: rgba(220,38,38,.22); background: rgba(220,38,38,.10); color: rgba(220,38,38,1);}
     .badge.warn{border-color: rgba(245,158,11,.24); background: rgba(245,158,11,.14); color: rgba(245,158,11,1);}
 
+    .actions{ margin-top: 12px; display:flex; gap: 10px; justify-content:center; flex-wrap:wrap; }
     .btn{
       border-radius: 999px;
       padding: 10px 16px;
@@ -241,18 +269,6 @@
     .btnGhost{ border:1px solid rgba(18,28,55,.14); background: rgba(255,255,255,.70); color: var(--text); }
     .btnDanger{ border:1px solid rgba(220,38,38,.28); background: rgba(220,38,38,.10); color: var(--danger); }
 
-    /* ✅ Make sure Details button never disappears */
-    .detailsBtn{
-      padding: 8px 10px !important;
-      font-size: 12px !important;
-      min-width: 88px;
-      display:inline-flex !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-
-    .actions{ margin-top: 12px; display:flex; gap: 10px; justify-content:center; flex-wrap:wrap; }
-
     /* ===== Filters ===== */
     .filterBar{
       margin-top: 12px;
@@ -264,7 +280,7 @@
     }
     .filterCard{
       flex: 1 1 520px;
-      max-width: 1200px;
+      max-width: 980px;
       border-radius: 18px;
       border: 1px solid rgba(18,28,55,.12);
       background:
@@ -325,9 +341,9 @@
     }
     .modalDialog{
       position:relative;
-      margin: 56px auto 24px;
-      width: min(1280px, calc(100vw - 18px));
-      max-height: calc(100vh - 90px);
+      margin: 70px auto 24px;
+      width: min(980px, calc(100vw - 18px));
+      max-height: calc(100vh - 100px);
       overflow:auto;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.22);
@@ -436,8 +452,8 @@
       margin-bottom: 12px;
       text-align:center;
     }
-    .sheetTitle{ margin:0; font-size: 14px; font-weight: 1000; line-height:1.35; }
-    .sheetSub{ margin:0; color: var(--muted); font-size: 12px; font-weight: 900; line-height:1.55; }
+    .sheetTitle{ margin:0; font-size: 15px; font-weight: 1000; line-height:1.35; }
+    .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
     .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
 
     .qList{
@@ -450,7 +466,7 @@
       background: rgba(255,255,255,.60);
     }
     @media (max-width: 980px){ .qList{grid-template-columns: 1fr;} }
-    .qRow{ padding: 10px 10px; border-bottom: 1px solid rgba(18,28,55,.08); }
+    .qRow{ padding: 12px 12px; border-bottom: 1px solid rgba(18,28,55,.08); }
     @media (min-width: 981px){
       .qRow:nth-child(2n){border-left: 1px solid rgba(18,28,55,.08);}
       .qRow:nth-last-child(-n+2){border-bottom:none;}
@@ -460,43 +476,55 @@
     .qHead{display:flex;gap:10px;align-items:flex-start;}
     .qNo{
       flex:0 0 auto;
-      font-size:11px;font-weight:1000;
+      font-size:12px;font-weight:1000;
       padding: 6px 9px;border-radius:999px;
       border: 1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.70);
       color: var(--muted);white-space:nowrap;
       transform: translateY(1px);
     }
-    .qText{margin:0;font-weight:1000;font-size:13px;line-height:1.55;flex:1;}
+    .qText{margin:0;font-weight:1000;font-size:14px;line-height:1.6;flex:1;}
 
     .opts{
       margin-top:10px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
+      gap: 8px 14px;
     }
     .optLine{
       display:grid;
-      grid-template-columns: 18px 18px 1fr;
+      grid-template-columns: 20px 20px 1fr;
       gap: 6px;
       align-items:flex-start;
       padding: 2px 0;
-      font-size: 12px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.55;
     }
     .markIcon{
-      width:18px;height:18px;border-radius:999px;
+      width:20px;height:20px;border-radius:999px;
       display:grid;place-items:center;
       font-weight:1000;
-      font-size:11px;
+      font-size:12px;
       border: 1px solid rgba(18,28,55,.14);
       background: rgba(255,255,255,.70);
       color: transparent;
       transform: translateY(1px);
     }
-    .markIcon.ok{border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.10); color: rgba(22,163,74,1);}
-    .markIcon.bad{border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.10); color: rgba(220,38,38,1);}
-    .markIcon.warn{border-color: rgba(245,158,11,.30); background: rgba(245,158,11,.16); color: rgba(245,158,11,1);}
+    .markIcon.ok{
+      border-color: rgba(22,163,74,.25);
+      background: rgba(22,163,74,.10);
+      color: rgba(22,163,74,1);
+    }
+    .markIcon.bad{
+      border-color: rgba(220,38,38,.25);
+      background: rgba(220,38,38,.10);
+      color: rgba(220,38,38,1);
+    }
+    .markIcon.warn{
+      border-color: rgba(245,158,11,.30);
+      background: rgba(245,158,11,.16);
+      color: rgba(245,158,11,1);
+    }
 
     .optKey{font-weight:1000;color: var(--muted);}
     .optTxt{font-weight: 900;color: var(--text);}
@@ -504,11 +532,11 @@
     .optTxt.bad{color: rgba(220,38,38,1);}
     .optTxt.warn{color: rgba(245,158,11,1);}
 
-    .noAnsText{ margin-top: 8px; font-weight: 1000; font-size: 12px; color: rgba(220,38,38,1); }
+    .noAnsText{ margin-top: 8px; font-weight: 1000; font-size: 13px; color: rgba(220,38,38,1); }
     .loading{color: var(--muted); font-weight:1000; font-size:13px;}
     .err{color: var(--danger); font-weight:1000; font-size:13px;}
 
-    /* ===== PDF render area (unchanged) ===== */
+    /* ===== PDF render area ===== */
     .pdfPageArea{
       position: fixed;
       left: -99999px;
@@ -545,6 +573,97 @@
       white-space:nowrap;
     }
 
+    .pdfMark{
+      position:absolute;
+      top: 16px;
+      left: 16px;
+      transform: rotate(-10deg);
+      padding: 8px 10px 6px;
+      border-radius: 12px;
+      border: 2px solid rgba(0,0,0,.35);
+      background: rgba(255,255,255,.72);
+      min-width: 140px;
+    }
+    .pdfMark .score{
+      font-family: "Caveat", "Noto Sans Bengali", cursive;
+      font-size: 30px;
+      font-weight: 700;
+      color:#111;
+      line-height:1.05;
+    }
+    .pdfMark .pf{
+      margin-top: 2px;
+      font-family: "Caveat", "Noto Sans Bengali", cursive;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .pdfMark .pf.pass{ color: #16a34a; }
+    .pdfMark .pf.fail{ color: #dc2626; }
+
+    .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 52px 0 2px;}
+    .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
+    .pdfStatsRow{
+      display:flex;
+      justify-content:center;
+      gap: 8px;
+      flex-wrap:wrap;
+      margin: 8px 0 10px;
+      font-size: 12px;
+      font-weight: 1000;
+    }
+    .pdfPill{
+      display:inline-flex;gap:8px;align-items:center;
+      border: 1px solid rgba(0,0,0,.25);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.03);
+      white-space:nowrap;
+    }
+    .pdfPill.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.10); color:#0b3d1f;}
+    .pdfPill.bad{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.10); color:#5c0b0b;}
+    .pdfPill.warn{border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.14); color:#4a2d00;}
+
+    .pdfQuestions{
+      column-count: 2;
+      column-gap: 16px;
+      margin-top: 10px;
+    }
+    .pdfQ{
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+      font-size:12px;
+      line-height:1.45;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed rgba(0,0,0,.18);
+    }
+    .pdfQ .qline{font-weight:1000;margin-bottom: 4px;}
+    .pdfOpt{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 10px;
+      font-size:11.6px;
+    }
+    .pdfOpt .ok{color: #16a34a; font-weight:1000;}
+    .pdfOpt .bad{color: #dc2626; font-weight:1000;}
+    .pdfOpt .warn{color: #f59e0b; font-weight:1000;}
+    .pdfOpt .dim{color: #111;}
+    .pdfNoAns{ margin-top: 4px; font-weight: 1000; color:#dc2626; font-size: 11.6px; }
+
+    .pdfFooter{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:11px;
+      font-weight:900;
+      opacity:.75;
+    }
+
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
@@ -556,7 +675,7 @@
       color: rgba(255,255,255,.86);
     }
     .footGrid{
-      max-width: 1780px;
+      max-width: var(--pageMax);
       margin:0 auto;
       padding: 18px clamp(8px, 2vw, 20px) 10px;
       display:grid;
@@ -571,26 +690,44 @@
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
     .socials{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+
+    /* ✅ Premium social icon */
     .soc{
-      width:40px;height:40px;border-radius:999px;
+      width:38px;height:38px;border-radius:999px;
       display:grid;place-items:center;
       text-decoration:none;
       color:#fff;
       border:1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.10);
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      background:
+        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.38), transparent 60%),
+        linear-gradient(135deg, rgba(96,165,250,.30), rgba(34,197,94,.22));
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.22),
+        inset 0 0 0 1px rgba(255,255,255,.10);
+      font-weight:1000;
+      line-height:1;
       user-select:none;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .soc svg{ width:18px; height:18px; display:block; fill: currentColor; opacity: .92; }
     .soc:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,.18);
-      border-color: rgba(255,255,255,.32);
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.28),
+        inset 0 0 0 1px rgba(255,255,255,.14);
+      background:
+        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
+        linear-gradient(135deg, rgba(96,165,250,.36), rgba(34,197,94,.28));
+    }
+    .soc:focus-visible{
+      outline:none;
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.30),
+        0 0 0 4px rgba(96,165,250,.28),
+        inset 0 0 0 1px rgba(255,255,255,.14);
     }
 
     .copy{
-      max-width: 1780px;
+      max-width: var(--pageMax);
       margin:0 auto;
       padding: 12px clamp(8px, 2vw, 20px) 14px;
       border-top: 1px solid rgba(255,255,255,.12);
@@ -609,7 +746,22 @@
 <body>
   <h1 class="srOnly">Model Test Result Sheet</h1>
 
-  <header>
+  <!-- ✅ Fixed Side Ads -->
+  <aside class="adSide adLeft" id="adLeft" aria-label="Left Ad">
+    <div class="adBox" id="adLeftSlot">
+      LEFT AD<br/>
+      (Fixed)
+    </div>
+  </aside>
+
+  <aside class="adSide adRight" id="adRight" aria-label="Right Ad">
+    <div class="adBox" id="adRightSlot">
+      RIGHT AD<br/>
+      (Fixed)
+    </div>
+  </aside>
+
+  <header id="siteHeader">
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
@@ -653,9 +805,12 @@
 
   <div class="container">
     <section class="card" aria-label="Result sheet">
+      <!-- ✅ Model Test Name উপরে -->
       <h2 class="title" id="modelTestTitle">Model Test</h2>
+      <!-- ✅ Result Sheet (Ranking) নিচে -->
       <p class="sub" id="pageTitle">Result Sheet (Ranking)</p>
 
+      <!-- ✅ Filters -->
       <div class="filterBar" aria-label="Filters">
         <div class="filterCard">
           <div class="filterGrid">
@@ -675,20 +830,20 @@
       </div>
 
       <div class="tableWrap">
-        <table>
+        <table style="min-width:1140px;">
           <thead>
             <tr>
-              <th>Rank</th>
+              <th style="width:60px;">Rank</th>
               <th>Name</th>
               <th>Address</th>
-              <th>Submit date</th>
-              <th>Right</th>
-              <th>Wrong</th>
-              <th>No Ans</th>
-              <th>Mark</th>
-              <th>Time Taken</th>
-              <th>Pass/Fail</th>
-              <th>Details</th>
+              <th style="width:180px;">Submit date &amp; time</th>
+              <th style="width:90px;">Right</th>
+              <th style="width:90px;">Wrong</th>
+              <th style="width:90px;">No Ans</th>
+              <th style="width:90px;">Mark</th>
+              <th style="width:120px;">Time Taken</th>
+              <th style="width:100px;">Pass/Fail</th>
+              <th style="width:90px;">Details</th>
             </tr>
           </thead>
           <tbody id="rankBody">
@@ -697,6 +852,7 @@
         </table>
       </div>
 
+      <!-- ✅ pager (25 per page) -->
       <div class="pager">
         <button class="btn btnGhost" type="button" onclick="prevPage()">Prev</button>
         <span id="pageInfo">Page 1</span>
@@ -704,6 +860,7 @@
       </div>
 
       <div class="actions">
+        <button class="btn btnGhost" type="button" id="adsToggleBtn" onclick="toggleAds()">Ads: OFF</button>
         <button class="btnGhost btn" type="button" onclick="backToTest()">Back to Test</button>
       </div>
     </section>
@@ -742,6 +899,7 @@
     </div>
   </div>
 
+  <!-- hidden offscreen for PDF rendering -->
   <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
   <footer>
@@ -774,21 +932,9 @@
       <div>
         <div class="footTitle">Follow Us</div>
         <div class="socials">
-          <a class="soc" href="#" aria-label="Facebook" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.25 10.44 22v-7.03H7.9v-2.9h2.54V9.86c0-2.52 1.5-3.92 3.8-3.92 1.1 0 2.24.2 2.24.2v2.48h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22C18.34 21.25 22 17.08 22 12.06z"/>
-            </svg>
-          </a>
-          <a class="soc" href="#" aria-label="LinkedIn" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 23.5h4V7.98h-4V23.5zM8.5 7.98h3.84v2.12h.05c.53-1 1.83-2.12 3.77-2.12 4.03 0 4.77 2.65 4.77 6.09v9.43h-4v-8.36c0-1.99-.04-4.56-2.78-4.56-2.78 0-3.2 2.17-3.2 4.42v8.5h-4V7.98z"/>
-            </svg>
-          </a>
-          <a class="soc" href="#" aria-label="YouTube" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M23.5 6.2s-.23-1.63-.94-2.35c-.9-.95-1.9-.96-2.36-1.02C16.9 2.5 12 2.5 12 2.5h-.01s-4.9 0-8.2.33c-.46.06-1.46.07-2.36 1.02C.73 4.57.5 6.2.5 6.2S0 8.1 0 10v1.99c0 1.9.5 3.8.5 3.8s.23 1.63.93 2.35c.9.95 2.08.92 2.61 1.02 1.89.18 8 .33 8 .33s4.9-.01 8.2-.34c.46-.06 1.46-.07 2.36-1.02.71-.72.94-2.35.94-2.35S24 13.9 24 12V10c0-1.9-.5-3.8-.5-3.8zM9.5 14.98V7.52L15.8 11.25 9.5 14.98z"/>
-            </svg>
-          </a>
+          <a class="soc" href="#" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+          <a class="soc" href="#" aria-label="LinkedIn" target="_blank" rel="noopener">in</a>
+          <a class="soc" href="#" aria-label="YouTube" target="_blank" rel="noopener">▶</a>
         </div>
       </div>
     </div>
@@ -808,21 +954,44 @@
     document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
+    // ✅ header height auto set for fixed ads (right/left)
+    function syncHeaderHeight(){
+      const h = $("siteHeader")?.offsetHeight || 76;
+      document.documentElement.style.setProperty("--headerH", h + "px");
+    }
+    window.addEventListener("resize", syncHeaderHeight);
+
     // ===== menu =====
     function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
+
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+
+    // ===== Ads Toggle (option) =====
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name) || "";
+    }
+    function setAdsEnabled(v){
+      const on = !!v;
+      document.body.classList.toggle("adsOn", on);
+      try{ localStorage.setItem("adsOn", on ? "1" : "0"); }catch(e){}
+      const btn = $("adsToggleBtn");
+      if(btn) btn.textContent = on ? "Ads: ON" : "Ads: OFF";
+      // ✅ recalc header/ads position after toggling
+      syncHeaderHeight();
+    }
+    function toggleAds(){
+      const on = document.body.classList.contains("adsOn");
+      setAdsEnabled(!on);
+    }
+    window.toggleAds = toggleAds;
 
     // ===== utils =====
     function esc(str){
       return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-    function fmtDateOnly(ms){
-      const n = Number(ms);
-      if(!Number.isFinite(n) || n <= 0) return "--";
-      return new Date(n).toLocaleDateString("bn-BD", { year:"numeric", month:"short", day:"2-digit" });
     }
     function fmtTime(ms){
       const n = Number(ms);
@@ -833,6 +1002,8 @@
       const n = Number(x);
       return Number.isFinite(n) ? n : fallback;
     }
+
+    // ✅ parse timeTakenText to seconds (used only for tie-break now)
     function parseTimeTakenTextToSeconds(t){
       const s = String(t ?? "").trim().toLowerCase();
       if(!s) return Number.POSITIVE_INFINITY;
@@ -843,6 +1014,10 @@
         if(parts.length === 2) return parts[0]*60 + parts[1];
         if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
       }
+      if(/^\d+(\.\d+)?s$/.test(s)){
+        const n = Number(s.replace("s",""));
+        return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
+      }
 
       let total = 0, matched = false;
       const h = s.match(/(\d+)\s*(h|hr|hrs|hour|hours|ঘণ্টা)/);
@@ -851,12 +1026,8 @@
       if(m){ total += Number(m[1]) * 60; matched = true; }
       const sec = s.match(/(\d+)\s*(s|sec|secs|second|seconds|সেকেন্ড)/);
       if(sec){ total += Number(sec[1]); matched = true; }
-      return matched ? total : Number.POSITIVE_INFINITY;
-    }
 
-    function getParam(name){
-      const u = new URL(location.href);
-      return u.searchParams.get(name) || "";
+      return matched ? total : Number.POSITIVE_INFINITY;
     }
 
     function setUrlResultId(resId){
@@ -903,6 +1074,7 @@
     let page = 1;
     const PAGE_SIZE = 25;
 
+    // ✅ highlight target (resultId)
     let highlightResultId = resultIdFromUrl || "";
 
     function backToTest(){
@@ -1057,7 +1229,7 @@
     function renderNoAnsBadge(noAns){
       const n = Number(noAns);
       if(Number.isFinite(n) && n > 0){
-        return `<span class="badge bad">${esc(n)}</span>`;
+        return `<span class="badge bad">${esc(n)}</span>`;   // ✅ red mark
       }
       return `<span class="badge">${esc(noAns)}</span>`;
     }
@@ -1080,7 +1252,7 @@
         const p = x.p, r = x.r;
         const name = p.studentName || "--";
         const addr = p.studentDistrict || p.studentAddress || p.address || "--";
-        const submittedDateOnly = fmtDateOnly(p.submittedAt);
+        const submitted = fmtTime(p.submittedAt);
 
         const right = (r.right ?? "--");
         const wrong = (r.wrong ?? "--");
@@ -1101,9 +1273,9 @@
         return `
           <tr data-result-id="${esc(p.id)}">
             <td><span class="badge">${globalRank}</span></td>
-            <td class="colName">${esc(name)}</td>
-            <td class="colAddr">${esc(addr)}</td>
-            <td>${esc(submittedDateOnly)}</td>
+            <td style="white-space:nowrap;">${esc(name)}</td>
+            <td style="white-space:nowrap;">${esc(addr)}</td>
+            <td style="white-space:nowrap;">${esc(submitted)}</td>
             <td>${esc(right)}</td>
             <td>${esc(wrong)}</td>
             <td>${renderNoAnsBadge(noAns)}</td>
@@ -1111,8 +1283,8 @@
             <td><span class="badge">${esc(timeTakenText)}</span></td>
             <td>${pfBadge}</td>
             <td>
-              <button class="btn detailsBtn" type="button"
-                onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
+              <button class="btn" style="padding:6px 10px;font-size:12px;"
+                type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
             </td>
           </tr>
         `;
@@ -1124,6 +1296,7 @@
       if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
 
+    // ✅ highlight helpers
     function clearHighlights(){
       document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
     }
@@ -1135,6 +1308,7 @@
 
     function jumpToAndHighlightResult(resId){
       if(!resId) return;
+
       const idx = filteredRows.findIndex(x => x?.p?.id === resId);
       if(idx < 0) return;
 
@@ -1254,7 +1428,7 @@
           box.style.background = "rgba(255,255,255,.75)";
           box.innerHTML = `
             <div style="font-size:12px;color:var(--muted);font-weight:1000;">Your Answer (Written)</div>
-            <div style="margin-top:6px;font-weight:900;line-height:1.6;font-size:12.5px;">${esc(ans || "(No Answer)")}</div>
+            <div style="margin-top:6px;font-weight:900;line-height:1.6;">${esc(ans || "(No Answer)")}</div>
           `;
           row.appendChild(box);
           wrap.appendChild(row);
@@ -1343,6 +1517,7 @@
     }
     window.openDetailsByResultId = openDetailsByResultId;
 
+    // ===== Load ranking table =====
     async function loadResultSheet(){
       try{
         const snap = await db.collection(COL_RESULTS)
@@ -1369,6 +1544,10 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
+        // ✅ Ranking rule:
+        // 1) obtained DESC
+        // 2) tie => timeTakenSec ASC
+        // 3) still tie => submittedAt ASC
         allRows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
@@ -1384,6 +1563,7 @@
       }
     }
 
+    // ===== ✅ Model Test Title loader =====
     async function loadModelTestTitle(){
       try{
         if(!modelTestId){
@@ -1403,25 +1583,211 @@
       }
     }
 
-    // ===== PDF (keep your existing functions here if needed) =====
+    // ===== PDF helpers =====
     async function renderPageToCanvas(html){
       const area = $("pdfPageArea");
       area.innerHTML = html;
       try{ await document.fonts.ready; }catch(e){}
       return await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
     }
-    function getPassFailLabel(obtained,total){
-      const pf = getPassFail(obtained,total);
-      return pf.label;
+
+    function buildPdfMark(){
+      const r = resultPayload?.result || {};
+      const obtained = r.obtainedMark ?? "--";
+      const total = r.totalMark ?? "--";
+      const pf = getPassFail(r.obtainedMark, r.totalMark);
+      return `
+        <div class="pdfMark">
+          <div class="score">${esc(obtained)} / ${esc(total)}</div>
+          <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
+        </div>
+      `;
     }
 
-    // ✅ Minimal PDF functions (same as your previous file) — keep unchanged in your project
+    function chunk(arr, size){
+      const out = [];
+      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+      return out;
+    }
+
+    function buildPdfQuestionsHtml(qs, startNo){
+      const p = resultPayload || {};
+      const mcqMap = getMcqMap(p);
+      const wrMap = getWrittenMap(p);
+      const letters = ["A","B","C","D"];
+
+      return qs.map((q, idx)=>{
+        const qno = startNo + idx;
+        const qt = getQText(q) || "(No question text)";
+        const qid = q.id;
+
+        if(isWrittenQuestion(q)){
+          const ans = (wrMap[qid] ?? "").toString().trim();
+          return `
+            <div class="pdfQ">
+              <div class="qline">Q${qno}. ${esc(qt)}</div>
+              <div class="pdfOpt">
+                <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        const opts = getOptions(q);
+        const correctIdx = getCorrectIndex(q);
+        const chosenIdx = Number(mcqMap[qid]);
+        const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
+        const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
+
+        const optHtml = opts.slice(0,4).map((op, oi)=>{
+          const isCorrect = (hasCorrect && oi === correctIdx);
+          const isChosen = (hasChosen && oi === chosenIdx);
+
+          let cls = "dim";
+          let prefix = `${letters[oi]}. `;
+
+          if(!hasChosen && isCorrect){
+            cls = "warn"; prefix = `✓ ${letters[oi]}. `;
+          }else if(hasChosen && isCorrect){
+            cls = "ok"; prefix = `✓ ${letters[oi]}. `;
+          }
+          if(isChosen && !isCorrect){
+            cls = "bad"; prefix = `✗ ${letters[oi]}. `;
+          }
+          return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
+        }).join("");
+
+        const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
+
+        return `
+          <div class="pdfQ">
+            <div class="qline">Q${qno}. ${esc(qt)}</div>
+            <div class="pdfOpt">${optHtml}</div>
+            ${noAns}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function buildPdfPage1_DetailsLike(firstQs){
+      const p = resultPayload || {};
+      const r = p.result || {};
+      const name = p.studentName || "--";
+      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
+      const test = p.modelTestName || "Model Test";
+      const timeTakenText = p.timeTakenText || "--";
+
+      const right = r.right ?? "--";
+      const wrong = r.wrong ?? "--";
+      const noAns = calcNoAns(r);
+
+      const qHtml = buildPdfQuestionsHtml(firstQs, 1);
+
+      return `
+        <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          ${buildPdfMark()}
+
+          <div class="pdfH1">${esc(test)} — Details Sheet</div>
+          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
+
+          <div class="pdfStatsRow">
+            <span class="pdfPill">Total: ${esc(r.totalQuestion ?? "--")} Q</span>
+            <span class="pdfPill ok">✓ Right: ${esc(right)}</span>
+            <span class="pdfPill bad">✗ Wrong: ${esc(wrong)}</span>
+            <span class="pdfPill warn">No Ans: ${esc(noAns)}</span>
+          </div>
+
+          <div class="pdfQuestions">${qHtml}</div>
+
+          <div class="pdfFooter">
+            <span>eProstutiBD</span>
+            <span>Questions (with header)</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
+      const qHtml = buildPdfQuestionsHtml(qs, startNo);
+      return `
+        <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          <div class="pdfQuestions" style="margin-top:0;">${qHtml}</div>
+          <div class="pdfFooter">
+            <span>Questions</span>
+            <span>Page ${pageIndex} / ${totalPages}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ✅ per page 26 questions
+    const PDF_FIRST_PAGE_Q = 26;
+    const PDF_NEXT_PAGE_Q  = 26;
+
     async function downloadResultPDF(){
-      alert("PDF অংশটা আপনার আগের কোডের মতোই আছে। চাইলে আমি এখানে পুরো PDF অংশটাও একইভাবে বসিয়ে দিব।");
+      try{
+        if(!resultPayload){
+          alert("Details থেকে একজনের result খুলে তারপর PDF ডাউনলোড করুন।");
+          return;
+        }
+        await loadQuestionsOnce();
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "pt", "a4");
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+
+        let first = true;
+        const addCanvas = (canvas)=>{
+          const imgData = canvas.toDataURL("image/jpeg", 0.95);
+          if(!first) pdf.addPage();
+          first = false;
+          pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+        };
+
+        const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
+        addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
+
+        const rest = questions.slice(PDF_FIRST_PAGE_Q);
+        const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
+
+        const totalPages = 1 + restChunks.length;
+        for(let i=0;i<restChunks.length;i++){
+          const startNo = PDF_FIRST_PAGE_Q + (i * PDF_NEXT_PAGE_Q) + 1;
+          addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(restChunks[i], startNo, (i+2), totalPages)));
+        }
+
+        const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
+        const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
+        pdf.save(`${testName}-${name}-result.pdf`);
+      }catch(e){
+        console.error(e);
+        alert("PDF তৈরি করতে সমস্যা হচ্ছে। Console দেখুন।");
+      }
     }
     window.downloadResultPDF = downloadResultPDF;
 
+    // ===== Boot =====
     async function boot(){
+      // ✅ Sync header height once fonts/layout settled
+      syncHeaderHeight();
+      setTimeout(syncHeaderHeight, 80);
+
+      // ✅ Ads option init:
+      // 1) URL param ads=1/0 has priority
+      // 2) else localStorage
+      // default OFF
+      const adsParam = getParam("ads");
+      let adsOn = false;
+      if(adsParam === "1") adsOn = true;
+      else if(adsParam === "0") adsOn = false;
+      else {
+        try{ adsOn = localStorage.getItem("adsOn") === "1"; }catch(e){}
+      }
+      setAdsEnabled(adsOn);
+
       // ✅ if only resultId is provided, infer modelTestId from that result
       if(!modelTestId && resultIdFromUrl){
         try{
@@ -1449,6 +1815,7 @@
         loadQuestionsOnce().catch(()=>{});
       }
 
+      // ✅ when coming from another page: highlight that row in table
       if(resultIdFromUrl){
         highlightResultId = resultIdFromUrl;
         setTimeout(()=> jumpToAndHighlightResult(resultIdFromUrl), 120);
