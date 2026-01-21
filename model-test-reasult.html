@@ -14,7 +14,6 @@
   <link rel="dns-prefetch" href="https://www.gstatic.com" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
-  <!-- Bengali + Handwriting-ish font -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -124,15 +123,13 @@
       overflow:hidden;
     }
     .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
-
-    /* ✅ sub আর hidden না (আগে display:none ছিল) */
     .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; }
 
     .tableWrap{
       margin-top: 12px;
       border:1px solid rgba(18,28,55,.10);
       border-radius: 16px;
-      overflow:hidden;
+      overflow:auto;
       background: rgba(255,255,255,.75);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
@@ -157,12 +154,20 @@
     }
     tr:last-child td{border-bottom:none;}
 
-    /* ✅ Zebra row: এক লাইন সবুজ, এক লাইন সাদা */
-    #rankBody tr:nth-child(odd) td{
-      background: rgba(22,163,74,.06) !important;
+    /* ✅ Zebra rows */
+    #rankBody tr:nth-child(odd) td{ background: rgba(22,163,74,.06) !important; }
+    #rankBody tr:nth-child(even) td{ background: rgba(255,255,255,.70) !important; }
+
+    /* ✅ Highlight selected row (from resultId) */
+    #rankBody tr.hl td{
+      background: rgba(245,158,11,.22) !important;
+      box-shadow: inset 0 0 0 2px rgba(245,158,11,.55);
     }
-    #rankBody tr:nth-child(even) td{
-      background: rgba(255,255,255,.70) !important;
+    #rankBody tr.hl{ animation: popHL 1.15s ease-in-out 1; }
+    @keyframes popHL{
+      0%{transform: scale(1);}
+      40%{transform: scale(1.01);}
+      100%{transform: scale(1);}
     }
 
     .badge{
@@ -179,13 +184,7 @@
     .badge.bad{border-color: rgba(220,38,38,.22); background: rgba(220,38,38,.10); color: rgba(220,38,38,1);}
     .badge.warn{border-color: rgba(245,158,11,.24); background: rgba(245,158,11,.14); color: rgba(245,158,11,1);}
 
-    .actions{
-      margin-top: 12px;
-      display:flex;
-      gap: 10px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
+    .actions{ margin-top: 12px; display:flex; gap: 10px; justify-content:center; flex-wrap:wrap; }
     .btn{
       border-radius: 999px;
       padding: 10px 16px;
@@ -203,18 +202,10 @@
       justify-content:center;
       line-height:1;
     }
-    .btnGhost{
-      border:1px solid rgba(18,28,55,.14);
-      background: rgba(255,255,255,.70);
-      color: var(--text);
-    }
-    .btnDanger{
-      border:1px solid rgba(220,38,38,.28);
-      background: rgba(220,38,38,.10);
-      color: var(--danger);
-    }
+    .btnGhost{ border:1px solid rgba(18,28,55,.14); background: rgba(255,255,255,.70); color: var(--text); }
+    .btnDanger{ border:1px solid rgba(220,38,38,.28); background: rgba(220,38,38,.10); color: var(--danger); }
 
-    /* ===== ✅ Beautiful Filter bar ===== */
+    /* ===== Filters ===== */
     .filterBar{
       margin-top: 12px;
       display:flex;
@@ -235,28 +226,10 @@
       box-shadow: 0 14px 34px rgba(15,23,48,.06);
       padding: 12px;
     }
-    .filterGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-      align-items:center;
-    }
-    @media (max-width: 740px){
-      .filterGrid{grid-template-columns: 1fr; }
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .field label{
-      font-size:12px;
-      font-weight:1000;
-      color: var(--muted);
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
+    .filterGrid{ display:grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items:center; }
+    @media (max-width: 740px){ .filterGrid{grid-template-columns: 1fr;} }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:12px; font-weight:1000; color: var(--muted); display:flex; gap:8px; align-items:center; }
     .pillDot{
       width:10px;height:10px;border-radius:999px;
       background: rgba(29,78,216,.35);
@@ -277,15 +250,8 @@
       border-color: rgba(29,78,216,.35);
       box-shadow: 0 0 0 5px rgba(29,78,216,.10);
     }
-    .filterBtns{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-    @media (max-width: 740px){
-      .filterBtns{justify-content:center;}
-    }
+    .filterBtns{ display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+    @media (max-width: 740px){ .filterBtns{justify-content:center;} }
 
     /* ===== Pager ===== */
     .pager{
@@ -300,17 +266,11 @@
       font-size:12px;
     }
 
-    /* ===== Popup Modal (Details) ===== */
-    .modal{
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:99999;
-    }
+    /* ===== Popup ===== */
+    .modal{ display:none; position:fixed; inset:0; z-index:99999; }
     .modal.show{display:block;}
     .modalOverlay{
-      position:absolute;
-      inset:0;
+      position:absolute; inset:0;
       background: rgba(2, 6, 23, .45);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
@@ -335,12 +295,9 @@
       padding: 14px;
     }
     .modalClose{
-      position:sticky;
-      top: 0;
-      display:flex;
-      justify-content:flex-end;
-      padding: 6px 4px 10px;
-      z-index: 5;
+      position:sticky; top: 0;
+      display:flex; justify-content:flex-end;
+      padding: 6px 4px 10px; z-index: 5;
       background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0));
       backdrop-filter: blur(6px);
     }
@@ -369,7 +326,6 @@
       min-height: 220px;
     }
 
-    /* Download button top */
     .detailsTopBar{
       display:flex;
       justify-content:space-between;
@@ -379,7 +335,6 @@
       margin-bottom: 6px;
     }
 
-    /* Mark on LEFT (handwriting) + PASS/FAIL */
     .markStamp{
       position:absolute;
       top: 58px;
@@ -422,7 +377,6 @@
       text-align:left;
     }
 
-    /* details header centered */
     .sheetHead{
       display:flex;
       flex-direction:column;
@@ -438,7 +392,6 @@
     .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
     .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
 
-    /* ✅ Web details: TWO COLUMN list */
     .qList{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -449,10 +402,7 @@
       background: rgba(255,255,255,.60);
     }
     @media (max-width: 980px){ .qList{grid-template-columns: 1fr;} }
-    .qRow{
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(18,28,55,.08);
-    }
+    .qRow{ padding: 12px 12px; border-bottom: 1px solid rgba(18,28,55,.08); }
     @media (min-width: 981px){
       .qRow:nth-child(2n){border-left: 1px solid rgba(18,28,55,.08);}
       .qRow:nth-last-child(-n+2){border-bottom:none;}
@@ -518,18 +468,11 @@
     .optTxt.bad{color: rgba(220,38,38,1);}
     .optTxt.warn{color: rgba(245,158,11,1);}
 
-    /* no answer note = just red text */
-    .noAnsText{
-      margin-top: 8px;
-      font-weight: 1000;
-      font-size: 13px;
-      color: rgba(220,38,38,1);
-    }
-
+    .noAnsText{ margin-top: 8px; font-weight: 1000; font-size: 13px; color: rgba(220,38,38,1); }
     .loading{color: var(--muted); font-weight:1000; font-size:13px;}
     .err{color: var(--danger); font-weight:1000; font-size:13px;}
 
-    /* ===== PDF render area (offscreen) ===== */
+    /* ===== PDF render area ===== */
     .pdfPageArea{
       position: fixed;
       left: -99999px;
@@ -566,7 +509,6 @@
       white-space:nowrap;
     }
 
-    /* PDF mark (left) */
     .pdfMark{
       position:absolute;
       top: 16px;
@@ -594,7 +536,6 @@
     .pdfMark .pf.pass{ color: #16a34a; }
     .pdfMark .pf.fail{ color: #dc2626; }
 
-    /* PDF header area (only on first PDF page) */
     .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 52px 0 2px;}
     .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
     .pdfStatsRow{
@@ -618,7 +559,6 @@
     .pdfPill.bad{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.10); color:#5c0b0b;}
     .pdfPill.warn{border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.14); color:#4a2d00;}
 
-    /* Questions area (ALL PDF pages) */
     .pdfQuestions{
       column-count: 2;
       column-gap: 16px;
@@ -646,12 +586,7 @@
     .pdfOpt .warn{color: #f59e0b; font-weight:1000;}
     .pdfOpt .dim{color: #111;}
 
-    .pdfNoAns{
-      margin-top: 4px;
-      font-weight: 1000;
-      color:#dc2626;
-      font-size: 11.6px;
-    }
+    .pdfNoAns{ margin-top: 4px; font-weight: 1000; color:#dc2626; font-size: 11.6px; }
 
     .pdfFooter{
       position:absolute;
@@ -691,7 +626,6 @@
     .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
-    /* ✅ socials */
     .socials{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
     .soc{
       width:36px;height:36px;border-radius:999px;
@@ -770,10 +704,8 @@
 
   <div class="container">
     <section class="card" aria-label="Result sheet">
-
       <!-- ✅ Model Test Name উপরে -->
       <h2 class="title" id="modelTestTitle">Model Test</h2>
-
       <!-- ✅ Result Sheet (Ranking) নিচে -->
       <p class="sub" id="pageTitle">Result Sheet (Ranking)</p>
 
@@ -796,7 +728,7 @@
         </div>
       </div>
 
-      <div class="tableWrap" style="overflow:auto;">
+      <div class="tableWrap">
         <table style="min-width:1140px;">
           <thead>
             <tr>
@@ -895,11 +827,9 @@
         </div>
       </div>
 
-      <!-- ✅ Support টেক্সট বাদ, Social আইকন -->
       <div>
         <div class="footTitle">Follow Us</div>
         <div class="socials">
-          <!-- এখানে আপনার আসল লিংক বসাবেন -->
           <a class="soc" href="#" aria-label="Facebook" target="_blank" rel="noopener">f</a>
           <a class="soc" href="#" aria-label="LinkedIn" target="_blank" rel="noopener">in</a>
           <a class="soc" href="#" aria-label="YouTube" target="_blank" rel="noopener">▶</a>
@@ -927,6 +857,7 @@
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
+
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
     // ===== utils =====
@@ -952,21 +883,17 @@
       const s = String(t ?? "").trim().toLowerCase();
       if(!s) return Number.POSITIVE_INFINITY;
 
-      // hh:mm:ss or mm:ss
       if(/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)){
         const parts = s.split(":").map(x=>Number(x));
         if(parts.some(n=>!Number.isFinite(n))) return Number.POSITIVE_INFINITY;
         if(parts.length === 2) return parts[0]*60 + parts[1];
         if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
       }
-
-      // "720s"
       if(/^\d+(\.\d+)?s$/.test(s)){
         const n = Number(s.replace("s",""));
         return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
       }
 
-      // "12m 30s" or "12 মিনিট 30 সেকেন্ড"
       let total = 0;
       let matched = false;
 
@@ -1021,13 +948,14 @@
     let resultPayload = null;
     let questions = [];
 
-    // ranking data
     let allRows = [];
     let filteredRows = [];
     let page = 1;
     const PAGE_SIZE = 25;
 
-    // ===== Back =====
+    // ✅ highlight target (resultId)
+    let highlightResultId = resultIdFromUrl || "";
+
     function backToTest(){
       if(!modelTestId) location.href = "Start-model-test.html";
       else location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
@@ -1115,7 +1043,6 @@
       return questions;
     }
 
-    // ===== result helpers =====
     function calcNoAns(r){
       const totalQ = safeNum(r?.totalQuestion, NaN);
       const right = safeNum(r?.right, NaN);
@@ -1128,6 +1055,7 @@
       }
       return "--";
     }
+
     function getPassFail(obtained, total){
       const o = safeNum(obtained, 0);
       const t = safeNum(total, 0);
@@ -1137,7 +1065,6 @@
       return { ok: true, label: "PASS" };
     }
 
-    // ===== Filters + Pagination =====
     function normalizeText(s){ return String(s ?? "").toLowerCase().trim(); }
 
     function applyFilters(){
@@ -1155,6 +1082,9 @@
 
       page = 1;
       renderPage();
+
+      // ✅ filter apply করার পরও highlight ঠিক রাখতে
+      if(highlightResultId) jumpToAndHighlightResult(highlightResultId);
     }
 
     function resetFilters(){
@@ -1167,9 +1097,11 @@
     function nextPage(){
       const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
       if(page < totalPages){ page++; renderPage(); }
+      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
     function prevPage(){
       if(page > 1){ page--; renderPage(); }
+      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
     window.nextPage = nextPage;
     window.prevPage = prevPage;
@@ -1209,8 +1141,11 @@
 
         const globalRank = start + idx + 1;
 
+        // ✅ row id for highlight
+        const rowId = `row-${p.id}`;
+
         return `
-          <tr>
+          <tr id="${esc(rowId)}" data-result-id="${esc(p.id)}">
             <td><span class="badge">${globalRank}</span></td>
             <td style="white-space:nowrap;">${esc(name)}</td>
             <td style="white-space:nowrap;">${esc(addr)}</td>
@@ -1231,6 +1166,43 @@
 
       $("rankBody").innerHTML = html;
       $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
+
+      // ✅ highlight if needed
+      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
+    }
+
+    // ✅ highlight helpers
+    function clearHighlights(){
+      document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
+    }
+    function applyHighlightOnCurrentPage(resId){
+      clearHighlights();
+      const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+      if(tr) tr.classList.add("hl");
+    }
+
+    // ✅ find row position in filteredRows, jump to that page, render, highlight, scroll
+    function jumpToAndHighlightResult(resId){
+      if(!resId) return;
+
+      const idx = filteredRows.findIndex(x => x?.p?.id === resId);
+      if(idx < 0) return;
+
+      const targetPage = Math.floor(idx / PAGE_SIZE) + 1;
+      if(page !== targetPage){
+        page = targetPage;
+        renderPage();
+      }else{
+        applyHighlightOnCurrentPage(resId);
+      }
+
+      // scroll into view
+      setTimeout(()=>{
+        const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+        if(tr){
+          tr.scrollIntoView({ behavior:"smooth", block:"center" });
+        }
+      }, 80);
     }
 
     // ===== Popup (Details) open/close =====
@@ -1412,12 +1384,11 @@
 
         resultPayload = { id: doc.id, ...doc.data() };
 
-        // ✅ যদি অন্য পেজ থেকে শুধু resultId পাঠায়, তাহলে এখান থেকে modelTestId সেট হবে
         if(!modelTestId && resultPayload.modelTestId){
           modelTestId = resultPayload.modelTestId;
         }
 
-        await loadModelTestTitle();   // ✅ header title update
+        await loadModelTestTitle();
         await loadQuestionsOnce();
         renderDetails();
       }catch(e){
@@ -1454,10 +1425,7 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Rank rule:
-        // 1) timeTakenSec ASC
-        // 2) obtained DESC
-        // 3) submittedAt ASC (internal tie)
+        // ✅ Rank 1 will be at the top (best to worst)
         allRows.sort((a,b)=>{
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
@@ -1520,7 +1488,6 @@
       return out;
     }
 
-    // ✅ build questions html (same marking rules)
     function buildPdfQuestionsHtml(qs, startNo){
       const p = resultPayload || {};
       const mcqMap = getMcqMap(p);
@@ -1580,7 +1547,6 @@
       }).join("");
     }
 
-    // ✅ Page 1 of PDF = details-like + questions
     function buildPdfPage1_DetailsLike(firstQs){
       const p = resultPayload || {};
       const r = p.result || {};
@@ -1620,7 +1586,6 @@
       `;
     }
 
-    // ✅ Page 2..n = ONLY questions
     function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
       const qHtml = buildPdfQuestionsHtml(qs, startNo);
       return `
@@ -1635,7 +1600,7 @@
       `;
     }
 
-    // ✅ প্রতি পেজে ২৬টা প্রশ্ন
+    // ✅ per page 26 questions
     const PDF_FIRST_PAGE_Q = 26;
     const PDF_NEXT_PAGE_Q  = 26;
 
@@ -1660,11 +1625,9 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // ✅ Page 1
         const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
         addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
 
-        // ✅ Remaining pages
         const rest = questions.slice(PDF_FIRST_PAGE_Q);
         const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
 
@@ -1686,7 +1649,7 @@
 
     // ===== Boot =====
     async function boot(){
-      // ✅ যদি অন্য পেজ থেকে শুধু resultId পাঠায় (modelTestId না), তাহলে result থেকে modelTestId বের করবো
+      // ✅ if only resultId is provided, infer modelTestId from that result
       if(!modelTestId && resultIdFromUrl){
         try{
           const doc = await db.collection(COL_RESULTS).doc(resultIdFromUrl).get();
@@ -1703,21 +1666,23 @@
         return;
       }
 
-      // live filter
       $("fName").addEventListener("input", ()=> applyFilters());
       $("fZila").addEventListener("input", ()=> applyFilters());
 
       await loadModelTestTitle();
 
-      // ✅ Table load only if modelTestId আছে
       if(modelTestId){
         await loadResultSheet();
         loadQuestionsOnce().catch(()=>{});
       }
 
-      // ✅ open shareable popup if resultId in URL (অন্য পেজ থেকে submit করলে সরাসরি result open)
+      // ✅ when coming from another page: highlight that row in table
       if(resultIdFromUrl){
-        openDetailsByResultId(resultIdFromUrl);
+        highlightResultId = resultIdFromUrl;
+        // wait a bit for table render
+        setTimeout(()=>{
+          jumpToAndHighlightResult(resultIdFromUrl);
+        }, 120);
       }
     }
 
