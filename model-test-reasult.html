@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Model Test Result — eProstutiBD</title>
 
-  <meta name="description" content="eProstutiBD Model Test Result — Summary + Details + PDF" />
+  <meta name="description" content="eProstutiBD Model Test Result — Summary + Details + PDF + Ranking" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#1d4ed8" />
 
@@ -19,7 +19,6 @@
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
       --line: rgba(18, 28, 55, .10);
-      --line2: rgba(18, 28, 55, .08);
       --text:#0f1730; --muted:#5a6685;
 
       --shadow: 0 16px 44px rgba(15,23,48,.12);
@@ -174,11 +173,13 @@
       color: var(--muted);
       font-weight: 1000;
       background: rgba(29,78,216,.06);
+      white-space:nowrap;
     }
     td{
       font-weight: 1000;
       color: var(--text);
       background: rgba(255,255,255,.64);
+      vertical-align:top;
     }
     tr:last-child td{border-bottom:none;}
 
@@ -214,6 +215,11 @@
       color: rgba(29,78,216,1);
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       white-space:nowrap;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
     }
     .btnGhost{
       border:1px solid rgba(18,28,55,.14);
@@ -227,10 +233,7 @@
     }
 
     /* ===== Details Sheet ===== */
-    .detailSheet{
-      margin-top: 12px;
-      display:none;
-    }
+    .detailSheet{ margin-top: 12px; display:none; }
     .detailSheet.show{display:block;}
 
     .paper{
@@ -268,26 +271,9 @@
       padding-bottom: 10px;
       margin-bottom: 10px;
     }
-    .sheetTitle{
-      margin:0;
-      font-size: 15px;
-      font-weight: 1000;
-      line-height:1.35;
-    }
-    .sheetSub{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-size: 12.5px;
-      font-weight: 900;
-      line-height:1.55;
-    }
-    .sheetStats{
-      display:flex;
-      gap: 8px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
+    .sheetTitle{ margin:0; font-size: 15px; font-weight: 1000; line-height:1.35; }
+    .sheetSub{ margin:6px 0 0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
+    .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
 
     .qList{
       display:grid;
@@ -298,20 +284,13 @@
       overflow:hidden;
       background: rgba(255,255,255,.60);
     }
-    @media (max-width: 980px){
-      .qList{grid-template-columns: 1fr;}
-    }
-    .qRow{
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(18,28,55,.08);
-    }
+    @media (max-width: 980px){ .qList{grid-template-columns: 1fr;} }
+    .qRow{ padding: 12px 12px; border-bottom: 1px solid rgba(18,28,55,.08); }
     @media (min-width: 981px){
       .qRow:nth-child(2n){border-left: 1px solid rgba(18,28,55,.08);}
       .qRow:nth-last-child(-n+2){border-bottom:none;}
     }
-    @media (max-width: 980px){
-      .qRow:last-child{border-bottom:none;}
-    }
+    @media (max-width: 980px){ .qRow:last-child{border-bottom:none;} }
     .qHead{display:flex;gap:10px;align-items:flex-start;}
     .qNo{
       flex:0 0 auto;
@@ -361,7 +340,6 @@
     }
     .optKey{font-weight:1000;color: var(--muted);}
     .optTxt{font-weight: 900;color: var(--text);}
-
     .optTxt.ok{color: rgba(22,163,74,1);}
     .optTxt.bad{color: rgba(220,38,38,1);}
 
@@ -416,7 +394,7 @@
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 794px; /* A4 width at 96dpi-ish */
+      width: 794px; /* A4 width */
       background:#fff;
       color:#111;
       padding: 16px;
@@ -504,7 +482,7 @@
   </header>
 
   <div class="container">
-    <!-- SUMMARY -->
+    <!-- SUMMARY (Single Result) -->
     <section class="card" aria-label="Result summary">
       <h2 class="title" id="pageTitle">Result লোড হচ্ছে…</h2>
       <p class="sub" id="pageSub">অনুগ্রহ করে অপেক্ষা করুন</p>
@@ -527,6 +505,34 @@
         <button class="btnGhost btn" type="button" onclick="backToTest()">Back to Test</button>
         <button class="btn" type="button" onclick="openDetails()">Details</button>
         <button class="btn btnDanger" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
+      </div>
+    </section>
+
+    <!-- RESULT SHEET (Ranking Table) — Total Time removed -->
+    <section class="card" style="margin-top:12px;" aria-label="Result sheet">
+      <h2 class="title">Result Sheet (Ranking)</h2>
+      <p class="sub" id="rankSub">সব রেজাল্ট লোড হচ্ছে…</p>
+
+      <div class="tableWrap" style="overflow:auto;">
+        <table style="min-width:1100px;">
+          <thead>
+            <tr>
+              <th style="width:60px;">Rank</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Model test name</th>
+              <th style="width:180px;">Submit date &amp; time</th>
+              <th style="width:90px;">Right</th>
+              <th style="width:90px;">Wrong</th>
+              <th style="width:90px;">No Ans</th>
+              <th style="width:90px;">Mark</th>
+              <th style="width:90px;">Details</th>
+            </tr>
+          </thead>
+          <tbody id="rankBody">
+            <tr><td colspan="10">লোড হচ্ছে…</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -635,6 +641,10 @@
       if(!Number.isFinite(n) || n <= 0) return "--";
       return new Date(n).toLocaleString("bn-BD", { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
     }
+    function safeNum(x, fallback){
+      const n = Number(x);
+      return Number.isFinite(n) ? n : fallback;
+    }
 
     // ===== Firebase =====
     const firebaseConfig = {
@@ -656,6 +666,7 @@
     ];
 
     const modelTestId = getParam("modelTestId");
+    const resultId = getParam("resultId");
 
     // ===== state =====
     let resultPayload = null;
@@ -692,7 +703,6 @@
     }
 
     // ===== question helpers =====
-    function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test"; }
     function getQText(q){
       return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
     }
@@ -717,7 +727,7 @@
 
     // ===== load result =====
     async function loadFromLocal(){
-      if(!modelTestId) return null;
+      if(!modelTestId || resultId) return null; // resultId থাকলে Firestore
       const raw = localStorage.getItem(`epbd_result_${modelTestId}`);
       if(!raw) return null;
       try{
@@ -728,11 +738,20 @@
     }
 
     async function loadLatestFromFirestore(){
+      // specific result by id
+      if(resultId){
+        const doc = await db.collection(COL_RESULTS).doc(resultId).get();
+        if(!doc.exists) return null;
+        return { id: doc.id, ...doc.data() };
+      }
+
+      // latest
       const snap = await db.collection(COL_RESULTS)
         .where("modelTestId","==", modelTestId)
         .orderBy("submittedAt","desc")
         .limit(1)
         .get();
+
       if(snap.empty) return null;
       const d = snap.docs[0];
       return { id:d.id, ...d.data() };
@@ -912,10 +931,6 @@
         optWrap.className = "opts";
 
         opts.slice(0,4).forEach((op, oi)=>{
-          // rules:
-          // - correct option always green ✓
-          // - if user chose wrong -> chosen red ✗
-          // - if user chose correct -> chosen green ✓
           const isCorrect = (hasCorrect && oi === correctIdx);
           const isChosen = (hasChosen && oi === chosenIdx);
 
@@ -923,18 +938,9 @@
           let iconTxt = "";
           let txtCls = "";
 
-          if(isCorrect){
-            iconCls = "ok";
-            iconTxt = "✓";
-            txtCls = "ok";
-          }
-          if(isChosen && !isCorrect){
-            iconCls = "bad";
-            iconTxt = "✗";
-            txtCls = "bad";
-          }
+          if(isCorrect){ iconCls = "ok"; iconTxt = "✓"; txtCls = "ok"; }
+          if(isChosen && !isCorrect){ iconCls = "bad"; iconTxt = "✗"; txtCls = "bad"; }
 
-          // If chosen==correct, keep green ✓ (already set)
           const div = document.createElement("div");
           div.className = "optLine";
           div.innerHTML = `
@@ -962,6 +968,90 @@
       }catch(e){
         console.error(e);
         $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
+      }
+    }
+
+    // ===== Result Sheet (Ranking) — Total Time removed =====
+    function calcNoAns(r){
+      const totalQ = safeNum(r?.totalQuestion, NaN);
+      const right = safeNum(r?.right, NaN);
+      const wrong = safeNum(r?.wrong, NaN);
+
+      if(Number.isFinite(safeNum(r?.noAnswer, NaN))) return safeNum(r?.noAnswer, 0);
+      if(Number.isFinite(totalQ) && Number.isFinite(right) && Number.isFinite(wrong)){
+        const na = totalQ - (right + wrong);
+        return na >= 0 ? na : 0;
+      }
+      return "--";
+    }
+
+    async function loadResultSheet(){
+      try{
+        $("rankSub").textContent = "সব রেজাল্ট লোড হচ্ছে…";
+
+        const snap = await db.collection(COL_RESULTS)
+          .where("modelTestId","==", modelTestId)
+          .get();
+
+        if(snap.empty){
+          $("rankBody").innerHTML = `<tr><td colspan="10">এই modelTestId এর কোনো result নেই</td></tr>`;
+          $("rankSub").textContent = "কোনো রেজাল্ট পাওয়া যায়নি";
+          return;
+        }
+
+        let rows = snap.docs.map(d => {
+          const p = { id: d.id, ...d.data() };
+          const r = p.result || {};
+          const obtained = safeNum(r.obtainedMark, 0);
+          const submittedAt = safeNum(p.submittedAt, Number.POSITIVE_INFINITY);
+          return { p, r, obtained, submittedAt };
+        });
+
+        // Sort: Mark desc, SubmittedAt asc (tie-break)
+        rows.sort((a,b)=>{
+          if(b.obtained !== a.obtained) return b.obtained - a.obtained;
+          return a.submittedAt - b.submittedAt;
+        });
+
+        const html = rows.map((x, idx)=>{
+          const p = x.p, r = x.r;
+
+          const name = p.studentName || "--";
+          const addr = p.studentDistrict || p.studentAddress || p.address || "--";
+          const test = p.modelTestName || "--";
+          const submitted = fmtTime(p.submittedAt);
+
+          const right = (r.right ?? "--");
+          const wrong = (r.wrong ?? "--");
+          const noAns = calcNoAns(r);
+
+          const mark = (r.obtainedMark ?? x.obtained ?? "--");
+
+          const detailsUrl =
+            `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}&resultId=${encodeURIComponent(p.id)}`;
+
+          return `
+            <tr>
+              <td><span class="badge">${idx+1}</span></td>
+              <td style="white-space:nowrap;">${esc(name)}</td>
+              <td style="white-space:nowrap;">${esc(addr)}</td>
+              <td style="white-space:nowrap;">${esc(test)}</td>
+              <td style="white-space:nowrap;">${esc(submitted)}</td>
+              <td>${esc(right)}</td>
+              <td>${esc(wrong)}</td>
+              <td>${esc(noAns)}</td>
+              <td><span class="badge warn">${esc(mark)}</span></td>
+              <td><a class="btn" href="${detailsUrl}" style="padding:6px 10px; font-size:12px;">Details</a></td>
+            </tr>
+          `;
+        }).join("");
+
+        $("rankBody").innerHTML = html;
+        $("rankSub").textContent = `মোট রেজাল্ট: ${rows.length} • Rank: Mark ↓, Submit ↑`;
+      }catch(e){
+        console.error(e);
+        $("rankBody").innerHTML = `<tr><td colspan="10">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
+        $("rankSub").textContent = "Error";
       }
     }
 
@@ -1024,7 +1114,6 @@
       const wrMap = getWrittenMap(p);
       const letters = ["A","B","C","D"];
 
-      // per page questions count (PDF)
       const pages = chunk(questions, 22);
 
       return pages.map((pageQs, pageIndex)=>{
@@ -1055,18 +1144,11 @@
             const isCorrect = (hasCorrect && oi === correctIdx);
             const isChosen = (hasChosen && oi === chosenIdx);
 
-            // mark text
             let cls = "dim";
             let prefix = "";
 
-            if(isCorrect){
-              cls = "ok";
-              prefix = "✓ ";
-            }
-            if(isChosen && !isCorrect){
-              cls = "bad";
-              prefix = "✗ ";
-            }
+            if(isCorrect){ cls = "ok"; prefix = "✓ "; }
+            if(isChosen && !isCorrect){ cls = "bad"; prefix = "✗ "; }
 
             return `<div class="${cls}">${prefix}${letters[oi]}. ${esc(op || "")}</div>`;
           }).join("");
@@ -1143,6 +1225,8 @@
         $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
         $("pageSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
         $("summaryBody").innerHTML = `<tr><td>Error</td><td>Invalid URL</td></tr>`;
+        $("rankBody").innerHTML = `<tr><td colspan="10">Invalid URL</td></tr>`;
+        $("rankSub").textContent = "Error";
         return;
       }
 
@@ -1163,16 +1247,18 @@
         $("pageTitle").textContent = "Result পাওয়া যায়নি";
         $("pageSub").textContent = "এই modelTestId এর কোনো result নেই";
         $("summaryBody").innerHTML = `<tr><td>Error</td><td>No result found</td></tr>`;
-        return;
+      }else{
+        resultPayload = p;
+        renderSummary();
+
+        // preload questions (fast details + pdf)
+        try{
+          questions = await loadQuestions();
+        }catch(e){}
       }
 
-      resultPayload = p;
-      renderSummary();
-
-      // preload questions (fast details + pdf)
-      try{
-        questions = await loadQuestions();
-      }catch(e){}
+      // load ranking table (all results)
+      loadResultSheet();
     }
 
     boot();
