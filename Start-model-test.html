@@ -748,6 +748,24 @@
       padding: 14px;
       min-height: 1040px;
       background:#fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .pdfWatermark{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      opacity: .12;
+      transform: rotate(-28deg);
+      font-size: 72px;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      color: #000;
+      text-transform: none;
+      user-select:none;
     }
     .pdfHeaderLine1{text-align:center;font-weight:1000;font-size:15px;margin: 4px 0 2px;}
     .pdfHeaderLine2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 12px;}
@@ -1628,6 +1646,7 @@
 
         const pageHtml = `
           <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
             <div class="pdfHeaderLine1">${esc(line1)}</div>
             <div class="pdfHeaderLine2">${esc(line2)}</div>
             <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
@@ -1683,6 +1702,7 @@
 
         const pageHtml = `
           <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
             <div class="pdfHeaderLine1">${esc(line1)}</div>
             <div class="pdfHeaderLine2">${esc(line2)}</div>
             <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
