@@ -124,7 +124,9 @@
       overflow:hidden;
     }
     .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
-    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; display:none; }
+
+    /* ✅ sub আর hidden না (আগে display:none ছিল) */
+    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; }
 
     .tableWrap{
       margin-top: 12px;
@@ -154,6 +156,14 @@
       background: rgba(255,255,255,.64);
     }
     tr:last-child td{border-bottom:none;}
+
+    /* ✅ Zebra row: এক লাইন সবুজ, এক লাইন সাদা */
+    #rankBody tr:nth-child(odd) td{
+      background: rgba(22,163,74,.06) !important;
+    }
+    #rankBody tr:nth-child(even) td{
+      background: rgba(255,255,255,.70) !important;
+    }
 
     .badge{
       display:inline-flex;align-items:center;gap:8px;
@@ -680,6 +690,22 @@
     .footLinks{display:flex;flex-direction:column;gap: 8px;}
     .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
+
+    /* ✅ socials */
+    .socials{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .soc{
+      width:36px;height:36px;border-radius:999px;
+      display:grid;place-items:center;
+      text-decoration:none;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+      font-weight:1000;
+      line-height:1;
+      user-select:none;
+    }
+    .soc:hover{background: rgba(255,255,255,.18);}
+
     .copy{
       max-width: 1200px;
       margin:0 auto;
@@ -744,8 +770,12 @@
 
   <div class="container">
     <section class="card" aria-label="Result sheet">
-      <h2 class="title" id="pageTitle">Result Sheet (Ranking)</h2>
-      <p class="sub" id="rankSub">—</p>
+
+      <!-- ✅ Model Test Name উপরে -->
+      <h2 class="title" id="modelTestTitle">Model Test</h2>
+
+      <!-- ✅ Result Sheet (Ranking) নিচে -->
+      <p class="sub" id="pageTitle">Result Sheet (Ranking)</p>
 
       <!-- ✅ Filters -->
       <div class="filterBar" aria-label="Filters">
@@ -865,9 +895,15 @@
         </div>
       </div>
 
+      <!-- ✅ Support টেক্সট বাদ, Social আইকন -->
       <div>
-        <div class="footTitle">Support</div>
-        <div class="footText">প্রশ্ন থাকলে Help সেকশনে যান বা Contact করুন।</div>
+        <div class="footTitle">Follow Us</div>
+        <div class="socials">
+          <!-- এখানে আপনার আসল লিংক বসাবেন -->
+          <a class="soc" href="#" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+          <a class="soc" href="#" aria-label="LinkedIn" target="_blank" rel="noopener">in</a>
+          <a class="soc" href="#" aria-label="YouTube" target="_blank" rel="noopener">▶</a>
+        </div>
       </div>
     </div>
 
@@ -948,7 +984,7 @@
 
     function setUrlResultId(resId){
       const u = new URL(location.href);
-      u.searchParams.set("modelTestId", modelTestId);
+      if(modelTestId) u.searchParams.set("modelTestId", modelTestId);
       u.searchParams.set("resultId", resId);
       history.replaceState({}, "", u.toString());
     }
@@ -977,7 +1013,8 @@
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
-    const modelTestId = getParam("modelTestId");
+    // ✅ URL params
+    let modelTestId = getParam("modelTestId");
     const resultIdFromUrl = getParam("resultId");
 
     // ===== state =====
@@ -1374,6 +1411,13 @@
         }
 
         resultPayload = { id: doc.id, ...doc.data() };
+
+        // ✅ যদি অন্য পেজ থেকে শুধু resultId পাঠায়, তাহলে এখান থেকে modelTestId সেট হবে
+        if(!modelTestId && resultPayload.modelTestId){
+          modelTestId = resultPayload.modelTestId;
+        }
+
+        await loadModelTestTitle();   // ✅ header title update
         await loadQuestionsOnce();
         renderDetails();
       }catch(e){
@@ -1410,10 +1454,10 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Rank rule (as you asked):
-        // 1) timeTakenSec ASC (shorter time = better rank)
-        // 2) if tie: obtained DESC
-        // 3) if still tie: submittedAt ASC (internal tiebreak only, not "based on submit")
+        // ✅ Rank rule:
+        // 1) timeTakenSec ASC
+        // 2) obtained DESC
+        // 3) submittedAt ASC (internal tie)
         allRows.sort((a,b)=>{
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
@@ -1426,6 +1470,26 @@
       }catch(e){
         console.error(e);
         $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
+      }
+    }
+
+    // ===== ✅ Model Test Title loader =====
+    async function loadModelTestTitle(){
+      try{
+        if(!modelTestId){
+          $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
+          return;
+        }
+        const doc = await db.collection(COL_MODELTESTS).doc(modelTestId).get();
+        if(doc.exists){
+          const data = doc.data() || {};
+          const name = data.modelTestName || data.title || data.name || "Model Test";
+          $("modelTestTitle").textContent = name;
+        }else{
+          $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
+        }
+      }catch(e){
+        $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
       }
     }
 
@@ -1516,7 +1580,7 @@
       }).join("");
     }
 
-    // ✅ Page 1 of PDF = looks like DETAILS page (NOT a separate "result page")
+    // ✅ Page 1 of PDF = details-like + questions
     function buildPdfPage1_DetailsLike(firstQs){
       const p = resultPayload || {};
       const r = p.result || {};
@@ -1556,7 +1620,7 @@
       `;
     }
 
-    // ✅ Page 2..n = ONLY questions (no header)
+    // ✅ Page 2..n = ONLY questions
     function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
       const qHtml = buildPdfQuestionsHtml(qs, startNo);
       return `
@@ -1571,9 +1635,9 @@
       `;
     }
 
-    // ✅ how many questions on first PDF page (with header)
-    const PDF_FIRST_PAGE_Q = 28;   // header eats space
-    const PDF_NEXT_PAGE_Q  = 44;   // no header, more space
+    // ✅ প্রতি পেজে ২৬টা প্রশ্ন
+    const PDF_FIRST_PAGE_Q = 26;
+    const PDF_NEXT_PAGE_Q  = 26;
 
     async function downloadResultPDF(){
       try{
@@ -1596,11 +1660,11 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // ✅ Page 1 = details-like + first chunk of questions
+        // ✅ Page 1
         const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
         addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
 
-        // ✅ Remaining pages = questions only (no header)
+        // ✅ Remaining pages
         const rest = questions.slice(PDF_FIRST_PAGE_Q);
         const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
 
@@ -1622,9 +1686,20 @@
 
     // ===== Boot =====
     async function boot(){
-      if(!modelTestId){
-        $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX</td></tr>`;
+      // ✅ যদি অন্য পেজ থেকে শুধু resultId পাঠায় (modelTestId না), তাহলে result থেকে modelTestId বের করবো
+      if(!modelTestId && resultIdFromUrl){
+        try{
+          const doc = await db.collection(COL_RESULTS).doc(resultIdFromUrl).get();
+          if(doc.exists){
+            const p = { id: doc.id, ...doc.data() };
+            if(p.modelTestId) modelTestId = p.modelTestId;
+          }
+        }catch(e){}
+      }
+
+      if(!modelTestId && !resultIdFromUrl){
+        $("modelTestTitle").textContent = "modelTestId পাওয়া যায়নি";
+        $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX অথবা result-sheet.html?resultId=YYYY</td></tr>`;
         return;
       }
 
@@ -1632,10 +1707,15 @@
       $("fName").addEventListener("input", ()=> applyFilters());
       $("fZila").addEventListener("input", ()=> applyFilters());
 
-      await loadResultSheet();
-      loadQuestionsOnce().catch(()=>{});
+      await loadModelTestTitle();
 
-      // open shareable popup if resultId in URL
+      // ✅ Table load only if modelTestId আছে
+      if(modelTestId){
+        await loadResultSheet();
+        loadQuestionsOnce().catch(()=>{});
+      }
+
+      // ✅ open shareable popup if resultId in URL (অন্য পেজ থেকে submit করলে সরাসরি result open)
       if(resultIdFromUrl){
         openDetailsByResultId(resultIdFromUrl);
       }
