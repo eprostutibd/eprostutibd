@@ -1241,8 +1241,8 @@
     // ===== timer =====
     let endAtMs = 0;
     let timerHandle = null;
-    let testStartAtMs = 0;
-    let totalAllowedSeconds = 0;
+    let testStartAtMs = 0;        // ✅ when timer started
+    let totalAllowedSeconds = 0;  // ✅ test duration in seconds
 
     function formatMMSS(sec){
       sec = Math.max(0, Math.floor(sec));
@@ -1254,8 +1254,8 @@
       const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
       if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
 
-      totalAllowedSeconds = totalSeconds;       // ✅ NEW
-      testStartAtMs = Date.now();               // ✅ NEW
+      totalAllowedSeconds = totalSeconds; // ✅ NEW
+      testStartAtMs = Date.now();           // ✅ NEW
       endAtMs = testStartAtMs + totalSeconds * 1000;
 
       const tick = ()=>{
@@ -1552,26 +1552,20 @@
 
       const summary = computeResult();
 
-      // ✅ time taken calculation
+      // ✅ Visitor took how long to submit (MM:SS)
       const nowMs = Date.now();
-      let timeTakenSeconds = 0;
-
-      if (totalAllowedSeconds > 0 && endAtMs > 0) {
-        const remainingSeconds = Math.max(0, Math.floor((endAtMs - nowMs) / 1000));
-        timeTakenSeconds = Math.max(0, totalAllowedSeconds - remainingSeconds);
-      } else if (testStartAtMs > 0) {
-        timeTakenSeconds = Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000));
-      }
-
-      const timeTakenMinutes = Math.round((timeTakenSeconds / 60) * 100) / 100; // 2 decimal
+      const timeTakenSeconds = Math.min(
+        totalAllowedSeconds || 999999,
+        Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
+      );
+      const timeTakenText = formatMMSS(timeTakenSeconds); // e.g. "30:31"
 
       // ✅ Firestore-safe payload (NO nested arrays!)
       const payload = {
         modelTestId,
         modelTestName: getTitleField(mtDoc),
         submittedAt: Date.now(),
-        timeTakenSeconds,
-        timeTakenMinutes,
+        timeTakenText, // ✅ Visitor time (MM:SS)
         isAuto: !!isAuto,
         studentName,
         studentDistrict,
