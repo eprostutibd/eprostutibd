@@ -32,10 +32,10 @@
       --footBottom:#07152e;
 
       /* ✅ Sidebars */
-      --adW: 260px;       /* bigger */
+      --adW: 260px;
       --adGap: 18px;
 
-      /* ✅ Table/text compact */
+      /* ✅ Table compact */
       --tblFont: 12px;
       --tblPadY: 9px;
       --tblPadX: 10px;
@@ -56,21 +56,21 @@
     a{color:inherit}
     .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
-    /* ✅ Fixed Side Ads (Never scroll inside; never cover footer via JS translateY) */
+    /* ✅ Fixed Side Ads */
     .adSide{
       position: fixed;
       top: 72px;
       bottom: 14px;
       width: var(--adW);
       z-index: 40;
-      display: block;                 /* ✅ always ON */
+      display: block;
       border: 1px solid rgba(18,28,55,.12);
       border-radius: 18px;
       background: rgba(255,255,255,.78);
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
-      overflow: hidden;              /* ✅ no scroll */
+      overflow: hidden;
       padding: 10px;
-      transform: translateY(0);      /* adjusted by JS near footer */
+      transform: translateY(0);
       will-change: transform;
     }
     .adLeft{ left: 12px; }
@@ -95,8 +95,6 @@
       line-height: 1.5;
       user-select:none;
     }
-
-    /* ✅ Ad slots: keep inside box, never overflow */
     #adLeftSlot, #adRightSlot{
       width: 100%;
       height: 100%;
@@ -105,23 +103,20 @@
       justify-content:center;
       text-align:center;
     }
-    #adLeftSlot > *, #adRightSlot > *{
-      max-width: 100%;
-      max-height: 100%;
-    }
+    #adLeftSlot > *, #adRightSlot > *{ max-width: 100%; max-height: 100%; }
 
-    /* ✅ Hide sidebars on smaller screens (avoid overlap) */
+    /* ✅ Hide sidebars on smaller screens */
     @media (max-width: 1320px){
       .adSide{ display:none; }
       .container{ padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
     }
 
     .container{
-      max-width: 1680px; /* ✅ bigger body so more columns fit */
+      max-width: 1780px; /* ✅ more space for full columns on desktop */
       margin: 0 auto;
       --pad: clamp(10px, 2vw, 24px);
-      padding-left: calc(var(--pad) + var(--adW) + var(--adGap));  /* ✅ always reserve space */
-      padding-right: calc(var(--pad) + var(--adW) + var(--adGap)); /* ✅ always reserve space */
+      padding-left: calc(var(--pad) + var(--adW) + var(--adGap));
+      padding-right: calc(var(--pad) + var(--adW) + var(--adGap));
       padding-top: 12px;
       padding-bottom: 18px;
     }
@@ -140,7 +135,7 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: 1680px;
+      max-width: 1780px;
       margin:0 auto;
       padding: 10px clamp(8px, 2vw, 20px);
       display:flex;
@@ -181,6 +176,8 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 18px 38px rgba(0,0,0,.35);
+      max-height: calc(100vh - 84px);
+      overflow:auto;
     }
     .mobileMenu a{
       display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
@@ -201,62 +198,71 @@
     .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
     .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; text-align:center; }
 
+    /* ✅ Desktop: show full columns without horizontal scroll */
     .tableWrap{
       margin-top: 12px;
       border:1px solid rgba(18,28,55,.10);
       border-radius: 16px;
-      overflow: hidden; /* ✅ try to show full table without inner scroll */
+      overflow: hidden;             /* no inner horizontal by default */
       background: rgba(255,255,255,.75);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
 
-    /* ✅ Table: compact + wrap text so all details visible */
     table{
       width:100%;
       border-collapse: collapse;
-      table-layout: fixed; /* ✅ helps fit many columns */
+      table-layout: fixed;
     }
     th, td{
       padding: var(--tblPadY) var(--tblPadX);
       border-bottom: 1px solid rgba(18,28,55,.08);
       font-size: var(--tblFont);
       vertical-align: top;
-      word-wrap: break-word;
-      overflow-wrap: anywhere;
+      overflow-wrap:anywhere;
+      word-break: break-word;
     }
     th{
       text-align:left;
       color: var(--muted);
       font-weight: 1000;
       background: rgba(29,78,216,.06);
-      white-space: normal; /* ✅ allow header wrap */
+      white-space: normal;
     }
     td{
       font-weight: 1000;
       color: var(--text);
       background: rgba(255,255,255,.64);
-      white-space: normal; /* ✅ allow content wrap */
+      white-space: normal;
     }
     tr:last-child td{border-bottom:none;}
 
-    /* ✅ Column widths (fit more data) */
+    /* ✅ Column widths (keep Details visible) */
     th:nth-child(1), td:nth-child(1){width:56px;}
-    th:nth-child(2), td:nth-child(2){width:160px;}
-    th:nth-child(3), td:nth-child(3){width:190px;}
-    th:nth-child(4), td:nth-child(4){width:150px;}
+    th:nth-child(2), td:nth-child(2){width:150px;}
+    th:nth-child(3), td:nth-child(3){width:170px;}
+    th:nth-child(4), td:nth-child(4){width:120px;} /* ✅ date only */
     th:nth-child(5), td:nth-child(5),
     th:nth-child(6), td:nth-child(6),
-    th:nth-child(7), td:nth-child(7){width:70px;}
-    th:nth-child(8), td:nth-child(8){width:80px;}
-    th:nth-child(9), td:nth-child(9){width:110px;}
-    th:nth-child(10), td:nth-child(10){width:90px;}
-    th:nth-child(11), td:nth-child(11){width:86px;}
+    th:nth-child(7), td:nth-child(7){width:66px;}
+    th:nth-child(8), td:nth-child(8){width:76px;}
+    th:nth-child(9), td:nth-child(9){width:98px;}
+    th:nth-child(10), td:nth-child(10){width:86px;}
+    th:nth-child(11), td:nth-child(11){width:110px;} /* ✅ Details always visible */
+
+    /* ✅ Keep the Details button always readable */
+    td:nth-child(11){text-align:center;}
+    .detailsBtn{
+      padding: 7px 10px !important;
+      font-size: 12px !important;
+      min-width: 86px;
+      justify-content:center;
+    }
 
     /* ✅ Zebra rows */
     #rankBody tr:nth-child(odd) td{ background: rgba(22,163,74,.06) !important; }
     #rankBody tr:nth-child(even) td{ background: rgba(255,255,255,.70) !important; }
 
-    /* ✅ Highlight selected row (from resultId) */
+    /* ✅ Highlight row */
     #rankBody tr.hl td{
       background: rgba(245,158,11,.22) !important;
       box-shadow: inset 0 0 0 2px rgba(245,158,11,.55);
@@ -272,7 +278,7 @@
       display:inline-flex;align-items:center;gap:8px;
       padding: 5px 9px;
       border-radius: 999px;
-      font-size: 11px;             /* ✅ smaller */
+      font-size: 11px;
       font-weight:1000;
       border:1px solid rgba(18,28,55,.12);
       background: rgba(255,255,255,.78);
@@ -364,6 +370,17 @@
       font-size:12px;
     }
 
+    /* ✅ Mobile: allow horizontal scroll for FULL data (body stays scrollable) */
+    @media (max-width: 920px){
+      .tableWrap{
+        overflow:auto;                /* ✅ horizontal + vertical if needed */
+        -webkit-overflow-scrolling:touch;
+      }
+      table{
+        min-width: 980px;            /* ✅ so all columns exist */
+      }
+    }
+
     /* ===== Popup ===== */
     .modal{ display:none; position:fixed; inset:0; z-index:99999; }
     .modal.show{display:block;}
@@ -376,7 +393,7 @@
     .modalDialog{
       position:relative;
       margin: 56px auto 24px;
-      width: min(1280px, calc(100vw - 18px)); /* ✅ wider modal so full details show */
+      width: min(1280px, calc(100vw - 18px));
       max-height: calc(100vh - 90px);
       overflow:auto;
       border-radius: 18px;
@@ -594,7 +611,6 @@
       color:#111;
       white-space:nowrap;
     }
-
     .pdfMark{
       position:absolute;
       top: 16px;
@@ -621,7 +637,6 @@
     }
     .pdfMark .pf.pass{ color: #16a34a; }
     .pdfMark .pf.fail{ color: #dc2626; }
-
     .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 52px 0 2px;}
     .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
     .pdfStatsRow{
@@ -644,12 +659,7 @@
     .pdfPill.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.10); color:#0b3d1f;}
     .pdfPill.bad{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.10); color:#5c0b0b;}
     .pdfPill.warn{border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.14); color:#4a2d00;}
-
-    .pdfQuestions{
-      column-count: 2;
-      column-gap: 16px;
-      margin-top: 10px;
-    }
+    .pdfQuestions{ column-count: 2; column-gap: 16px; margin-top: 10px; }
     .pdfQ{
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
@@ -661,18 +671,12 @@
       border-bottom: 1px dashed rgba(0,0,0,.18);
     }
     .pdfQ .qline{font-weight:1000;margin-bottom: 4px;}
-    .pdfOpt{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px 10px;
-      font-size:11.6px;
-    }
+    .pdfOpt{ display:grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; font-size:11.6px; }
     .pdfOpt .ok{color: #16a34a; font-weight:1000;}
     .pdfOpt .bad{color: #dc2626; font-weight:1000;}
     .pdfOpt .warn{color: #f59e0b; font-weight:1000;}
     .pdfOpt .dim{color: #111;}
     .pdfNoAns{ margin-top: 4px; font-weight: 1000; color:#dc2626; font-size: 11.6px; }
-
     .pdfFooter{
       position:absolute;
       left: 14px;
@@ -689,7 +693,7 @@
     /* ===== Footer ===== */
     footer{
       position: relative;
-      z-index: 10; /* ✅ below modal, below ads (ads=40), but clean stacking */
+      z-index: 10;
       margin-top: 14px;
       background:
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
@@ -699,7 +703,7 @@
       color: rgba(255,255,255,.86);
     }
     .footGrid{
-      max-width: 1680px;
+      max-width: 1780px;
       margin:0 auto;
       padding: 18px clamp(8px, 2vw, 20px) 10px;
       display:grid;
@@ -713,7 +717,6 @@
     .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
-    /* ✅ Beautiful social icons */
     .socials{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
     .soc{
       width:40px;height:40px;border-radius:999px;
@@ -738,7 +741,7 @@
     }
 
     .copy{
-      max-width: 1680px;
+      max-width: 1780px;
       margin:0 auto;
       padding: 12px clamp(8px, 2vw, 20px) 14px;
       border-top: 1px solid rgba(255,255,255,.12);
@@ -757,10 +760,9 @@
 <body>
   <h1 class="srOnly">Model Test Result Sheet</h1>
 
-  <!-- ✅ Fixed Side Ads (Always ON) -->
+  <!-- ✅ Fixed Side Ads -->
   <aside class="adSide adLeft" id="adLeft" aria-label="Left Ad">
     <div class="adBox">
-      <!-- ✅ Paste Adsterra/AdSense code inside this slot -->
       <div id="adLeftSlot">
         LEFT AD SLOT<br/> (Fixed • No Scroll)
       </div>
@@ -769,7 +771,6 @@
 
   <aside class="adSide adRight" id="adRight" aria-label="Right Ad">
     <div class="adBox">
-      <!-- ✅ Paste Adsterra/AdSense code inside this slot -->
       <div id="adRightSlot">
         RIGHT AD SLOT<br/> (Fixed • No Scroll)
       </div>
@@ -849,7 +850,7 @@
               <th>Rank</th>
               <th>Name</th>
               <th>Address</th>
-              <th>Submit date &amp; time</th>
+              <th>Submit date</th><!-- ✅ time removed -->
               <th>Right</th>
               <th>Wrong</th>
               <th>No Ans</th>
@@ -865,7 +866,6 @@
         </table>
       </div>
 
-      <!-- ✅ pager (25 per page) -->
       <div class="pager">
         <button class="btn btnGhost" type="button" onclick="prevPage()">Prev</button>
         <span id="pageInfo">Page 1</span>
@@ -911,7 +911,6 @@
     </div>
   </div>
 
-  <!-- hidden offscreen for PDF rendering -->
   <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
   <footer id="pageFooter">
@@ -944,19 +943,16 @@
       <div>
         <div class="footTitle">Follow Us</div>
         <div class="socials">
-          <!-- Facebook -->
           <a class="soc" href="#" aria-label="Facebook" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.25 10.44 22v-7.03H7.9v-2.9h2.54V9.86c0-2.52 1.5-3.92 3.8-3.92 1.1 0 2.24.2 2.24.2v2.48h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22C18.34 21.25 22 17.08 22 12.06z"/>
             </svg>
           </a>
-          <!-- LinkedIn -->
           <a class="soc" href="#" aria-label="LinkedIn" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 23.5h4V7.98h-4V23.5zM8.5 7.98h3.84v2.12h.05c.53-1 1.83-2.12 3.77-2.12 4.03 0 4.77 2.65 4.77 6.09v9.43h-4v-8.36c0-1.99-.04-4.56-2.78-4.56-2.78 0-3.2 2.17-3.2 4.42v8.5h-4V7.98z"/>
             </svg>
           </a>
-          <!-- YouTube -->
           <a class="soc" href="#" aria-label="YouTube" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M23.5 6.2s-.23-1.63-.94-2.35c-.9-.95-1.9-.96-2.36-1.02C16.9 2.5 12 2.5 12 2.5h-.01s-4.9 0-8.2.33c-.46.06-1.46.07-2.36 1.02C.73 4.57.5 6.2.5 6.2S0 8.1 0 10v1.99c0 1.9.5 3.8.5 3.8s.23 1.63.93 2.35c.9.95 2.08.92 2.61 1.02 1.89.18 8 .33 8 .33s4.9-.01 8.2-.34c.46-.06 1.46-.07 2.36-1.02.71-.72.94-2.35.94-2.35S24 13.9 24 12V10c0-1.9-.5-3.8-.5-3.8zM9.5 14.98V7.52L15.8 11.25 9.5 14.98z"/>
@@ -986,10 +982,9 @@
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
-
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-    // ✅ Footer-safe fixed ads: when footer comes into view, move ads up (so they stay above footer)
+    // ✅ Footer-safe fixed ads
     function lockAdsAboveFooter(){
       const footer = document.getElementById("pageFooter");
       const ads = [document.getElementById("adLeft"), document.getElementById("adRight")].filter(Boolean);
@@ -998,8 +993,6 @@
       const vh = window.innerHeight || 0;
       const bottomGap = 14;
       const footerTop = footer.getBoundingClientRect().top;
-
-      // overlap = how much footer is entering the ad visible area
       const overlap = (vh - bottomGap) - footerTop;
       const shift = overlap > 0 ? overlap : 0;
 
@@ -1007,12 +1000,20 @@
     }
     window.addEventListener("scroll", lockAdsAboveFooter, { passive:true });
     window.addEventListener("resize", lockAdsAboveFooter);
-    setTimeout(lockAdsAboveFooter, 50);
+    setTimeout(lockAdsAboveFooter, 60);
 
     // ===== utils =====
     function esc(str){
       return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
+
+    // ✅ Date only (no time)
+    function fmtDateOnly(ms){
+      const n = Number(ms);
+      if(!Number.isFinite(n) || n <= 0) return "--";
+      return new Date(n).toLocaleDateString("bn-BD", { year:"numeric", month:"short", day:"2-digit" });
+    }
+
     function fmtTime(ms){
       const n = Number(ms);
       if(!Number.isFinite(n) || n <= 0) return "--";
@@ -1023,7 +1024,6 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
-    // ✅ parse timeTakenText to seconds (used only for tie-break now)
     function parseTimeTakenTextToSeconds(t){
       const s = String(t ?? "").trim().toLowerCase();
       if(!s) return Number.POSITIVE_INFINITY;
@@ -1086,11 +1086,9 @@
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
-    // ✅ URL params
     let modelTestId = getParam("modelTestId");
     const resultIdFromUrl = getParam("resultId");
 
-    // ===== state =====
     let resultPayload = null;
     let questions = [];
 
@@ -1099,7 +1097,6 @@
     let page = 1;
     const PAGE_SIZE = 25;
 
-    // ✅ highlight target (resultId)
     let highlightResultId = resultIdFromUrl || "";
 
     function backToTest(){
@@ -1108,7 +1105,6 @@
     }
     window.backToTest = backToTest;
 
-    // ===== answers map =====
     function getMcqMap(p){
       const o = p?.answers?.mcq;
       if(o && typeof o === "object" && !Array.isArray(o)) return o;
@@ -1130,7 +1126,6 @@
       return {};
     }
 
-    // ===== question helpers =====
     function getQText(q){
       return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
     }
@@ -1277,7 +1272,7 @@
         const p = x.p, r = x.r;
         const name = p.studentName || "--";
         const addr = p.studentDistrict || p.studentAddress || p.address || "--";
-        const submitted = fmtTime(p.submittedAt);
+        const submittedDateOnly = fmtDateOnly(p.submittedAt); // ✅ date only
 
         const right = (r.right ?? "--");
         const wrong = (r.wrong ?? "--");
@@ -1298,9 +1293,9 @@
         return `
           <tr data-result-id="${esc(p.id)}">
             <td><span class="badge">${globalRank}</span></td>
-            <td>${esc(name)}</td>
+            < <td>${esc(name)}</td>
             <td>${esc(addr)}</td>
-            <td>${esc(submitted)}</td>
+            <td>${esc(submittedDateOnly)}</td>
             <td>${esc(right)}</td>
             <td>${esc(wrong)}</td>
             <td>${renderNoAnsBadge(noAns)}</td>
@@ -1308,8 +1303,8 @@
             <td><span class="badge">${esc(timeTakenText)}</span></td>
             <td>${pfBadge}</td>
             <td>
-              <button class="btn" style="padding:6px 10px;font-size:12px;"
-                type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
+              <button class="btn detailsBtn" type="button"
+                onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
             </td>
           </tr>
         `;
@@ -1321,7 +1316,6 @@
       if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
 
-    // ✅ highlight helpers
     function clearHighlights(){
       document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
     }
@@ -1351,7 +1345,6 @@
       }, 80);
     }
 
-    // ===== Popup (Details) open/close =====
     function openDetailsPopup(){
       $("detailsModal").classList.add("show");
       $("detailsModal").setAttribute("aria-hidden","false");
@@ -1520,7 +1513,7 @@
         $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
         openDetailsPopup();
 
-        const doc = await db.collection(COL_RESULTS).doc(resId).get();
+        const doc = await db.collection("model_test_result").doc(resId).get();
         if(!doc.exists){
           $("detailContent").innerHTML = `<div class="err">Result পাওয়া যায়নি।</div>`;
           return;
@@ -1542,10 +1535,9 @@
     }
     window.openDetailsByResultId = openDetailsByResultId;
 
-    // ===== Load ranking table =====
     async function loadResultSheet(){
       try{
-        const snap = await db.collection(COL_RESULTS)
+        const snap = await db.collection("model_test_result")
           .where("modelTestId","==", modelTestId)
           .get();
 
@@ -1569,10 +1561,6 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Ranking rule:
-        // 1) obtained DESC
-        // 2) tie => timeTakenSec ASC
-        // 3) still tie => submittedAt ASC
         allRows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
@@ -1588,14 +1576,13 @@
       }
     }
 
-    // ===== ✅ Model Test Title loader =====
     async function loadModelTestTitle(){
       try{
         if(!modelTestId){
           $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
           return;
         }
-        const doc = await db.collection(COL_MODELTESTS).doc(modelTestId).get();
+        const doc = await db.collection("subject_model_tests").doc(modelTestId).get();
         if(doc.exists){
           const data = doc.data() || {};
           const name = data.modelTestName || data.title || data.name || "Model Test";
@@ -1608,14 +1595,13 @@
       }
     }
 
-    // ===== PDF helpers =====
+    // ===== PDF helpers (unchanged) =====
     async function renderPageToCanvas(html){
       const area = $("pdfPageArea");
       area.innerHTML = html;
       try{ await document.fonts.ready; }catch(e){}
       return await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
     }
-
     function buildPdfMark(){
       const r = resultPayload?.result || {};
       const obtained = r.obtainedMark ?? "--";
@@ -1628,13 +1614,11 @@
         </div>
       `;
     }
-
     function chunk(arr, size){
       const out = [];
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
       return out;
     }
-
     function buildPdfQuestionsHtml(qs, startNo){
       const p = resultPayload || {};
       const mcqMap = getMcqMap(p);
@@ -1693,7 +1677,6 @@
         `;
       }).join("");
     }
-
     function buildPdfPage1_DetailsLike(firstQs){
       const p = resultPayload || {};
       const r = p.result || {};
@@ -1732,7 +1715,6 @@
         </div>
       `;
     }
-
     function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
       const qHtml = buildPdfQuestionsHtml(qs, startNo);
       return `
@@ -1746,8 +1728,6 @@
         </div>
       `;
     }
-
-    // ✅ per page 26 questions
     const PDF_FIRST_PAGE_Q = 26;
     const PDF_NEXT_PAGE_Q  = 26;
 
@@ -1794,7 +1774,6 @@
     }
     window.downloadResultPDF = downloadResultPDF;
 
-    // ===== Boot =====
     async function boot(){
       // ✅ if only resultId is provided, infer modelTestId from that result
       if(!modelTestId && resultIdFromUrl){
@@ -1823,13 +1802,11 @@
         loadQuestionsOnce().catch(()=>{});
       }
 
-      // ✅ when coming from another page: highlight that row in table
       if(resultIdFromUrl){
         highlightResultId = resultIdFromUrl;
         setTimeout(()=> jumpToAndHighlightResult(resultIdFromUrl), 120);
       }
 
-      // ensure ads locked above footer after initial render
       setTimeout(lockAdsAboveFooter, 150);
     }
 
