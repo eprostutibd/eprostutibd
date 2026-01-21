@@ -202,18 +202,8 @@
     .val.ok{color: rgba(22,163,74,1);}
     .val.bad{color: rgba(220,38,38,1);}
 
-    .loading{
-      color: var(--muted);
-      font-weight: 1000;
-      font-size: 13px;
-      padding: 10px 2px;
-    }
-    .err{
-      color: var(--danger);
-      font-weight: 1000;
-      font-size: 13px;
-      padding: 10px 2px;
-    }
+    .loading{ color: var(--muted); font-weight: 1000; font-size: 13px; padding: 10px 2px; }
+    .err{ color: var(--danger); font-weight: 1000; font-size: 13px; padding: 10px 2px; }
 
     .toast{
       position: fixed;
@@ -277,14 +267,12 @@
         </div>
       </div>
 
-      <div class="pillRow" id="pillRow">
-        <!-- summary pills -->
-      </div>
+      <div class="pillRow" id="pillRow"></div>
     </div>
 
     <div class="sectionHead">
       <h2>Details</h2>
-      <button class="smallBtn" type="button" onclick="toggleOnlyWrong()" id="btnFilter">Show Only Wrong</button>
+      <button class="smallBtn" type="button" onclick="toggleFilter()" id="btnFilter">Show Wrong + Skipped</button>
     </div>
 
     <div class="list" id="detailList">
@@ -313,6 +301,14 @@
       showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2200);
     }
 
+    // ===== number fmt (bn) =====
+    const bnNum = (v)=>{
+      if(v === null || v === undefined) return "--";
+      const n = Number(v);
+      if(!Number.isFinite(n)) return String(v);
+      return n.toLocaleString("bn-BD");
+    };
+
     // ===== url param =====
     function getParam(name){
       const u = new URL(location.href);
@@ -338,7 +334,7 @@
 
     // ===== state =====
     let resultPayload = null;
-    let onlyWrong = false;
+    let filterMode = "wrong_skipped"; // all | wrong_skipped
     let mtDoc = null;
 
     function backToTest(){
@@ -364,6 +360,18 @@
       return s;
     }
 
+    function calcSkipped(p){
+      const r = p?.result || {};
+      const total = Number(r.totalQuestion);
+      const right = Number(r.right);
+      const wrong = Number(r.wrong);
+      if(Number.isFinite(total) && Number.isFinite(right) && Number.isFinite(wrong)){
+        const sk = total - (right + wrong);
+        return sk >= 0 ? sk : 0;
+      }
+      return null;
+    }
+
     function renderSummary(){
       const p = resultPayload || {};
       const r = p.result || {};
@@ -376,19 +384,21 @@
       $("kvTest").textContent = p.modelTestName || "--";
       $("kvTime").textContent = fmtTime(p.submittedAt);
 
+      const skipped = calcSkipped(p);
+
       const row = $("pillRow");
       row.innerHTML = "";
-      row.appendChild(makePill(`Total Q: ${r.totalQuestion ?? "--"}`));
-      row.appendChild(makePill(`Right: ${r.right ?? "--"}`, "ok"));
-      row.appendChild(makePill(`Wrong: ${r.wrong ?? "--"}`, "bad"));
-      row.appendChild(makePill(`Mark: ${(r.obtainedMark ?? "--")} / ${(r.totalMark ?? "--")}`, "warn"));
+      row.appendChild(makePill(`Total Q: ${bnNum(r.totalQuestion ?? "--")}`));
+      row.appendChild(makePill(`Right: ${bnNum(r.right ?? "--")}`, "ok"));
+      row.appendChild(makePill(`Wrong: ${bnNum(r.wrong ?? "--")}`, "bad"));
+      if(skipped !== null) row.appendChild(makePill(`Skipped: ${bnNum(skipped)}`, "warn"));
+      row.appendChild(makePill(`Mark: ${bnNum(r.obtainedMark ?? "--")} / ${bnNum(r.totalMark ?? "--")}`, "warn"));
 
       if(p.isAuto) row.appendChild(makePill("Auto Submit", "warn"));
     }
 
     // helper to read answer maps
     function getMcqAnswerMap(payload){
-      // Start-model-test page saves answers.mcq as object now
       const obj = payload?.answers?.mcq;
       if(obj && typeof obj === "object" && !Array.isArray(obj)) return obj;
       return {};
@@ -422,7 +432,6 @@
     }
 
     async function fetchQuestions(modelTestId){
-      // same logic: try candidate collections then subcollection
       const candidates = [
         "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
       ];
@@ -440,7 +449,6 @@
         }catch(e){}
       }
 
-      // subcollection fallback
       try{
         const ref = db.collection(COL_MODELTESTS).doc(modelTestId).collection("questions");
         let s = null;
@@ -467,7 +475,6 @@
       }
 
       const letters = ["A","B","C","D"];
-
       const cards = [];
 
       questions.forEach((q, idx)=>{
@@ -475,7 +482,7 @@
         const qText = getQText(q) || "(No question text)";
         const isW = isWrittenQuestion(q);
 
-        let status = "skipped";
+        let status = "skipped"; // right | wrong | skipped | answered
         let chosenTxt = "--";
         let correctTxt = "--";
 
@@ -485,7 +492,7 @@
           correctTxt = "(Written)";
           status = w ? "answered" : "skipped";
         }else{
-          const opts = getOptions(q);
+          const opts = getOptions(q).map(x => (x?.trim?.() ? x : "(Empty Option)"));
           const chosenIdx = Number(mcqMap[qid]);
           const correctIdx = getCorrectIndex(q);
 
@@ -506,7 +513,8 @@
           else status = "wrong";
         }
 
-        if(onlyWrong && status !== "wrong") return;
+        // filter
+        if(filterMode === "wrong_skipped" && !(status === "wrong" || status === "skipped")) return;
 
         const card = document.createElement("div");
         card.className = "qCard";
@@ -532,30 +540,27 @@
 
       list.innerHTML = "";
       if(!cards.length){
-        list.innerHTML = `<div class="err">Wrong কোনো প্রশ্ন নেই (বা filter চালু আছে)।</div>`;
+        list.innerHTML = `<div class="err">এই ফিল্টারে কিছু পাওয়া যায়নি।</div>`;
         return;
       }
       cards.forEach(c=>list.appendChild(c));
     }
 
-    function toggleOnlyWrong(){
-      onlyWrong = !onlyWrong;
-      $("btnFilter").textContent = onlyWrong ? "Show All" : "Show Only Wrong";
-      if(resultPayload?._questionsCache){
-        renderDetails(resultPayload._questionsCache);
-      }
+    function toggleFilter(){
+      filterMode = (filterMode === "wrong_skipped") ? "all" : "wrong_skipped";
+      $("btnFilter").textContent = (filterMode === "wrong_skipped") ? "Show All" : "Show Wrong + Skipped";
+      if(resultPayload?._questionsCache) renderDetails(resultPayload._questionsCache);
     }
-    window.toggleOnlyWrong = toggleOnlyWrong;
+    window.toggleFilter = toggleFilter;
 
     function downloadResultJSON(){
       if(!resultPayload){
         showToast("Result পাওয়া যায়নি");
         return;
       }
-      const file = {
-        ...resultPayload
-      };
+      const file = { ...resultPayload };
       delete file._questionsCache;
+      delete file.id;
 
       const blob = new Blob([JSON.stringify(file, null, 2)], {type:"application/json"});
       const a = document.createElement("a");
@@ -584,7 +589,7 @@
 
     async function loadLatestFromFirestore(){
       if(!modelTestId) return null;
-      // latest doc for this modelTestId
+
       const snap = await db.collection(COL_RESULTS)
         .where("modelTestId","==", modelTestId)
         .orderBy("submittedAt","desc")
@@ -610,7 +615,7 @@
     async function boot(){
       if(!modelTestId){
         $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("pageSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
+        $("pageSub").textContent = "URL এ দিন: model-test-result.html?modelTestId=XXXX";
         $("detailList").innerHTML = `<div class="err">Invalid URL.</div>`;
         return;
       }
@@ -625,6 +630,7 @@
           p = await loadLatestFromFirestore();
         }catch(e){
           console.error(e);
+          showToast("Firestore error", "Console দেখুন");
           p = null;
         }
       }
@@ -637,13 +643,10 @@
       }
 
       resultPayload = p;
-
-      // load test doc (optional)
       mtDoc = await loadModelTestDoc();
 
       renderSummary();
 
-      // Load questions for details
       $("detailList").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
       const qs = await fetchQuestions(modelTestId);
       resultPayload._questionsCache = qs;
