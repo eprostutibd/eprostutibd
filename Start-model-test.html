@@ -1241,6 +1241,8 @@
     // ===== timer =====
     let endAtMs = 0;
     let timerHandle = null;
+    let testStartAtMs = 0;
+    let totalAllowedSeconds = 0;
 
     function formatMMSS(sec){
       sec = Math.max(0, Math.floor(sec));
@@ -1251,7 +1253,10 @@
     function startTimer(minutes){
       const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
       if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
-      endAtMs = Date.now() + totalSeconds * 1000;
+
+      totalAllowedSeconds = totalSeconds;       // ✅ NEW
+      testStartAtMs = Date.now();               // ✅ NEW
+      endAtMs = testStartAtMs + totalSeconds * 1000;
 
       const tick = ()=>{
         const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
@@ -1547,11 +1552,26 @@
 
       const summary = computeResult();
 
+      // ✅ time taken calculation
+      const nowMs = Date.now();
+      let timeTakenSeconds = 0;
+
+      if (totalAllowedSeconds > 0 && endAtMs > 0) {
+        const remainingSeconds = Math.max(0, Math.floor((endAtMs - nowMs) / 1000));
+        timeTakenSeconds = Math.max(0, totalAllowedSeconds - remainingSeconds);
+      } else if (testStartAtMs > 0) {
+        timeTakenSeconds = Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000));
+      }
+
+      const timeTakenMinutes = Math.round((timeTakenSeconds / 60) * 100) / 100; // 2 decimal
+
       // ✅ Firestore-safe payload (NO nested arrays!)
       const payload = {
         modelTestId,
         modelTestName: getTitleField(mtDoc),
         submittedAt: Date.now(),
+        timeTakenSeconds,
+        timeTakenMinutes,
         isAuto: !!isAuto,
         studentName,
         studentDistrict,
