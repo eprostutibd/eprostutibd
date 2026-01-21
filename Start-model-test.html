@@ -93,6 +93,7 @@
       padding-bottom: 14px;
     }
 
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -121,6 +122,7 @@
       padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.10);white-space:nowrap;transition:.15s;
     }
+    nav.nav a:hover{background: rgba(255,255,255,.16)}
     nav.nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
 
     .menuBtn{
@@ -151,6 +153,7 @@
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
+    /* ===== Notice ===== */
     .noticeBar{
       margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
       border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
@@ -165,6 +168,7 @@
     .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
     @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
 
+    /* ===== Layout Grid ===== */
     main.grid{
       display:grid;
       grid-template-columns: var(--sideW) minmax(0, 1fr) var(--sideW);
@@ -177,6 +181,7 @@
       .sideAd{display:none;}
     }
 
+    /* ✅ Sticky meta */
     .metaSticky{
       position: sticky;
       top: calc(var(--headerH) + 10px);
@@ -238,6 +243,7 @@
       white-space:nowrap;
     }
 
+    /* ===== Paper body ===== */
     .paper{
       margin-top: 12px;
       background:
@@ -271,6 +277,7 @@
       background: rgba(255,255,255,.55);
     }
 
+    /* ✅ 2-column questions */
     .qList{position: relative;z-index: 1;}
     @media (min-width: 981px){
       .qList{
@@ -497,6 +504,7 @@
     .loading{color: var(--muted); font-size:12px; font-weight:900;}
     .err{color: var(--danger); font-size:12px; font-weight:1000;}
 
+    /* ===== Name gate modal ===== */
     .modal{
       position: fixed;
       inset:0;
@@ -586,6 +594,7 @@
       white-space:nowrap;
     }
 
+    /* ===== Confirm modal ===== */
     .confirmModal{
       position: fixed;
       inset: 0;
@@ -615,6 +624,7 @@
     .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
     .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
 
+    /* ===== Result modal ===== */
     .resultModal{
       position: fixed;
       inset: 0;
@@ -679,6 +689,7 @@
       margin-top: 8px;
     }
 
+    /* ===== Footer ===== */
     footer{
       margin-top: 14px;
       background:
@@ -721,6 +732,7 @@
       white-space:normal;
     }
 
+    /* ===== PDF render area ===== */
     .pdfPageArea{
       position: fixed;
       left: -99999px;
@@ -844,6 +856,7 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
+      <!-- LEFT sidebar -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
 
@@ -862,6 +875,7 @@
         </div>
       </aside>
 
+      <!-- MAIN -->
       <section aria-label="Questions">
         <div class="metaSticky">
           <div class="mtTitleRow">
@@ -896,6 +910,7 @@
         </article>
       </section>
 
+      <!-- RIGHT sidebar -->
       <aside class="sideAd" aria-label="Right sidebar">
         <div class="sideStack">
 
@@ -919,13 +934,14 @@
     </main>
   </div>
 
+  <!-- Name gate modal -->
   <div class="modal" id="nameModal" role="dialog" aria-modal="true" aria-label="Enter Name and District">
     <div class="overlay" onclick="closeNameModal()"></div>
     <div class="modalCard" onclick="event.stopPropagation()">
       <div class="modalHead">
         <div>
           <p class="modalTitle">নাম ও জেলা লিখুন</p>
-          <p class="modalText">Submit না করলে টাইমার শুরু হবে না। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
+          <p class="modalText">Submit না করলে উত্তর দেওয়া যাবে না। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
         </div>
         <button class="modalClose" type="button" onclick="closeNameModal()">এখন নয়</button>
       </div>
@@ -943,6 +959,7 @@
     </div>
   </div>
 
+  <!-- Confirm modal -->
   <div class="confirmModal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Confirm submit">
     <div class="overlay" onclick="confirmNo()"></div>
     <div class="confirmCard" onclick="event.stopPropagation()">
@@ -955,6 +972,7 @@
     </div>
   </div>
 
+  <!-- Result modal -->
   <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
     <div class="overlay"></div>
     <div class="resultCard" onclick="event.stopPropagation()">
@@ -994,6 +1012,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <!-- hidden offscreen for PDF rendering -->
   <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
   <footer>
@@ -1030,33 +1049,15 @@
             <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
             Facebook
           </a>
+
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.97v5.69H9.32V9h3.41v1.56h.05c.47-.9 1.63-1.86 3.35-1.86 3.58 0 4.24 2.36 4.24 5.43v6.32ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+            LinkedIn
+          </a>
+
           <a href="#" aria-label="YouTube">
             <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
             YouTube
-          </a>
-          <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5Zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5Zm6.2-2.1a1.3 1.3 0 1 1-1.3-1.3 1.3 1.3 0 0 1 1.3 1.3Z"/></svg>
-            Instagram
-          </a>
-          <a href="#" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24"><path d="M4 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm1 6H3v12h2V9Zm4 0H7v12h2v-6.2c0-3.4 4-3.7 4 0V21h2v-7c0-5.6-6-5.4-7-2.6V9Zm11 0h-2v12h2V9Z"/></svg>
-            LinkedIn
-          </a>
-          <a href="#" aria-label="X (Twitter)">
-            <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.5L6.3 22H2l7.3-8.4L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.1 3.9H4.3L17.8 20Z"/></svg>
-            X
-          </a>
-          <a href="#" aria-label="Telegram">
-            <svg viewBox="0 0 24 24"><path d="M21.8 4.6 2.9 12c-1.3.5-1.3 1.2-.2 1.6l4.8 1.5 1.8 5.5c.2.6.1.8.7.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.2-.4-1.7-1-1.4ZM8.1 14.7l10.9-6.9c.5-.3 1-.1.6.2l-8.8 8-.3 3.3-1.9-5.2-.5-.2Z"/></svg>
-            Telegram
-          </a>
-          <a href="#" aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.59a1 1 0 0 1-.25 1.01l-2.2 2.19Z"/></svg>
-            WhatsApp
-          </a>
-          <a href="#" aria-label="TikTok">
-            <svg viewBox="0 0 24 24"><path d="M16 2h-2v13.2a3.2 3.2 0 1 1-2.4-3.1V10a5.2 5.2 0 1 0 4.4 5.1V7.3c1.2 1.2 2.8 1.9 4.4 2V7.3c-1.5-.1-2.8-.9-3.4-2.1-.3-.6-.6-1.6-.6-3.2Z"/></svg>
-            TikTok
           </a>
         </div>
       </div>
@@ -1065,22 +1066,27 @@
     <div class="copy">© <span id="year"></span> eProstutiBD — All rights reserved</div>
   </footer>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
+  <!-- PDF libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
+    // year
     document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
+    // ===== menu =====
     function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
+    // ===== toast =====
     function esc(str){
       return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
@@ -1100,6 +1106,7 @@
       showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2000);
     }
 
+    // ===== Confirm modal (custom Yes/No) =====
     let _confirmResolver = null;
     function openConfirm(title, text){
       $("confirmTitle").textContent = title || "Confirm";
@@ -1113,11 +1120,13 @@
     window.confirmYes = confirmYes;
     window.confirmNo = confirmNo;
 
+    // ===== utils =====
     function getParam(name){
       const u = new URL(location.href);
       return u.searchParams.get(name) || "";
     }
 
+    // ===== Firebase =====
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
       authDomain: "eprostutibd-webapp.firebaseapp.com",
@@ -1131,18 +1140,21 @@
     const db = firebase.firestore();
 
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODEL_TEST_RESULT = "model_test_result";
+    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ Firestore-safe name
     const QUESTION_COLLECTION_CANDIDATES = [
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
+    // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
 
+    // ===== state =====
     let mtDoc = null;
     let questions = [];
     const mcqAns = new Map();
     const writtenAns = new Map();
 
+    // Name gate
     let studentName = "";
     let studentDistrict = "";
     let nameUnlocked = false;
@@ -1175,12 +1187,19 @@
       studentDistrict = d;
       nameUnlocked = true;
       closeNameModal();
-      // ✅ Start countdown only after Name+Zila submit
-      if(mtMinutes > 0) startTimer(mtMinutes);
+
+      // ✅ Start countdown only after Name + District submitted
+      if(!timerStarted && mtDoc){
+        const __mins = getTimeMinFromDoc(mtDoc) || 0;
+        if(__mins){ startTimer(__mins); }
+      }
+
       showToast("Start সফল", `${studentName} (${studentDistrict})`);
     }
     window.submitName = submitName;
 
+    // ✅ Modal can be closed to view questions.
+    // ✅ But answering requires submit; trying to answer opens modal again.
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
@@ -1188,6 +1207,7 @@
       return false;
     }
 
+    // ===== helpers =====
     function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test"; }
     function getTimeMinFromDoc(data){
       const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
@@ -1232,12 +1252,11 @@
     }
 
     // ===== timer =====
-    let mtMinutes = 0; // ✅ set after model test loaded
-    let timerStarted = false; // ✅ starts only after Name+Zila submit
     let endAtMs = 0;
     let timerHandle = null;
-    let testStartAtMs = 0;
-    let totalAllowedSeconds = 0;
+    let testStartAtMs = 0;        // ✅ when timer started
+    let totalAllowedSeconds = 0;  // ✅ test duration in seconds
+    let timerStarted = false;     // ✅ starts after Name+District submit
 
     function formatMMSS(sec){
       sec = Math.max(0, Math.floor(sec));
@@ -1245,22 +1264,14 @@
       const s = sec % 60;
       return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
     }
-
-    function setInitialTimeLeft(minutes){
-      const sec = Math.max(0, Math.floor((minutes || 0) * 60));
-      $("timeLeft").textContent = sec ? formatMMSS(sec) : "--:--";
-      $("timeLeft").style.color = "var(--text)";
-    }
-
     function startTimer(minutes){
       if(timerStarted) return;
-      timerStarted = true;
-
       const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
       if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
 
-      totalAllowedSeconds = totalSeconds;
-      testStartAtMs = Date.now();
+      timerStarted = true;
+      totalAllowedSeconds = totalSeconds; // ✅ NEW
+      testStartAtMs = Date.now();           // ✅ NEW
       endAtMs = testStartAtMs + totalSeconds * 1000;
 
       const tick = ()=>{
@@ -1455,6 +1466,7 @@
       }
     }
 
+    // ===== Result compute (MCQ based) =====
     function toNumberMaybe(v){
       const n = Number(v);
       return Number.isFinite(n) ? n : null;
@@ -1501,6 +1513,7 @@
       }
     }
 
+    // ===== Result modal =====
     let _lastResultPayload = null;
     let _lastResultDocId = "";
 
@@ -1526,6 +1539,7 @@
     }
     window.goResultDetails = goResultDetails;
 
+    // ===== Submit =====
     async function submitTest(isAuto=false){
       if(!modelTestId) return;
 
@@ -1554,24 +1568,26 @@
 
       const summary = computeResult();
 
+      // ✅ Visitor took how long to submit (MM:SS)
       const nowMs = Date.now();
       const timeTakenSeconds = Math.min(
         totalAllowedSeconds || 999999,
         Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
       );
-      const timeTakenText = formatMMSS(timeTakenSeconds);
+      const timeTakenText = formatMMSS(timeTakenSeconds); // e.g. "30:31"
 
+      // ✅ Firestore-safe payload (NO nested arrays!)
       const payload = {
         modelTestId,
         modelTestName: getTitleField(mtDoc),
         submittedAt: Date.now(),
-        timeTakenText,
+        timeTakenText, // ✅ Visitor time (MM:SS)
         isAuto: !!isAuto,
         studentName,
         studentDistrict,
         answers: {
-          mcq: Object.fromEntries(mcqAns),
-          written: Object.fromEntries(writtenAns)
+          mcq: Object.fromEntries(mcqAns),        // ✅ FIXED
+          written: Object.fromEntries(writtenAns) // ✅ FIXED
         },
         result: {
           totalQuestion: summary.totalQ,
@@ -1588,9 +1604,12 @@
       showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
 
       _lastResultDocId = await saveResultToFirebase(payload);
+
+      // local cache for result page
       localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
 
       if(!_lastResultDocId){
+        // save failed; still show modal so user can view local result
         showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
       }else{
         showToast("Submit সম্পন্ন", "Result দেখুন");
@@ -1600,11 +1619,222 @@
     }
     window.submitTest = submitTest;
 
-    async function downloadCombinedPDF(){ /* unchanged in file */ }
+    // ===== PDF (combined single PDF multi-page) =====
+    function chunk(arr, size){
+      const out = [];
+      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+      return out;
+    }
+    function buildPdfHeaderLines(title, mins, mark, totalQ){
+      return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
+    }
+    async function renderPageToCanvas(html){
+      const area = $("pdfPageArea");
+      area.innerHTML = html;
+      try{ await document.fonts.ready; }catch(e){}
+      const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      return canvas;
+    }
+
+    async function buildQuestionPaperCanvases(){
+      const title = getTitleField(mtDoc);
+      const mins = getTimeMinFromDoc(mtDoc) || 0;
+      const mark = getMarkFromDoc(mtDoc);
+      const totalQ = questions.length;
+      const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+      const pages = chunk(questions, 30);
+      const letters = ["A","B","C","D"];
+      const canvases = [];
+
+      for(let p=0;p<pages.length;p++){
+        const pageQs = pages[p];
+
+        const qHtml = pageQs.map((q, idx)=>{
+          const qno = p*30 + idx + 1;
+          const qt = pickQuestionText(q);
+
+          if(isWrittenQuestion(q)){
+            return `
+              <div class="pdfQ">
+                <div class="qline">Q${qno}. ${esc(qt)}</div>
+                <div style="margin-top:8px;">উত্তর: ____________________________</div>
+              </div>
+            `;
+          }
+
+          const opts = getOptions(q);
+          const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
+
+          return `
+            <div class="pdfQ">
+              <div class="qline">Q${qno}. ${esc(qt)}</div>
+              <div class="pdfOpt">${optHtml}</div>
+            </div>
+          `;
+        }).join("");
+
+        const pageHtml = `
+          <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
+            <div class="pdfHeaderLine1">${esc(line1)}</div>
+            <div class="pdfHeaderLine2">${esc(line2)}</div>
+            <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
+            <div class="pdfGridWrap">
+              <div class="pdfGrid">${qHtml}</div>
+            </div>
+          </div>
+        `;
+        canvases.push(await renderPageToCanvas(pageHtml));
+      }
+      return canvases;
+    }
+
+    async function buildAnswerSheetCanvases(){
+      const title = getTitleField(mtDoc);
+      const mins = getTimeMinFromDoc(mtDoc) || 0;
+      const mark = getMarkFromDoc(mtDoc);
+      const totalQ = questions.length;
+      const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+      const pages = chunk(questions, 30);
+      const canvases = [];
+      const letters = ["A","B","C","D"];
+
+      for(let p=0;p<pages.length;p++){
+        const pageQs = pages[p];
+
+        const rowsHtml = pageQs.map((q, idx)=>{
+          const qno = p*30 + idx + 1;
+
+          if(isWrittenQuestion(q)){
+            return `
+              <div class="ansRow">
+                <b style="min-width:42px;">Q${qno}</b>
+                <span>__________________________</span>
+              </div>
+            `;
+          }
+
+          const correctIdx = getCorrectIndex(q);
+          const bubbles = letters.map((l, i)=>{
+            const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
+            return `<span class="bubble ${sel}">${l}</span>`;
+          }).join("");
+
+          return `
+            <div class="ansRow">
+              <b style="min-width:42px;">Q${qno}</b>
+              <div class="bubbles">${bubbles}</div>
+            </div>
+          `;
+        }).join("");
+
+        const pageHtml = `
+          <div class="pdfFrame">
+            <div class="pdfWatermark">eProstutiBD</div>
+            <div class="pdfHeaderLine1">${esc(line1)}</div>
+            <div class="pdfHeaderLine2">${esc(line2)}</div>
+            <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
+            <div class="pdfASGrid">${rowsHtml}</div>
+          </div>
+        `;
+        canvases.push(await renderPageToCanvas(pageHtml));
+      }
+      return canvases;
+    }
+
+    async function downloadCombinedPDF(){
+      try{
+        if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
+        showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
+
+        const qCanvases = await buildQuestionPaperCanvases();
+        const aCanvases = await buildAnswerSheetCanvases();
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "pt", "a4");
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+
+        let first = true;
+        const addCanvas = (canvas)=>{
+          const imgData = canvas.toDataURL("image/jpeg", 0.95);
+          if(!first) pdf.addPage();
+          first = false;
+          pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+        };
+
+        qCanvases.forEach(addCanvas);
+        aCanvases.forEach(addCanvas);
+
+        const title = getTitleField(mtDoc);
+        const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "model-test";
+        pdf.save(`${safeName}-question+answer.pdf`);
+
+        showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
+      }catch(e){
+        console.error(e);
+        showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
+      }
+    }
     window.downloadCombinedPDF = downloadCombinedPDF;
 
-    async function loadRecentModelTests(){ /* unchanged in file */ }
+    // ===== Recent Model Tests =====
+    async function loadRecentModelTests(){
+      const wrap = $("recentList");
+      try{
+        let snap = null;
+        try{
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
+        }catch(e){
+          snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
+        }
 
+        const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+        wrap.innerHTML = "";
+
+        if(!docs.length){
+          wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        docs.forEach(doc=>{
+          const title = getTitleField(doc);
+          const mins = getTimeMinFromDoc(doc) || "--";
+          const mark = getMarkFromDoc(doc);
+          const a = document.createElement("a");
+          a.className = "recentItem";
+          a.href = `Start-model-test.html?modelTestId=${encodeURIComponent(doc.id)}`;
+          a.innerHTML = `
+            <span class="recentDot"></span>
+            <div>
+              <div class="recentTitle">${esc(title)}</div>
+              <div class="recentMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+            </div>
+          `;
+          wrap.appendChild(a);
+        });
+
+        const more = document.createElement("a");
+        more.className = "recentItem";
+        more.href = "premium-model-test.html";
+        more.innerHTML = `
+          <span class="recentDot"></span>
+          <div>
+            <div class="recentTitle">See more</div>
+            <div class="recentMeta">Premium model tests দেখুন</div>
+          </div>
+        `;
+        wrap.appendChild(more);
+
+      }catch(err){
+        console.error(err);
+        wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
+      }
+    }
+
+    // ===== boot =====
     async function loadAll(){
       if(!modelTestId){
         $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: Start-model-test.html?modelTestId=XXXX</div>`;
@@ -1638,13 +1868,12 @@
         questions = qs || [];
         setMetaHeader();
 
-        mtMinutes = getTimeMinFromDoc(mtDoc) || 0;
-        setInitialTimeLeft(mtMinutes);
-        // ✅ Timer will start only after Name+Zila submit
-        openNameModal();
+        // ✅ Do NOT start countdown before Name+District submit
+        const __mins = getTimeMinFromDoc(mtDoc) || 0;
+        if(__mins){ $("timeLeft").textContent = formatMMSS(__mins*60); }
 
         renderAll();
-        showToast("Test প্রস্তুত", "Name+Zila Submit করলে টাইমার শুরু হবে");
+        showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
       }catch(err){
         console.error(err);
         $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
