@@ -124,7 +124,7 @@
       overflow:hidden;
     }
     .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
-    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; }
+    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; display:none; }
 
     .tableWrap{
       margin-top: 12px;
@@ -204,40 +204,77 @@
       color: var(--danger);
     }
 
-    /* ===== Filter bar ===== */
+    /* ===== ✅ Beautiful Filter bar ===== */
     .filterBar{
-      margin-top: 10px;
+      margin-top: 12px;
       display:flex;
-      gap:10px;
+      gap: 10px;
       flex-wrap:wrap;
       justify-content:center;
-      align-items:center;
+      align-items:stretch;
     }
-    .fItem{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      padding: 8px 10px;
-      border-radius: 14px;
+    .filterCard{
+      flex: 1 1 520px;
+      max-width: 980px;
+      border-radius: 18px;
       border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.70);
-      box-shadow: 0 10px 22px rgba(15,23,48,.03);
+      background:
+        radial-gradient(600px 200px at 10% 0%, rgba(29,78,216,.10), transparent 60%),
+        radial-gradient(600px 200px at 90% 0%, rgba(14,165,233,.10), transparent 60%),
+        rgba(255,255,255,.78);
+      box-shadow: 0 14px 34px rgba(15,23,48,.06);
+      padding: 12px;
     }
-    .fItem label{
+    .filterGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items:center;
+    }
+    @media (max-width: 740px){
+      .filterGrid{grid-template-columns: 1fr; }
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .field label{
       font-size:12px;
       font-weight:1000;
       color: var(--muted);
-      white-space:nowrap;
+      display:flex;
+      gap:8px;
+      align-items:center;
     }
-    .fItem input{
+    .pillDot{
+      width:10px;height:10px;border-radius:999px;
+      background: rgba(29,78,216,.35);
+      box-shadow: 0 0 0 4px rgba(29,78,216,.10);
+      flex:0 0 auto;
+    }
+    .field input{
       border: 1px solid rgba(18,28,55,.14);
-      border-radius: 10px;
-      padding: 8px 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
       font-weight: 900;
       font-size: 13px;
       outline:none;
-      background: rgba(255,255,255,.85);
-      width: min(260px, 64vw);
+      background: rgba(255,255,255,.90);
+      transition: .15s;
+    }
+    .field input:focus{
+      border-color: rgba(29,78,216,.35);
+      box-shadow: 0 0 0 5px rgba(29,78,216,.10);
+    }
+    .filterBtns{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    @media (max-width: 740px){
+      .filterBtns{justify-content:center;}
     }
 
     /* ===== Pager ===== */
@@ -547,19 +584,35 @@
     .pdfMark .pf.pass{ color: #16a34a; }
     .pdfMark .pf.fail{ color: #dc2626; }
 
+    /* PDF header area (only on first PDF page) */
     .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 52px 0 2px;}
     .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
-    .pdfMetaRow{
-      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      font-size:12px;font-weight:900;margin: 6px 0 10px;
+    .pdfStatsRow{
+      display:flex;
+      justify-content:center;
+      gap: 8px;
+      flex-wrap:wrap;
+      margin: 8px 0 10px;
+      font-size: 12px;
+      font-weight: 1000;
     }
-    .pdfMetaRow span{white-space:nowrap;}
+    .pdfPill{
+      display:inline-flex;gap:8px;align-items:center;
+      border: 1px solid rgba(0,0,0,.25);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.03);
+      white-space:nowrap;
+    }
+    .pdfPill.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.10); color:#0b3d1f;}
+    .pdfPill.bad{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.10); color:#5c0b0b;}
+    .pdfPill.warn{border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.14); color:#4a2d00;}
 
-    /* Page 2+ questions only */
+    /* Questions area (ALL PDF pages) */
     .pdfQuestions{
       column-count: 2;
       column-gap: 16px;
-      margin-top: 0;
+      margin-top: 10px;
     }
     .pdfQ{
       break-inside: avoid;
@@ -651,7 +704,6 @@
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
-        <!-- ✅ slogan here -->
         <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
 
@@ -691,38 +743,43 @@
   </header>
 
   <div class="container">
-    <!-- Ranking -->
     <section class="card" aria-label="Result sheet">
       <h2 class="title" id="pageTitle">Result Sheet (Ranking)</h2>
-      <p class="sub" id="rankSub">সব রেজাল্ট লোড হচ্ছে…</p>
+      <p class="sub" id="rankSub">—</p>
 
-      <!-- ✅ Name + Zila filter -->
-      <div class="filterBar">
-        <div class="fItem">
-          <label for="fName">Name</label>
-          <input id="fName" placeholder="নাম লিখুন…" autocomplete="off" />
+      <!-- ✅ Filters -->
+      <div class="filterBar" aria-label="Filters">
+        <div class="filterCard">
+          <div class="filterGrid">
+            <div class="field">
+              <label for="fName"><span class="pillDot"></span> Name</label>
+              <input id="fName" placeholder="নাম লিখুন…" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="fZila"><span class="pillDot"></span> Zila</label>
+              <input id="fZila" placeholder="জেলা লিখুন…" autocomplete="off" />
+            </div>
+            <div class="filterBtns">
+              <button class="btn btnGhost" type="button" onclick="resetFilters()">Reset</button>
+            </div>
+          </div>
         </div>
-        <div class="fItem">
-          <label for="fZila">Zila</label>
-          <input id="fZila" placeholder="জেলা লিখুন…" autocomplete="off" />
-        </div>
-        <button class="btn btnGhost" type="button" onclick="resetFilters()">Reset</button>
       </div>
 
       <div class="tableWrap" style="overflow:auto;">
-        <table style="min-width:1220px;">
+        <table style="min-width:1140px;">
           <thead>
             <tr>
               <th style="width:60px;">Rank</th>
               <th>Name</th>
               <th>Address</th>
-              <th>Model test name</th>
               <th style="width:180px;">Submit date &amp; time</th>
               <th style="width:90px;">Right</th>
               <th style="width:90px;">Wrong</th>
               <th style="width:90px;">No Ans</th>
               <th style="width:90px;">Mark</th>
               <th style="width:120px;">Time Taken</th>
+              <th style="width:100px;">Pass/Fail</th>
               <th style="width:90px;">Details</th>
             </tr>
           </thead>
@@ -854,8 +911,7 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
-    // ✅ parse timeTakenText to seconds (for tie-break)
-    // Supports: "mm:ss", "hh:mm:ss", "12m 30s", "720s", "10 মিনিট 5 সেকেন্ড"
+    // ✅ parse timeTakenText to seconds (ranking based on timeTaken)
     function parseTimeTakenTextToSeconds(t){
       const s = String(t ?? "").trim().toLowerCase();
       if(!s) return Number.POSITIVE_INFINITY;
@@ -874,7 +930,7 @@
         return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
       }
 
-      // "12m 30s" or "12 মিনিট 30 সেকেন্ড" like
+      // "12m 30s" or "12 মিনিট 30 সেকেন্ড"
       let total = 0;
       let matched = false;
 
@@ -929,8 +985,8 @@
     let questions = [];
 
     // ranking data
-    let allRows = [];      // full ranked rows (after sorting)
-    let filteredRows = []; // after name/zila filter
+    let allRows = [];
+    let filteredRows = [];
     let page = 1;
     const PAGE_SIZE = 25;
 
@@ -1022,7 +1078,7 @@
       return questions;
     }
 
-    // ===== rank helpers =====
+    // ===== result helpers =====
     function calcNoAns(r){
       const totalQ = safeNum(r?.totalQuestion, NaN);
       const right = safeNum(r?.right, NaN);
@@ -1092,16 +1148,13 @@
       if(!slice.length){
         $("rankBody").innerHTML = `<tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>`;
         $("pageInfo").textContent = `Page 1 / 1`;
-        $("rankSub").textContent = `মোট রেজাল্ট: 0`;
         return;
       }
 
-      // ✅ Rank should be continuous (global rank), not reset per page
       const html = slice.map((x, idx)=>{
         const p = x.p, r = x.r;
         const name = p.studentName || "--";
         const addr = p.studentDistrict || p.studentAddress || p.address || "--";
-        const test = p.modelTestName || "--";
         const submitted = fmtTime(p.submittedAt);
 
         const right = (r.right ?? "--");
@@ -1110,6 +1163,13 @@
         const mark = (r.obtainedMark ?? x.obtained ?? "--");
         const timeTakenText = (p.timeTakenText ?? "--");
 
+        const pf = getPassFail(r.obtainedMark, r.totalMark);
+        const pfBadge = pf.ok === true
+          ? `<span class="badge ok">PASS</span>`
+          : pf.ok === false
+            ? `<span class="badge bad">FAIL</span>`
+            : `<span class="badge">—</span>`;
+
         const globalRank = start + idx + 1;
 
         return `
@@ -1117,13 +1177,13 @@
             <td><span class="badge">${globalRank}</span></td>
             <td style="white-space:nowrap;">${esc(name)}</td>
             <td style="white-space:nowrap;">${esc(addr)}</td>
-            <td style="white-space:nowrap;">${esc(test)}</td>
             <td style="white-space:nowrap;">${esc(submitted)}</td>
             <td>${esc(right)}</td>
             <td>${esc(wrong)}</td>
             <td>${esc(noAns)}</td>
             <td><span class="badge warn">${esc(mark)}</span></td>
             <td><span class="badge">${esc(timeTakenText)}</span></td>
+            <td>${pfBadge}</td>
             <td>
               <button class="btn" style="padding:6px 10px;font-size:12px;"
                 type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
@@ -1134,7 +1194,6 @@
 
       $("rankBody").innerHTML = html;
       $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
-      $("rankSub").textContent = `মোট রেজাল্ট: ${total} • Rank: Mark ↓, Time Taken ↑ (tie), তারপর Submit ↑`;
     }
 
     // ===== Popup (Details) open/close =====
@@ -1266,7 +1325,6 @@
           let iconTxt = "";
           let txtCls = "";
 
-          // ✅ no answer => correct yellow
           if(!hasChosen && isCorrect){
             iconCls = "warn"; iconTxt = "✓"; txtCls = "warn";
           }else if(hasChosen && isCorrect){
@@ -1328,15 +1386,12 @@
     // ===== Load ranking table =====
     async function loadResultSheet(){
       try{
-        $("rankSub").textContent = "সব রেজাল্ট লোড হচ্ছে…";
-
         const snap = await db.collection(COL_RESULTS)
           .where("modelTestId","==", modelTestId)
           .get();
 
         if(snap.empty){
           $("rankBody").innerHTML = `<tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>`;
-          $("rankSub").textContent = "কোনো রেজাল্ট পাওয়া যায়নি";
           allRows = [];
           filteredRows = [];
           renderPage();
@@ -1349,20 +1404,19 @@
           const obtained = safeNum(r.obtainedMark, 0);
           const submittedAt = safeNum(p.submittedAt, Number.POSITIVE_INFINITY);
 
-          // ✅ take time from firebase: timeTakenText
           const timeTakenText = p.timeTakenText || "";
           const timeTakenSec = parseTimeTakenTextToSeconds(timeTakenText);
 
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Rank rule:
-        // 1) Mark desc
-        // 2) If tie: timeTakenSec asc (less time = better rank)
-        // 3) If still tie: submittedAt asc
+        // ✅ Rank rule (as you asked):
+        // 1) timeTakenSec ASC (shorter time = better rank)
+        // 2) if tie: obtained DESC
+        // 3) if still tie: submittedAt ASC (internal tiebreak only, not "based on submit")
         allRows.sort((a,b)=>{
-          if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
+          if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           return a.submittedAt - b.submittedAt;
         });
 
@@ -1372,7 +1426,6 @@
       }catch(e){
         console.error(e);
         $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
-        $("rankSub").textContent = "Error";
       }
     }
 
@@ -1397,62 +1450,21 @@
       `;
     }
 
-    // ✅ PDF Page 1 = Result data + design like webpage
-    function buildPdfPage1_Result(){
-      const p = resultPayload || {};
-      const r = p.result || {};
-      const name = p.studentName || "--";
-      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
-      const test = p.modelTestName || "--";
-      const timeTakenText = p.timeTakenText || "--";
-
-      return `
-        <div class="pdfFrame">
-          <div class="pdfWatermark"><span>eProstutiBD</span></div>
-          ${buildPdfMark()}
-
-          <div class="pdfH1">${esc(test)} — Details Sheet</div>
-          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
-
-          <div class="pdfMetaRow">
-            <span>Total Q: ${esc(r.totalQuestion ?? "--")}</span>
-            <span>Right: ${esc(r.right ?? "--")} • Wrong: ${esc(r.wrong ?? "--")} • No Ans: ${esc(calcNoAns(r))}</span>
-          </div>
-
-          <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;">
-            <tr>
-              <th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Field</th>
-              <th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Value</th>
-            </tr>
-            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">ModelTestId</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(modelTestId || "--")}</td></tr>
-            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Submitted</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(fmtTime(p.submittedAt))}</td></tr>
-            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Time Taken</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(timeTakenText)}</td></tr>
-            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Score</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</td></tr>
-          </table>
-
-          <div class="pdfFooter">
-            <span>eProstutiBD</span>
-            <span>Generated: ${esc(fmtTime(Date.now()))}</span>
-          </div>
-        </div>
-      `;
-    }
-
-    // ✅ build question-only pages (page 2..n)
     function chunk(arr, size){
       const out = [];
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
       return out;
     }
 
-    function buildPdfQuestionsOnlyPage(qs, pageIndex, totalPages){
+    // ✅ build questions html (same marking rules)
+    function buildPdfQuestionsHtml(qs, startNo){
       const p = resultPayload || {};
       const mcqMap = getMcqMap(p);
       const wrMap = getWrittenMap(p);
       const letters = ["A","B","C","D"];
 
-      const qHtml = qs.map((q, idx)=>{
-        const qno = pageIndex * PDF_Q_PER_PAGE + idx + 1;
+      return qs.map((q, idx)=>{
+        const qno = startNo + idx;
         const qt = getQText(q) || "(No question text)";
         const qid = q.id;
 
@@ -1481,7 +1493,6 @@
           let cls = "dim";
           let prefix = `${letters[oi]}. `;
 
-          // no answer => correct yellow
           if(!hasChosen && isCorrect){
             cls = "warn"; prefix = `✓ ${letters[oi]}. `;
           }else if(hasChosen && isCorrect){
@@ -1490,7 +1501,6 @@
           if(isChosen && !isCorrect){
             cls = "bad"; prefix = `✗ ${letters[oi]}. `;
           }
-
           return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
         }).join("");
 
@@ -1504,22 +1514,66 @@
           </div>
         `;
       }).join("");
+    }
 
-      // ✅ ONLY questions + watermark (no result/meta)
+    // ✅ Page 1 of PDF = looks like DETAILS page (NOT a separate "result page")
+    function buildPdfPage1_DetailsLike(firstQs){
+      const p = resultPayload || {};
+      const r = p.result || {};
+      const name = p.studentName || "--";
+      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
+      const test = p.modelTestName || "Model Test";
+      const timeTakenText = p.timeTakenText || "--";
+
+      const right = r.right ?? "--";
+      const wrong = r.wrong ?? "--";
+      const noAns = calcNoAns(r);
+
+      const qHtml = buildPdfQuestionsHtml(firstQs, 1);
+
       return `
         <div class="pdfFrame">
           <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          ${buildPdfMark()}
+
+          <div class="pdfH1">${esc(test)} — Details Sheet</div>
+          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
+
+          <div class="pdfStatsRow">
+            <span class="pdfPill">Total: ${esc(r.totalQuestion ?? "--")} Q</span>
+            <span class="pdfPill ok">✓ Right: ${esc(right)}</span>
+            <span class="pdfPill bad">✗ Wrong: ${esc(wrong)}</span>
+            <span class="pdfPill warn">No Ans: ${esc(noAns)}</span>
+          </div>
+
           <div class="pdfQuestions">${qHtml}</div>
+
           <div class="pdfFooter">
-            <span>Questions</span>
-            <span>Page ${pageIndex+2} / ${totalPages+1}</span>
+            <span>eProstutiBD</span>
+            <span>Questions (with header)</span>
           </div>
         </div>
       `;
     }
 
-    // ✅ set how many questions per PDF questions page
-    const PDF_Q_PER_PAGE = 44; // adjust if needed
+    // ✅ Page 2..n = ONLY questions (no header)
+    function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
+      const qHtml = buildPdfQuestionsHtml(qs, startNo);
+      return `
+        <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+          <div class="pdfQuestions" style="margin-top:0;">${qHtml}</div>
+          <div class="pdfFooter">
+            <span>Questions</span>
+            <span>Page ${pageIndex} / ${totalPages}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ✅ how many questions on first PDF page (with header)
+    const PDF_FIRST_PAGE_Q = 28;   // header eats space
+    const PDF_NEXT_PAGE_Q  = 44;   // no header, more space
 
     async function downloadResultPDF(){
       try{
@@ -1542,13 +1596,18 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // Page 1: Result (same design vibe)
-        addCanvas(await renderPageToCanvas(buildPdfPage1_Result()));
+        // ✅ Page 1 = details-like + first chunk of questions
+        const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
+        addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
 
-        // Page 2..n: Questions only
-        const chunks = chunk(questions, PDF_Q_PER_PAGE);
-        for(let i=0;i<chunks.length;i++){
-          addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(chunks[i], i, chunks.length)));
+        // ✅ Remaining pages = questions only (no header)
+        const rest = questions.slice(PDF_FIRST_PAGE_Q);
+        const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
+
+        const totalPages = 1 + restChunks.length;
+        for(let i=0;i<restChunks.length;i++){
+          const startNo = PDF_FIRST_PAGE_Q + (i * PDF_NEXT_PAGE_Q) + 1;
+          addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(restChunks[i], startNo, (i+2), totalPages)));
         }
 
         const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
@@ -1565,8 +1624,7 @@
     async function boot(){
       if(!modelTestId){
         $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("rankSub").textContent = "URL এ দিন: model-test-result-sheet.html?modelTestId=XXXX";
-        $("rankBody").innerHTML = `<tr><td colspan="11">Invalid URL</td></tr>`;
+        $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX</td></tr>`;
         return;
       }
 
