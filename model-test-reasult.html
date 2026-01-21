@@ -14,6 +14,7 @@
   <link rel="dns-prefetch" href="https://www.gstatic.com" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
+  <!-- Bengali + Handwriting-ish font -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700;800;900;1000&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -154,11 +155,11 @@
     }
     tr:last-child td{border-bottom:none;}
 
-    /* ✅ Zebra rows */
+    /* ✅ Zebra rows (green/white) */
     #rankBody tr:nth-child(odd) td{ background: rgba(22,163,74,.06) !important; }
     #rankBody tr:nth-child(even) td{ background: rgba(255,255,255,.70) !important; }
 
-    /* ✅ Highlight selected row (from resultId) */
+    /* ✅ Highlight selected result row (from resultId) */
     #rankBody tr.hl td{
       background: rgba(245,158,11,.22) !important;
       box-shadow: inset 0 0 0 2px rgba(245,158,11,.55);
@@ -183,6 +184,13 @@
     .badge.ok{border-color: rgba(22,163,74,.22); background: rgba(22,163,74,.10); color: rgba(22,163,74,1);}
     .badge.bad{border-color: rgba(220,38,38,.22); background: rgba(220,38,38,.10); color: rgba(220,38,38,1);}
     .badge.warn{border-color: rgba(245,158,11,.24); background: rgba(245,158,11,.14); color: rgba(245,158,11,1);}
+
+    /* ✅ No Ans badge red */
+    .badge.noAnsRed{
+      border-color: rgba(220,38,38,.30);
+      background: rgba(220,38,38,.12);
+      color: rgba(220,38,38,1);
+    }
 
     .actions{ margin-top: 12px; display:flex; gap: 10px; justify-content:center; flex-wrap:wrap; }
     .btn{
@@ -878,7 +886,7 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
-    // ✅ parse timeTakenText to seconds (ranking based on timeTaken)
+    // ✅ parse timeTakenText to seconds (for tie-break)
     function parseTimeTakenTextToSeconds(t){
       const s = String(t ?? "").trim().toLowerCase();
       if(!s) return Number.POSITIVE_INFINITY;
@@ -1083,7 +1091,6 @@
       page = 1;
       renderPage();
 
-      // ✅ filter apply করার পরও highlight ঠিক রাখতে
       if(highlightResultId) jumpToAndHighlightResult(highlightResultId);
     }
 
@@ -1141,18 +1148,15 @@
 
         const globalRank = start + idx + 1;
 
-        // ✅ row id for highlight
-        const rowId = `row-${p.id}`;
-
         return `
-          <tr id="${esc(rowId)}" data-result-id="${esc(p.id)}">
+          <tr data-result-id="${esc(p.id)}">
             <td><span class="badge">${globalRank}</span></td>
             <td style="white-space:nowrap;">${esc(name)}</td>
             <td style="white-space:nowrap;">${esc(addr)}</td>
             <td style="white-space:nowrap;">${esc(submitted)}</td>
             <td>${esc(right)}</td>
             <td>${esc(wrong)}</td>
-            <td>${esc(noAns)}</td>
+            <td><span class="badge noAnsRed">${esc(noAns)}</span></td>
             <td><span class="badge warn">${esc(mark)}</span></td>
             <td><span class="badge">${esc(timeTakenText)}</span></td>
             <td>${pfBadge}</td>
@@ -1167,11 +1171,9 @@
       $("rankBody").innerHTML = html;
       $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
 
-      // ✅ highlight if needed
       if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
 
-    // ✅ highlight helpers
     function clearHighlights(){
       document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
     }
@@ -1180,8 +1182,6 @@
       const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
       if(tr) tr.classList.add("hl");
     }
-
-    // ✅ find row position in filteredRows, jump to that page, render, highlight, scroll
     function jumpToAndHighlightResult(resId){
       if(!resId) return;
 
@@ -1196,12 +1196,9 @@
         applyHighlightOnCurrentPage(resId);
       }
 
-      // scroll into view
       setTimeout(()=>{
         const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
-        if(tr){
-          tr.scrollIntoView({ behavior:"smooth", block:"center" });
-        }
+        if(tr) tr.scrollIntoView({ behavior:"smooth", block:"center" });
       }, 80);
     }
 
@@ -1425,10 +1422,13 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Rank 1 will be at the top (best to worst)
+        // ✅ Rank rule:
+        // 1) obtainedMark DESC (বেশি মার্ক = ভালো র‍্যাঙ্ক)
+        // 2) টাই হলে timeTakenSec ASC (কম সময় = ভালো)
+        // 3) submittedAt ASC (internal tie-break)
         allRows.sort((a,b)=>{
-          if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
+          if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
           return a.submittedAt - b.submittedAt;
         });
 
@@ -1580,7 +1580,7 @@
 
           <div class="pdfFooter">
             <span>eProstutiBD</span>
-            <span>Questions (with header)</span>
+            <span>Questions</span>
           </div>
         </div>
       `;
@@ -1600,9 +1600,9 @@
       `;
     }
 
-    // ✅ per page 24 questions
-    const PDF_FIRST_PAGE_Q = 24;
-    const PDF_NEXT_PAGE_Q  = 24;
+    // ✅ PDF: per page 20 questions
+    const PDF_FIRST_PAGE_Q = 20;
+    const PDF_NEXT_PAGE_Q  = 20;
 
     async function downloadResultPDF(){
       try{
@@ -1679,7 +1679,6 @@
       // ✅ when coming from another page: highlight that row in table
       if(resultIdFromUrl){
         highlightResultId = resultIdFromUrl;
-        // wait a bit for table render
         setTimeout(()=>{
           jumpToAndHighlightResult(resultIdFromUrl);
         }, 120);
