@@ -19,14 +19,9 @@
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
       --line: rgba(18, 28, 55, .10);
-      --line2: rgba(18, 28, 55, .08);
       --text:#0f1730; --muted:#5a6685;
 
-      --shadow: 0 16px 44px rgba(15,23,48,.12);
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
-
-      --brandA:#1d4ed8;
-      --brandB:#0ea5e9;
 
       --ok:#16a34a;
       --danger:#dc2626;
@@ -126,21 +121,8 @@
       padding: 14px;
       overflow:hidden;
     }
-    .title{
-      margin:0;
-      font-size: 18px;
-      font-weight:1000;
-      line-height:1.28;
-      text-align:center;
-    }
-    .sub{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 12.8px;
-      font-weight: 900;
-      line-height:1.55;
-      text-align:center;
-    }
+    .title{ margin:0; font-size: 18px; font-weight:1000; line-height:1.28; text-align:center; }
+    .sub{ margin: 8px 0 0; color: var(--muted); font-size: 12.8px; font-weight: 900; line-height:1.55; text-align:center; }
 
     .tableWrap{
       margin-top: 12px;
@@ -248,20 +230,52 @@
       border-radius: 14px;
       padding: 14px;
       background: rgba(255,255,255,.55);
+      overflow:hidden;
     }
+
+    /* ✅ details header centered */
     .sheetHead{
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap:wrap;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
       border-bottom: 1px solid rgba(18,28,55,.10);
-      padding-bottom: 10px;
-      margin-bottom: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      text-align:center;
     }
     .sheetTitle{ margin:0; font-size: 15px; font-weight: 1000; line-height:1.35; }
-    .sheetSub{ margin:6px 0 0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
-    .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
+    .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
+    .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
+
+    /* ✅ teacher-like mark stamp */
+    .markStamp{
+      position:absolute;
+      top: 12px;
+      right: 14px;
+      transform: rotate(-8deg);
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 2px solid rgba(220,38,38,.35);
+      background: rgba(220,38,38,.06);
+      color: rgba(220,38,38,.9);
+      font-weight: 1000;
+      font-size: 26px;
+      letter-spacing: .6px;
+      font-family: "Noto Sans Bengali", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, cursive;
+      box-shadow: 0 10px 24px rgba(220,38,38,.10);
+      user-select:none;
+      pointer-events:none;
+    }
+    .markStamp small{
+      display:block;
+      font-size: 12px;
+      color: rgba(220,38,38,.75);
+      letter-spacing: .2px;
+      margin-top: 2px;
+      font-weight: 900;
+    }
 
     .qList{
       display:grid;
@@ -327,10 +341,29 @@
       background: rgba(220,38,38,.10);
       color: rgba(220,38,38,1);
     }
+    .markIcon.warn{
+      border-color: rgba(245,158,11,.30);
+      background: rgba(245,158,11,.16);
+      color: rgba(245,158,11,1);
+    }
+
     .optKey{font-weight:1000;color: var(--muted);}
     .optTxt{font-weight: 900;color: var(--text);}
     .optTxt.ok{color: rgba(22,163,74,1);}
     .optTxt.bad{color: rgba(220,38,38,1);}
+    .optTxt.warn{color: rgba(245,158,11,1);}
+
+    .noAnsNote{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(245,158,11,.35);
+      background: rgba(245,158,11,.10);
+      color: rgba(120,74,10,.98);
+      font-weight: 1000;
+      font-size: 13px;
+      line-height: 1.6;
+    }
 
     .loading{color: var(--muted); font-weight:1000; font-size:13px;}
     .err{color: var(--danger); font-weight:1000; font-size:13px;}
@@ -340,29 +373,132 @@
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 794px;
+      width: 794px; /* A4-ish */
       background:#fff;
       color:#111;
       padding: 16px;
       font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     }
-    .pdfFrame{ border: 2px solid #111; padding: 14px; min-height: 1040px; background:#fff; }
+    .pdfFrame{
+      position: relative;
+      border: 2px solid #111;
+      padding: 14px;
+      min-height: 1040px;
+      background:#fff;
+      overflow:hidden;
+    }
+    .pdfWatermark{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+      user-select:none;
+    }
+    .pdfWatermark span{
+      transform: rotate(-22deg);
+      font-size: 84px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      opacity: .08;
+      color:#111;
+      white-space:nowrap;
+    }
+
     .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 4px 0 2px;}
-    .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 12px;}
+    .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 10px;}
     .pdfMetaRow{
       display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
       font-size:12px;font-weight:900;margin: 6px 0 10px;
     }
     .pdfMetaRow span{white-space:nowrap;}
-    .pdfTable{ width:100%; border-collapse: collapse; font-size:12px; }
-    .pdfTable th, .pdfTable td{ border:1px solid rgba(0,0,0,.35); padding: 8px 8px; vertical-align: top; }
-    .pdfTable th{ background: rgba(0,0,0,.06); font-weight:1000; }
-    .pdfQ{ font-size:12px; line-height:1.45; margin-bottom: 8px; }
-    .pdfQ .qline{ font-weight:1000; margin-bottom: 4px; }
-    .pdfOpt{ display:grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; font-size:11.6px; }
+
+    /* ✅ PDF questions 2-column */
+    .pdfQuestions{
+      column-count: 2;
+      column-gap: 16px;
+    }
+    .pdfQ{
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+      font-size:12px;
+      line-height:1.45;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed rgba(0,0,0,.18);
+    }
+    .pdfQ .qline{font-weight:1000;margin-bottom: 4px;}
+    .pdfOpt{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 10px;
+      font-size:11.6px;
+    }
     .pdfOpt .ok{color: #16a34a; font-weight:1000;}
     .pdfOpt .bad{color: #dc2626; font-weight:1000;}
+    .pdfOpt .warn{color: #f59e0b; font-weight:1000;}
     .pdfOpt .dim{color: #111;}
+    .pdfNote{
+      margin-top: 4px;
+      padding: 6px 8px;
+      border: 1px dashed rgba(245,158,11,.45);
+      background: rgba(245,158,11,.10);
+      font-weight: 900;
+      border-radius: 8px;
+      color:#111;
+    }
+    .pdfFooter{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:11px;
+      font-weight:900;
+      opacity:.75;
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      margin-top: 14px;
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
+        radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
+        linear-gradient(180deg, var(--footTop), var(--footBottom));
+      border-top: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.86);
+    }
+    .footGrid{
+      max-width: 1200px;
+      margin:0 auto;
+      padding: 18px clamp(8px, 2vw, 20px) 10px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 18px;
+      align-items:start;
+    }
+    .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
+    .footText{color: rgba(255,255,255,.70);font-size:12px;line-height:1.6;}
+    .footLinks{display:flex;flex-direction:column;gap: 8px;}
+    .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
+    .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
+    .copy{
+      max-width: 1200px;
+      margin:0 auto;
+      padding: 12px clamp(8px, 2vw, 20px) 14px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      text-align:center;
+      line-height:1.6;
+      white-space:normal;
+    }
+    @media (max-width: 980px){
+      .footGrid{grid-template-columns: repeat(2, minmax(0, 1fr));gap: 10px 10px;}
+    }
   </style>
 </head>
 
@@ -447,7 +583,9 @@
     <!-- DETAILS (Only shows after clicking Details) -->
     <section class="detailSheet" id="detailSheet" aria-label="Details sheet">
       <article class="paper">
-        <div class="paperFrame">
+        <div class="paperFrame" id="paperFrame">
+          <div class="markStamp" id="markStamp" style="display:none;"></div>
+
           <div class="sheetHead">
             <div>
               <p class="sheetTitle" id="sheetTitle">Details</p>
@@ -472,6 +610,42 @@
   <!-- hidden offscreen for PDF rendering -->
   <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
+  <footer>
+    <div class="footGrid">
+      <div>
+        <div class="footTitle">eProstutiBD</div>
+        <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      </div>
+
+      <div>
+        <div class="footTitle">দরকারি পেজ</div>
+        <div class="footLinks">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footTitle">অন্যান্য</div>
+        <div class="footLinks">
+          <a href="#">Notice</a>
+          <a href="#">Blog</a>
+          <a href="#">Career</a>
+          <a href="#">Help</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footTitle">Support</div>
+        <div class="footText">প্রশ্ন থাকলে Help সেকশনে যান বা Contact করুন।</div>
+      </div>
+    </div>
+
+    <div class="copy">© <span id="year"></span> eProstutiBD — All rights reserved</div>
+  </footer>
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
@@ -481,6 +655,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
     // ===== menu =====
@@ -508,6 +683,18 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
+    function setUrlResultId(resId){
+      const u = new URL(location.href);
+      u.searchParams.set("modelTestId", modelTestId);
+      u.searchParams.set("resultId", resId);
+      history.replaceState({}, "", u.toString());
+    }
+    function clearUrlResultId(){
+      const u = new URL(location.href);
+      u.searchParams.delete("resultId");
+      history.replaceState({}, "", u.toString());
+    }
+
     // ===== Firebase =====
     const firebaseConfig = {
       apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
@@ -528,6 +715,7 @@
     ];
 
     const modelTestId = getParam("modelTestId");
+    const resultIdFromUrl = getParam("resultId");
 
     // ===== state =====
     let resultPayload = null; // selected student result (for details + pdf)
@@ -628,6 +816,8 @@
     }
     function closeDetails(){
       $("detailSheet").classList.remove("show");
+      $("markStamp").style.display = "none";
+      clearUrlResultId();
       try{ window.scrollTo({ top: 0, behavior:"smooth" }); }catch(e){}
     }
     window.closeDetails = closeDetails;
@@ -635,17 +825,27 @@
     function buildStatBadges(){
       const p = resultPayload || {};
       const r = p.result || {};
-      const totalMark = (r.totalMark ?? "--");
-      const obtained = (r.obtainedMark ?? "--");
       const right = (r.right ?? "--");
       const wrong = (r.wrong ?? "--");
       const totalQ = (r.totalQuestion ?? "--");
+      const noAns = calcNoAns(r);
       return `
         <span class="badge">${esc(totalQ)} Q</span>
         <span class="badge ok">✓ ${esc(right)} Right</span>
         <span class="badge bad">✗ ${esc(wrong)} Wrong</span>
-        <span class="badge warn">${esc(obtained)} / ${esc(totalMark)}</span>
+        <span class="badge warn">— ${esc(noAns)} No Ans</span>
       `;
+    }
+
+    function renderMarkStamp(){
+      const r = resultPayload?.result || {};
+      const obtained = (r.obtainedMark ?? "--");
+      const total = (r.totalMark ?? "--");
+
+      // ✅ no "Mark:" text, just stamp-like score
+      const el = $("markStamp");
+      el.innerHTML = `${esc(obtained)} / ${esc(total)}<small>Checked</small>`;
+      el.style.display = "block";
     }
 
     function renderDetails(){
@@ -655,11 +855,13 @@
       const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "Model Test";
 
+      // ✅ header centered text
       $("headerTag").textContent = `${test} • Result Sheet`;
-
       $("sheetTitle").textContent = `${test} — Details Sheet`;
-      $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)} • Mark: ${r.obtainedMark ?? "--"} / ${r.totalMark ?? "--"}`;
+      $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
+
       $("sheetStats").innerHTML = buildStatBadges();
+      renderMarkStamp();
 
       const mcqMap = getMcqMap(p);
       const wrMap = getWrittenMap(p);
@@ -707,6 +909,7 @@
         const opts = getOptions(q);
         const correctIdx = getCorrectIndex(q);
         const chosenIdx = Number(mcqMap[qid]);
+
         const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
         const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
 
@@ -721,8 +924,24 @@
           let iconTxt = "";
           let txtCls = "";
 
-          if(isCorrect){ iconCls = "ok"; iconTxt = "✓"; txtCls = "ok"; }
-          if(isChosen && !isCorrect){ iconCls = "bad"; iconTxt = "✗"; txtCls = "bad"; }
+          // ✅ rule:
+          // - if no answer => correct is YELLOW
+          // - if answered => correct GREEN
+          // - chosen wrong => chosen RED
+          if(!hasChosen && isCorrect){
+            iconCls = "warn";
+            iconTxt = "✓";
+            txtCls = "warn";
+          }else if(hasChosen && isCorrect){
+            iconCls = "ok";
+            iconTxt = "✓";
+            txtCls = "ok";
+          }
+          if(isChosen && !isCorrect){
+            iconCls = "bad";
+            iconTxt = "✗";
+            txtCls = "bad";
+          }
 
           const div = document.createElement("div");
           div.className = "optLine";
@@ -735,6 +954,15 @@
         });
 
         row.appendChild(optWrap);
+
+        // ✅ no answer note
+        if(!hasChosen){
+          const note = document.createElement("div");
+          note.className = "noAnsNote";
+          note.textContent = "আপনি কোনো উত্তর সিলেক্ট করেননি।";
+          row.appendChild(note);
+        }
+
         list.appendChild(row);
       });
 
@@ -758,6 +986,8 @@
 
     async function openDetailsByResultId(resId){
       try{
+        setUrlResultId(resId);
+
         $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
         openDetails();
 
@@ -768,7 +998,6 @@
         }
 
         resultPayload = { id: doc.id, ...doc.data() };
-
         await loadQuestionsOnce();
         renderDetails();
       }catch(e){
@@ -870,6 +1099,8 @@
 
       return `
         <div class="pdfFrame">
+          <div class="pdfWatermark"><span>eProstutiBD</span></div>
+
           <div class="pdfH1">${esc(test)} — Result</div>
           <div class="pdfH2">${esc(name)} (${esc(dist)})</div>
 
@@ -878,18 +1109,18 @@
             <span>ModelTestId: ${esc(modelTestId || "--")}</span>
           </div>
 
-          <table class="pdfTable">
-            <tr><th>Field</th><th>Value</th></tr>
-            <tr><td>Total Question</td><td>${esc(r.totalQuestion ?? "--")}</td></tr>
-            <tr><td>Right</td><td>${esc(r.right ?? "--")}</td></tr>
-            <tr><td>Wrong</td><td>${esc(r.wrong ?? "--")}</td></tr>
-            <tr><td>Total Mark</td><td>${esc(r.totalMark ?? "--")}</td></tr>
-            <tr><td>Obtained</td><td>${esc(r.obtainedMark ?? "--")}</td></tr>
+          <table class="pdfTable" style="width:100%;border-collapse:collapse;font-size:12px;">
+            <tr><th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Field</th><th style="border:1px solid rgba(0,0,0,.35);padding:8px;background:rgba(0,0,0,.06);text-align:left;">Value</th></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Total Question</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.totalQuestion ?? "--")}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Right</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.right ?? "--")}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Wrong</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.wrong ?? "--")}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">No Ans</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(calcNoAns(r))}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Score</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</td></tr>
           </table>
 
-          <div style="margin-top:12px;font-size:12px;font-weight:900;">
-            Correct = <span style="color:#16a34a;font-weight:1000;">Green ✓</span>,
-            Wrong chosen = <span style="color:#dc2626;font-weight:1000;">Red ✗</span>
+          <div class="pdfFooter">
+            <span>eProstutiBD</span>
+            <span>Generated: ${esc(fmtTime(Date.now()))}</span>
           </div>
         </div>
       `;
@@ -906,11 +1137,11 @@
       const wrMap = getWrittenMap(p);
       const letters = ["A","B","C","D"];
 
-      const pages = chunk(questions, 22);
+      const pages = chunk(questions, 24); // 2-column so can keep a bit more
 
       return pages.map((pageQs, pageIndex)=>{
         const qHtml = pageQs.map((q, idx)=>{
-          const qno = pageIndex * 22 + idx + 1;
+          const qno = pageIndex * 24 + idx + 1;
           const qt = getQText(q) || "(No question text)";
           const qid = q.id;
 
@@ -936,34 +1167,57 @@
             const isCorrect = (hasCorrect && oi === correctIdx);
             const isChosen = (hasChosen && oi === chosenIdx);
 
+            // ✅ PDF rule same:
+            // no answer => correct yellow
             let cls = "dim";
-            let prefix = "";
+            let prefix = `${letters[oi]}. `;
 
-            if(isCorrect){ cls = "ok"; prefix = "✓ "; }
-            if(isChosen && !isCorrect){ cls = "bad"; prefix = "✗ "; }
+            if(!hasChosen && isCorrect){
+              cls = "warn";
+              prefix = `✓ ${letters[oi]}. `;
+            }else if(hasChosen && isCorrect){
+              cls = "ok";
+              prefix = `✓ ${letters[oi]}. `;
+            }
+            if(isChosen && !isCorrect){
+              cls = "bad";
+              prefix = `✗ ${letters[oi]}. `;
+            }
 
-            return `<div class="${cls}">${prefix}${letters[oi]}. ${esc(op || "")}</div>`;
+            return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
           }).join("");
+
+          const note = !hasChosen
+            ? `<div class="pdfNote">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>`
+            : ``;
 
           return `
             <div class="pdfQ">
               <div class="qline">Q${qno}. ${esc(qt)}</div>
               <div class="pdfOpt">${optHtml}</div>
+              ${note}
             </div>
           `;
         }).join("");
 
         return `
           <div class="pdfFrame">
+            <div class="pdfWatermark"><span>eProstutiBD</span></div>
+
             <div class="pdfH1">${esc(test)} — Marked Question Paper</div>
-            <div class="pdfH2">${esc(name)} (${esc(dist)}) • ${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</div>
+            <div class="pdfH2">${esc(name)} (${esc(dist)}) • Score: ${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</div>
 
             <div class="pdfMetaRow">
-              <span>Total Q: ${esc(r.totalQuestion ?? "--")} • Right: ${esc(r.right ?? "--")} • Wrong: ${esc(r.wrong ?? "--")}</span>
+              <span>Total Q: ${esc(r.totalQuestion ?? "--")} • Right: ${esc(r.right ?? "--")} • Wrong: ${esc(r.wrong ?? "--")} • No Ans: ${esc(calcNoAns(r))}</span>
               <span>Page: ${pageIndex+1} / ${pages.length}</span>
             </div>
 
-            <div>${qHtml}</div>
+            <div class="pdfQuestions">${qHtml}</div>
+
+            <div class="pdfFooter">
+              <span>eProstutiBD</span>
+              <span>ModelTestId: ${esc(modelTestId || "--")}</span>
+            </div>
           </div>
         `;
       });
@@ -1013,10 +1267,17 @@
         $("rankBody").innerHTML = `<tr><td colspan="10">Invalid URL</td></tr>`;
         return;
       }
+
       // load ranking
       loadResultSheet();
+
       // preload questions for fast details/pdf
       loadQuestionsOnce().catch(()=>{});
+
+      // ✅ shareable link: if resultId in URL, auto-open details
+      if(resultIdFromUrl){
+        openDetailsByResultId(resultIdFromUrl);
+      }
     }
 
     boot();
