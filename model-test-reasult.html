@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Result Sheet (Ranking) — eProstutiBD</title>
 
-  <meta name="description" content="eProstutiBD Model Test Result Sheet — Ranking + Details + PDF" />
+  <meta name="description" content="eProstutiBD Model Test Result Sheet — Ranking + Filters + Popup Details + PDF" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#1d4ed8" />
 
@@ -204,26 +204,113 @@
       color: var(--danger);
     }
 
-    /* ===== Details Sheet ===== */
-    .detailSheet{ margin-top: 12px; display:none; }
-    .detailSheet.show{display:block;}
+    /* ===== Filter bar ===== */
+    .filterBar{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+    }
+    .fItem{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 10px 22px rgba(15,23,48,.03);
+    }
+    .fItem label{
+      font-size:12px;
+      font-weight:1000;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .fItem input{
+      border: 1px solid rgba(18,28,55,.14);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 13px;
+      outline:none;
+      background: rgba(255,255,255,.85);
+      width: min(260px, 64vw);
+    }
 
-    .paper{
-      margin-top: 12px;
+    /* ===== Pager ===== */
+    .pager{
+      margin-top: 10px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-weight:1000;
+      font-size:12px;
+    }
+
+    /* ===== Popup Modal (Details) ===== */
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:99999;
+    }
+    .modal.show{display:block;}
+    .modalOverlay{
+      position:absolute;
+      inset:0;
+      background: rgba(2, 6, 23, .45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .modalDialog{
+      position:relative;
+      margin: 70px auto 24px;
+      width: min(980px, calc(100vw - 18px));
+      max-height: calc(100vh - 100px);
+      overflow:auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
       background:
-        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
-        repeating-linear-gradient(to bottom,
+        linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.92)),
+        repeating-linear-gradient(
+          to bottom,
           rgba(0,0,0,0) 0px,
           rgba(0,0,0,0) 26px,
           rgba(18,28,55,.055) 27px
         );
-      border: 2px solid rgba(18,28,55,.14);
-      border-radius: 16px;
-      box-shadow: 0 18px 50px rgba(15,23,48,.10);
-      padding: 18px;
-      position: relative;
-      overflow:hidden;
+      padding: 14px;
     }
+    .modalClose{
+      position:sticky;
+      top: 0;
+      display:flex;
+      justify-content:flex-end;
+      padding: 6px 4px 10px;
+      z-index: 5;
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0));
+      backdrop-filter: blur(6px);
+    }
+    .xBtn{
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 1000;
+      cursor:pointer;
+      border: 1px solid rgba(18,28,55,.18);
+      background: rgba(255,255,255,.80);
+      color: var(--text);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
     .paperFrame{
       position: relative;
       z-index: 1;
@@ -238,32 +325,17 @@
     /* Download button top */
     .detailsTopBar{
       display:flex;
-      justify-content:flex-end;
+      justify-content:space-between;
+      align-items:center;
       gap: 8px;
       flex-wrap:wrap;
       margin-bottom: 6px;
     }
 
-    /* details header centered */
-    .sheetHead{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap: 8px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      text-align:center;
-    }
-    .sheetTitle{ margin:0; font-size: 15px; font-weight: 1000; line-height:1.35; }
-    .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
-    .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
-
     /* Mark on LEFT (handwriting) + PASS/FAIL */
     .markStamp{
       position:absolute;
-      top: 56px;
+      top: 58px;
       left: 14px;
       transform: rotate(-10deg);
       padding: 10px 12px 8px;
@@ -303,7 +375,23 @@
       text-align:left;
     }
 
-    /* ✅ Web details: TWO COLUMN (your request) */
+    /* details header centered */
+    .sheetHead{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      text-align:center;
+    }
+    .sheetTitle{ margin:0; font-size: 15px; font-weight: 1000; line-height:1.35; }
+    .sheetSub{ margin:0; color: var(--muted); font-size: 12.5px; font-weight: 900; line-height:1.55; }
+    .sheetStats{ display:flex; gap: 8px; flex-wrap:wrap; align-items:center; justify-content:center; }
+
+    /* ✅ Web details: TWO COLUMN list */
     .qList{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -339,7 +427,7 @@
     .opts{
       margin-top:10px;
       display:grid;
-      grid-template-columns: 1fr 1fr; /* options 2-col inside */
+      grid-template-columns: 1fr 1fr;
       gap: 8px 14px;
     }
     .optLine{
@@ -467,7 +555,7 @@
     }
     .pdfMetaRow span{white-space:nowrap;}
 
-    /* Page 2 questions only */
+    /* Page 2+ questions only */
     .pdfQuestions{
       column-count: 2;
       column-gap: 16px;
@@ -563,7 +651,7 @@
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
-        <!-- ✅ slogan here (no test name in header) -->
+        <!-- ✅ slogan here -->
         <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
       </div>
 
@@ -608,8 +696,21 @@
       <h2 class="title" id="pageTitle">Result Sheet (Ranking)</h2>
       <p class="sub" id="rankSub">সব রেজাল্ট লোড হচ্ছে…</p>
 
+      <!-- ✅ Name + Zila filter -->
+      <div class="filterBar">
+        <div class="fItem">
+          <label for="fName">Name</label>
+          <input id="fName" placeholder="নাম লিখুন…" autocomplete="off" />
+        </div>
+        <div class="fItem">
+          <label for="fZila">Zila</label>
+          <input id="fZila" placeholder="জেলা লিখুন…" autocomplete="off" />
+        </div>
+        <button class="btn btnGhost" type="button" onclick="resetFilters()">Reset</button>
+      </div>
+
       <div class="tableWrap" style="overflow:auto;">
-        <table style="min-width:1100px;">
+        <table style="min-width:1220px;">
           <thead>
             <tr>
               <th style="width:60px;">Rank</th>
@@ -621,49 +722,60 @@
               <th style="width:90px;">Wrong</th>
               <th style="width:90px;">No Ans</th>
               <th style="width:90px;">Mark</th>
+              <th style="width:120px;">Time Taken</th>
               <th style="width:90px;">Details</th>
             </tr>
           </thead>
           <tbody id="rankBody">
-            <tr><td colspan="10">লোড হচ্ছে…</td></tr>
+            <tr><td colspan="11">লোড হচ্ছে…</td></tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- ✅ pager (25 per page) -->
+      <div class="pager">
+        <button class="btn btnGhost" type="button" onclick="prevPage()">Prev</button>
+        <span id="pageInfo">Page 1</span>
+        <button class="btn btnGhost" type="button" onclick="nextPage()">Next</button>
       </div>
 
       <div class="actions">
         <button class="btnGhost btn" type="button" onclick="backToTest()">Back to Test</button>
       </div>
     </section>
+  </div>
 
-    <!-- Details -->
-    <section class="detailSheet" id="detailSheet" aria-label="Details sheet">
-      <article class="paper">
-        <div class="paperFrame" id="paperFrame">
+  <!-- ✅ Popup Details Modal -->
+  <div class="modal" id="detailsModal" aria-hidden="true">
+    <div class="modalOverlay" onclick="closeDetails()"></div>
+    <div class="modalDialog" role="dialog" aria-label="Details Popup" onclick="event.stopPropagation()">
+      <div class="modalClose">
+        <button class="xBtn" type="button" onclick="closeDetails()">✕ Close</button>
+      </div>
 
-          <div class="detailsTopBar">
-            <button class="btn btnDanger" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
+      <div class="paperFrame" id="paperFrame">
+        <div class="detailsTopBar">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <span class="badge" id="detailTimeTaken">Time: --</span>
           </div>
-
-          <div class="markStamp" id="markStamp"></div>
-
-          <div class="sheetHead">
-            <div>
-              <p class="sheetTitle" id="sheetTitle">Details</p>
-              <p class="sheetSub" id="sheetSub">—</p>
-            </div>
-            <div class="sheetStats" id="sheetStats"></div>
-          </div>
-
-          <div id="detailContent">
-            <div class="loading">প্রশ্ন লোড হচ্ছে…</div>
-          </div>
-
-          <div class="actions" style="margin-top:14px;">
-            <button class="btnGhost btn" type="button" onclick="closeDetails()">Close</button>
-          </div>
+          <button class="btn btnDanger" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
         </div>
-      </article>
-    </section>
+
+        <div class="markStamp" id="markStamp"></div>
+
+        <div class="sheetHead">
+          <div>
+            <p class="sheetTitle" id="sheetTitle">Details</p>
+            <p class="sheetSub" id="sheetSub">—</p>
+          </div>
+          <div class="sheetStats" id="sheetStats"></div>
+        </div>
+
+        <div id="detailContent">
+          <div class="loading">প্রশ্ন লোড হচ্ছে…</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- hidden offscreen for PDF rendering -->
@@ -742,6 +854,42 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
+    // ✅ parse timeTakenText to seconds (for tie-break)
+    // Supports: "mm:ss", "hh:mm:ss", "12m 30s", "720s", "10 মিনিট 5 সেকেন্ড"
+    function parseTimeTakenTextToSeconds(t){
+      const s = String(t ?? "").trim().toLowerCase();
+      if(!s) return Number.POSITIVE_INFINITY;
+
+      // hh:mm:ss or mm:ss
+      if(/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)){
+        const parts = s.split(":").map(x=>Number(x));
+        if(parts.some(n=>!Number.isFinite(n))) return Number.POSITIVE_INFINITY;
+        if(parts.length === 2) return parts[0]*60 + parts[1];
+        if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+      }
+
+      // "720s"
+      if(/^\d+(\.\d+)?s$/.test(s)){
+        const n = Number(s.replace("s",""));
+        return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
+      }
+
+      // "12m 30s" or "12 মিনিট 30 সেকেন্ড" like
+      let total = 0;
+      let matched = false;
+
+      const h = s.match(/(\d+)\s*(h|hr|hrs|hour|hours|ঘণ্টা)/);
+      if(h){ total += Number(h[1]) * 3600; matched = true; }
+
+      const m = s.match(/(\d+)\s*(m|min|mins|minute|minutes|মিনিট)/);
+      if(m){ total += Number(m[1]) * 60; matched = true; }
+
+      const sec = s.match(/(\d+)\s*(s|sec|secs|second|seconds|সেকেন্ড)/);
+      if(sec){ total += Number(sec[1]); matched = true; }
+
+      return matched ? total : Number.POSITIVE_INFINITY;
+    }
+
     function setUrlResultId(resId){
       const u = new URL(location.href);
       u.searchParams.set("modelTestId", modelTestId);
@@ -779,6 +927,12 @@
     // ===== state =====
     let resultPayload = null;
     let questions = [];
+
+    // ranking data
+    let allRows = [];      // full ranked rows (after sorting)
+    let filteredRows = []; // after name/zila filter
+    let page = 1;
+    const PAGE_SIZE = 25;
 
     // ===== Back =====
     function backToTest(){
@@ -890,18 +1044,121 @@
       return { ok: true, label: "PASS" };
     }
 
-    // ===== Details open/close =====
-    function openDetails(){
-      $("detailSheet").classList.add("show");
-      try{ window.scrollTo({ top: $("detailSheet").offsetTop - 20, behavior:"smooth" }); }catch(e){}
+    // ===== Filters + Pagination =====
+    function normalizeText(s){ return String(s ?? "").toLowerCase().trim(); }
+
+    function applyFilters(){
+      const nameQ = normalizeText($("fName").value);
+      const zilaQ = normalizeText($("fZila").value);
+
+      filteredRows = allRows.filter(x=>{
+        const p = x.p || {};
+        const name = normalizeText(p.studentName);
+        const zila = normalizeText(p.studentDistrict || p.studentAddress || p.address);
+        const okName = !nameQ || name.includes(nameQ);
+        const okZila = !zilaQ || zila.includes(zilaQ);
+        return okName && okZila;
+      });
+
+      page = 1;
+      renderPage();
+    }
+
+    function resetFilters(){
+      $("fName").value = "";
+      $("fZila").value = "";
+      applyFilters();
+    }
+    window.resetFilters = resetFilters;
+
+    function nextPage(){
+      const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
+      if(page < totalPages){ page++; renderPage(); }
+    }
+    function prevPage(){
+      if(page > 1){ page--; renderPage(); }
+    }
+    window.nextPage = nextPage;
+    window.prevPage = prevPage;
+
+    function renderPage(){
+      const total = filteredRows.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if(page > totalPages) page = totalPages;
+
+      const start = (page - 1) * PAGE_SIZE;
+      const slice = filteredRows.slice(start, start + PAGE_SIZE);
+
+      if(!slice.length){
+        $("rankBody").innerHTML = `<tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>`;
+        $("pageInfo").textContent = `Page 1 / 1`;
+        $("rankSub").textContent = `মোট রেজাল্ট: 0`;
+        return;
+      }
+
+      // ✅ Rank should be continuous (global rank), not reset per page
+      const html = slice.map((x, idx)=>{
+        const p = x.p, r = x.r;
+        const name = p.studentName || "--";
+        const addr = p.studentDistrict || p.studentAddress || p.address || "--";
+        const test = p.modelTestName || "--";
+        const submitted = fmtTime(p.submittedAt);
+
+        const right = (r.right ?? "--");
+        const wrong = (r.wrong ?? "--");
+        const noAns = calcNoAns(r);
+        const mark = (r.obtainedMark ?? x.obtained ?? "--");
+        const timeTakenText = (p.timeTakenText ?? "--");
+
+        const globalRank = start + idx + 1;
+
+        return `
+          <tr>
+            <td><span class="badge">${globalRank}</span></td>
+            <td style="white-space:nowrap;">${esc(name)}</td>
+            <td style="white-space:nowrap;">${esc(addr)}</td>
+            <td style="white-space:nowrap;">${esc(test)}</td>
+            <td style="white-space:nowrap;">${esc(submitted)}</td>
+            <td>${esc(right)}</td>
+            <td>${esc(wrong)}</td>
+            <td>${esc(noAns)}</td>
+            <td><span class="badge warn">${esc(mark)}</span></td>
+            <td><span class="badge">${esc(timeTakenText)}</span></td>
+            <td>
+              <button class="btn" style="padding:6px 10px;font-size:12px;"
+                type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      $("rankBody").innerHTML = html;
+      $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
+      $("rankSub").textContent = `মোট রেজাল্ট: ${total} • Rank: Mark ↓, Time Taken ↑ (tie), তারপর Submit ↑`;
+    }
+
+    // ===== Popup (Details) open/close =====
+    function openDetailsPopup(){
+      $("detailsModal").classList.add("show");
+      $("detailsModal").setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
     }
     function closeDetails(){
-      $("detailSheet").classList.remove("show");
+      $("detailsModal").classList.remove("show");
+      $("detailsModal").setAttribute("aria-hidden","true");
       $("markStamp").style.display = "none";
+      $("detailContent").innerHTML = `<div class="loading">প্রশ্ন লোড হচ্ছে…</div>`;
       clearUrlResultId();
-      try{ window.scrollTo({ top: 0, behavior:"smooth" }); }catch(e){}
+      document.body.style.overflow = "";
     }
     window.closeDetails = closeDetails;
+
+    document.addEventListener("keydown",(e)=>{
+      if(e.key === "Escape"){
+        closeMenu();
+        closeDetails();
+      }
+    });
 
     function buildStatBadges(){
       const r = resultPayload?.result || {};
@@ -938,6 +1195,9 @@
       const name = p.studentName || "--";
       const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "Model Test";
+      const timeTakenText = p.timeTakenText || "--";
+
+      $("detailTimeTaken").textContent = `Time: ${timeTakenText}`;
 
       $("sheetTitle").textContent = `${test} — Details Sheet`;
       $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
@@ -1006,6 +1266,7 @@
           let iconTxt = "";
           let txtCls = "";
 
+          // ✅ no answer => correct yellow
           if(!hasChosen && isCorrect){
             iconCls = "warn"; iconTxt = "✓"; txtCls = "warn";
           }else if(hasChosen && isCorrect){
@@ -1046,7 +1307,7 @@
         setUrlResultId(resId);
 
         $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
-        openDetails();
+        openDetailsPopup();
 
         const doc = await db.collection(COL_RESULTS).doc(resId).get();
         if(!doc.exists){
@@ -1074,61 +1335,43 @@
           .get();
 
         if(snap.empty){
-          $("rankBody").innerHTML = `<tr><td colspan="10">এই modelTestId এর কোনো result নেই</td></tr>`;
+          $("rankBody").innerHTML = `<tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>`;
           $("rankSub").textContent = "কোনো রেজাল্ট পাওয়া যায়নি";
+          allRows = [];
+          filteredRows = [];
+          renderPage();
           return;
         }
 
-        let rows = snap.docs.map(d => {
+        allRows = snap.docs.map(d => {
           const p = { id: d.id, ...d.data() };
           const r = p.result || {};
           const obtained = safeNum(r.obtainedMark, 0);
           const submittedAt = safeNum(p.submittedAt, Number.POSITIVE_INFINITY);
-          return { p, r, obtained, submittedAt };
+
+          // ✅ take time from firebase: timeTakenText
+          const timeTakenText = p.timeTakenText || "";
+          const timeTakenSec = parseTimeTakenTextToSeconds(timeTakenText);
+
+          return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // Rank rule: Mark desc, (tie) SubmittedAt asc
-        rows.sort((a,b)=>{
+        // ✅ Rank rule:
+        // 1) Mark desc
+        // 2) If tie: timeTakenSec asc (less time = better rank)
+        // 3) If still tie: submittedAt asc
+        allRows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
+          if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
           return a.submittedAt - b.submittedAt;
         });
 
-        const html = rows.map((x, idx)=>{
-          const p = x.p, r = x.r;
-          const name = p.studentName || "--";
-          const addr = p.studentDistrict || p.studentAddress || p.address || "--";
-          const test = p.modelTestName || "--";
-          const submitted = fmtTime(p.submittedAt);
-
-          const right = (r.right ?? "--");
-          const wrong = (r.wrong ?? "--");
-          const noAns = calcNoAns(r);
-          const mark = (r.obtainedMark ?? x.obtained ?? "--");
-
-          return `
-            <tr>
-              <td><span class="badge">${idx+1}</span></td>
-              <td style="white-space:nowrap;">${esc(name)}</td>
-              <td style="white-space:nowrap;">${esc(addr)}</td>
-              <td style="white-space:nowrap;">${esc(test)}</td>
-              <td style="white-space:nowrap;">${esc(submitted)}</td>
-              <td>${esc(right)}</td>
-              <td>${esc(wrong)}</td>
-              <td>${esc(noAns)}</td>
-              <td><span class="badge warn">${esc(mark)}</span></td>
-              <td>
-                <button class="btn" style="padding:6px 10px;font-size:12px;"
-                  type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
-              </td>
-            </tr>
-          `;
-        }).join("");
-
-        $("rankBody").innerHTML = html;
-        $("rankSub").textContent = `মোট রেজাল্ট: ${rows.length} • Rank: Mark ↓, Submit ↑`;
+        filteredRows = allRows.slice();
+        page = 1;
+        renderPage();
       }catch(e){
         console.error(e);
-        $("rankBody").innerHTML = `<tr><td colspan="10">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
+        $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
         $("rankSub").textContent = "Error";
       }
     }
@@ -1154,21 +1397,22 @@
       `;
     }
 
-    // ✅ PAGE 1 = only Result + details header + stats + mark
-    function buildPdfPage1_ResultOnly(){
+    // ✅ PDF Page 1 = Result data + design like webpage
+    function buildPdfPage1_Result(){
       const p = resultPayload || {};
       const r = p.result || {};
       const name = p.studentName || "--";
       const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "--";
+      const timeTakenText = p.timeTakenText || "--";
 
       return `
         <div class="pdfFrame">
           <div class="pdfWatermark"><span>eProstutiBD</span></div>
           ${buildPdfMark()}
 
-          <div class="pdfH1">${esc(test)} — Result</div>
-          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))}</div>
+          <div class="pdfH1">${esc(test)} — Details Sheet</div>
+          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
 
           <div class="pdfMetaRow">
             <span>Total Q: ${esc(r.totalQuestion ?? "--")}</span>
@@ -1182,6 +1426,7 @@
             </tr>
             <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">ModelTestId</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(modelTestId || "--")}</td></tr>
             <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Submitted</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(fmtTime(p.submittedAt))}</td></tr>
+            <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Time Taken</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(timeTakenText)}</td></tr>
             <tr><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">Score</td><td style="border:1px solid rgba(0,0,0,.35);padding:8px;">${esc(r.obtainedMark ?? "--")} / ${esc(r.totalMark ?? "--")}</td></tr>
           </table>
 
@@ -1193,15 +1438,21 @@
       `;
     }
 
-    // ✅ PAGE 2 = ONLY questions/options (nothing else)
-    function buildPdfPage2_QuestionsOnly(){
+    // ✅ build question-only pages (page 2..n)
+    function chunk(arr, size){
+      const out = [];
+      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+      return out;
+    }
+
+    function buildPdfQuestionsOnlyPage(qs, pageIndex, totalPages){
       const p = resultPayload || {};
       const mcqMap = getMcqMap(p);
       const wrMap = getWrittenMap(p);
       const letters = ["A","B","C","D"];
 
-      const qHtml = questions.map((q, idx)=>{
-        const qno = idx + 1;
+      const qHtml = qs.map((q, idx)=>{
+        const qno = pageIndex * PDF_Q_PER_PAGE + idx + 1;
         const qt = getQText(q) || "(No question text)";
         const qid = q.id;
 
@@ -1254,13 +1505,21 @@
         `;
       }).join("");
 
+      // ✅ ONLY questions + watermark (no result/meta)
       return `
         <div class="pdfFrame">
           <div class="pdfWatermark"><span>eProstutiBD</span></div>
           <div class="pdfQuestions">${qHtml}</div>
+          <div class="pdfFooter">
+            <span>Questions</span>
+            <span>Page ${pageIndex+2} / ${totalPages+1}</span>
+          </div>
         </div>
       `;
     }
+
+    // ✅ set how many questions per PDF questions page
+    const PDF_Q_PER_PAGE = 44; // adjust if needed
 
     async function downloadResultPDF(){
       try{
@@ -1283,10 +1542,14 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // Page 1
-        addCanvas(await renderPageToCanvas(buildPdfPage1_ResultOnly()));
-        // Page 2 (questions only)
-        addCanvas(await renderPageToCanvas(buildPdfPage2_QuestionsOnly()));
+        // Page 1: Result (same design vibe)
+        addCanvas(await renderPageToCanvas(buildPdfPage1_Result()));
+
+        // Page 2..n: Questions only
+        const chunks = chunk(questions, PDF_Q_PER_PAGE);
+        for(let i=0;i<chunks.length;i++){
+          addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(chunks[i], i, chunks.length)));
+        }
 
         const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
         const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
@@ -1302,14 +1565,19 @@
     async function boot(){
       if(!modelTestId){
         $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("rankSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
-        $("rankBody").innerHTML = `<tr><td colspan="10">Invalid URL</td></tr>`;
+        $("rankSub").textContent = "URL এ দিন: model-test-result-sheet.html?modelTestId=XXXX";
+        $("rankBody").innerHTML = `<tr><td colspan="11">Invalid URL</td></tr>`;
         return;
       }
 
-      loadResultSheet();
+      // live filter
+      $("fName").addEventListener("input", ()=> applyFilters());
+      $("fZila").addEventListener("input", ()=> applyFilters());
+
+      await loadResultSheet();
       loadQuestionsOnce().catch(()=>{});
 
+      // open shareable popup if resultId in URL
       if(resultIdFromUrl){
         openDetailsByResultId(resultIdFromUrl);
       }
