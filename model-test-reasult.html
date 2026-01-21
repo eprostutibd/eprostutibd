@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Model Test Result — eProstutiBD</title>
+  <title>Result Sheet (Ranking) — eProstutiBD</title>
 
-  <meta name="description" content="eProstutiBD Model Test Result — Summary + Details + PDF + Ranking" />
+  <meta name="description" content="eProstutiBD Model Test Result Sheet — Ranking + Details + PDF" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#1d4ed8" />
 
@@ -19,6 +19,7 @@
     :root{
       --bg1:#f6f8ff; --bg2:#eef6ff;
       --line: rgba(18, 28, 55, .10);
+      --line2: rgba(18, 28, 55, .08);
       --text:#0f1730; --muted:#5a6685;
 
       --shadow: 0 16px 44px rgba(15,23,48,.12);
@@ -31,14 +32,8 @@
       --danger:#dc2626;
       --warn:#f59e0b;
 
-      --safeBottom: env(safe-area-inset-bottom, 0px);
-      --headerH: 64px;
-
       --footTop:#0b1f3f;
       --footBottom:#07152e;
-      --footLine: rgba(255,255,255,.14);
-      --footText: rgba(255,255,255,.86);
-      --footMuted: rgba(255,255,255,.70);
     }
 
     *{box-sizing:border-box}
@@ -65,7 +60,7 @@
       padding-bottom: 18px;
     }
 
-    /* ===== Header (same vibe) ===== */
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
       background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
@@ -75,17 +70,14 @@
     .topbar{
       max-width: 1200px;
       margin:0 auto;
-      padding-left: clamp(8px, 2vw, 20px);
-      padding-right: clamp(8px, 2vw, 20px);
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding: 10px clamp(8px, 2vw, 20px);
       display:flex;
       align-items:center;
       gap:10px;
     }
     .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
     .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
-    .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 380px;}
+    .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 520px;}
 
     nav.nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;}
     nav.nav::-webkit-scrollbar{display:none}
@@ -150,7 +142,6 @@
       text-align:center;
     }
 
-    /* ===== Summary Table ===== */
     .tableWrap{
       margin-top: 12px;
       border:1px solid rgba(18,28,55,.10);
@@ -159,14 +150,12 @@
       background: rgba(255,255,255,.75);
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
-    table{
-      width:100%;
-      border-collapse: collapse;
-    }
+    table{ width:100%; border-collapse: collapse; }
     th, td{
       padding: 12px 12px;
       border-bottom: 1px solid rgba(18,28,55,.08);
       font-size: 13px;
+      vertical-align: top;
     }
     th{
       text-align:left;
@@ -179,7 +168,6 @@
       font-weight: 1000;
       color: var(--text);
       background: rgba(255,255,255,.64);
-      vertical-align:top;
     }
     tr:last-child td{border-bottom:none;}
 
@@ -291,6 +279,7 @@
       .qRow:nth-last-child(-n+2){border-bottom:none;}
     }
     @media (max-width: 980px){ .qRow:last-child{border-bottom:none;} }
+
     .qHead{display:flex;gap:10px;align-items:flex-start;}
     .qNo{
       flex:0 0 auto;
@@ -346,66 +335,18 @@
     .loading{color: var(--muted); font-weight:1000; font-size:13px;}
     .err{color: var(--danger); font-weight:1000; font-size:13px;}
 
-    /* ===== Footer (same vibe) ===== */
-    footer{
-      margin-top: 14px;
-      background:
-        radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
-        radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
-        linear-gradient(180deg, var(--footTop), var(--footBottom));
-      border-top: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.86);
-    }
-    .footGrid{
-      max-width: 1200px;
-      margin:0 auto;
-      padding: 18px clamp(8px, 2vw, 20px) 10px;
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px 18px;
-      align-items:start;
-    }
-    .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
-    .footText{color: rgba(255,255,255,.70);font-size:12px;line-height:1.6;}
-    .footLinks{display:flex;flex-direction:column;gap: 8px;}
-    .footLinks a{text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
-    .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
-    .socialCol{display:flex;flex-direction:column;gap: 10px;}
-    .socialCol a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color: rgba(255,255,255,.70);font-size:12px;}
-    .socialCol a:hover{color:#fff;}
-    .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
-    @media (max-width: 980px){
-      .footGrid{grid-template-columns: repeat(2, minmax(0, 1fr));gap: 10px 10px;}
-    }
-    .copy{
-      max-width: 1200px;
-      margin:0 auto;
-      padding: 12px clamp(8px, 2vw, 20px) 14px;
-      border-top: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.68);
-      font-size:12px;
-      text-align:center;
-      line-height:1.6;
-      white-space:normal;
-    }
-
     /* ===== PDF render area (offscreen) ===== */
     .pdfPageArea{
       position: fixed;
       left: -99999px;
       top: 0;
-      width: 794px; /* A4 width */
+      width: 794px;
       background:#fff;
       color:#111;
       padding: 16px;
       font-family: "Noto Sans Bengali", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     }
-    .pdfFrame{
-      border: 2px solid #111;
-      padding: 14px;
-      min-height: 1040px;
-      background:#fff;
-    }
+    .pdfFrame{ border: 2px solid #111; padding: 14px; min-height: 1040px; background:#fff; }
     .pdfH1{text-align:center;font-weight:1000;font-size:16px;margin: 4px 0 2px;}
     .pdfH2{text-align:center;font-weight:900;font-size:13px;margin: 0 0 12px;}
     .pdfMetaRow{
@@ -413,23 +354,12 @@
       font-size:12px;font-weight:900;margin: 6px 0 10px;
     }
     .pdfMetaRow span{white-space:nowrap;}
-    .pdfTable{
-      width:100%;
-      border-collapse: collapse;
-      font-size:12px;
-    }
-    .pdfTable th, .pdfTable td{
-      border:1px solid rgba(0,0,0,.35);
-      padding: 8px 8px;
-      vertical-align: top;
-    }
-    .pdfTable th{background: rgba(0,0,0,.06); font-weight:1000;}
-    .pdfQ{font-size:12px;line-height:1.45;margin-bottom: 8px;}
-    .pdfQ .qline{font-weight:1000;margin-bottom: 4px;}
-    .pdfOpt{
-      display:grid;grid-template-columns: 1fr 1fr;gap: 2px 10px;
-      font-size:11.6px;
-    }
+    .pdfTable{ width:100%; border-collapse: collapse; font-size:12px; }
+    .pdfTable th, .pdfTable td{ border:1px solid rgba(0,0,0,.35); padding: 8px 8px; vertical-align: top; }
+    .pdfTable th{ background: rgba(0,0,0,.06); font-weight:1000; }
+    .pdfQ{ font-size:12px; line-height:1.45; margin-bottom: 8px; }
+    .pdfQ .qline{ font-weight:1000; margin-bottom: 4px; }
+    .pdfOpt{ display:grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; font-size:11.6px; }
     .pdfOpt .ok{color: #16a34a; font-weight:1000;}
     .pdfOpt .bad{color: #dc2626; font-weight:1000;}
     .pdfOpt .dim{color: #111;}
@@ -437,13 +367,13 @@
 </head>
 
 <body>
-  <h1 class="srOnly">Model Test Result</h1>
+  <h1 class="srOnly">Model Test Result Sheet</h1>
 
   <header>
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
-        <div class="tag" id="headerTag">Model Test Result</div>
+        <div class="tag" id="headerTag">Result Sheet (Ranking)</div>
       </div>
 
       <nav class="nav" aria-label="Main navigation">
@@ -482,35 +412,9 @@
   </header>
 
   <div class="container">
-    <!-- SUMMARY (Single Result) -->
-    <section class="card" aria-label="Result summary">
-      <h2 class="title" id="pageTitle">Result লোড হচ্ছে…</h2>
-      <p class="sub" id="pageSub">অনুগ্রহ করে অপেক্ষা করুন</p>
-
-      <div class="tableWrap" aria-label="Result table">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:45%;">ফিল্ড</th>
-              <th>ভ্যালু</th>
-            </tr>
-          </thead>
-          <tbody id="summaryBody">
-            <tr><td>লোড হচ্ছে</td><td>…</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="actions">
-        <button class="btnGhost btn" type="button" onclick="backToTest()">Back to Test</button>
-        <button class="btn" type="button" onclick="openDetails()">Details</button>
-        <button class="btn btnDanger" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
-      </div>
-    </section>
-
-    <!-- RESULT SHEET (Ranking Table) — Total Time removed -->
-    <section class="card" style="margin-top:12px;" aria-label="Result sheet">
-      <h2 class="title">Result Sheet (Ranking)</h2>
+    <!-- ONLY ONE BOX: Result Sheet (Ranking) -->
+    <section class="card" aria-label="Result sheet">
+      <h2 class="title" id="pageTitle">Result Sheet (Ranking)</h2>
       <p class="sub" id="rankSub">সব রেজাল্ট লোড হচ্ছে…</p>
 
       <div class="tableWrap" style="overflow:auto;">
@@ -534,9 +438,13 @@
           </tbody>
         </table>
       </div>
+
+      <div class="actions">
+        <button class="btnGhost btn" type="button" onclick="backToTest()">Back to Test</button>
+      </div>
     </section>
 
-    <!-- DETAILS -->
+    <!-- DETAILS (Only shows after clicking Details) -->
     <section class="detailSheet" id="detailSheet" aria-label="Details sheet">
       <article class="paper">
         <div class="paperFrame">
@@ -564,51 +472,6 @@
   <!-- hidden offscreen for PDF rendering -->
   <div class="pdfPageArea" id="pdfPageArea" aria-hidden="true"></div>
 
-  <footer>
-    <div class="footGrid">
-      <div>
-        <div class="footTitle">eProstutiBD</div>
-        <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে</div>
-      </div>
-
-      <div>
-        <div class="footTitle">দরকারি পেজ</div>
-        <div class="footLinks">
-          <a href="#">About</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms</a>
-          <a href="#">Contact</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="footTitle">অন্যান্য</div>
-        <div class="footLinks">
-          <a href="#">Notice</a>
-          <a href="#">Blog</a>
-          <a href="#">Career</a>
-          <a href="#">Help</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="footTitle">Social</div>
-        <div class="socialCol">
-          <a href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
-            Facebook
-          </a>
-          <a href="#" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-            YouTube
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="copy">© <span id="year"></span> eProstutiBD — All rights reserved</div>
-  </footer>
-
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
@@ -618,7 +481,6 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
     // ===== menu =====
@@ -666,11 +528,10 @@
     ];
 
     const modelTestId = getParam("modelTestId");
-    const resultId = getParam("resultId");
 
     // ===== state =====
-    let resultPayload = null;
-    let questions = [];
+    let resultPayload = null; // selected student result (for details + pdf)
+    let questions = [];       // cached questions for this modelTestId
 
     // ===== Back =====
     function backToTest(){
@@ -683,7 +544,6 @@
     function getMcqMap(p){
       const o = p?.answers?.mcq;
       if(o && typeof o === "object" && !Array.isArray(o)) return o;
-      // fallback (old version array)
       if(Array.isArray(p?.answers?.mcq)){
         const out = {};
         try{ p.answers.mcq.forEach(([k,v])=> out[String(k)] = v); }catch(e){}
@@ -725,38 +585,6 @@
       return t === "written" || t === "cq" || t === "short" || t === "essay";
     }
 
-    // ===== load result =====
-    async function loadFromLocal(){
-      if(!modelTestId || resultId) return null; // resultId থাকলে Firestore
-      const raw = localStorage.getItem(`epbd_result_${modelTestId}`);
-      if(!raw) return null;
-      try{
-        const obj = JSON.parse(raw);
-        if(obj && obj.modelTestId) return obj;
-        return null;
-      }catch(e){ return null; }
-    }
-
-    async function loadLatestFromFirestore(){
-      // specific result by id
-      if(resultId){
-        const doc = await db.collection(COL_RESULTS).doc(resultId).get();
-        if(!doc.exists) return null;
-        return { id: doc.id, ...doc.data() };
-      }
-
-      // latest
-      const snap = await db.collection(COL_RESULTS)
-        .where("modelTestId","==", modelTestId)
-        .orderBy("submittedAt","desc")
-        .limit(1)
-        .get();
-
-      if(snap.empty) return null;
-      const d = snap.docs[0];
-      return { id:d.id, ...d.data() };
-    }
-
     async function fetchQuestionsFromCollection(colName, mtId){
       try{
         const s = await db.collection(colName).where("modelTestId","==", mtId).orderBy("createdAt","asc").get();
@@ -777,7 +605,8 @@
       }
     }
 
-    async function loadQuestions(){
+    async function loadQuestionsOnce(){
+      if(questions.length) return questions;
       let qs = [];
       for(const col of QUESTION_COLLECTION_CANDIDATES){
         try{
@@ -788,62 +617,15 @@
       if(!qs.length){
         try{ qs = await fetchQuestionsFromSubcollection(modelTestId); }catch(e){}
       }
-      return qs || [];
+      questions = qs || [];
+      return questions;
     }
 
-    // ===== render summary table =====
-    function tr(k,v){
-      return `<tr><td>${esc(k)}</td><td>${v}</td></tr>`;
-    }
-
-    function renderSummary(){
-      const p = resultPayload || {};
-      const r = p.result || {};
-      const name = p.studentName || "--";
-      const dist = p.studentDistrict || "--";
-      const test = p.modelTestName || "--";
-      const submitted = fmtTime(p.submittedAt);
-
-      $("pageTitle").textContent = `${test} — Result`;
-      $("pageSub").textContent = `${name} (${dist})`;
-
-      $("headerTag").textContent = `${test} • ${name}`;
-
-      const totalQ = (r.totalQuestion ?? "--");
-      const right = (r.right ?? "--");
-      const wrong = (r.wrong ?? "--");
-      const totalMark = (r.totalMark ?? "--");
-      const obtained = (r.obtainedMark ?? "--");
-
-      const badgeRight = `<span class="badge ok">✓ Right: ${esc(right)}</span>`;
-      const badgeWrong = `<span class="badge bad">✗ Wrong: ${esc(wrong)}</span>`;
-      const badgeMark = `<span class="badge warn">Mark: ${esc(obtained)} / ${esc(totalMark)}</span>`;
-
-      const body = `
-        ${tr("Name", esc(name))}
-        ${tr("District", esc(dist))}
-        ${tr("Model Test", esc(test))}
-        ${tr("Submitted", esc(submitted))}
-        ${tr("Total Question", `<span class="badge">${esc(totalQ)}</span>`)}
-        ${tr("Right / Wrong / Mark", `${badgeRight} ${badgeWrong} ${badgeMark}`)}
-        ${tr("Auto Submit", p.isAuto ? `<span class="badge warn">Yes</span>` : `<span class="badge">No</span>`)}
-      `;
-      $("summaryBody").innerHTML = body;
-    }
-
-    // ===== Details =====
+    // ===== Details open/close =====
     function openDetails(){
       $("detailSheet").classList.add("show");
-      if(!questions.length){
-        $("detailContent").innerHTML = `<div class="loading">প্রশ্ন লোড হচ্ছে…</div>`;
-        loadAndRenderDetails();
-      }else{
-        renderDetails();
-      }
       try{ window.scrollTo({ top: $("detailSheet").offsetTop - 20, behavior:"smooth" }); }catch(e){}
     }
-    window.openDetails = openDetails;
-
     function closeDetails(){
       $("detailSheet").classList.remove("show");
       try{ window.scrollTo({ top: 0, behavior:"smooth" }); }catch(e){}
@@ -858,7 +640,6 @@
       const right = (r.right ?? "--");
       const wrong = (r.wrong ?? "--");
       const totalQ = (r.totalQuestion ?? "--");
-
       return `
         <span class="badge">${esc(totalQ)} Q</span>
         <span class="badge ok">✓ ${esc(right)} Right</span>
@@ -871,11 +652,13 @@
       const p = resultPayload || {};
       const r = p.result || {};
       const name = p.studentName || "--";
-      const dist = p.studentDistrict || "--";
-      const test = p.modelTestName || "--";
+      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
+      const test = p.modelTestName || "Model Test";
+
+      $("headerTag").textContent = `${test} • Result Sheet`;
 
       $("sheetTitle").textContent = `${test} — Details Sheet`;
-      $("sheetSub").textContent = `${name} (${dist}) • Obtained: ${r.obtainedMark ?? "--"} / ${r.totalMark ?? "--"}`;
+      $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)} • Mark: ${r.obtainedMark ?? "--"} / ${r.totalMark ?? "--"}`;
       $("sheetStats").innerHTML = buildStatBadges();
 
       const mcqMap = getMcqMap(p);
@@ -955,23 +738,11 @@
         list.appendChild(row);
       });
 
-      const wrap = document.createElement("div");
-      wrap.appendChild(list);
       $("detailContent").innerHTML = "";
-      $("detailContent").appendChild(wrap);
+      $("detailContent").appendChild(list);
     }
 
-    async function loadAndRenderDetails(){
-      try{
-        questions = await loadQuestions();
-        renderDetails();
-      }catch(e){
-        console.error(e);
-        $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
-      }
-    }
-
-    // ===== Result Sheet (Ranking) — Total Time removed =====
+    // ===== Ranking helpers =====
     function calcNoAns(r){
       const totalQ = safeNum(r?.totalQuestion, NaN);
       const right = safeNum(r?.right, NaN);
@@ -985,6 +756,29 @@
       return "--";
     }
 
+    async function openDetailsByResultId(resId){
+      try{
+        $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
+        openDetails();
+
+        const doc = await db.collection(COL_RESULTS).doc(resId).get();
+        if(!doc.exists){
+          $("detailContent").innerHTML = `<div class="err">Result পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        resultPayload = { id: doc.id, ...doc.data() };
+
+        await loadQuestionsOnce();
+        renderDetails();
+      }catch(e){
+        console.error(e);
+        $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
+      }
+    }
+    window.openDetailsByResultId = openDetailsByResultId;
+
+    // ===== Load ranking table =====
     async function loadResultSheet(){
       try{
         $("rankSub").textContent = "সব রেজাল্ট লোড হচ্ছে…";
@@ -1007,7 +801,7 @@
           return { p, r, obtained, submittedAt };
         });
 
-        // Sort: Mark desc, SubmittedAt asc (tie-break)
+        // Rank rule: Mark desc, (tie) SubmittedAt asc
         rows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           return a.submittedAt - b.submittedAt;
@@ -1015,7 +809,6 @@
 
         const html = rows.map((x, idx)=>{
           const p = x.p, r = x.r;
-
           const name = p.studentName || "--";
           const addr = p.studentDistrict || p.studentAddress || p.address || "--";
           const test = p.modelTestName || "--";
@@ -1024,11 +817,7 @@
           const right = (r.right ?? "--");
           const wrong = (r.wrong ?? "--");
           const noAns = calcNoAns(r);
-
           const mark = (r.obtainedMark ?? x.obtained ?? "--");
-
-          const detailsUrl =
-            `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}&resultId=${encodeURIComponent(p.id)}`;
 
           return `
             <tr>
@@ -1041,7 +830,10 @@
               <td>${esc(wrong)}</td>
               <td>${esc(noAns)}</td>
               <td><span class="badge warn">${esc(mark)}</span></td>
-              <td><a class="btn" href="${detailsUrl}" style="padding:6px 10px; font-size:12px;">Details</a></td>
+              <td>
+                <button class="btn" style="padding:6px 10px;font-size:12px;"
+                  type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
+              </td>
             </tr>
           `;
         }).join("");
@@ -1073,10 +865,10 @@
       const p = resultPayload || {};
       const r = p.result || {};
       const name = p.studentName || "--";
-      const dist = p.studentDistrict || "--";
+      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "--";
 
-      const html = `
+      return `
         <div class="pdfFrame">
           <div class="pdfH1">${esc(test)} — Result</div>
           <div class="pdfH2">${esc(name)} (${esc(dist)})</div>
@@ -1096,18 +888,18 @@
           </table>
 
           <div style="margin-top:12px;font-size:12px;font-weight:900;">
-            Details pages এ Correct = <span style="color:#16a34a;font-weight:1000;">Green ✓</span>, Wrong chosen = <span style="color:#dc2626;font-weight:1000;">Red ✗</span>
+            Correct = <span style="color:#16a34a;font-weight:1000;">Green ✓</span>,
+            Wrong chosen = <span style="color:#dc2626;font-weight:1000;">Red ✗</span>
           </div>
         </div>
       `;
-      return html;
     }
 
     function buildMarkedQuestionPages(){
       const p = resultPayload || {};
       const r = p.result || {};
       const name = p.studentName || "--";
-      const dist = p.studentDistrict || "--";
+      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
       const test = p.modelTestName || "--";
 
       const mcqMap = getMcqMap(p);
@@ -1180,12 +972,10 @@
     async function downloadResultPDF(){
       try{
         if(!resultPayload){
-          alert("Result loaded হয়নি");
+          alert("Details থেকে একজনের result খুলে তারপর PDF ডাউনলোড করুন।");
           return;
         }
-        if(!questions.length){
-          questions = await loadQuestions();
-        }
+        await loadQuestionsOnce();
 
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF("p", "pt", "a4");
@@ -1200,12 +990,8 @@
           pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
         };
 
-        // 1) summary page
         addCanvas(await renderPageToCanvas(buildSummaryPdfPage()));
-
-        // 2) marked question pages
-        const markedPages = buildMarkedQuestionPages();
-        for(const html of markedPages){
+        for(const html of buildMarkedQuestionPages()){
           addCanvas(await renderPageToCanvas(html));
         }
 
@@ -1223,42 +1009,14 @@
     async function boot(){
       if(!modelTestId){
         $("pageTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("pageSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
-        $("summaryBody").innerHTML = `<tr><td>Error</td><td>Invalid URL</td></tr>`;
+        $("rankSub").textContent = "URL এ দিন: model-test-reasult.html?modelTestId=XXXX";
         $("rankBody").innerHTML = `<tr><td colspan="10">Invalid URL</td></tr>`;
-        $("rankSub").textContent = "Error";
         return;
       }
-
-      // 1) local first
-      let p = await loadFromLocal();
-
-      // 2) fallback firestore
-      if(!p){
-        try{
-          p = await loadLatestFromFirestore();
-        }catch(e){
-          console.error(e);
-          p = null;
-        }
-      }
-
-      if(!p){
-        $("pageTitle").textContent = "Result পাওয়া যায়নি";
-        $("pageSub").textContent = "এই modelTestId এর কোনো result নেই";
-        $("summaryBody").innerHTML = `<tr><td>Error</td><td>No result found</td></tr>`;
-      }else{
-        resultPayload = p;
-        renderSummary();
-
-        // preload questions (fast details + pdf)
-        try{
-          questions = await loadQuestions();
-        }catch(e){}
-      }
-
-      // load ranking table (all results)
+      // load ranking
       loadResultSheet();
+      // preload questions for fast details/pdf
+      loadQuestionsOnce().catch(()=>{});
     }
 
     boot();
