@@ -31,8 +31,9 @@
       --footTop:#0b1f3f;
       --footBottom:#07152e;
 
-      --adW: 190px;  /* ✅ side ads width */
-      --adGap: 16px;
+      /* ✅ Bigger fixed side ads + more breathing room */
+      --adW: 240px;  /* ✅ side ads width (bigger) */
+      --adGap: 18px;
     }
 
     *{box-sizing:border-box}
@@ -50,28 +51,32 @@
     a{color:inherit}
     .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
-    /* ✅ Side Ads (fixed, no scroll) */
+    /* ✅ Side Ads (fixed, NO SCROLL) */
     .adSide{
       position: fixed;
-      top: 76px; /* header height approx */
-      height: calc(100vh - 92px);
+      top: 72px;          /* header height approx */
+      bottom: 14px;       /* viewport bottom gap */
+      height: auto;       /* ✅ no calc needed */
       width: var(--adW);
       z-index: 40;
-      display: none; /* default off until body.adsOn */
+      display: none;      /* default off until body.adsOn */
       border: 1px solid rgba(18,28,55,.12);
       border-radius: 18px;
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.78);
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
-      overflow: hidden; /* no scroll */
+      overflow: hidden;   /* ✅ no scroll */
       padding: 10px;
+      transition: opacity .18s ease, transform .18s ease;
     }
-    body.adsOn .adSide{ display:block; }
+    body.adsOn .adSide{ display:block; opacity:1; transform: translateY(0); }
+    body:not(.adsOn) .adSide{ opacity:0; transform: translateY(4px); }
 
     .adLeft{ left: 12px; }
     .adRight{ right: 12px; }
 
     .adBox{
       height: 100%;
+      width: 100%;
       border-radius: 14px;
       border: 1px dashed rgba(18,28,55,.18);
       background:
@@ -89,20 +94,35 @@
       user-select:none;
     }
 
-    /* Hide ads on smaller screens */
-    @media (max-width: 1180px){
+    /* ✅ Ad slots: keep inside box, never overflow */
+    #adLeftSlot, #adRightSlot{
+      width: 100%;
+      height: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    #adLeftSlot > *, #adRightSlot > *{
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* ✅ Hide ads on smaller screens (avoid overlap) */
+    @media (max-width: 1280px){
       body.adsOn .adSide{ display:none; }
       body.adsOn .container{ padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
     }
 
     .container{
-      max-width: 1200px;
+      max-width: 1440px; /* ✅ bigger body */
       margin: 0 auto;
-      --pad: clamp(8px, 2vw, 20px);
+      --pad: clamp(10px, 2vw, 22px);
       padding-left: var(--pad);
       padding-right: var(--pad);
       padding-top: 12px;
       padding-bottom: 18px;
+      transition: padding .18s ease;
     }
     /* ✅ When ads enabled, add padding so content doesn't overlap */
     body.adsOn .container{
@@ -118,7 +138,7 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: 1200px;
+      max-width: 1440px;
       margin:0 auto;
       padding: 10px clamp(8px, 2vw, 20px);
       display:flex;
@@ -270,7 +290,7 @@
     }
     .filterCard{
       flex: 1 1 520px;
-      max-width: 980px;
+      max-width: 1100px;
       border-radius: 18px;
       border: 1px solid rgba(18,28,55,.12);
       background:
@@ -321,16 +341,18 @@
     }
 
     /* ===== Popup ===== */
-    .modal{ display:none; position:fixed; inset:0; z-index:99999; }
+    .modal{ display:none; position:fixed; inset:0; z-index:99999; } /* ✅ above ads */
     .modal.show{display:block;}
     .modalOverlay{
       position:absolute; inset:0;
       background: rgba(2, 6, 23, .45);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+      z-index: 100000;
     }
     .modalDialog{
       position:relative;
+      z-index: 100001;
       margin: 70px auto 24px;
       width: min(980px, calc(100vw - 18px));
       max-height: calc(100vh - 100px);
@@ -665,7 +687,7 @@
       color: rgba(255,255,255,.86);
     }
     .footGrid{
-      max-width: 1200px;
+      max-width: 1440px;
       margin:0 auto;
       padding: 18px clamp(8px, 2vw, 20px) 10px;
       display:grid;
@@ -694,7 +716,7 @@
     .soc:hover{background: rgba(255,255,255,.18);}
 
     .copy{
-      max-width: 1200px;
+      max-width: 1440px;
       margin:0 auto;
       padding: 12px clamp(8px, 2vw, 20px) 14px;
       border-top: 1px solid rgba(255,255,255,.12);
@@ -713,18 +735,22 @@
 <body>
   <h1 class="srOnly">Model Test Result Sheet</h1>
 
-  <!-- ✅ Fixed Side Ads -->
+  <!-- ✅ Fixed Side Ads (NO SCROLL) -->
   <aside class="adSide adLeft" id="adLeft" aria-label="Left Ad">
     <div class="adBox">
-      LEFT AD<br/>
-      (Fixed)
+      <!-- ✅ Adsterra/AdSense Left Slot (paste code inside/replace content) -->
+      <div id="adLeftSlot">
+        LEFT AD SLOT<br/> (Fixed • No Scroll)
+      </div>
     </div>
   </aside>
 
   <aside class="adSide adRight" id="adRight" aria-label="Right Ad">
     <div class="adBox">
-      RIGHT AD<br/>
-      (Fixed)
+      <!-- ✅ Adsterra/AdSense Right Slot (paste code inside/replace content) -->
+      <div id="adRightSlot">
+        RIGHT AD SLOT<br/> (Fixed • No Scroll)
+      </div>
     </div>
   </aside>
 
@@ -797,7 +823,7 @@
       </div>
 
       <div class="tableWrap">
-        <table style="min-width:1140px;">
+        <table style="min-width:1320px;">
           <thead>
             <tr>
               <th style="width:60px;">Rank</th>
@@ -1502,10 +1528,10 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Ranking rule (as you asked):
-        // 1) obtained DESC (higher mark = higher rank)
-        // 2) tie => timeTakenSec ASC (lower timeTaken = higher rank)
-        // 3) still tie => submittedAt ASC (internal tiebreak)
+        // ✅ Ranking rule:
+        // 1) obtained DESC
+        // 2) tie => timeTakenSec ASC
+        // 3) still tie => submittedAt ASC
         allRows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
