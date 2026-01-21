@@ -1,3 +1,5 @@
+
+You said:
 <!doctype html>
 <html lang="bn">
 <head>
@@ -33,12 +35,6 @@
 
       --adW: 190px;  /* ✅ side ads width */
       --adGap: 16px;
-
-      /* ✅ bigger body width (details dekhate) */
-      --pageMax: 1440px;
-
-      /* ✅ header height auto (JS will set exact) */
-      --headerH: 76px;
     }
 
     *{box-sizing:border-box}
@@ -52,7 +48,6 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
-      overflow-x:hidden; /* ✅ no side overflow */
     }
     a{color:inherit}
     .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
@@ -60,8 +55,8 @@
     /* ✅ Side Ads (fixed, no scroll) */
     .adSide{
       position: fixed;
-      top: calc(var(--headerH) + 12px);              /* ✅ header height-aware */
-      height: calc(100vh - var(--headerH) - 24px);  /* ✅ fixed full height without scroll */
+      top: 76px; /* header height approx */
+      height: calc(100vh - 92px);
       width: var(--adW);
       z-index: 40;
       display: none; /* default off until body.adsOn */
@@ -69,10 +64,8 @@
       border-radius: 18px;
       background: rgba(255,255,255,.75);
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
-      overflow: hidden; /* ✅ no scroll */
+      overflow: hidden; /* no scroll */
       padding: 10px;
-      transform: translateZ(0); /* ✅ smoother fixed */
-      will-change: transform;
     }
     body.adsOn .adSide{ display:block; }
 
@@ -96,17 +89,16 @@
       font-weight: 1000;
       line-height: 1.5;
       user-select:none;
-      overflow:hidden; /* ✅ no internal scroll */
     }
 
-    /* ✅ Hide ads on smaller screens (mobile a body scroll thakbe) */
+    /* Hide ads on smaller screens */
     @media (max-width: 1180px){
       body.adsOn .adSide{ display:none; }
       body.adsOn .container{ padding-left: var(--pad) !important; padding-right: var(--pad) !important; }
     }
 
     .container{
-      max-width: var(--pageMax);
+      max-width: 1200px;
       margin: 0 auto;
       --pad: clamp(8px, 2vw, 20px);
       padding-left: var(--pad);
@@ -128,7 +120,7 @@
       box-shadow: 0 14px 34px rgba(29,78,216,.18);
     }
     .topbar{
-      max-width: var(--pageMax);
+      max-width: 1200px;
       margin:0 auto;
       padding: 10px clamp(8px, 2vw, 20px);
       display:flex;
@@ -675,7 +667,7 @@
       color: rgba(255,255,255,.86);
     }
     .footGrid{
-      max-width: var(--pageMax);
+      max-width: 1200px;
       margin:0 auto;
       padding: 18px clamp(8px, 2vw, 20px) 10px;
       display:grid;
@@ -690,44 +682,21 @@
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
     .socials{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-
-    /* ✅ Premium social icon */
     .soc{
-      width:38px;height:38px;border-radius:999px;
+      width:36px;height:36px;border-radius:999px;
       display:grid;place-items:center;
       text-decoration:none;
       color:#fff;
       border:1px solid rgba(255,255,255,.22);
-      background:
-        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.38), transparent 60%),
-        linear-gradient(135deg, rgba(96,165,250,.30), rgba(34,197,94,.22));
-      box-shadow:
-        0 10px 24px rgba(0,0,0,.22),
-        inset 0 0 0 1px rgba(255,255,255,.10);
+      background: rgba(255,255,255,.10);
       font-weight:1000;
       line-height:1;
       user-select:none;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .soc:hover{
-      transform: translateY(-1px);
-      box-shadow:
-        0 14px 30px rgba(0,0,0,.28),
-        inset 0 0 0 1px rgba(255,255,255,.14);
-      background:
-        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
-        linear-gradient(135deg, rgba(96,165,250,.36), rgba(34,197,94,.28));
-    }
-    .soc:focus-visible{
-      outline:none;
-      box-shadow:
-        0 16px 34px rgba(0,0,0,.30),
-        0 0 0 4px rgba(96,165,250,.28),
-        inset 0 0 0 1px rgba(255,255,255,.14);
-    }
+    .soc:hover{background: rgba(255,255,255,.18);}
 
     .copy{
-      max-width: var(--pageMax);
+      max-width: 1200px;
       margin:0 auto;
       padding: 12px clamp(8px, 2vw, 20px) 14px;
       border-top: 1px solid rgba(255,255,255,.12);
@@ -748,20 +717,20 @@
 
   <!-- ✅ Fixed Side Ads -->
   <aside class="adSide adLeft" id="adLeft" aria-label="Left Ad">
-    <div class="adBox" id="adLeftSlot">
+    <div class="adBox">
       LEFT AD<br/>
       (Fixed)
     </div>
   </aside>
 
   <aside class="adSide adRight" id="adRight" aria-label="Right Ad">
-    <div class="adBox" id="adRightSlot">
+    <div class="adBox">
       RIGHT AD<br/>
       (Fixed)
     </div>
   </aside>
 
-  <header id="siteHeader">
+  <header>
     <div class="topbar">
       <div class="brand">
         <div class="name">eProstutiBD</div>
@@ -954,13 +923,6 @@
     document.getElementById("year").textContent = new Date().getFullYear();
     const $ = (id)=>document.getElementById(id);
 
-    // ✅ header height auto set for fixed ads (right/left)
-    function syncHeaderHeight(){
-      const h = $("siteHeader")?.offsetHeight || 76;
-      document.documentElement.style.setProperty("--headerH", h + "px");
-    }
-    window.addEventListener("resize", syncHeaderHeight);
-
     // ===== menu =====
     function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
     function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
@@ -980,8 +942,6 @@
       try{ localStorage.setItem("adsOn", on ? "1" : "0"); }catch(e){}
       const btn = $("adsToggleBtn");
       if(btn) btn.textContent = on ? "Ads: ON" : "Ads: OFF";
-      // ✅ recalc header/ads position after toggling
-      syncHeaderHeight();
     }
     function toggleAds(){
       const on = document.body.classList.contains("adsOn");
@@ -1079,7 +1039,7 @@
 
     function backToTest(){
       if(!modelTestId) location.href = "Start-model-test.html";
-      else location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+      else location.href = Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)};
     }
     window.backToTest = backToTest;
 
@@ -1229,9 +1189,9 @@
     function renderNoAnsBadge(noAns){
       const n = Number(noAns);
       if(Number.isFinite(n) && n > 0){
-        return `<span class="badge bad">${esc(n)}</span>`;   // ✅ red mark
+        return <span class="badge bad">${esc(n)}</span>;   // ✅ red mark
       }
-      return `<span class="badge">${esc(noAns)}</span>`;
+      return <span class="badge">${esc(noAns)}</span>;
     }
 
     function renderPage(){
@@ -1243,8 +1203,8 @@
       const slice = filteredRows.slice(start, start + PAGE_SIZE);
 
       if(!slice.length){
-        $("rankBody").innerHTML = `<tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>`;
-        $("pageInfo").textContent = `Page 1 / 1`;
+        $("rankBody").innerHTML = <tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>;
+        $("pageInfo").textContent = Page 1 / 1;
         return;
       }
 
@@ -1263,14 +1223,14 @@
 
         const pf = getPassFail(r.obtainedMark, r.totalMark);
         const pfBadge = pf.ok === true
-          ? `<span class="badge ok">PASS</span>`
+          ? <span class="badge ok">PASS</span>
           : pf.ok === false
-            ? `<span class="badge bad">FAIL</span>`
-            : `<span class="badge">—</span>`;
+            ? <span class="badge bad">FAIL</span>
+            : <span class="badge">—</span>;
 
         const globalRank = start + idx + 1;
 
-        return `
+        return 
           <tr data-result-id="${esc(p.id)}">
             <td><span class="badge">${globalRank}</span></td>
             <td style="white-space:nowrap;">${esc(name)}</td>
@@ -1287,11 +1247,11 @@
                 type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
             </td>
           </tr>
-        `;
+        ;
       }).join("");
 
       $("rankBody").innerHTML = html;
-      $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
+      $("pageInfo").textContent = Page ${page} / ${totalPages};
 
       if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
     }
@@ -1302,7 +1262,7 @@
     }
     function applyHighlightOnCurrentPage(resId){
       clearHighlights();
-      const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+      const tr = document.querySelector(#rankBody tr[data-result-id="${CSS.escape(resId)}"]);
       if(tr) tr.classList.add("hl");
     }
 
@@ -1321,7 +1281,7 @@
       }
 
       setTimeout(()=>{
-        const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+        const tr = document.querySelector(#rankBody tr[data-result-id="${CSS.escape(resId)}"]);
         if(tr) tr.scrollIntoView({ behavior:"smooth", block:"center" });
       }, 80);
     }
@@ -1336,7 +1296,7 @@
       $("detailsModal").classList.remove("show");
       $("detailsModal").setAttribute("aria-hidden","true");
       $("markStamp").style.display = "none";
-      $("detailContent").innerHTML = `<div class="loading">প্রশ্ন লোড হচ্ছে…</div>`;
+      $("detailContent").innerHTML = <div class="loading">প্রশ্ন লোড হচ্ছে…</div>;
       clearUrlResultId();
       document.body.style.overflow = "";
     }
@@ -1355,12 +1315,12 @@
       const wrong = (r.wrong ?? "--");
       const totalQ = (r.totalQuestion ?? "--");
       const noAns = calcNoAns(r);
-      return `
+      return 
         <span class="badge">${esc(totalQ)} Q</span>
         <span class="badge ok">✓ ${esc(right)} Right</span>
         <span class="badge bad">✗ ${esc(wrong)} Wrong</span>
         <span class="badge warn">${esc(noAns)} No Ans</span>
-      `;
+      ;
     }
 
     function renderMarkStamp(){
@@ -1370,11 +1330,11 @@
       const pf = getPassFail(r.obtainedMark, r.totalMark);
 
       const el = $("markStamp");
-      el.innerHTML = `
+      el.innerHTML = 
         <div class="score">${esc(obtained)} / ${esc(total)}</div>
         <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
         <div class="note">Teacher Checked</div>
-      `;
+      ;
       el.style.display = "block";
     }
 
@@ -1386,9 +1346,9 @@
       const test = p.modelTestName || "Model Test";
       const timeTakenText = p.timeTakenText || "--";
 
-      $("detailTimeTaken").textContent = `Time: ${timeTakenText}`;
-      $("sheetTitle").textContent = `${test} — Details Sheet`;
-      $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
+      $("detailTimeTaken").textContent = Time: ${timeTakenText};
+      $("sheetTitle").textContent = ${test} — Details Sheet;
+      $("sheetSub").textContent = ${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)};
       $("sheetStats").innerHTML = buildStatBadges();
       renderMarkStamp();
 
@@ -1397,7 +1357,7 @@
       const letters = ["A","B","C","D"];
 
       if(!questions.length){
-        $("detailContent").innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+        $("detailContent").innerHTML = <div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>;
         return;
       }
 
@@ -1411,12 +1371,12 @@
 
         const row = document.createElement("div");
         row.className = "qRow";
-        row.innerHTML = `
+        row.innerHTML = 
           <div class="qHead">
             <span class="qNo">Q${qno}</span>
             <p class="qText">${esc(qt)}</p>
           </div>
-        `;
+        ;
 
         if(isWrittenQuestion(q)){
           const ans = (wrMap[qid] ?? "").toString().trim();
@@ -1426,10 +1386,10 @@
           box.style.border = "1px solid rgba(18,28,55,.12)";
           box.style.borderRadius = "12px";
           box.style.background = "rgba(255,255,255,.75)";
-          box.innerHTML = `
+          box.innerHTML = 
             <div style="font-size:12px;color:var(--muted);font-weight:1000;">Your Answer (Written)</div>
             <div style="margin-top:6px;font-weight:900;line-height:1.6;">${esc(ans || "(No Answer)")}</div>
-          `;
+          ;
           row.appendChild(box);
           wrap.appendChild(row);
           return;
@@ -1464,11 +1424,11 @@
 
           const div = document.createElement("div");
           div.className = "optLine";
-          div.innerHTML = `
+          div.innerHTML = 
             <span class="markIcon ${iconCls}">${iconTxt || ""}</span>
             <span class="optKey">${letters[oi]}.</span>
             <span class="optTxt ${txtCls}">${esc(op || "")}</span>
-          `;
+          ;
           optWrap.appendChild(div);
         });
 
@@ -1492,12 +1452,12 @@
       try{
         setUrlResultId(resId);
 
-        $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
+        $("detailContent").innerHTML = <div class="loading">Details লোড হচ্ছে…</div>;
         openDetailsPopup();
 
         const doc = await db.collection(COL_RESULTS).doc(resId).get();
         if(!doc.exists){
-          $("detailContent").innerHTML = `<div class="err">Result পাওয়া যায়নি।</div>`;
+          $("detailContent").innerHTML = <div class="err">Result পাওয়া যায়নি।</div>;
           return;
         }
 
@@ -1512,7 +1472,7 @@
         renderDetails();
       }catch(e){
         console.error(e);
-        $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
+        $("detailContent").innerHTML = <div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>;
       }
     }
     window.openDetailsByResultId = openDetailsByResultId;
@@ -1525,7 +1485,7 @@
           .get();
 
         if(snap.empty){
-          $("rankBody").innerHTML = `<tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>`;
+          $("rankBody").innerHTML = <tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>;
           allRows = [];
           filteredRows = [];
           renderPage();
@@ -1544,10 +1504,10 @@
           return { p, r, obtained, submittedAt, timeTakenSec };
         });
 
-        // ✅ Ranking rule:
-        // 1) obtained DESC
-        // 2) tie => timeTakenSec ASC
-        // 3) still tie => submittedAt ASC
+        // ✅ Ranking rule (as you asked):
+        // 1) obtained DESC (higher mark = higher rank)
+        // 2) tie => timeTakenSec ASC (lower timeTaken = higher rank)
+        // 3) still tie => submittedAt ASC (internal tiebreak)
         allRows.sort((a,b)=>{
           if(b.obtained !== a.obtained) return b.obtained - a.obtained;
           if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
@@ -1559,7 +1519,7 @@
         renderPage();
       }catch(e){
         console.error(e);
-        $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
+        $("rankBody").innerHTML = <tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>;
       }
     }
 
@@ -1596,12 +1556,12 @@
       const obtained = r.obtainedMark ?? "--";
       const total = r.totalMark ?? "--";
       const pf = getPassFail(r.obtainedMark, r.totalMark);
-      return `
+      return 
         <div class="pdfMark">
           <div class="score">${esc(obtained)} / ${esc(total)}</div>
           <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
         </div>
-      `;
+      ;
     }
 
     function chunk(arr, size){
@@ -1623,14 +1583,14 @@
 
         if(isWrittenQuestion(q)){
           const ans = (wrMap[qid] ?? "").toString().trim();
-          return `
+          return 
             <div class="pdfQ">
               <div class="qline">Q${qno}. ${esc(qt)}</div>
               <div class="pdfOpt">
                 <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
               </div>
             </div>
-          `;
+          ;
         }
 
         const opts = getOptions(q);
@@ -1644,28 +1604,28 @@
           const isChosen = (hasChosen && oi === chosenIdx);
 
           let cls = "dim";
-          let prefix = `${letters[oi]}. `;
+          let prefix = ${letters[oi]}. ;
 
           if(!hasChosen && isCorrect){
-            cls = "warn"; prefix = `✓ ${letters[oi]}. `;
+            cls = "warn"; prefix = ✓ ${letters[oi]}. ;
           }else if(hasChosen && isCorrect){
-            cls = "ok"; prefix = `✓ ${letters[oi]}. `;
+            cls = "ok"; prefix = ✓ ${letters[oi]}. ;
           }
           if(isChosen && !isCorrect){
-            cls = "bad"; prefix = `✗ ${letters[oi]}. `;
+            cls = "bad"; prefix = ✗ ${letters[oi]}. ;
           }
-          return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
+          return <div class="${cls}">${prefix}${esc(op || "")}</div>;
         }).join("");
 
-        const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
+        const noAns = !hasChosen ? <div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div> : `;
 
-        return `
+        return 
           <div class="pdfQ">
             <div class="qline">Q${qno}. ${esc(qt)}</div>
             <div class="pdfOpt">${optHtml}</div>
             ${noAns}
           </div>
-        `;
+        ;
       }).join("");
     }
 
@@ -1683,7 +1643,7 @@
 
       const qHtml = buildPdfQuestionsHtml(firstQs, 1);
 
-      return `
+      return 
         <div class="pdfFrame">
           <div class="pdfWatermark"><span>eProstutiBD</span></div>
           ${buildPdfMark()}
@@ -1705,12 +1665,12 @@
             <span>Questions (with header)</span>
           </div>
         </div>
-      `;
+      ;
     }
 
     function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
       const qHtml = buildPdfQuestionsHtml(qs, startNo);
-      return `
+      return 
         <div class="pdfFrame">
           <div class="pdfWatermark"><span>eProstutiBD</span></div>
           <div class="pdfQuestions" style="margin-top:0;">${qHtml}</div>
@@ -1719,7 +1679,7 @@
             <span>Page ${pageIndex} / ${totalPages}</span>
           </div>
         </div>
-      `;
+      ;
     }
 
     // ✅ per page 26 questions
@@ -1761,7 +1721,7 @@
 
         const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
         const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
-        pdf.save(`${testName}-${name}-result.pdf`);
+        pdf.save(${testName}-${name}-result.pdf);
       }catch(e){
         console.error(e);
         alert("PDF তৈরি করতে সমস্যা হচ্ছে। Console দেখুন।");
@@ -1771,10 +1731,6 @@
 
     // ===== Boot =====
     async function boot(){
-      // ✅ Sync header height once fonts/layout settled
-      syncHeaderHeight();
-      setTimeout(syncHeaderHeight, 80);
-
       // ✅ Ads option init:
       // 1) URL param ads=1/0 has priority
       // 2) else localStorage
@@ -1801,7 +1757,7 @@
 
       if(!modelTestId && !resultIdFromUrl){
         $("modelTestTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX অথবা result-sheet.html?resultId=YYYY</td></tr>`;
+        $("rankBody").innerHTML = <tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX অথবা result-sheet.html?resultId=YYYY</td></tr>;
         return;
       }
 
