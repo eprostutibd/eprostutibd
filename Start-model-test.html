@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="bn">
 <head>
@@ -798,89 +799,6 @@
       border-color: rgba(22,163,74,1);
       color: rgba(22,163,74,1);
     }
-  
-    /* ===== PDF-style Result popup (match details sheet) ===== */
-    .pdfPop{padding: 18px 16px 14px; position:relative;}
-    .pdfHead{padding-right: 64px;} /* space for stamp */
-    .scoreStamp{
-      position:absolute;
-      top: 14px;
-      left: 14px;
-      border: 2px solid rgba(220,38,38,.75);
-      border-radius: 14px;
-      padding: 10px 12px 8px;
-      background: rgba(255,255,255,.85);
-      transform: rotate(-10deg);
-      box-shadow: 0 12px 26px rgba(0,0,0,.10);
-      min-width: 120px;
-    }
-    .scoreBig{font-weight:1000;font-size:18px;line-height:1.1;color: var(--danger); text-align:center;}
-    .scoreTag{
-      margin-top:6px;
-      text-align:center;
-      font-weight:1000;
-      font-size:12px;
-      letter-spacing:.6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(220,38,38,.40);
-      color: var(--danger);
-      background: rgba(220,38,38,.08);
-    }
-    .scoreStamp.pass{
-      border-color: rgba(22,163,74,.75);
-    }
-    .scoreStamp.pass .scoreBig{color: var(--ok);}
-    .scoreStamp.pass .scoreTag{
-      border-color: rgba(22,163,74,.45);
-      color: var(--ok);
-      background: rgba(22,163,74,.10);
-    }
-
-    .chipRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      padding: 12px 6px 2px;
-    }
-    .chipPill{
-      border:1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.78);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size:12.5px;
-      font-weight:1000;
-      color: var(--text);
-      white-space:nowrap;
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
-    }
-    .chipPill b{font-weight:1000;}
-    .chipPill.ok{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.08); color: rgba(12,110,47,1);}
-    .chipPill.bad{border-color: rgba(220,38,38,.28); background: rgba(220,38,38,.08); color: rgba(220,38,38,1);}
-
-    .pdfStats{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 10px 6px 0;
-    }
-    @media (max-width: 520px){
-      .pdfStats{grid-template-columns: 1fr;}
-      .pdfHead{padding-right: 6px;}
-      .scoreStamp{position:relative; transform:none; top:auto; left:auto; margin: 0 0 10px;}
-    }
-    .statBox{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.80);
-      border-radius: 14px;
-      padding: 10px 12px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.04);
-    }
-    .statBox .lbl{font-size:12px;color: var(--muted);font-weight:1000;}
-    .statBox .val{margin-top:4px;font-size:15px;font-weight:1000;color: var(--text);}
-    .pdfActions{padding-top: 12px;}
-
   </style>
 </head>
 
@@ -1056,51 +974,44 @@
     </div>
   </div>
 
-  <!-- Result modal (PDF-style) -->
+  <!-- Result modal -->
   <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
     <div class="overlay"></div>
-
-    <div class="resultCard pdfPop" onclick="event.stopPropagation()">
-      <!-- score stamp -->
-      <div class="scoreStamp" aria-label="Score">
-        <div class="scoreBig" id="resScoreBig">0 / 0</div>
-        <div class="scoreTag" id="resPassTag">FAIL</div>
-      </div>
-
-      <div class="resultHead pdfHead">
+    <div class="resultCard" onclick="event.stopPropagation()">
+      <div class="resultHead">
         <div>
-          <p class="resultTitle" id="resTitle">Details Sheet</p>
+          <p class="resultTitle" id="resTitle">Result</p>
           <p class="resultSub" id="resSub">...</p>
         </div>
         <button class="modalClose" type="button" onclick="closeResultModal()">Close</button>
       </div>
 
-      <!-- chips row like PDF -->
-      <div class="chipRow" aria-label="Summary">
-        <span class="chipPill">Total: <b id="resTotalMcq">0</b> Q</span>
-        <span class="chipPill ok">✓ Right: <b id="resRight">0</b></span>
-        <span class="chipPill bad">✗ Wrong: <b id="resWrong">0</b></span>
-        <span class="chipPill">No Ans: <b id="resNoAns">0</b></span>
-      </div>
-
-      <!-- bottom stats -->
-      <div class="pdfStats" aria-label="Marks and time">
-        <div class="statBox">
-          <div class="lbl">প্রাপ্ত নম্বর</div>
-          <div class="val" id="resMarkText">0 / 0</div>
+      <div class="resultGrid">
+        <div class="stat">
+          <div class="statLabel">মোট MCQ</div>
+          <div class="statVal" id="resTotalQ">0</div>
         </div>
-        <div class="statBox">
-          <div class="lbl">সময়</div>
-          <div class="val" id="resTimeTaken">--:--</div>
+        <div class="stat">
+          <div class="statLabel">সঠিক (Right)</div>
+          <div class="statVal" id="resRight">0</div>
         </div>
-      </div>
-
-      <div class="resultActions pdfActions">
-        <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
-        <button class="btnPrimary" type="button" onclick="goResultDetails()">View details</button>
-      </div>
-    </div>
-  </div>
+        <div class="stat">
+          <div class="statLabel">ভুল (Wrong)</div>
+          <div class="statVal" id="resWrong">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">অনুত্তর (No Ans)</div>
+          <div class="statVal" id="resNoAns">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">প্রাপ্ত নম্বর</div>
+          <div class="statVal" id="resMark">0</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">সময় (Taken)</div>
+          <div class="statVal" id="resTimeTaken">--:--</div>
+        </div>
+</div>
 
       <div class="resultActions">
         <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
@@ -1247,7 +1158,11 @@
     // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
 
-    // ===== state =====
+    
+
+    // ✅ current page filename for internal links
+    const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
+// ===== state =====
     let mtDoc = null;
     let questions = [];
     const mcqAns = new Map();
@@ -1639,52 +1554,17 @@
     let _lastTimeTakenText = "";
 
     function openResultModal(summary){
-      // Title/subtitle like "Details Sheet"
-      const title = getTitleField(mtDoc);
       $("resTitle").textContent = "Result Published";
-      $("resSub").textContent = `${studentName} (${studentDistrict}) • ${title} • Details Sheet`;
-
-      // Numbers (MCQ-based)
-      const totalMcq = Number(summary.totalMcq ?? 0);
-      const right = Number(summary.right ?? 0);
-      const wrong = Number(summary.wrong ?? 0);
-      const noAns = Number(summary.noAnswer ?? 0);
-
-      $("resTotalMcq").textContent = String(totalMcq);
-      $("resRight").textContent = String(right);
-      $("resWrong").textContent = String(wrong);
-      $("resNoAns").textContent = String(noAns);
-
-      // Marks
-      const obtained = summary.obtained ?? 0;
-      const totalMark = summary.totalMark ?? 0;
-      $("resMarkText").textContent = `${obtained} / ${totalMark}`;
-
-      // Score stamp
-      $("resScoreBig").textContent = `${obtained} / ${totalMark}`;
-
-      // Time taken
-      const tt = (_lastResultPayload && _lastResultPayload.timeTakenText) ? _lastResultPayload.timeTakenText : "--:--";
-      $("resTimeTaken").textContent = tt;
-
-      // PASS/FAIL (default threshold: 33%)
-      const passThreshold = Math.round((Number(totalMark || 0) * 0.33) * 100) / 100;
-      const isPass = Number(obtained) >= passThreshold && Number(totalMark) > 0;
-
-      const tag = $("resPassTag");
-      const stamp = document.querySelector(".scoreStamp");
-      if(isPass){
-        tag.textContent = "PASS";
-        if(stamp) stamp.classList.add("pass");
-      }else{
-        tag.textContent = "FAIL";
-        if(stamp) stamp.classList.remove("pass");
-      }
-
+      $("resSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
+      $("resTotalQ").textContent = String(summary.totalMcq);
+      $("resRight").textContent = String(summary.right);
+      $("resWrong").textContent = String(summary.wrong);
+      $("resNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq||0) - ((summary.right||0)+(summary.wrong||0))));
+      $("resMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
+      $("resTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
       $("resultModal").classList.add("show");
     }
-
-    function closeResultModal(){(){
+    function closeResultModal(){
       $("resultModal").classList.remove("show");
     }
     window.closeResultModal = closeResultModal;
@@ -1968,7 +1848,7 @@
           const mark = getMarkFromDoc(doc);
           const a = document.createElement("a");
           a.className = "recentItem";
-          a.href = `Start-model-test.html?modelTestId=${encodeURIComponent(doc.id)}`;
+          a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
           a.innerHTML = `
             <span class="recentDot"></span>
             <div>
@@ -2000,7 +1880,7 @@
     // ===== boot =====
     async function loadAll(){
       if(!modelTestId){
-        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: Start-model-test.html?modelTestId=XXXX</div>`;
+        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: ${BASE_PAGE}?modelTestId=XXXX</div>`;
         return;
       }
 
