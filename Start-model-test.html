@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="bn">
 <head>
@@ -201,6 +202,7 @@
       margin: 0 0 10px;
       text-align:center;
     }
+
     .mtTitleRow{
       display:flex;
       align-items:center;
@@ -623,6 +625,71 @@
     .confirmText{margin:8px 0 0;color: var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
     .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px;}
 
+    /* ===== Result modal ===== */
+    .resultModal{
+      position: fixed;
+      inset: 0;
+      z-index: 999997;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .resultModal.show{display:flex;}
+    .resultModal .overlay{
+      position:absolute; inset:0;
+      background: rgba(10,18,40,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .resultCard{
+      position:relative;
+      width: min(560px, calc(100vw - 24px));
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,28,55,.14);
+      box-shadow: 0 26px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+      padding: 14px;
+    }
+    .resultHead{
+      padding: 6px 6px 10px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .resultTitle{margin:0;font-size:14px;font-weight:1000;}
+    .resultSub{margin:6px 0 0;color:var(--muted);font-size:12.5px;font-weight:900;line-height:1.55;}
+    .resultGrid{
+      padding: 12px 6px 4px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .resultGrid{grid-template-columns: 1fr;}
+    }
+    .stat{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.75);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .statLabel{font-size:12px;color:var(--muted);font-weight:1000;}
+    .statVal{margin-top:4px;font-size:15px;font-weight:1000;color:var(--text);}
+    .resultActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      padding: 10px 6px 6px;
+      border-top: 1px solid rgba(18,28,55,.10);
+      margin-top: 8px;
+    }
+
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
@@ -731,35 +798,89 @@
       border-color: rgba(22,163,74,1);
       color: rgba(22,163,74,1);
     }
+  
+    /* ===== PDF-style Result popup (match details sheet) ===== */
+    .pdfPop{padding: 18px 16px 14px; position:relative;}
+    .pdfHead{padding-right: 64px;} /* space for stamp */
+    .scoreStamp{
+      position:absolute;
+      top: 14px;
+      left: 14px;
+      border: 2px solid rgba(220,38,38,.75);
+      border-radius: 14px;
+      padding: 10px 12px 8px;
+      background: rgba(255,255,255,.85);
+      transform: rotate(-10deg);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      min-width: 120px;
+    }
+    .scoreBig{font-weight:1000;font-size:18px;line-height:1.1;color: var(--danger); text-align:center;}
+    .scoreTag{
+      margin-top:6px;
+      text-align:center;
+      font-weight:1000;
+      font-size:12px;
+      letter-spacing:.6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(220,38,38,.40);
+      color: var(--danger);
+      background: rgba(220,38,38,.08);
+    }
+    .scoreStamp.pass{
+      border-color: rgba(22,163,74,.75);
+    }
+    .scoreStamp.pass .scoreBig{color: var(--ok);}
+    .scoreStamp.pass .scoreTag{
+      border-color: rgba(22,163,74,.45);
+      color: var(--ok);
+      background: rgba(22,163,74,.10);
+    }
 
-    /* ✅ Result module stats (reuse similar look) */
-    .resultGrid{
-      padding: 12px 6px 4px;
+    .chipRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      padding: 12px 6px 2px;
+    }
+    .chipPill{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12.5px;
+      font-weight:1000;
+      color: var(--text);
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .chipPill b{font-weight:1000;}
+    .chipPill.ok{border-color: rgba(22,163,74,.28); background: rgba(22,163,74,.08); color: rgba(12,110,47,1);}
+    .chipPill.bad{border-color: rgba(220,38,38,.28); background: rgba(220,38,38,.08); color: rgba(220,38,38,1);}
+
+    .pdfStats{
       display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
+      padding: 10px 6px 0;
     }
     @media (max-width: 520px){
-      .resultGrid{grid-template-columns: 1fr;}
+      .pdfStats{grid-template-columns: 1fr;}
+      .pdfHead{padding-right: 6px;}
+      .scoreStamp{position:relative; transform:none; top:auto; left:auto; margin: 0 0 10px;}
     }
-    .stat{
+    .statBox{
       border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.80);
       border-radius: 14px;
       padding: 10px 12px;
       box-shadow: 0 10px 22px rgba(15,23,48,.04);
     }
-    .statLabel{font-size:12px;color:var(--muted);font-weight:1000;}
-    .statVal{margin-top:4px;font-size:15px;font-weight:1000;color:var(--text);}
-    .resultActions{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-      padding: 10px 6px 6px;
-      border-top: 1px solid rgba(18,28,55,.10);
-      margin-top: 8px;
-    }
+    .statBox .lbl{font-size:12px;color: var(--muted);font-weight:1000;}
+    .statBox .val{margin-top:4px;font-size:15px;font-weight:1000;color: var(--text);}
+    .pdfActions{padding-top: 12px;}
+
   </style>
 </head>
 
@@ -871,28 +992,6 @@
             </noscript>
           </div>
         </article>
-
-        <!-- ✅ RESULT MODULE (same page, shown after submit) -->
-        <section id="resultModule" class="paper" style="display:none;" aria-label="Result module">
-          <div class="paperFrame">
-            <div style="text-align:center; font-weight:1000; font-size:14px;">Result Published</div>
-            <div id="rmSub" style="text-align:center; margin-top:6px; color:var(--muted); font-weight:900; font-size:12.5px;">...</div>
-
-            <div class="resultGrid" style="margin-top:10px;">
-              <div class="stat"><div class="statLabel">মোট MCQ</div><div class="statVal" id="rmTotalQ">0</div></div>
-              <div class="stat"><div class="statLabel">সঠিক (Right)</div><div class="statVal" id="rmRight">0</div></div>
-              <div class="stat"><div class="statLabel">ভুল (Wrong)</div><div class="statVal" id="rmWrong">0</div></div>
-              <div class="stat"><div class="statLabel">অনুত্তর (No Ans)</div><div class="statVal" id="rmNoAns">0</div></div>
-              <div class="stat"><div class="statLabel">প্রাপ্ত নম্বর</div><div class="statVal" id="rmMark">0</div></div>
-              <div class="stat"><div class="statLabel">সময় (Taken)</div><div class="statVal" id="rmTimeTaken">--:--</div></div>
-            </div>
-
-            <div class="resultActions">
-              <button class="btnGhost" type="button" onclick="scrollToTop()">Back to Questions</button>
-              <button class="btnPrimary" type="button" onclick="downloadResultPDF()">Download Result PDF</button>
-            </div>
-          </div>
-        </section>
       </section>
 
       <!-- RIGHT sidebar -->
@@ -926,7 +1025,7 @@
       <div class="modalHead">
         <div>
           <p class="modalTitle">নাম ও জেলা লিখুন</p>
-          <p class="modalText">নাম/জেলা Submit করলে উত্তর দিতে পারবেন। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
+          <p class="modalText">Submit না করলে উত্তর দেওয়া যাবে না। চাইলে এখন বন্ধ করে প্রশ্ন দেখতে পারবেন।</p>
         </div>
         <button class="modalClose" type="button" onclick="closeNameModal()">এখন নয়</button>
       </div>
@@ -953,6 +1052,59 @@
       <div class="confirmActions">
         <button class="btnGhost" type="button" onclick="confirmNo()">No</button>
         <button class="btnPrimary" type="button" onclick="confirmYes()">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result modal (PDF-style) -->
+  <div class="resultModal" id="resultModal" role="dialog" aria-modal="true" aria-label="Result">
+    <div class="overlay"></div>
+
+    <div class="resultCard pdfPop" onclick="event.stopPropagation()">
+      <!-- score stamp -->
+      <div class="scoreStamp" aria-label="Score">
+        <div class="scoreBig" id="resScoreBig">0 / 0</div>
+        <div class="scoreTag" id="resPassTag">FAIL</div>
+      </div>
+
+      <div class="resultHead pdfHead">
+        <div>
+          <p class="resultTitle" id="resTitle">Details Sheet</p>
+          <p class="resultSub" id="resSub">...</p>
+        </div>
+        <button class="modalClose" type="button" onclick="closeResultModal()">Close</button>
+      </div>
+
+      <!-- chips row like PDF -->
+      <div class="chipRow" aria-label="Summary">
+        <span class="chipPill">Total: <b id="resTotalMcq">0</b> Q</span>
+        <span class="chipPill ok">✓ Right: <b id="resRight">0</b></span>
+        <span class="chipPill bad">✗ Wrong: <b id="resWrong">0</b></span>
+        <span class="chipPill">No Ans: <b id="resNoAns">0</b></span>
+      </div>
+
+      <!-- bottom stats -->
+      <div class="pdfStats" aria-label="Marks and time">
+        <div class="statBox">
+          <div class="lbl">প্রাপ্ত নম্বর</div>
+          <div class="val" id="resMarkText">0 / 0</div>
+        </div>
+        <div class="statBox">
+          <div class="lbl">সময়</div>
+          <div class="val" id="resTimeTaken">--:--</div>
+        </div>
+      </div>
+
+      <div class="resultActions pdfActions">
+        <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
+        <button class="btnPrimary" type="button" onclick="goResultDetails()">View details</button>
+      </div>
+    </div>
+  </div>
+
+      <div class="resultActions">
+        <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
+        <button class="btnPrimary" type="button" onclick="goResultDetails()">View details</button>
       </div>
     </div>
   </div>
@@ -996,10 +1148,12 @@
             <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
             Facebook
           </a>
+
           <a href="#" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.97v5.69H9.32V9h3.41v1.56h.05c.47-.9 1.63-1.86 3.35-1.86 3.58 0 4.24 2.36 4.24 5.43v6.32ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
             LinkedIn
           </a>
+
           <a href="#" aria-label="YouTube">
             <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
             YouTube
@@ -1030,10 +1184,6 @@
     function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
     window.toggleMenu = toggleMenu;
     document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
-
-    // ===== scroll helper =====
-    function scrollToTop(){ window.scrollTo({top:0, behavior:"smooth"}); }
-    window.scrollToTop = scrollToTop;
 
     // ===== toast =====
     function esc(str){
@@ -1089,16 +1239,13 @@
     const db = firebase.firestore();
 
     const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODEL_TEST_RESULT = "model_test_result";
+    const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ Firestore-safe name
     const QUESTION_COLLECTION_CANDIDATES = [
       "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
     // ===== modelTestId from URL =====
     const modelTestId = getParam("modelTestId");
-
-    // ✅ current page filename for internal links
-    const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
 
     // ===== state =====
     let mtDoc = null;
@@ -1151,7 +1298,7 @@
     window.submitName = submitName;
 
     // ✅ Modal can be closed to view questions.
-    // ✅ But answering requires Name+District; trying to answer opens modal again.
+    // ✅ But answering requires submit; trying to answer opens modal again.
     function guardAnswering(){
       if(nameUnlocked) return true;
       openNameModal();
@@ -1195,15 +1342,8 @@
     }
     function getCorrectIndex(q){
       if(Number.isFinite(q.correctIndex)) return q.correctIndex;
-      const v = q.correctIndex ?? q.correct ?? q.answer ?? null;
-      if(typeof v === "number" && Number.isFinite(v)) return v;
-
-      const s = String(v ?? "").trim().toUpperCase();
-      const map = {A:0,B:1,C:2,D:3};
-      if(s in map) return map[s];
-
-      const n = Number(v);
-      return Number.isFinite(n) ? n : -1;
+      const v = Number(q.correctIndex);
+      return Number.isFinite(v) ? v : -1;
     }
     function isWrittenQuestion(q){
       const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
@@ -1229,8 +1369,8 @@
       if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
 
       timerStarted = true;
-      totalAllowedSeconds = totalSeconds;
-      testStartAtMs = Date.now();
+      totalAllowedSeconds = totalSeconds; // ✅ NEW
+      testStartAtMs = Date.now();           // ✅ NEW
       endAtMs = testStartAtMs + totalSeconds * 1000;
 
       const tick = ()=>{
@@ -1374,7 +1514,6 @@
             opt.className = "optLine" + (chosen === oi ? " selected" : "");
             opt.setAttribute("role","button");
             opt.setAttribute("tabindex","0");
-            opt.setAttribute("aria-pressed", chosen === oi ? "true" : "false");
             opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
             opt.innerHTML = `
               <span class="tick">✓</span>
@@ -1432,6 +1571,8 @@
       return Number.isFinite(n) ? n : null;
     }
     function computeResult(){
+      // ✅ Result should match Result Sheet (Ranking):
+      // totalQuestion = total MCQ (written প্রশ্নগুলো result গণনায় ধরবে না)
       const totalAllQ = questions.length || 0;
 
       let totalMcq = 0;
@@ -1446,6 +1587,7 @@
         const qid = q.id;
         const chosen = mcqAns.get(qid);
 
+        // unanswered MCQ
         if(chosen === undefined || chosen === null || chosen === "") return;
 
         answeredMcq++;
@@ -1468,8 +1610,8 @@
       const obtained = Math.round((right * perQ) * 100) / 100;
 
       return {
-        totalAllQ,
-        totalMcq,
+        totalAllQ,   // MCQ + Written (for info)
+        totalMcq,    // totalQuestion in ranking
         answeredMcq,
         noAnswer,
         right,
@@ -1491,134 +1633,156 @@
       }
     }
 
-    // ===== Result module (same page) =====
+    // ===== Result modal =====
     let _lastResultPayload = null;
     let _lastResultDocId = "";
     let _lastTimeTakenText = "";
 
-    function openResultModule(summary){
-      $("rmSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
-      $("rmTotalQ").textContent = String(summary.totalMcq);
-      $("rmRight").textContent = String(summary.right);
-      $("rmWrong").textContent = String(summary.wrong);
-      $("rmNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq||0) - ((summary.right||0)+(summary.wrong||0))));
-      $("rmMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
-      $("rmTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
+    function openResultModal(summary){
+      // Title/subtitle like "Details Sheet"
+      const title = getTitleField(mtDoc);
+      $("resTitle").textContent = "Result Published";
+      $("resSub").textContent = `${studentName} (${studentDistrict}) • ${title} • Details Sheet`;
 
-      const box = $("resultModule");
-      box.style.display = "block";
-      setTimeout(()=> box.scrollIntoView({behavior:"smooth", block:"start"}), 80);
+      // Numbers (MCQ-based)
+      const totalMcq = Number(summary.totalMcq ?? 0);
+      const right = Number(summary.right ?? 0);
+      const wrong = Number(summary.wrong ?? 0);
+      const noAns = Number(summary.noAnswer ?? 0);
+
+      $("resTotalMcq").textContent = String(totalMcq);
+      $("resRight").textContent = String(right);
+      $("resWrong").textContent = String(wrong);
+      $("resNoAns").textContent = String(noAns);
+
+      // Marks
+      const obtained = summary.obtained ?? 0;
+      const totalMark = summary.totalMark ?? 0;
+      $("resMarkText").textContent = `${obtained} / ${totalMark}`;
+
+      // Score stamp
+      $("resScoreBig").textContent = `${obtained} / ${totalMark}`;
+
+      // Time taken
+      const tt = (_lastResultPayload && _lastResultPayload.timeTakenText) ? _lastResultPayload.timeTakenText : "--:--";
+      $("resTimeTaken").textContent = tt;
+
+      // PASS/FAIL (default threshold: 33%)
+      const passThreshold = Math.round((Number(totalMark || 0) * 0.33) * 100) / 100;
+      const isPass = Number(obtained) >= passThreshold && Number(totalMark) > 0;
+
+      const tag = $("resPassTag");
+      const stamp = document.querySelector(".scoreStamp");
+      if(isPass){
+        tag.textContent = "PASS";
+        if(stamp) stamp.classList.add("pass");
+      }else{
+        tag.textContent = "FAIL";
+        if(stamp) stamp.classList.remove("pass");
+      }
+
+      $("resultModal").classList.add("show");
     }
 
-    // ===== Submit (✅ double-submit prevention + ✅ timeTaken safeguard) =====
-    async function submitTest(isAuto=false){
-      const btn = $("btnSubmit");
+    function closeResultModal(){(){
+      $("resultModal").classList.remove("show");
+    }
+    window.closeResultModal = closeResultModal;
 
-      // ✅ Double-submit prevention
-      if(btn?.dataset.busy === "1") return;
-      if(btn){
-        btn.dataset.busy = "1";
-        btn.disabled = true;
+    function goResultDetails(){
+      if(!modelTestId) return;
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
+      if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
+    window.goResultDetails = goResultDetails;
+
+    // ===== Submit =====
+    async function submitTest(isAuto=false){
+      if(!modelTestId) return;
+
+      if(!nameUnlocked){
+        openNameModal();
+        showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
+        return;
       }
 
-      try{
-        if(!modelTestId) return;
+      const missing = getUnanswered();
 
-        if(!nameUnlocked){
-          openNameModal();
-          showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
+      if(!isAuto && missing.length){
+        const ok = await openConfirm(
+          "Submit করার আগে",
+          `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
+        );
+        if(!ok){
+          scrollToQuestion(missing[0].id);
+          showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
           return;
         }
-
-        const missing = getUnanswered();
-
-        if(!isAuto && missing.length){
-          const ok = await openConfirm(
-            "Submit করার আগে",
-            `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
-          );
-          if(!ok){
-            scrollToQuestion(missing[0].id);
-            showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
-            return;
-          }
-        }else if(!isAuto){
-          const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
-          if(!ok) return;
-        }
-
-        const summary = computeResult();
-
-        // ✅ timeTaken safeguard (timerStarted না হলেও sane time)
-        if(!timerStarted || !testStartAtMs){
-          timerStarted = true;
-          testStartAtMs = Date.now();
-          totalAllowedSeconds = totalAllowedSeconds || 999999;
-        }
-
-        const nowMs = Date.now();
-        const timeTakenSeconds = Math.min(
-          totalAllowedSeconds || 999999,
-          Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
-        );
-        const timeTakenText = formatMMSS(timeTakenSeconds);
-        _lastTimeTakenText = timeTakenText;
-
-        // ✅ Firestore-safe payload
-        const payload = {
-          modelTestId,
-          modelTestName: getTitleField(mtDoc),
-          submittedAt: Date.now(),
-          timeTakenText,
-          isAuto: !!isAuto,
-          studentName,
-          studentDistrict,
-          answers: {
-            mcq: Object.fromEntries(mcqAns),
-            written: Object.fromEntries(writtenAns)
-          },
-          result: {
-            totalQuestion: summary.totalMcq,
-            totalAllQuestion: summary.totalAllQ,
-            totalMcq: summary.totalMcq,
-            answeredMcq: summary.answeredMcq,
-            noAnswer: summary.noAnswer,
-            right: summary.right,
-            wrong: summary.wrong,
-            totalMark: summary.totalMark,
-            obtainedMark: summary.obtained
-          }
-        };
-
-        _lastResultPayload = payload;
-
-        showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
-
-        _lastResultDocId = await saveResultToFirebase(payload);
-
-        // local cache
-        localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
-        if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
-
-        if(!_lastResultDocId){
-          showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
-        }else{
-          showToast("Submit সম্পন্ন", "Result দেখুন");
-        }
-
-        // ✅ show result module on same page
-        openResultModule(summary);
-
-      } finally {
-        if(btn){
-          btn.disabled = false;
-          btn.dataset.busy = "0";
-        }
+      }else if(!isAuto){
+        const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
+        if(!ok) return;
       }
+
+      const summary = computeResult();
+
+      // ✅ Visitor took how long to submit (MM:SS)
+      const nowMs = Date.now();
+      const timeTakenSeconds = Math.min(
+        totalAllowedSeconds || 999999,
+        Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
+      );
+      const timeTakenText = formatMMSS(timeTakenSeconds); // e.g. "30:31"
+      _lastTimeTakenText = timeTakenText;
+
+      // ✅ Firestore-safe payload (NO nested arrays!)
+      const payload = {
+        modelTestId,
+        modelTestName: getTitleField(mtDoc),
+        submittedAt: Date.now(),
+        timeTakenText, // ✅ Visitor time (MM:SS)
+        isAuto: !!isAuto,
+        studentName,
+        studentDistrict,
+        answers: {
+          mcq: Object.fromEntries(mcqAns),        // ✅ FIXED
+          written: Object.fromEntries(writtenAns) // ✅ FIXED
+        },
+        result: {
+          // ✅ Result Sheet (Ranking) compatible fields
+          totalQuestion: summary.totalMcq,      // MCQ total (ranking uses this)
+          totalAllQuestion: summary.totalAllQ,  // info only (MCQ + Written)
+          totalMcq: summary.totalMcq,
+          answeredMcq: summary.answeredMcq,
+          noAnswer: summary.noAnswer,
+          right: summary.right,
+          wrong: summary.wrong,
+          totalMark: summary.totalMark,
+          obtainedMark: summary.obtained
+        }
+      };
+
+      _lastResultPayload = payload;
+
+      showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
+
+      _lastResultDocId = await saveResultToFirebase(payload);
+
+      // local cache for result page
+      localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
+
+      if(!_lastResultDocId){
+        // save failed; still show modal so user can view local result
+        showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
+      }else{
+        showToast("Submit সম্পন্ন", "Result দেখুন");
+      }
+
+      openResultModal(summary);
     }
     window.submitTest = submitTest;
 
-    // ===== PDF (Question + Answer combined) =====
+    // ===== PDF (combined single PDF multi-page) =====
     function chunk(arr, size){
       const out = [];
       for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
@@ -1779,61 +1943,6 @@
     }
     window.downloadCombinedPDF = downloadCombinedPDF;
 
-    // ✅ RESULT PDF download (from same page result module)
-    async function downloadResultPDF(){
-      try{
-        if(!_lastResultPayload || !_lastResultPayload.result){
-          showToast("Result নেই", "আগে Submit করুন");
-          return;
-        }
-
-        const r = _lastResultPayload.result;
-        const title = _lastResultPayload.modelTestName || getTitleField(mtDoc);
-        const submittedText = new Date(_lastResultPayload.submittedAt || Date.now()).toLocaleString("bn-BD");
-        const timeTaken = _lastResultPayload.timeTakenText || _lastTimeTakenText || "--:--";
-
-        showToast("Result PDF তৈরি হচ্ছে…", "এক পেজ");
-
-        const html = `
-          <div class="pdfFrame">
-            <div class="pdfWatermark">eProstutiBD</div>
-            <div class="pdfHeaderLine1">${esc(title)} — Details Sheet</div>
-            <div class="pdfHeaderLine2">${esc(studentName)} (${esc(studentDistrict)}) • Submitted: ${esc(submittedText)} • Time: ${esc(timeTaken)}</div>
-
-            <div style="margin-top:12px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-              <div style="border:1.6px solid #111;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px;">Total: ${esc(r.totalQuestion ?? r.totalMcq ?? 0)} Q</div>
-              <div style="border:1.6px solid #16a34a;color:#16a34a;background:rgba(22,163,74,.12);border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px;">Right: ${esc(r.right ?? 0)}</div>
-              <div style="border:1.6px solid #dc2626;color:#dc2626;background:rgba(220,38,38,.10);border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px;">Wrong: ${esc(r.wrong ?? 0)}</div>
-              <div style="border:1.6px solid #111;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px;">No Ans: ${esc(r.noAnswer ?? 0)}</div>
-            </div>
-
-            <div style="margin-top:16px;border-top:1.6px solid #111;padding-top:12px;font-size:12.5px;line-height:1.7;">
-              <div><b>Marks:</b> ${esc(r.obtainedMark ?? 0)} / ${esc(r.totalMark ?? 0)}</div>
-              <div><b>MCQ Answered:</b> ${esc(r.answeredMcq ?? 0)} / ${esc(r.totalQuestion ?? r.totalMcq ?? 0)}</div>
-            </div>
-          </div>
-        `;
-
-        const canvas = await renderPageToCanvas(html);
-
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF("p","pt","a4");
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
-
-        pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, pageW, pageH);
-
-        const safeName = String(title).replace(/[\\/:*?"<>|]+/g, "_").trim() || "result";
-        pdf.save(`${safeName}-result.pdf`);
-
-        showToast("Result PDF ডাউনলোড", "Done ✅");
-      }catch(e){
-        console.error(e);
-        showToast("Result PDF error", e?.message || "Console দেখুন");
-      }
-    }
-    window.downloadResultPDF = downloadResultPDF;
-
     // ===== Recent Model Tests =====
     async function loadRecentModelTests(){
       const wrap = $("recentList");
@@ -1859,7 +1968,7 @@
           const mark = getMarkFromDoc(doc);
           const a = document.createElement("a");
           a.className = "recentItem";
-          a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+          a.href = `Start-model-test.html?modelTestId=${encodeURIComponent(doc.id)}`;
           a.innerHTML = `
             <span class="recentDot"></span>
             <div>
@@ -1891,7 +2000,7 @@
     // ===== boot =====
     async function loadAll(){
       if(!modelTestId){
-        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: ${BASE_PAGE}?modelTestId=XXXX</div>`;
+        $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: Start-model-test.html?modelTestId=XXXX</div>`;
         return;
       }
 
