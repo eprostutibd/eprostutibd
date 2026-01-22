@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
+
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
@@ -20,13 +21,11 @@
   <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে" />
   <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta property="og:url" content="https://example.com/proshnobank" />
-  <!-- <meta property="og:image" content="https://example.com/og-image.jpg" /> -->
 
   <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে" />
   <meta name="twitter:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test।" />
-  <!-- <meta name="twitter:image" content="https://example.com/og-image.jpg" /> -->
 
   <!-- ✅ Performance: Preconnect/DNS Prefetch -->
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
@@ -439,7 +438,7 @@
       padding: 12px;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       overflow:hidden;
-      cursor: default; /* ✅ card click disabled UX */
+      cursor: default; /* ✅ card click disabled */
       transition:.15s;
     }
     .mtCard:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08); }
@@ -498,7 +497,8 @@
     .sidePanel .head b{color:var(--text);font-size:13px}
     .sidePanel .body{padding: 12px}
     .sideAdBox{
-      border: 1px dashed rgba(18,28,55,.22);
+      border: 1px solid rgba(18,28,55,.22);
+      border-style:dashed;
       background: rgba(255,255,255,.78);
       border-radius: 16px;
       min-height: 230px;
@@ -764,7 +764,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    // Wait until deferred firebase scripts are loaded
+    // Run after deferred firebase scripts loaded
     window.addEventListener("load", () => {
 
       const firebaseConfig = {
@@ -779,12 +779,12 @@
 
       const COL_SUBJECTS = "subjects";
       const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-      const COL_MODELTEST_QUESTIONS = "modeltest_questions";
 
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
       const $ = (id)=>document.getElementById(id);
 
+      // ===== Menu =====
       function openMenu(){
         const menu = $("mobileMenu");
         const btn = $("menuBtn");
@@ -810,6 +810,7 @@
         if(e.key === "Escape") closeMenu();
       }, {passive:true});
 
+      // ===== Helpers =====
       function esc(str){
         return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
       }
@@ -837,42 +838,22 @@
         return (hit/qt.length)*10 + partial;
       }
 
+      // ===== State =====
       let SUBJECTS = [];
-      const modelTestCountMap = new Map();
-      const modelTestUnsubs = new Map();
-
       const PAGE_SIZE = 6;
       let visibleCount = 6;
       let currentQuery = "";
 
+      // ✅ Ultimate performance: One map, one listener for all model test counts
+      const modelTestCountMap = new Map(); // subjectId -> count
+      let latestModelTestsCache = []; // docs mapped lightweight
+
+      // ===== Navigation =====
       function openSubjectDetails(subjectId){
         window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
       }
 
-      function syncModelTestListeners(){
-        const alive = new Set(SUBJECTS.map(s=>s.id));
-        for(const [sid, unsub] of modelTestUnsubs.entries()){
-          if(!alive.has(sid)){
-            try{ unsub(); }catch(e){}
-            modelTestUnsubs.delete(sid);
-            modelTestCountMap.delete(sid);
-          }
-        }
-        SUBJECTS.forEach(s=>{
-          if(modelTestUnsubs.has(s.id)) return;
-          const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
-            .where("subjectId","==", s.id)
-            .onSnapshot((snap)=>{
-              modelTestCountMap.set(s.id, snap.size || 0);
-              renderSubjects();
-            }, (err)=>{
-              console.error(err);
-              modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
-            });
-          modelTestUnsubs.set(s.id, unsub);
-        });
-      }
-
+      // ===== Skeleton =====
       function renderSkeleton(){
         const wrap = $("subjects");
         wrap.innerHTML = "";
@@ -896,6 +877,16 @@
           </div>
         `;
         return ad;
+      }
+
+      // ===== Render Subjects (debounced for performance) =====
+      let renderSubjectsRaf = 0;
+      function scheduleRenderSubjects(){
+        if(renderSubjectsRaf) return;
+        renderSubjectsRaf = requestAnimationFrame(()=>{
+          renderSubjectsRaf = 0;
+          renderSubjects();
+        });
       }
 
       function renderSubjects(){
@@ -927,6 +918,8 @@
           cardCount++;
           const mcq = s.counts?.mcq || 0;
           const written = s.counts?.written || 0;
+
+          // ✅ model test count from single aggregated map
           const mtCount = modelTestCountMap.get(s.id) ?? 0;
 
           const el = document.createElement("article");
@@ -957,22 +950,17 @@
       function onSearch(){
         currentQuery = ($("search").value || "").trim();
         visibleCount = PAGE_SIZE;
-        renderSubjects();
+        scheduleRenderSubjects();
       }
       window.onSearch = onSearch;
 
       function loadMore(){
         visibleCount += PAGE_SIZE;
-        renderSubjects();
+        scheduleRenderSubjects();
       }
       window.loadMore = loadMore;
 
-      // ================= Model Tests (Fixed + Requirements) =================
-
-      const qCountUnsubs = new Map();
-      const qCountMap = new Map();
-      let latestMTDocsCache = [];
-
+      // ===== Latest Model Tests helpers =====
       function formatTimeMin(v){
         if(v === undefined || v === null || v === "") return "-";
         if(typeof v === "number") return `${v} min`;
@@ -1002,91 +990,16 @@
       function getTitleField(data){
         return data?.title ?? data?.name ?? "Subject Model Test";
       }
-      function getPreQCount(data){
-        const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
-        for(const k of keys){
-          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-        }
-        return null;
+
+      // ✅ আপনার requirement: Total Question = totalMarks
+      function getTotalQuestionFromTotalMarks(data){
+        const v = data?.totalMarks ?? data?.totalMark ?? data?.total_mark ?? null;
+        if(v === null || v === undefined || v === "") return "-";
+        const n = Number(v);
+        return Number.isFinite(n) ? n : String(v);
       }
 
-      function ensureQuestionCountListener(mtId){
-        if(qCountUnsubs.has(mtId)) return;
-        const unsub = db.collection(COL_MODELTEST_QUESTIONS)
-          .where("modelTestId","==", mtId)
-          .onSnapshot((snap)=>{
-            qCountMap.set(mtId, snap.size || 0);
-            renderLatestModelTests(latestMTDocsCache);
-          }, (err)=>{
-            console.error(err);
-            qCountMap.set(mtId, 0);
-            renderLatestModelTests(latestMTDocsCache);
-          });
-        qCountUnsubs.set(mtId, unsub);
-      }
-      function cleanupQuestionCountListeners(activeIds){
-        for(const [id, unsub] of qCountUnsubs.entries()){
-          if(!activeIds.has(id)){
-            try{ unsub(); }catch(e){}
-            qCountUnsubs.delete(id);
-            qCountMap.delete(id);
-          }
-        }
-      }
-
-      // ✅ Requirement: Card click disabled, only buttons work, renamed texts
-      function renderLatestModelTests(docs){
-        const wrap = $("latestMT");
-        latestMTDocsCache = docs;
-        wrap.innerHTML = "";
-
-        if(!docs.length){
-          $("mtHint").textContent = "0";
-          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
-          return;
-        }
-        $("mtHint").textContent = `${docs.length}`;
-
-        const active = new Set(docs.map(d=>d.id));
-        cleanupQuestionCountListeners(active);
-
-        docs.forEach(d=>{
-          const data = d.data() || {};
-          const title = getTitleField(data);
-          const timeVal = formatTimeMin(getTimeField(data));
-          const markVal = getMarkField(data);
-
-          const preQ = getPreQCount(data);
-          if(preQ == null) ensureQuestionCountListener(d.id);
-          const qCount = (preQ != null) ? preQ : (qCountMap.get(d.id) ?? 0);
-
-          const card = document.createElement("div");
-          card.className = "mtCard";
-          // ❌ No click handler on card
-
-          card.innerHTML = `
-            <h4 title="${esc(title)}">${esc(title)}</h4>
-            <div class="mtMeta">
-              <span>⏱ ${esc(timeVal)}</span>
-              <span>🧮 Mark: ${esc(markVal)}</span>
-              <span>📌 Q: ${esc(qCount)}</span>
-            </div>
-            <div class="mtActions">
-              <button class="btn primary"
-                onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">
-                Start test
-              </button>
-              <button class="btn"
-                onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(d.id)}'">
-                See Result
-              </button>
-            </div>
-          `;
-          wrap.appendChild(card);
-        });
-      }
-
-      // ✅ Robust sorting (createdAt missing হলেও কাজ করবে)
+      // Robust sorting (createdAt missing হলেও)
       function toMillisAny(v){
         if(v == null) return 0;
         if(typeof v === "object"){
@@ -1124,20 +1037,94 @@
         return 0;
       }
 
-      function watchLatestModelTests(){
+      // ✅ Model test card click disabled + buttons renamed
+      function renderLatestModelTests(list){
+        const wrap = $("latestMT");
+        wrap.innerHTML = "";
+
+        if(!list.length){
+          $("mtHint").textContent = "0";
+          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        $("mtHint").textContent = `${list.length}`;
+
+        list.forEach(item=>{
+          const data = item.data || {};
+          const id = item.id;
+
+          const title = getTitleField(data);
+          const timeVal = formatTimeMin(getTimeField(data));
+          const markVal = getMarkField(data);
+
+          // ✅ Q now from totalMarks
+          const qCount = getTotalQuestionFromTotalMarks(data);
+
+          const card = document.createElement("div");
+          card.className = "mtCard";
+          // ❌ no click on card
+
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMeta">
+              <span>⏱ ${esc(timeVal)}</span>
+              <span>🧮 Mark: ${esc(markVal)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActions">
+              <button class="btn primary"
+                onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(id)}'">
+                Start test
+              </button>
+              <button class="btn"
+                onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(id)}'">
+                See Result
+              </button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }
+
+      // ✅ Ultimate performance: Single listener for subject_model_tests
+      function watchModelTestsAggregate(){
         $("mtHint").textContent = "Loading…";
         const LIMIT = 8;
 
         db.collection(COL_SUBJECT_MODEL_TESTS)
           .onSnapshot((snap)=>{
-            const docs = snap.docs.slice();
-            docs.sort((a,b)=>{
-              const ta = getDocSortTime(a.data() || {});
-              const tb = getDocSortTime(b.data() || {});
+            // reset map
+            modelTestCountMap.clear();
+
+            const docs = snap.docs;
+            const tempList = [];
+
+            // build count map + latest list (lightweight)
+            for(const d of docs){
+              const data = d.data() || {};
+              const subjectId = data.subjectId;
+
+              if(subjectId){
+                modelTestCountMap.set(subjectId, (modelTestCountMap.get(subjectId) || 0) + 1);
+              }
+
+              tempList.push({ id: d.id, data });
+            }
+
+            // sort latest
+            tempList.sort((a,b)=>{
+              const ta = getDocSortTime(a.data);
+              const tb = getDocSortTime(b.data);
               if(tb !== ta) return tb - ta;
               return (b.id || "").localeCompare(a.id || "");
             });
-            renderLatestModelTests(docs.slice(0, LIMIT));
+
+            latestModelTestsCache = tempList.slice(0, LIMIT);
+
+            // update UI
+            renderLatestModelTests(latestModelTestsCache);
+            scheduleRenderSubjects(); // subject cards update model test count
           }, (err)=>{
             console.error(err);
             $("mtHint").textContent = "Failed";
@@ -1145,13 +1132,12 @@
           });
       }
 
+      // ===== Subjects listener (single) =====
       renderSkeleton();
-      watchLatestModelTests();
 
       db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
         SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-        syncModelTestListeners();
-        renderSubjects();
+        scheduleRenderSubjects();
       }, (err)=>{
         console.error(err);
         $("countHint").textContent = "Failed to load";
@@ -1159,6 +1145,9 @@
         $("empty").style.display = "block";
         $("btnMore").style.display = "none";
       });
+
+      // start aggregate listener
+      watchModelTestsAggregate();
 
     });
   </script>
