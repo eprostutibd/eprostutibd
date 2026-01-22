@@ -3,12 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
 
+  <title>eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে</title>
   <meta name="description" content="eProstutiBD প্রশ্নব্যাংক — বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
   <meta name="keywords" content="প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD, Admission, BCS, IELTS" />
-  <meta name="robots" content="index,follow" />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
   <meta name="theme-color" content="#1d4ed8" />
+  <meta name="author" content="eProstutiBD" />
+
+  <!-- ✅ Canonical (আপনার ডোমেইন দিন) -->
+  <link rel="canonical" href="https://example.com/proshnobank" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="bn_BD" />
+  <meta property="og:title" content="eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে" />
+  <meta property="og:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test। সকল প্রস্তুতি হোক গভীর থেকে।" />
+  <meta property="og:url" content="https://example.com/proshnobank" />
+  <!-- <meta property="og:image" content="https://example.com/og-image.jpg" /> -->
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="eProstutiBD প্রশ্নব্যাংক — সকল প্রস্তুতি হোক গভীর থেকে" />
+  <meta name="twitter:description" content="বিষয়ভিত্তিক MCQ, Written এবং Subject Model Test।" />
+  <!-- <meta name="twitter:image" content="https://example.com/og-image.jpg" /> -->
+
+  <!-- ✅ Performance: Preconnect/DNS Prefetch -->
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.gstatic.com" />
+  <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
+  <link rel="preconnect" href="https://firebase.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firebase.googleapis.com" />
+
+  <!-- ✅ Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Organization",
+        "name":"eProstutiBD",
+        "url":"https://example.com",
+        "logo":"https://example.com/logo.png"
+      },
+      {
+        "@type":"WebSite",
+        "name":"eProstutiBD প্রশ্নব্যাংক",
+        "url":"https://example.com/proshnobank",
+        "inLanguage":"bn",
+        "potentialAction":{
+          "@type":"SearchAction",
+          "target":"https://example.com/proshnobank?q={search_term_string}",
+          "query-input":"required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 
   <style>
     :root{
@@ -32,6 +84,9 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     a{color:inherit}
 
@@ -369,7 +424,6 @@
     .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
     .mtTitle b{font-size:13px}
 
-    /* ✅ Latest Model Test UI */
     .mtGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -385,7 +439,7 @@
       padding: 12px;
       box-shadow: 0 10px 22px rgba(15,23,48,.05);
       overflow:hidden;
-      cursor:pointer;
+      cursor: default; /* ✅ card click disabled UX */
       transition:.15s;
     }
     .mtCard:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08); }
@@ -527,6 +581,12 @@
 </head>
 
 <body>
+  <noscript>
+    <div style="max-width:1320px;margin:12px auto;padding:12px;border:1px solid rgba(18,28,55,.12);border-radius:12px;background:#fff;">
+      এই ওয়েবসাইটটি চালাতে JavaScript প্রয়োজন। অনুগ্রহ করে আপনার ব্রাউজারে JavaScript চালু করুন।
+    </div>
+  </noscript>
+
   <header>
     <div class="topbar">
       <div class="brand">
@@ -699,367 +759,407 @@
     <div class="copy">© 2026 eProstutiBD All rights reserved</div>
   </footer>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <!-- ✅ Firebase scripts defer for performance -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-      authDomain: "eprostutibd-webapp.firebaseapp.com",
-      projectId: "eprostutibd-webapp",
-      storageBucket: "eprostutibd-webapp.firebasestorage.app",
-      messagingSenderId: "1044069942330",
-      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-      measurementId: "G-T2G55NMDQT"
-    };
+    // Wait until deferred firebase scripts are loaded
+    window.addEventListener("load", () => {
 
-    const COL_SUBJECTS = "subjects";
-    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-    const COL_MODELTEST_QUESTIONS = "modeltest_questions";
+      const firebaseConfig = {
+        apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+        authDomain: "eprostutibd-webapp.firebaseapp.com",
+        projectId: "eprostutibd-webapp",
+        storageBucket: "eprostutibd-webapp.firebasestorage.app",
+        messagingSenderId: "1044069942330",
+        appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+        measurementId: "G-T2G55NMDQT"
+      };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const $ = (id)=>document.getElementById(id);
+      const COL_SUBJECTS = "subjects";
+      const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+      const COL_MODELTEST_QUESTIONS = "modeltest_questions";
 
-    function openMenu(){
-      const menu = $("mobileMenu");
-      const btn = $("menuBtn");
-      menu.style.display = "block";
-      btn.setAttribute("aria-expanded", "true");
-    }
-    function closeMenu(){
-      const menu = $("mobileMenu");
-      const btn = $("menuBtn");
-      menu.style.display = "none";
-      btn.setAttribute("aria-expanded", "false");
-    }
-    function toggleMenu(){
-      const menu = $("mobileMenu");
-      if(menu.style.display === "block") closeMenu();
-      else openMenu();
-    }
-    window.openMenu = openMenu;
-    window.closeMenu = closeMenu;
-    window.toggleMenu = toggleMenu;
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const $ = (id)=>document.getElementById(id);
 
-    document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeMenu();
-    });
-
-    function esc(str){
-      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-
-    function normalize(s){
-      return String(s||"").toLowerCase()
-        .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-    function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
-    function relatedScore(query, name){
-      const q = normalize(query), n = normalize(name);
-      if(!q) return 1;
-      if(n.includes(q)) return 100;
-      const qt = tokens(q), nt = new Set(tokens(n));
-      if(!qt.length) return 1;
-      let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
-      let partial=0;
-      qt.forEach(w=>{
-        if(w.length>=3){
-          for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
-        }
-      });
-      return (hit/qt.length)*10 + partial;
-    }
-
-    let SUBJECTS = [];
-    const modelTestCountMap = new Map();
-    const modelTestUnsubs = new Map();
-
-    const PAGE_SIZE = 6;
-    let visibleCount = 6;
-    let currentQuery = "";
-
-    function openSubjectDetails(subjectId){
-      window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
-    }
-
-    // ✅ Convert/details page for model test (card click)
-    function openModelTestDetails(modelTestId){
-      window.open(`Start-model-test.htm?modelTestId=${encodeURIComponent(modelTestId)}`, "_blank", "noopener");
-    }
-
-    function syncModelTestListeners(){
-      const alive = new Set(SUBJECTS.map(s=>s.id));
-      for(const [sid, unsub] of modelTestUnsubs.entries()){
-        if(!alive.has(sid)){
-          try{ unsub(); }catch(e){}
-          modelTestUnsubs.delete(sid);
-          modelTestCountMap.delete(sid);
-        }
+      function openMenu(){
+        const menu = $("mobileMenu");
+        const btn = $("menuBtn");
+        menu.style.display = "block";
+        btn.setAttribute("aria-expanded", "true");
       }
-      SUBJECTS.forEach(s=>{
-        if(modelTestUnsubs.has(s.id)) return;
-        const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
-          .where("subjectId","==", s.id)
+      function closeMenu(){
+        const menu = $("mobileMenu");
+        const btn = $("menuBtn");
+        menu.style.display = "none";
+        btn.setAttribute("aria-expanded", "false");
+      }
+      function toggleMenu(){
+        const menu = $("mobileMenu");
+        if(menu.style.display === "block") closeMenu();
+        else openMenu();
+      }
+      window.openMenu = openMenu;
+      window.closeMenu = closeMenu;
+      window.toggleMenu = toggleMenu;
+
+      document.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape") closeMenu();
+      }, {passive:true});
+
+      function esc(str){
+        return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+      }
+
+      function normalize(s){
+        return String(s||"").toLowerCase()
+          .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+      function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
+      function relatedScore(query, name){
+        const q = normalize(query), n = normalize(name);
+        if(!q) return 1;
+        if(n.includes(q)) return 100;
+        const qt = tokens(q), nt = new Set(tokens(n));
+        if(!qt.length) return 1;
+        let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
+        let partial=0;
+        qt.forEach(w=>{
+          if(w.length>=3){
+            for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
+          }
+        });
+        return (hit/qt.length)*10 + partial;
+      }
+
+      let SUBJECTS = [];
+      const modelTestCountMap = new Map();
+      const modelTestUnsubs = new Map();
+
+      const PAGE_SIZE = 6;
+      let visibleCount = 6;
+      let currentQuery = "";
+
+      function openSubjectDetails(subjectId){
+        window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
+      }
+
+      function syncModelTestListeners(){
+        const alive = new Set(SUBJECTS.map(s=>s.id));
+        for(const [sid, unsub] of modelTestUnsubs.entries()){
+          if(!alive.has(sid)){
+            try{ unsub(); }catch(e){}
+            modelTestUnsubs.delete(sid);
+            modelTestCountMap.delete(sid);
+          }
+        }
+        SUBJECTS.forEach(s=>{
+          if(modelTestUnsubs.has(s.id)) return;
+          const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+            .where("subjectId","==", s.id)
+            .onSnapshot((snap)=>{
+              modelTestCountMap.set(s.id, snap.size || 0);
+              renderSubjects();
+            }, (err)=>{
+              console.error(err);
+              modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
+            });
+          modelTestUnsubs.set(s.id, unsub);
+        });
+      }
+
+      function renderSkeleton(){
+        const wrap = $("subjects");
+        wrap.innerHTML = "";
+        for(let i=0;i<6;i++){
+          const d = document.createElement("div");
+          d.className = "skeleton";
+          d.innerHTML = `<div class="shimmer"></div>`;
+          wrap.appendChild(d);
+        }
+        $("empty").style.display = "none";
+        $("btnMore").style.display = "none";
+      }
+
+      function makeInlineAdCard(){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
+          </div>
+        `;
+        return ad;
+      }
+
+      function renderSubjects(){
+        const q = currentQuery;
+        const scored = SUBJECTS
+          .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
+          .filter(s => !q ? true : (s.__score >= 1.2))
+          .sort((a,b)=>{
+            if(b.__score !== a.__score) return b.__score - a.__score;
+            return (a.name||"").localeCompare(b.name||"");
+          });
+
+        const total = scored.length;
+        const shown = scored.slice(0, visibleCount);
+        $("countHint").textContent = `Total: ${total}`;
+
+        const wrap = $("subjects");
+        wrap.innerHTML = "";
+
+        if(!total){
+          $("empty").style.display = "block";
+          $("btnMore").style.display = "none";
+          return;
+        }
+        $("empty").style.display = "none";
+
+        let cardCount = 0;
+        shown.forEach((s, idx)=>{
+          cardCount++;
+          const mcq = s.counts?.mcq || 0;
+          const written = s.counts?.written || 0;
+          const mtCount = modelTestCountMap.get(s.id) ?? 0;
+
+          const el = document.createElement("article");
+          el.className = "subCard";
+          el.setAttribute("role","button");
+          el.setAttribute("tabindex","0");
+          el.onclick = ()=>openSubjectDetails(s.id);
+          el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
+
+          el.innerHTML = `
+            <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
+            <div class="counts">
+              <span class="countPill">MCQ <b>${mcq}</b></span>
+              <span class="countPill">Written <b>${written}</b></span>
+              <span class="countPill">Model test <b>${mtCount}</b></span>
+            </div>
+          `;
+          wrap.appendChild(el);
+
+          if(cardCount % 6 === 0 && idx < shown.length - 1){
+            wrap.appendChild(makeInlineAdCard());
+          }
+        });
+
+        $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
+      }
+
+      function onSearch(){
+        currentQuery = ($("search").value || "").trim();
+        visibleCount = PAGE_SIZE;
+        renderSubjects();
+      }
+      window.onSearch = onSearch;
+
+      function loadMore(){
+        visibleCount += PAGE_SIZE;
+        renderSubjects();
+      }
+      window.loadMore = loadMore;
+
+      // ================= Model Tests (Fixed + Requirements) =================
+
+      const qCountUnsubs = new Map();
+      const qCountMap = new Map();
+      let latestMTDocsCache = [];
+
+      function formatTimeMin(v){
+        if(v === undefined || v === null || v === "") return "-";
+        if(typeof v === "number") return `${v} min`;
+        if(typeof v === "string"){
+          const t=v.trim(); if(!t) return "-";
+          const n=Number(t);
+          if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
+          return t;
+        }
+        try{ return JSON.stringify(v); }catch(e){ return String(v); }
+      }
+
+      function getTimeField(data){
+        const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
+        for(const k of keys){
+          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+        }
+        return "-";
+      }
+      function getMarkField(data){
+        const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+        for(const k of keys){
+          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+        }
+        return "-";
+      }
+      function getTitleField(data){
+        return data?.title ?? data?.name ?? "Subject Model Test";
+      }
+      function getPreQCount(data){
+        const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
+        for(const k of keys){
+          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+        }
+        return null;
+      }
+
+      function ensureQuestionCountListener(mtId){
+        if(qCountUnsubs.has(mtId)) return;
+        const unsub = db.collection(COL_MODELTEST_QUESTIONS)
+          .where("modelTestId","==", mtId)
           .onSnapshot((snap)=>{
-            modelTestCountMap.set(s.id, snap.size || 0);
-            renderSubjects();
+            qCountMap.set(mtId, snap.size || 0);
+            renderLatestModelTests(latestMTDocsCache);
           }, (err)=>{
             console.error(err);
-            modelTestCountMap.set(s.id, modelTestCountMap.get(s.id) || 0);
+            qCountMap.set(mtId, 0);
+            renderLatestModelTests(latestMTDocsCache);
           });
-        modelTestUnsubs.set(s.id, unsub);
-      });
-    }
-
-    function renderSkeleton(){
-      const wrap = $("subjects");
-      wrap.innerHTML = "";
-      for(let i=0;i<6;i++){
-        const d = document.createElement("div");
-        d.className = "skeleton";
-        d.innerHTML = `<div class="shimmer"></div>`;
-        wrap.appendChild(d);
+        qCountUnsubs.set(mtId, unsub);
       }
-      $("empty").style.display = "none";
-      $("btnMore").style.display = "none";
-    }
+      function cleanupQuestionCountListeners(activeIds){
+        for(const [id, unsub] of qCountUnsubs.entries()){
+          if(!activeIds.has(id)){
+            try{ unsub(); }catch(e){}
+            qCountUnsubs.delete(id);
+            qCountMap.delete(id);
+          }
+        }
+      }
 
-    function makeInlineAdCard(){
-      const ad = document.createElement("div");
-      ad.className = "inlineAd";
-      ad.innerHTML = `
-        <div>
-          <div class="tag">Ad Slot</div>
-          <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
-        </div>
-      `;
-      return ad;
-    }
+      // ✅ Requirement: Card click disabled, only buttons work, renamed texts
+      function renderLatestModelTests(docs){
+        const wrap = $("latestMT");
+        latestMTDocsCache = docs;
+        wrap.innerHTML = "";
 
-    function renderSubjects(){
-      const q = currentQuery;
-      const scored = SUBJECTS
-        .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
-        .filter(s => !q ? true : (s.__score >= 1.2))
-        .sort((a,b)=>{
-          if(b.__score !== a.__score) return b.__score - a.__score;
-          return (a.name||"").localeCompare(b.name||"");
+        if(!docs.length){
+          $("mtHint").textContent = "0";
+          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+        $("mtHint").textContent = `${docs.length}`;
+
+        const active = new Set(docs.map(d=>d.id));
+        cleanupQuestionCountListeners(active);
+
+        docs.forEach(d=>{
+          const data = d.data() || {};
+          const title = getTitleField(data);
+          const timeVal = formatTimeMin(getTimeField(data));
+          const markVal = getMarkField(data);
+
+          const preQ = getPreQCount(data);
+          if(preQ == null) ensureQuestionCountListener(d.id);
+          const qCount = (preQ != null) ? preQ : (qCountMap.get(d.id) ?? 0);
+
+          const card = document.createElement("div");
+          card.className = "mtCard";
+          // ❌ No click handler on card
+
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMeta">
+              <span>⏱ ${esc(timeVal)}</span>
+              <span>🧮 Mark: ${esc(markVal)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActions">
+              <button class="btn primary"
+                onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">
+                Start test
+              </button>
+              <button class="btn"
+                onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(d.id)}'">
+                See Result
+              </button>
+            </div>
+          `;
+          wrap.appendChild(card);
         });
+      }
 
-      const total = scored.length;
-      const shown = scored.slice(0, visibleCount);
-      $("countHint").textContent = `Total: ${total}`;
+      // ✅ Robust sorting (createdAt missing হলেও কাজ করবে)
+      function toMillisAny(v){
+        if(v == null) return 0;
+        if(typeof v === "object"){
+          if(typeof v.toMillis === "function") return v.toMillis();
+          if(typeof v.seconds === "number") return (v.seconds * 1000) + (v.nanoseconds ? Math.floor(v.nanoseconds/1e6) : 0);
+          if(v instanceof Date) return v.getTime();
+        }
+        if(typeof v === "number"){
+          if(v > 0 && v < 1e12) return v * 1000;
+          return v;
+        }
+        if(typeof v === "string"){
+          const t = v.trim();
+          if(!t) return 0;
+          const n = Number(t);
+          if(!Number.isNaN(n)){
+            if(n > 0 && n < 1e12) return n * 1000;
+            return n;
+          }
+          const ms = Date.parse(t);
+          return Number.isNaN(ms) ? 0 : ms;
+        }
+        return 0;
+      }
+      function getDocSortTime(data){
+        const keys = [
+          "createdAt","created_at","created","createAt","timeCreated",
+          "updatedAt","updated_at","updated","modifiedAt","modified_at",
+          "timestamp","ts"
+        ];
+        for(const k of keys){
+          const ms = toMillisAny(data?.[k]);
+          if(ms) return ms;
+        }
+        return 0;
+      }
 
-      const wrap = $("subjects");
-      wrap.innerHTML = "";
+      function watchLatestModelTests(){
+        $("mtHint").textContent = "Loading…";
+        const LIMIT = 8;
 
-      if(!total){
+        db.collection(COL_SUBJECT_MODEL_TESTS)
+          .onSnapshot((snap)=>{
+            const docs = snap.docs.slice();
+            docs.sort((a,b)=>{
+              const ta = getDocSortTime(a.data() || {});
+              const tb = getDocSortTime(b.data() || {});
+              if(tb !== ta) return tb - ta;
+              return (b.id || "").localeCompare(a.id || "");
+            });
+            renderLatestModelTests(docs.slice(0, LIMIT));
+          }, (err)=>{
+            console.error(err);
+            $("mtHint").textContent = "Failed";
+            $("latestMT").innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">Failed to load model tests.</div>`;
+          });
+      }
+
+      renderSkeleton();
+      watchLatestModelTests();
+
+      db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+        SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        syncModelTestListeners();
+        renderSubjects();
+      }, (err)=>{
+        console.error(err);
+        $("countHint").textContent = "Failed to load";
+        $("subjects").innerHTML = "";
         $("empty").style.display = "block";
         $("btnMore").style.display = "none";
-        return;
-      }
-      $("empty").style.display = "none";
-
-      let cardCount = 0;
-      shown.forEach((s, idx)=>{
-        cardCount++;
-        const mcq = s.counts?.mcq || 0;
-        const written = s.counts?.written || 0;
-        const mtCount = modelTestCountMap.get(s.id) ?? 0;
-
-        const el = document.createElement("article");
-        el.className = "subCard";
-        el.setAttribute("role","button");
-        el.setAttribute("tabindex","0");
-        el.onclick = ()=>openSubjectDetails(s.id);
-        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
-
-        el.innerHTML = `
-          <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
-          <div class="counts">
-            <span class="countPill">MCQ <b>${mcq}</b></span>
-            <span class="countPill">Written <b>${written}</b></span>
-            <span class="countPill">Model test <b>${mtCount}</b></span>
-          </div>
-        `;
-        wrap.appendChild(el);
-
-        if(cardCount % 6 === 0 && idx < shown.length - 1){
-          wrap.appendChild(makeInlineAdCard());
-        }
       });
 
-      $("btnMore").style.display = (total > shown.length) ? "inline-flex" : "none";
-    }
-
-    function onSearch(){
-      currentQuery = ($("search").value || "").trim();
-      visibleCount = PAGE_SIZE;
-      renderSubjects();
-    }
-    window.onSearch = onSearch;
-
-    function loadMore(){
-      visibleCount += PAGE_SIZE;
-      renderSubjects();
-    }
-    window.loadMore = loadMore;
-
-    const qCountUnsubs = new Map();
-    const qCountMap = new Map();
-    let latestMTDocsCache = [];
-
-    function formatTimeMin(v){
-      if(v === undefined || v === null || v === "") return "-";
-      if(typeof v === "number") return `${v} min`;
-      if(typeof v === "string"){
-        const t=v.trim(); if(!t) return "-";
-        const n=Number(t);
-        if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
-        return t;
-      }
-      try{ return JSON.stringify(v); }catch(e){ return String(v); }
-    }
-
-    function getTimeField(data){
-      const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
-      for(const k of keys){
-        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-      }
-      return "-";
-    }
-    function getMarkField(data){
-      const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
-      for(const k of keys){
-        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-      }
-      return "-";
-    }
-    function getTitleField(data){
-      return data?.title ?? data?.name ?? "Subject Model Test";
-    }
-    function getPreQCount(data){
-      const keys = ["totalQuestions","total_questions","totalQ","questionCount","questionsCount"];
-      for(const k of keys){
-        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-      }
-      return null;
-    }
-
-    function ensureQuestionCountListener(mtId){
-      if(qCountUnsubs.has(mtId)) return;
-      const unsub = db.collection(COL_MODELTEST_QUESTIONS)
-        .where("modelTestId","==", mtId)
-        .onSnapshot((snap)=>{
-          qCountMap.set(mtId, snap.size || 0);
-          renderLatestModelTests(latestMTDocsCache);
-        }, (err)=>{
-          console.error(err);
-          qCountMap.set(mtId, 0);
-          renderLatestModelTests(latestMTDocsCache);
-        });
-      qCountUnsubs.set(mtId, unsub);
-    }
-    function cleanupQuestionCountListeners(activeIds){
-      for(const [id, unsub] of qCountUnsubs.entries()){
-        if(!activeIds.has(id)){
-          try{ unsub(); }catch(e){}
-          qCountUnsubs.delete(id);
-          qCountMap.delete(id);
-        }
-      }
-    }
-
-    // ✅ UPDATED: Start + Result buttons + correct pages
-    function renderLatestModelTests(docs){
-      const wrap = $("latestMT");
-      latestMTDocsCache = docs;
-      wrap.innerHTML = "";
-
-      if(!docs.length){
-        $("mtHint").textContent = "0";
-        wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
-        return;
-      }
-      $("mtHint").textContent = `${docs.length}`;
-
-      const active = new Set(docs.map(d=>d.id));
-      cleanupQuestionCountListeners(active);
-
-      docs.forEach(d=>{
-        const data = d.data() || {};
-        const title = getTitleField(data);
-        const timeVal = formatTimeMin(getTimeField(data));
-        const markVal = getMarkField(data);
-
-        const preQ = getPreQCount(data);
-        if(preQ == null) ensureQuestionCountListener(d.id);
-        const qCount = (preQ != null) ? preQ : (qCountMap.get(d.id) ?? 0);
-
-        const card = document.createElement("div");
-        card.className = "mtCard";
-        card.setAttribute("role","button");
-        card.setAttribute("tabindex","0");
-
-        // card click -> convert/details page
-        card.onclick = ()=> openModelTestDetails(d.id);
-        card.onkeydown = (e)=>{
-          if(e.key==="Enter" || e.key===" "){
-            e.preventDefault();
-            openModelTestDetails(d.id);
-          }
-        };
-
-        card.innerHTML = `
-          <h4 title="${esc(title)}">${esc(title)}</h4>
-          <div class="mtMeta">
-            <span>⏱ ${esc(timeVal)}</span>
-            <span>🧮 Mark: ${esc(markVal)}</span>
-            <span>📌 Q: ${esc(qCount)}</span>
-          </div>
-          <div class="mtActions">
-            <button class="btn primary" onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(d.id)}'">Start</button>
-            <button class="btn" onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(d.id)}'">Result</button>
-          </div>
-        `;
-        wrap.appendChild(card);
-      });
-    }
-
-    function watchLatestModelTests(){
-      $("mtHint").textContent = "Loading…";
-      const LIMIT = 8;
-
-      db.collection(COL_SUBJECT_MODEL_TESTS)
-        .orderBy("createdAt", "desc")
-        .limit(LIMIT)
-        .onSnapshot((snap)=>renderLatestModelTests(snap.docs), (err)=>{
-          console.warn("createdAt order failed, fallback:", err);
-          db.collection(COL_SUBJECT_MODEL_TESTS)
-            .limit(LIMIT)
-            .onSnapshot((s2)=>renderLatestModelTests(s2.docs), (e2)=>{
-              console.error(e2);
-              $("mtHint").textContent = "Failed";
-            });
-        });
-    }
-
-    renderSkeleton();
-    watchLatestModelTests();
-
-    db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
-      SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-      syncModelTestListeners();
-      renderSubjects();
-    }, (err)=>{
-      console.error(err);
-      $("countHint").textContent = "Failed to load";
-      $("subjects").innerHTML = "";
-      $("empty").style.display = "block";
-      $("btnMore").style.display = "none";
     });
   </script>
 </body>
