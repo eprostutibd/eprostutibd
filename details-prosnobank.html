@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="bn">
 <head>
@@ -52,8 +51,6 @@
         radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
-
-      /* ✅ FINAL: no extra footer gap */
       padding-bottom: 0;
     }
     a{color:inherit}
@@ -128,21 +125,7 @@
     }
     .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
 
-    /* ===== Notice + Header Ad ===== */
-    .noticeBar{
-      margin-top:10px;border:1px solid var(--line);background: rgba(255,255,255,.72);
-      border-radius:16px;overflow:hidden;box-shadow: var(--shadow2);
-    }
-    .noticeRow{display:flex;align-items:center;gap:10px;padding:10px 12px;}
-    .noticeTag{
-      font-size:12px;font-weight:1000;padding:6px 10px;border-radius:999px;
-      background: rgba(29,78,216,.10);border: 1px solid rgba(29,78,216,.18);
-      color: var(--text);white-space:nowrap;
-    }
-    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
-    .marq span{display:inline-block;padding-left:100%;animation: ticker 18s linear infinite;}
-    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
-
+    /* ===== Header Ad ===== */
     .adBox{
       margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
       background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
@@ -378,7 +361,7 @@
       .sList{
         flex:1;
         min-height:0;
-        max-height: 520px; /* shows around ~8 cards depending on size */
+        max-height: 520px;
         overflow:auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
@@ -456,7 +439,6 @@
       z-index: 1;
     }
 
-    /* Desktop: 2 columns + divider lines */
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
       body[data-mode="written"] .qList{
@@ -478,59 +460,24 @@
       .qRow + .qRow{ border-top: 1px solid var(--line2); }
     }
 
-    .qRow{
-      padding: 12px 12px;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .qHead{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      justify-content:flex-start;
-    }
+    .qRow{padding: 12px 12px;background: transparent;border-radius: 0;}
+    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start;}
     .qNo{
-      flex:0 0 auto;
-      font-size:11px;
-      font-weight:1000;
-      padding: 5px 8px;
-      border-radius:999px;
-      border: 1px solid rgba(18,28,55,.12);
-      background: rgba(255,255,255,.70);
-      color: var(--muted);
-      white-space:nowrap;
+      flex:0 0 auto;font-size:11px;font-weight:1000;padding: 5px 8px;border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.70);
+      color: var(--muted);white-space:nowrap;
     }
-    .qText{
-      margin:0;
-      font-weight:800;
-      font-size:12.6px;
-      line-height:1.55;
-      flex:1;
-      letter-spacing:.1px;
-    }
+    .qText{margin:0;font-weight:800;font-size:12.6px;line-height:1.55;flex:1;letter-spacing:.1px;}
     @media (min-width: 981px){
-      .qText{
-        display:-webkit-box;
-        -webkit-line-clamp:2;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
-      }
+      .qText{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
     }
 
-    /* ✅ Note immediately after question */
-    .noteInline{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
+    .noteInline{margin-top: 6px;color: var(--muted);font-size: 12px;line-height: 1.55;}
     .noteInline b{color: var(--text);}
 
     .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
     @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
 
-    /* ✅ Paper-like options (2 lines) + tight tick/cross */
     .optLine{
       display:grid;
       grid-template-columns: 16px 22px 1fr;
@@ -608,7 +555,7 @@
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ===== Fixed Ans Bar (watermark floating) ===== */
+    /* ===== Fixed Ans Bar ===== */
     .ansBarWrap{
       position: fixed;
       left: 0; right: 0;
@@ -687,7 +634,7 @@
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
-      margin-bottom: 0 !important; /* ✅ FINAL: no bottom gap */
+      margin-bottom: 0 !important;
       background:
         radial-gradient(900px 320px at 20% 0%, rgba(96,165,250,.16), transparent 60%),
         radial-gradient(900px 320px at 80% 0%, rgba(34,197,94,.12), transparent 60%),
@@ -715,10 +662,7 @@
     .socialCol svg{width:18px;height:18px;fill:#fff;opacity:.92}
 
     @media (max-width: 980px){
-      .footGrid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px 10px;
-      }
+      .footGrid{grid-template-columns: repeat(3, minmax(0, 1fr));gap: 10px 10px;}
       .footBrandCol{display:none !important;}
     }
 
@@ -741,6 +685,88 @@
     @media (prefers-reduced-motion: reduce){
       .marq span{ animation:none; padding-left:0; }
     }
+
+    /* =========================
+       ✅ Stylish Popups (Toast)
+       ========================= */
+    .toastHost{
+      position: fixed;
+      top: calc(var(--headerH, 64px) + 12px);
+      right: 12px;
+      left: 12px;
+      z-index: 999999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      pointer-events:none;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    @media (min-width: 720px){
+      .toastHost{left:auto; right: 16px; max-width: 360px; margin:0;}
+    }
+    .toast{
+      pointer-events:auto;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      border-radius: 16px;
+      padding: 12px 12px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 16px 44px rgba(15,23,48,.14);
+      transform: translateY(-6px);
+      opacity:0;
+      animation: toastIn .18s ease-out forwards;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    @keyframes toastIn{
+      to{ transform: translateY(0); opacity:1; }
+    }
+    .toast.out{
+      animation: toastOut .16s ease-in forwards;
+    }
+    @keyframes toastOut{
+      to{ transform: translateY(-6px); opacity:0; }
+    }
+    .toast .ico{
+      width: 26px;height: 26px;border-radius: 999px;
+      display:grid;place-items:center;
+      font-weight:1000;
+      color:#fff;
+      flex:0 0 auto;
+      margin-top: 2px;
+    }
+    .toast .body{
+      flex:1; min-width:0;
+    }
+    .toast .title{
+      font-weight:1000;
+      font-size:12.5px;
+      line-height:1.2;
+      margin-bottom: 4px;
+    }
+    .toast .msg{
+      font-size:12px;
+      color: var(--muted);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .toast .x{
+      border:none;
+      background: transparent;
+      cursor:pointer;
+      font-weight:1000;
+      color: rgba(15,23,48,.55);
+      padding: 0 6px;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .toast.info .ico{ background: rgba(29,78,216,.92); }
+    .toast.success .ico{ background: rgba(22,163,74,.92); }
+    .toast.warn .ico{ background: rgba(245,158,11,.92); }
+    .toast.error .ico{ background: rgba(220,38,38,.92); }
   </style>
 </head>
 
@@ -787,15 +813,11 @@
   </div>
 </header>
 
+<!-- ✅ Stylish Toast Container -->
+<div class="toastHost" id="toastHost" aria-live="polite" aria-atomic="true"></div>
+
 <div class="container">
-  <div class="noticeBar" role="region" aria-label="Notice">
-    <div class="noticeRow">
-      <span class="noticeTag">Notice:</span>
-      <div class="marq">
-        <span id="tickerText">Subject নির্বাচন করুন • MCQ/Written/Model Test দেখতে ট্যাব ব্যবহার করুন</span>
-      </div>
-    </div>
-  </div>
+  <!-- ✅ Notice bar deleted as requested -->
 
   <div class="adBox">
     <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
@@ -1002,6 +1024,56 @@
   const db = firebase.firestore();
   const $ = (id)=>document.getElementById(id);
 
+  /* =========================
+     ✅ Stylish Popup Helpers
+     ========================= */
+  function toast(message, type="info", title){
+    const host = $("toastHost");
+    if(!host) return;
+
+    const t = document.createElement("div");
+    t.className = "toast " + type;
+
+    const ico = type==="success" ? "✓" :
+                type==="warn" ? "!" :
+                type==="error" ? "×" : "i";
+
+    const ttl = title || (
+      type==="success" ? "Success" :
+      type==="warn" ? "Warning" :
+      type==="error" ? "Error" : "Info"
+    );
+
+    t.innerHTML = `
+      <div class="ico">${ico}</div>
+      <div class="body">
+        <div class="title">${ttl}</div>
+        <div class="msg">${esc(message)}</div>
+      </div>
+      <button class="x" aria-label="Close">×</button>
+    `;
+
+    const close = ()=>{
+      t.classList.add("out");
+      setTimeout(()=>t.remove(), 180);
+    };
+    t.querySelector(".x").onclick = close;
+
+    host.appendChild(t);
+
+    // auto close
+    setTimeout(close, 2600);
+  }
+
+  // Optional: replace ugly alert with toast
+  window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
+
+  // Safe ticker setter (notice bar removed)
+  function setTickerText(text){
+    const el = $("tickerText");
+    if(el) el.textContent = text;
+  }
+
   function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
   function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
   function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
@@ -1084,9 +1156,7 @@
   const PAGE_SIZE = 30;
   let page = 1;
 
-  // cursorByPage persists with {t,id}
   let cursorByPage = { 1: null };
-
   let lastDoc = null;
   let hasNext = false;
 
@@ -1141,9 +1211,6 @@
     }catch(e){}
   }
 
-  /* ✅ URL param ALWAYS wins over localStorage
-     (other page -> subject click will show correct subject here)
-  */
   function applyUrlOverrides(){
     const urlSubjectId = getParam("subjectId");
     const urlMode = getParam("mode");
@@ -1152,7 +1219,7 @@
     if(urlSubjectId){
       selectedSubjectId = urlSubjectId;
       page = urlPage > 0 ? urlPage : 1;
-      cursorByPage = { 1: null };   // reset for new subject
+      cursorByPage = { 1: null };
       selectedOptionMap.clear();
     }else{
       if(urlPage > 1) page = urlPage;
@@ -1165,7 +1232,6 @@
     document.body.setAttribute("data-mode", mode);
   }
 
-  // load storage first, then override with URL
   loadState();
   applyUrlOverrides();
 
@@ -1194,6 +1260,8 @@
     setUrlState();
     saveState();
     loadRight();
+
+    toast("Mode পরিবর্তন হয়েছে", "success", "Done");
   }
   window.setMode = setMode;
 
@@ -1203,6 +1271,8 @@
     $("ansShowBtn").classList.toggle("active", ansMode==="show");
     saveState();
     renderContent();
+
+    toast(ansMode==="show" ? "Answer দেখানো হচ্ছে" : "Answer Hide করা হয়েছে", "info", "Answer");
   }
   window.setAnsMode = setAnsMode;
 
@@ -1318,9 +1388,12 @@
     $("headerTag").textContent = selectedSubjectName
       ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}`
       : "সকল প্রস্তুতি হোক গভীর থেকে";
-    $("tickerText").textContent = selectedSubjectName
+
+    // Notice bar removed -> safe
+    setTickerText(selectedSubjectName
       ? `${selectedSubjectName} • MCQ/Written/Model Test`
-      : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
+      : "Subject নির্বাচন করুন • MCQ/Written/Model Test"
+    );
 
     renderSubjectList();
     renderSubjectSheet();
@@ -1328,6 +1401,8 @@
     setUrlState();
     saveState();
     loadRight();
+
+    toast(selectedSubjectName ? `${selectedSubjectName} selected` : "Subject selected", "success", "Subject");
 
     if(shouldScrollTop){
       try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
@@ -1377,6 +1452,7 @@
       $("content").innerHTML = "";
       $("pageHint").textContent = "";
       renderPager();
+      toast("আগে Subject নির্বাচন করুন", "warn", "Select Subject");
       return;
     }
     loadRight();
@@ -1501,6 +1577,7 @@
       $("emptyRight").style.display = "block";
       hasNext = false;
       renderPager();
+      toast("ডাটা লোড করা যায়নি। Firestore rules/Index চেক করুন।", "error", "Load Failed");
     });
   }
 
@@ -1735,9 +1812,11 @@
         $("headerTag").textContent = selectedSubjectName
           ? `সকল প্রস্তুতি হোক গভীর থেকে • ${selectedSubjectName}`
           : "সকল প্রস্তুতি হোক গভীর থেকে";
-        $("tickerText").textContent = selectedSubjectName
+
+        setTickerText(selectedSubjectName
           ? `${selectedSubjectName} • MCQ/Written/Model Test`
-          : "Subject নির্বাচন করুন • MCQ/Written/Model Test";
+          : "Subject নির্বাচন করুন • MCQ/Written/Model Test"
+        );
 
         setUrlState();
         saveState();
@@ -1748,7 +1827,6 @@
     });
   }
 
-  // ✅ Keep Ans bar above footer (no overlap, no footer gap)
   (function keepAnsBarAboveFooter(){
     const footer = document.querySelector("footer");
     const bar = document.getElementById("ansBarWrap");
