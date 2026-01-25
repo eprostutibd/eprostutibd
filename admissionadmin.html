@@ -1,0 +1,1779 @@
+```html
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>প্রশ্নব্যাংক অ্যাডমিন পেজ</title>
+
+  <style>
+    :root{
+      --bg:#070c18;
+      --panel: rgba(18,26,43,.88);
+      --line: rgba(255,255,255,.10);
+      --muted:#a3b0c9;
+      --text:#eef3ff;
+      --accent:#6aa6ff;
+      --ok:#5ce3a4;
+      --danger:#ff6a6a;
+      --warn:#ffd36a;
+      --shadow: 0 14px 40px rgba(0,0,0,.42);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 15%, rgba(106,166,255,.20), transparent 55%),
+        radial-gradient(900px 650px at 85% 18%, rgba(92,227,164,.14), transparent 55%),
+        radial-gradient(900px 650px at 50% 100%, rgba(255,211,106,.10), transparent 60%),
+        var(--bg);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(12px);
+      background: rgba(7,12,24,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .wrap{max-width:1180px; margin:0 auto; padding:16px;}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+    .brand{display:flex; align-items:center; gap:12px;}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(92,227,164,.88));
+      box-shadow: var(--shadow);
+    }
+    h1{margin:0; font-size:18px}
+    .sub{margin-top:4px; font-size:12px; color:var(--muted)}
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      min-width: 230px;
+      justify-content:center;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--warn)}
+    .dot.ok{background:var(--ok)}
+    .grid{
+      display:grid;
+      grid-template-columns: 310px 1fr;
+      gap:14px;
+      padding: 14px 0;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background: var(--panel);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .bd{padding:14px}
+    .note{font-size:12px; color:var(--muted); line-height:1.5}
+    .small{font-size:12px; color:var(--muted)}
+    .divider{height:1px; background: var(--line); margin:12px 0}
+
+    .tabs{display:flex; flex-direction:column; gap:10px;}
+    .tabbtn{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      transition:.15s;
+    }
+    .tabbtn:hover{border-color: rgba(255,255,255,.22)}
+    .tabbtn.active{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.12);
+    }
+
+    /* updated to 4 stats */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 900px){ .stats{grid-template-columns: repeat(2, 1fr)} }
+    @media (max-width: 520px){ .stats{grid-template-columns:1fr} }
+
+    .stat{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+    }
+    .stat b{font-size:18px; display:block; margin-bottom:4px}
+    .stat span{font-size:12px; color:var(--muted)}
+
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .row > *{flex:1}
+    .field label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px 2px;}
+    input, select, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      outline:none;
+    }
+    textarea{min-height:92px; resize:vertical}
+    input:focus, select:focus, textarea:focus{border-color: rgba(106,166,255,.55)}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.15s;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color: rgba(255,255,255,.22)}
+    .btn.primary{border-color: rgba(106,166,255,.6); background: rgba(106,166,255,.16);}
+    .btn.ok{border-color: rgba(92,227,164,.6); background: rgba(92,227,164,.12);}
+    .btn.danger{border-color: rgba(255,106,106,.6); background: rgba(255,106,106,.12);}
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+
+    .list{display:flex; flex-direction:column; gap:10px;}
+    .item{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding:12px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .title{
+      margin:0;
+      font-size:15px;
+      font-weight:900;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 560px;
+    }
+    .meta2{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background: rgba(0,0,0,.08);
+    }
+    .actions{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+
+    /* ✅ MODAL SCROLL FIX */
+    .modalback{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      padding: 16px;
+      z-index: 50;
+
+      overflow:auto;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .modalback.show{display:flex}
+
+    .modal{
+      width:min(980px, 100%);
+      background: rgba(18,26,43,.98);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      max-height: calc(100vh - 32px);
+    }
+    .mhd{
+      padding: 14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      position: sticky;
+      top: 0;
+      background: rgba(18,26,43,.98);
+      z-index: 1;
+    }
+    .mbd{
+      padding: 14px;
+      overflow:auto;
+      max-height: calc(100vh - 160px);
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px; color: var(--muted);
+      border:1px dashed var(--line);
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,255,255,.03);
+      overflow:auto;
+      white-space: pre-wrap;
+    }
+
+    .toast{
+      position: fixed; right: 16px; bottom: 16px;
+      background: rgba(18,26,43,.95);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 12px 12px;
+      max-width: 560px;
+      display:none;
+      z-index: 90;
+    }
+    .toast.show{display:block}
+    .toast b{display:block; margin-bottom:4px}
+    .toast .tmuted{color:var(--muted); font-size:12px}
+
+    #authGate{
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(7,12,24,.92);
+      display:flex; align-items:center; justify-content:center;
+      padding: 18px;
+    }
+    .authCard{
+      width: min(560px, 100%);
+      border:1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(18,26,43,.92);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .authCard h2{margin: 6px 0 4px; font-size: 18px;}
+    .authRow{display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px;}
+    .authRow > *{flex:1}
+  </style>
+</head>
+
+<body>
+
+<!-- AUTH GATE -->
+<div id="authGate">
+  <div class="authCard">
+    <div style="display:flex; gap:12px; align-items:center;">
+      <div class="logo"></div>
+      <div>
+        <h2>Admin Access Required</h2>
+        <div class="note">শুধু <b>eprostutibd@gmail.com</b> দিয়ে লগইন করলে admin পেজ ব্যবহার করা যাবে।</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="note" id="authStatus">Checking login...</div>
+    <div class="authRow">
+      <button class="btn primary" id="btnLogin">Login with Google</button>
+      <button class="btn" id="btnLogout" disabled>Logout</button>
+    </div>
+    <div class="divider"></div>
+    <div class="note">
+      Modal scroll issue fixed ✅
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
+          <div class="sub">Subjects + Subject Model Tests + Admission (University) • Import • Cascade delete • Question Manager</div>
+        </div>
+      </div>
+      <div class="pill">
+        <span id="connDot" class="dot"></span>
+        <span id="connText">Login required</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <!-- LEFT -->
+    <div class="card">
+      <div class="hd">
+        <b>Admin Menu</b>
+        <span class="small" id="whoami">Admin</span>
+      </div>
+      <div class="bd">
+        <div class="stats">
+          <div class="stat"><b id="statSubjects">0</b><span>Total Subjects</span></div>
+          <div class="stat"><b id="statModelTests">0</b><span>Total Subject Model Tests (selected subject)</span></div>
+          <div class="stat"><b id="statQuestions">0</b><span>Total Questions (from subject counts)</span></div>
+          <div class="stat"><b id="statUniversities">0</b><span>Total Universities</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tabs">
+          <button id="tabSubjects" class="tabbtn active" onclick="showTab('subjects')">
+            <span>Subjects</span><span class="small">Add / Import / Search</span>
+          </button>
+          <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
+            <span>Subject Model Tests</span><span class="small">Add / Import / Search</span>
+          </button>
+          <button id="tabAdmission" class="tabbtn" onclick="showTab('admission')">
+            <span>Admission Wise Question</span><span class="small">University / Import / Search</span>
+          </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row">
+          <button class="btn" onclick="openHelp()">CSV/XLSX Format</button>
+          <button class="btn ok" id="btnRefresh" onclick="manualRefresh()" disabled>Refresh</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="note">
+          ✅ Popup/modal scroll fixed<br/>
+          ✅ Question edit/delete via “Questions” button<br/>
+          ✅ Admission-wise: University + Questions
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+      <div class="hd">
+        <b id="pageTitle">Subjects</b>
+        <div class="small" id="pageHint">Manage subjects & import questions</div>
+      </div>
+
+      <div class="bd">
+        <!-- SUBJECTS -->
+        <section id="subjectsSection">
+          <div class="row">
+            <div class="field">
+              <label>নতুন Subject নাম</label>
+              <input id="subjectName" placeholder="যেমন: Physics / গণিত / বাংলা" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddSubject" onclick="addSubject()" disabled style="width:100%">Add Subject</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search Subject</label>
+              <input id="subjectSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderSubjects()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="subjectsList" class="list"></div>
+          <div id="subjectsEmpty" class="note" style="display:none">এখনও কোনো Subject নেই।</div>
+        </section>
+
+        <!-- SUBJECT MODEL TESTS -->
+        <section id="modelTestsSection" style="display:none">
+          <div class="row">
+            <div class="field">
+              <label>Subject Select</label>
+              <select id="mtSubjectSelect" onchange="onMtSubjectChange()"></select>
+            </div>
+            <div class="field">
+              <label>Subject Model Test Title</label>
+              <input id="mtTitle" placeholder="যেমন: Model Test 1" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Total Time (minutes)</label>
+              <input id="mtTime" type="number" min="0" placeholder="যেমন: 60" />
+            </div>
+            <div class="field">
+              <label>Total Marks</label>
+              <input id="mtMarks" type="number" min="0" placeholder="যেমন: 100" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddModelTest" onclick="addModelTest()" disabled style="width:100%">Add Model Test</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search Model Test</label>
+              <input id="mtSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderModelTests()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="modelTestsList" class="list"></div>
+          <div id="modelTestsEmpty" class="note" style="display:none">এই Subject এ এখনও কোনো Model Test নেই।</div>
+        </section>
+
+        <!-- ADMISSION WISE (UNIVERSITIES) -->
+        <section id="admissionSection" style="display:none">
+          <div class="row">
+            <div class="field">
+              <label>নতুন University নাম</label>
+              <input id="uniName" placeholder="যেমন: DU / BUET / RUET / Medical" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddUni" onclick="addUniversity()" disabled style="width:100%">Add University</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search University</label>
+              <input id="uniSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderUniversities()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="uniList" class="list"></div>
+          <div id="uniEmpty" class="note" style="display:none">এখনও কোনো University নেই।</div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- IMPORT MODAL -->
+<div id="importBack" class="modalback" onclick="closeImport(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <b id="importTitle">Import Questions</b>
+      <button class="btn" onclick="closeImport()">Close</button>
+    </div>
+    <div class="mbd">
+      <div class="row">
+        <div class="field">
+          <label>Question Type</label>
+          <select id="importType">
+            <option value="mcq">MCQ</option>
+            <option value="written">Written</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>CSV / Excel File</label>
+          <input id="importFile" type="file" accept=".csv,.xlsx,.xls" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Answer Format</label>
+          <select id="answerFormat">
+            <option value="auto">Auto (A/B/C/D or 1/2/3/4 or option text)</option>
+            <option value="letter">A/B/C/D only</option>
+            <option value="number">1/2/3/4 only</option>
+            <option value="text">Must match option text</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn ok" id="btnDoImport" onclick="doImport()" disabled style="width:100%">Start Import</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="note">Import করলে Firestore এ প্রশ্ন add হবে এবং counts auto update হবে। (বড় ফাইল chunk করে upload হবে)</div>
+      <div class="divider"></div>
+      <div class="kbd" id="importLog">Ready.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HELP MODAL -->
+<div id="helpBack" class="modalback" onclick="closeHelp(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <b>CSV/XLSX Format</b>
+      <button class="btn" onclick="closeHelp()">Close</button>
+    </div>
+    <div class="mbd">
+      <div class="note">প্রথম row এ header থাকবে। Excel এও একই header রাখবে। Header spelling ঠিক রাখতে হবে।</div>
+      <div class="divider"></div>
+
+      <b>MCQ</b>
+      <div class="kbd">question, option1, option2, option3, option4, right ans, note</div>
+
+      <div class="divider"></div>
+
+      <b>Written</b>
+      <div class="kbd">question, right ans, note</div>
+
+      <div class="divider"></div>
+
+      <div class="note">
+        ✅ <b>right ans</b> = A/B/C/D অথবা 1/2/3/4 অথবা option text<br/>
+        ✅ <b>note</b> explanation হিসেবে save হবে।
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTION MANAGER MODAL -->
+<div id="qmBack" class="modalback" onclick="closeQM(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <b id="qmTitle">Manage Questions</b>
+      <button class="btn" onclick="closeQM()">Close</button>
+    </div>
+    <div class="mbd">
+      <div class="row">
+        <div class="field">
+          <label>Search Question (related match supported)</label>
+          <input id="qmSearch" placeholder="কিছু শব্দ লিখুন..." oninput="renderQMResults()" />
+        </div>
+        <div class="field" style="flex:0 0 230px">
+          <label>Filter Type</label>
+          <select id="qmType" onchange="renderQMResults()">
+            <option value="all">All</option>
+            <option value="mcq">MCQ</option>
+            <option value="written">Written</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="note" id="qmHint">Loading...</div>
+      <div class="divider"></div>
+
+      <div id="qmList" class="list"></div>
+      <div id="qmEmpty" class="note" style="display:none">No questions found.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast">
+  <b id="toastTitle">Message</b>
+  <div id="toastMsg" class="tmuted"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
+
+<script>
+  // ===== CONFIG =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
+  };
+  const ADMIN_EMAIL = "eprostutibd@gmail.com";
+
+  // ✅ all collections prefixed with admission_
+  const PREFIX = "admission_";
+
+  const COL_SUBJECTS = PREFIX + "subjects";
+  const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
+  const COL_SUBJECT_MODEL_TESTS = PREFIX + "subject_model_tests";
+  const COL_MODEL_TEST_QUESTIONS = PREFIX + "model_test_questions";
+
+  // ✅ NEW: admission-wise (university)
+  const COL_UNIVERSITIES = PREFIX + "universities";
+  const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
+
+  firebase.initializeApp(firebaseConfig);
+  try { firebase.analytics(); } catch(e){}
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
+
+  function toast(title, msg){
+    $("toastTitle").textContent = title;
+    $("toastMsg").textContent = msg;
+    const t = $("toast");
+    t.classList.add("show");
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 3200);
+  }
+  function setConn(ok, text){
+    $("connDot").classList.toggle("ok", !!ok);
+    $("connText").textContent = text;
+  }
+  function setAuthorizedUI(isAuthorized, userEmail){
+    $("btnRefresh").disabled = !isAuthorized;
+    $("btnAddSubject").disabled = !isAuthorized;
+    $("btnAddModelTest").disabled = !isAuthorized;
+    $("btnAddUni").disabled = !isAuthorized;
+    $("btnDoImport").disabled = !isAuthorized;
+
+    $("btnLogout").disabled = !isAuthorized;
+    $("btnLogin").disabled = isAuthorized;
+
+    $("whoami").textContent = isAuthorized ? ("Admin: " + (userEmail || "")) : "Admin (blocked)";
+    setConn(isAuthorized, isAuthorized ? "Connected (admin)" : "Login required");
+  }
+  function showGate(msg){
+    $("authGate").style.display = "flex";
+    $("authStatus").textContent = msg || "Please login with eprostutibd@gmail.com";
+    setAuthorizedUI(false, "");
+  }
+  function hideGate(){ $("authGate").style.display = "none"; }
+
+  function esc(str){
+    return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+
+  let SUBJECTS = [];
+  let MODEL_TESTS = [];
+  let UNIVERSITIES = [];
+  let CURRENT_TAB = "subjects";
+  let importTarget = null;
+
+  let unsubSubjects = null;
+  let unsubModelTests = null;
+  let unsubUniversities = null;
+
+  function toMs(ts){
+    try{
+      if(!ts) return 0;
+      if(typeof ts.toDate === "function") return ts.toDate().getTime();
+      return 0;
+    }catch{ return 0; }
+  }
+
+  // AUTH
+  async function login(){
+    try{
+      $("authStatus").textContent = "Opening Google login...";
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+
+      const res = await auth.signInWithPopup(provider);
+      await res.user.getIdToken(true);
+
+      const email = (res.user.email || "").toLowerCase();
+      if(email !== ADMIN_EMAIL.toLowerCase()){
+        $("authStatus").textContent = "❌ Not authorized. Signing out...";
+        await auth.signOut();
+        toast("Not authorized", "শুধু eprostutibd@gmail.com admin access পাবে।");
+        return;
+      }
+    }catch(err){
+      console.error(err);
+      const msg = err?.message || String(err);
+      $("authStatus").textContent = "Login failed: " + msg;
+      toast("Login failed", msg);
+
+      if((err?.code||"") === "auth/unauthorized-domain"){
+        toast("Fix needed", "Firebase Console → Auth → Authorized domains এ আপনার domain add করুন।");
+      }
+    }
+  }
+  async function logout(){ await auth.signOut(); }
+
+  $("btnLogin").onclick = login;
+  $("btnLogout").onclick = logout;
+
+  auth.onAuthStateChanged(async (user)=>{
+    if(!user){
+      detachAll();
+      showGate("Please login with eprostutibd@gmail.com");
+      return;
+    }
+    try{ await user.getIdToken(true); }catch(e){}
+
+    const email = (user.email || "").toLowerCase();
+    if(email !== ADMIN_EMAIL.toLowerCase()){
+      detachAll();
+      $("authStatus").textContent = "❌ Only admin allowed. Signing out...";
+      await auth.signOut();
+      showGate("❌ Only eprostutibd@gmail.com is allowed.");
+      return;
+    }
+
+    hideGate();
+    setAuthorizedUI(true, user.email);
+
+    // attach main listeners
+    attachSubjectsSnapshot();
+    attachUniversitiesSnapshot();
+
+    toast("Welcome", "Admin access granted");
+  });
+
+  function detachAll(){
+    if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
+    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+    if(unsubUniversities){ unsubUniversities(); unsubUniversities=null; }
+  }
+
+  function attachSubjectsSnapshot(){
+    if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
+    unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+      SUBJECTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+      populateSubjectSelect();
+      renderSubjects();
+      refreshStats();
+      if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
+    }, (err)=>{
+      console.error(err);
+      toast("Firestore error", err?.message || "Subjects snapshot failed");
+      setConn(false, "Rules/Auth error?");
+    });
+  }
+
+  function attachUniversitiesSnapshot(){
+    if(unsubUniversities){ unsubUniversities(); unsubUniversities=null; }
+    unsubUniversities = db.collection(COL_UNIVERSITIES).onSnapshot((snap)=>{
+      UNIVERSITIES = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+      UNIVERSITIES.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+      if(CURRENT_TAB === "admission") renderUniversities();
+      refreshStats();
+    }, (err)=>{
+      console.error(err);
+      toast("Firestore error", err?.message || "Universities snapshot failed");
+    });
+  }
+
+  function attachModelTestsSnapshot(){
+    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+    const subjectId = $("mtSubjectSelect").value;
+    if(!subjectId){
+      MODEL_TESTS = [];
+      renderModelTests();
+      refreshStats();
+      return;
+    }
+    unsubModelTests = db.collection(COL_SUBJECT_MODEL_TESTS)
+      .where("subjectId","==",subjectId)
+      .onSnapshot((snap)=>{
+        MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        MODEL_TESTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+        renderModelTests();
+        refreshStats();
+      }, (err)=>{
+        console.error(err);
+        toast("Firestore error", err?.message || "Model tests snapshot failed");
+      });
+  }
+
+  function showTab(tab){
+    CURRENT_TAB = tab;
+
+    $("tabSubjects").classList.toggle("active", tab==="subjects");
+    $("tabModelTests").classList.toggle("active", tab==="modeltests");
+    $("tabAdmission").classList.toggle("active", tab==="admission");
+
+    $("subjectsSection").style.display = tab==="subjects" ? "block" : "none";
+    $("modelTestsSection").style.display = tab==="modeltests" ? "block" : "none";
+    $("admissionSection").style.display = tab==="admission" ? "block" : "none";
+
+    $("pageTitle").textContent =
+      tab==="subjects" ? "Subjects" :
+      tab==="modeltests" ? "Subject Model Tests" :
+      "Admission Wise Question";
+
+    $("pageHint").textContent =
+      tab==="subjects"
+        ? "Manage subjects & import questions"
+        : tab==="modeltests"
+          ? "Manage subject model tests & import questions"
+          : "Manage universities & import admission questions";
+
+    if(tab==="modeltests") attachModelTestsSnapshot();
+    else if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+
+    if(tab==="admission") renderUniversities();
+  }
+  window.showTab = showTab;
+
+  function manualRefresh(){
+    populateSubjectSelect();
+    if(CURRENT_TAB==="subjects") renderSubjects();
+    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+    if(CURRENT_TAB==="admission") renderUniversities();
+    toast("Refreshed", "UI updated");
+  }
+  window.manualRefresh = manualRefresh;
+
+  function refreshStats(){
+    $("statSubjects").textContent = String(SUBJECTS.length);
+    $("statModelTests").textContent = String(MODEL_TESTS.length);
+    const approxQ = SUBJECTS.reduce((sum,s)=> sum + (s.counts?.mcq||0) + (s.counts?.written||0), 0);
+    $("statQuestions").textContent = String(approxQ);
+    $("statUniversities").textContent = String(UNIVERSITIES.length);
+  }
+
+  function populateSubjectSelect(){
+    const sel = $("mtSubjectSelect");
+    const prev = sel.value;
+    sel.innerHTML = "";
+    const opt0 = document.createElement("option");
+    opt0.value = "";
+    opt0.textContent = SUBJECTS.length ? "Select subject..." : "No subjects yet";
+    sel.appendChild(opt0);
+    SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"")).forEach(s=>{
+      const o = document.createElement("option");
+      o.value = s.id;
+      o.textContent = s.name;
+      sel.appendChild(o);
+    });
+    if(prev) sel.value = prev;
+    if(!sel.value && SUBJECTS.length) sel.value = SUBJECTS[0].id;
+  }
+  function onMtSubjectChange(){
+    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+  }
+  window.onMtSubjectChange = onMtSubjectChange;
+
+  // ===== SUBJECTS RENDER =====
+  function renderSubjects(){
+    const q = ($("subjectSearch").value||"").trim().toLowerCase();
+    const list = $("subjectsList");
+    list.innerHTML = "";
+    const filtered = SUBJECTS.filter(s=>(s.name||"").toLowerCase().includes(q));
+    $("subjectsEmpty").style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(s=>{
+      const counts = s.counts || { mcq:0, written:0 };
+      const safeName = (s.name||"").replace(/'/g,"\\'");
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(s.name||"(no name)")}</p>
+          <div class="meta2">
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">ID: ${s.id}</span>
+          </div>
+          <div class="note" style="margin-top:8px">Edit/Delete questions → <b>Questions</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editSubjectPrompt('${s.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteSubjectCascade('${s.id}')">Delete (Cascade)</button>
+          <button class="btn ok" onclick="openSubjectImport('${s.id}')">Import</button>
+          <button class="btn" onclick="openQMForSubject('${s.id}','${safeName}')">Questions</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    refreshStats();
+  }
+  window.renderSubjects = renderSubjects;
+
+  // ===== MODEL TESTS RENDER =====
+  function renderModelTests(){
+    const q = ($("mtSearch").value||"").trim().toLowerCase();
+    const list = $("modelTestsList");
+    list.innerHTML = "";
+    const filtered = MODEL_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
+    $("modelTestsEmpty").style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(m=>{
+      const counts = m.counts || { mcq:0, written:0 };
+      const safeTitle = (m.title||"").replace(/'/g,"\\'");
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(m.title||"(no title)")}</p>
+          <div class="meta2">
+            <span class="chip">Time: <b>${m.totalTimeMin||0}</b> min</span>
+            <span class="chip">Marks: <b>${m.totalMarks||0}</b></span>
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">ID: ${m.id}</span>
+          </div>
+          <div class="note" style="margin-top:8px">Edit/Delete questions → <b>Questions</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editModelTestPrompt('${m.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteModelTestCascade('${m.id}')">Delete (Cascade)</button>
+          <button class="btn ok" onclick="openModelTestImport('${m.id}')">Import</button>
+          <button class="btn" onclick="openQMForModelTest('${m.id}','${safeTitle}')">Questions</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    refreshStats();
+  }
+  window.renderModelTests = renderModelTests;
+
+  // ===== UNIVERSITIES (ADMISSION) RENDER =====
+  function renderUniversities(){
+    const q = ($("uniSearch").value||"").trim().toLowerCase();
+    const list = $("uniList");
+    list.innerHTML = "";
+    const filtered = UNIVERSITIES.filter(u=>(u.name||"").toLowerCase().includes(q));
+    $("uniEmpty").style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(u=>{
+      const counts = u.counts || { mcq:0, written:0 };
+      const safeName = (u.name||"").replace(/'/g,"\\'");
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(u.name||"(no name)")}</p>
+          <div class="meta2">
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">ID: ${u.id}</span>
+          </div>
+          <div class="note" style="margin-top:8px">Edit/Delete questions → <b>Questions</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editUniversityPrompt('${u.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteUniversityCascade('${u.id}')">Delete (Cascade)</button>
+          <button class="btn ok" onclick="openUniversityImport('${u.id}')">Import</button>
+          <button class="btn" onclick="openQMForUniversity('${u.id}','${safeName}')">Questions</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    refreshStats();
+  }
+  window.renderUniversities = renderUniversities;
+
+  // ===== CRUD: SUBJECTS =====
+  async function addSubject(){
+    const name = ($("subjectName").value||"").trim();
+    if(!name) return toast("Validation","Subject নাম দিন।");
+    try{
+      await db.collection(COL_SUBJECTS).add({
+        name,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("subjectName").value="";
+      toast("Done","Subject added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add subject failed");
+    }
+  }
+  window.addSubject = addSubject;
+
+  async function editSubjectPrompt(subjectId){
+    const s = SUBJECTS.find(x=>x.id===subjectId);
+    if(!s) return;
+    const newName = prompt("Subject নাম:", s.name||"");
+    if(newName===null) return;
+    const name = newName.trim();
+    if(!name) return toast("Validation","Empty not allowed");
+    try{
+      await db.collection(COL_SUBJECTS).doc(subjectId).update({
+        name,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","Subject updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editSubjectPrompt = editSubjectPrompt;
+
+  // ===== CRUD: MODEL TESTS =====
+  async function addModelTest(){
+    const subjectId = $("mtSubjectSelect").value;
+    if(!subjectId) return toast("Validation","Subject select করুন।");
+    const title = ($("mtTitle").value||"").trim();
+    if(!title) return toast("Validation","Title দিন।");
+    const totalTimeMin = Number($("mtTime").value||0) || 0;
+    const totalMarks = Number($("mtMarks").value||0) || 0;
+
+    try{
+      await db.collection(COL_SUBJECT_MODEL_TESTS).add({
+        subjectId, title, totalTimeMin, totalMarks,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
+      toast("Done","Model test added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add model test failed");
+    }
+  }
+  window.addModelTest = addModelTest;
+
+  async function editModelTestPrompt(modelTestId){
+    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+    if(!mt) return;
+
+    const title = prompt("Title:", mt.title||"");
+    if(title===null) return;
+    const t = title.trim();
+    if(!t) return toast("Validation","Title empty not allowed");
+
+    const newTime = prompt("Total Time (min):", String(mt.totalTimeMin ?? 0));
+    if(newTime===null) return;
+    const newMarks = prompt("Total Marks:", String(mt.totalMarks ?? 0));
+    if(newMarks===null) return;
+
+    try{
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
+        title: t,
+        totalTimeMin: Number(newTime)||0,
+        totalMarks: Number(newMarks)||0,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","Model test updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editModelTestPrompt = editModelTestPrompt;
+
+  // ===== CRUD: UNIVERSITIES =====
+  async function addUniversity(){
+    const name = ($("uniName").value||"").trim();
+    if(!name) return toast("Validation","University নাম দিন।");
+    try{
+      await db.collection(COL_UNIVERSITIES).add({
+        name,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("uniName").value="";
+      toast("Done","University added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add university failed");
+    }
+  }
+  window.addUniversity = addUniversity;
+
+  async function editUniversityPrompt(uniId){
+    const u = UNIVERSITIES.find(x=>x.id===uniId);
+    if(!u) return;
+    const newName = prompt("University নাম:", u.name||"");
+    if(newName===null) return;
+    const name = newName.trim();
+    if(!name) return toast("Validation","Empty not allowed");
+    try{
+      await db.collection(COL_UNIVERSITIES).doc(uniId).update({
+        name,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","University updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editUniversityPrompt = editUniversityPrompt;
+
+  // Help modal
+  function openHelp(){ $("helpBack").classList.add("show"); }
+  function closeHelp(e){ if(!e || e.target.id==="helpBack") $("helpBack").classList.remove("show"); }
+  window.openHelp = openHelp;
+  window.closeHelp = closeHelp;
+
+  // Import modal
+  function closeImport(e){ if(!e || e.target.id==="importBack") $("importBack").classList.remove("show"); }
+  window.closeImport = closeImport;
+  function logImport(msg){ $("importLog").textContent = msg; }
+
+  function openImportModal(target){
+    importTarget = target;
+    $("importTitle").textContent = `Import Questions → ${target.title}`;
+    $("importFile").value = "";
+    $("importType").value = "mcq";
+    $("answerFormat").value = "auto";
+    logImport("Ready.");
+    $("importBack").classList.add("show");
+  }
+
+  function openSubjectImport(subjectId){
+    const s = SUBJECTS.find(x=>x.id===subjectId);
+    if(!s) return;
+    openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
+  }
+  function openModelTestImport(modelTestId){
+    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+    if(!mt) return;
+    openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
+  }
+  function openUniversityImport(universityId){
+    const u = UNIVERSITIES.find(x=>x.id===universityId);
+    if(!u) return;
+    openImportModal({ mode:"university", universityId, title:`University: ${u.name}` });
+  }
+  window.openSubjectImport = openSubjectImport;
+  window.openModelTestImport = openModelTestImport;
+  window.openUniversityImport = openUniversityImport;
+
+  // CSV/XLSX parse
+  async function parseQuestionsFile(file){
+    const ext = file.name.split(".").pop().toLowerCase();
+
+    const normalizeKey = (k)=> String(k || "")
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+
+    const normalizeRowKeys = (row)=>{
+      const out = {};
+      Object.keys(row || {}).forEach((k)=>{
+        out[normalizeKey(k)] = row[k];
+      });
+      return out;
+    };
+
+    if(ext==="csv"){
+      const text = await file.text();
+      return new Promise((resolve,reject)=>{
+        Papa.parse(text,{
+          header:true,
+          skipEmptyLines:true,
+          transformHeader: (h)=> normalizeKey(h),
+          complete:(res)=> resolve((res.data||[]).map(normalizeRowKeys)),
+          error:reject
+        });
+      });
+    }
+
+    if(ext==="xlsx"||ext==="xls"){
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf);
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws);
+      return (rows||[]).map(normalizeRowKeys);
+    }
+
+    throw new Error("Only CSV/XLSX supported");
+  }
+
+  function toStr(v){ return (v===undefined||v===null) ? "" : String(v); }
+
+  function resolveCorrectIndex(ansRaw, options, ansMode){
+    const a = (ansRaw||"").trim();
+    if(!a) return -1;
+
+    const upper = a.toUpperCase();
+    const letterIndex = ["A","B","C","D"].indexOf(upper);
+    const n = Number(a);
+
+    if(ansMode === "letter") return letterIndex;
+    if(ansMode === "number"){
+      if(Number.isFinite(n) && n>=1 && n<=4) return n-1;
+      return -1;
+    }
+    if(ansMode === "text"){
+      return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
+    }
+
+    if(letterIndex !== -1) return letterIndex;
+    if(Number.isFinite(n) && n>=1 && n<=4) return n-1;
+    return options.findIndex(o => (o||"").trim().toLowerCase() === a.toLowerCase());
+  }
+
+  function normalizeMCQ(row, ansMode){
+    const question = toStr(row["question"]).trim();
+    const options = [
+      toStr(row["option1"]).trim(),
+      toStr(row["option2"]).trim(),
+      toStr(row["option3"]).trim(),
+      toStr(row["option4"]).trim()
+    ];
+    const note = toStr(row["note"]).trim();
+    const ansRaw = toStr(row["right ans"]).trim();
+    const correctIndex = resolveCorrectIndex(ansRaw, options, ansMode);
+    return { question, options, correctIndex, note };
+  }
+
+  function normalizeWritten(row){
+    return {
+      question: toStr(row["question"]).trim(),
+      rightAns: toStr(row["right ans"]).trim(),
+      note: toStr(row["note"]).trim()
+    };
+  }
+
+  async function doImport(){
+    if(!importTarget) return;
+    const type = $("importType").value;
+    const ansMode = $("answerFormat").value;
+    const file = $("importFile").files?.[0];
+    if(!file) return logImport("Please select a CSV/XLSX file.");
+
+    try{
+      logImport("Parsing: " + file.name);
+      const rows = await parseQuestionsFile(file);
+
+      let items = [];
+      if(type==="mcq"){
+        items = rows.map(r=>normalizeMCQ(r, ansMode))
+          .filter(q => q.question && q.options.every(Boolean) && q.correctIndex>=0 && q.correctIndex<=3);
+      }else{
+        items = rows.map(r=>normalizeWritten(r)).filter(q => q.question);
+      }
+
+      if(!items.length){
+        return logImport(
+          "No valid rows found.\n" +
+          "MCQ headers: question, option1, option2, option3, option4, right ans, note\n" +
+          "Written headers: question, right ans, note"
+        );
+      }
+
+      logImport(`Valid rows: ${items.length}. Uploading in chunks...`);
+
+      if(importTarget.mode==="subject"){
+        await importToSubject(importTarget.subjectId, type, items);
+        logImport(`✅ Imported ${items.length} to Subject`);
+        toast("Import done", `${items.length} questions added`);
+      }else if(importTarget.mode==="modeltest"){
+        await importToModelTest(importTarget.modelTestId, importTarget.subjectId, type, items);
+        logImport(`✅ Imported ${items.length} to Model Test`);
+        toast("Import done", `${items.length} questions added`);
+      }else if(importTarget.mode==="university"){
+        await importToUniversity(importTarget.universityId, type, items);
+        logImport(`✅ Imported ${items.length} to University`);
+        toast("Import done", `${items.length} questions added`);
+      }
+    }catch(err){
+      console.error(err);
+      logImport("❌ Error: " + (err?.message || String(err)));
+      toast("Import error", err?.message || "Failed");
+    }
+  }
+  window.doImport = doImport;
+
+  async function importToSubject(subjectId, type, items){
+    const CHUNK = 450;
+    const total = items.length;
+
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_SUBJECT_QUESTIONS);
+
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            subjectId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            subjectId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    await recomputeSubjectCounts(subjectId);
+  }
+
+  async function importToModelTest(modelTestId, subjectId, type, items){
+    const CHUNK = 450;
+    const total = items.length;
+
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_MODEL_TEST_QUESTIONS);
+
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            modelTestId, subjectId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            modelTestId, subjectId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    await recomputeModelTestCounts(modelTestId);
+  }
+
+  async function importToUniversity(universityId, type, items){
+    const CHUNK = 450;
+    const total = items.length;
+
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_UNIVERSITY_QUESTIONS);
+
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            universityId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            universityId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    await recomputeUniversityCounts(universityId);
+  }
+
+  // Cascade delete helpers
+  async function deleteByQueryInBatches(colName, field, value){
+    while(true){
+      const snap = await db.collection(colName).where(field,"==",value).limit(450).get();
+      if(snap.empty) break;
+      const batch = db.batch();
+      snap.docs.forEach(d=>batch.delete(d.ref));
+      await batch.commit();
+    }
+  }
+
+  async function deleteModelTestCascade(modelTestId){
+    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+    if(!mt) return;
+    const ok = confirm(`Delete model test "${mt.title}"?\nসব প্রশ্নও ডিলিট হবে।`);
+    if(!ok) return;
+
+    try{
+      await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",modelTestId);
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).delete();
+      toast("Done","Model test deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
+    }
+  }
+  window.deleteModelTestCascade = deleteModelTestCascade;
+
+  async function deleteSubjectCascade(subjectId){
+    const s = SUBJECTS.find(x=>x.id===subjectId);
+    if(!s) return;
+
+    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- ${COL_SUBJECT_QUESTIONS}\n- ${COL_SUBJECT_MODEL_TESTS}\n- ${COL_MODEL_TEST_QUESTIONS}\nসব ডিলিট হবে।`);
+    if(!ok) return;
+
+    try{
+      await deleteByQueryInBatches(COL_SUBJECT_QUESTIONS,"subjectId",subjectId);
+
+      const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).where("subjectId","==",subjectId).get();
+      const mtIds = mtSnap.docs.map(d=>d.id);
+
+      for(const mtId of mtIds){
+        await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",mtId);
+        await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).delete();
+      }
+
+      await db.collection(COL_SUBJECTS).doc(subjectId).delete();
+      toast("Done","Subject deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
+    }
+  }
+  window.deleteSubjectCascade = deleteSubjectCascade;
+
+  async function deleteUniversityCascade(universityId){
+    const u = UNIVERSITIES.find(x=>x.id===universityId);
+    if(!u) return;
+
+    const ok = confirm(`Delete university "${u.name}"?\nসব প্রশ্নও ডিলিট হবে।`);
+    if(!ok) return;
+
+    try{
+      await deleteByQueryInBatches(COL_UNIVERSITY_QUESTIONS, "universityId", universityId);
+      await db.collection(COL_UNIVERSITIES).doc(universityId).delete();
+      toast("Done","University deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
+    }
+  }
+  window.deleteUniversityCascade = deleteUniversityCascade;
+
+  // Question Manager
+  let QM = { mode:null, subjectId:null, modelTestId:null, universityId:null, title:"", unsub:null, data:[] };
+
+  function closeQM(e){
+    if(e && e.target && e.target.id !== "qmBack") return;
+    if(QM.unsub){ QM.unsub(); QM.unsub=null; }
+    QM.data=[];
+    QM.subjectId=null; QM.modelTestId=null; QM.universityId=null; QM.mode=null;
+    $("qmBack").classList.remove("show");
+  }
+  window.closeQM = closeQM;
+
+  function openQMForSubject(subjectId, subjectName){
+    if(QM.unsub){ QM.unsub(); QM.unsub=null; }
+    QM.mode="subject"; QM.subjectId=subjectId; QM.modelTestId=null; QM.universityId=null; QM.title=`Subject: ${subjectName}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value=""; $("qmType").value="all";
+    $("qmHint").textContent="Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_SUBJECT_QUESTIONS).where("subjectId","==",subjectId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({id:d.id,...d.data()}));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent="Failed to load questions.";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForSubject = openQMForSubject;
+
+  function openQMForModelTest(modelTestId, modelTestTitle){
+    if(QM.unsub){ QM.unsub(); QM.unsub=null; }
+    QM.mode="modeltest"; QM.modelTestId=modelTestId; QM.subjectId=null; QM.universityId=null; QM.title=`Model Test: ${modelTestTitle}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value=""; $("qmType").value="all";
+    $("qmHint").textContent="Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_MODEL_TEST_QUESTIONS).where("modelTestId","==",modelTestId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({id:d.id,...d.data()}));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent="Failed to load questions.";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForModelTest = openQMForModelTest;
+
+  function openQMForUniversity(universityId, uniName){
+    if(QM.unsub){ QM.unsub(); QM.unsub=null; }
+    QM.mode="university"; QM.universityId=universityId; QM.subjectId=null; QM.modelTestId=null; QM.title=`University: ${uniName}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value=""; $("qmType").value="all";
+    $("qmHint").textContent="Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_UNIVERSITY_QUESTIONS).where("universityId","==",universityId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({id:d.id,...d.data()}));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent="Failed to load questions.";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForUniversity = openQMForUniversity;
+
+  function normText(s){
+    return String(s||"").toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+  function tokens(s){ const t=normText(s); return t? t.split(" ").filter(Boolean):[]; }
+  function scoreRelated(query, text){
+    const q = tokens(query);
+    const t = normText(text);
+    if(!q.length) return 1;
+    const qnorm = normText(query);
+    if(qnorm && t.includes(qnorm)) return 100;
+    const tt = new Set(tokens(t));
+    let hit=0; q.forEach(w=>{ if(tt.has(w)) hit++; });
+    const overlap = (hit/q.length)*10;
+    let partial=0;
+    q.forEach(w=>{
+      if(w.length>=3){
+        for(const tw of tt){
+          if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.3; break; }
+        }
+      }
+    });
+    return overlap+partial;
+  }
+
+  function renderMCQPreview(it){
+    const opts = Array.isArray(it.options) ? it.options : [];
+    if(!opts.length) return `<div class="note" style="margin-top:8px">No options found.</div>`;
+    const letters=["A","B","C","D"];
+    return `<div style="margin-top:8px">` + opts.slice(0,4).map((o,i)=>{
+      const mark = (it.correctIndex===i) ? " ✅" : "";
+      return `<div class="note">${letters[i]}. ${esc(o||"")}${mark}</div>`;
+    }).join("") + `</div>`;
+  }
+  function renderWrittenPreview(it){
+    const ans = it.rightAns ? esc(it.rightAns) : "";
+    return ans ? `<div class="note" style="margin-top:8px"><b>Right Ans:</b> ${ans}</div>` : `<div class="note" style="margin-top:8px">No right ans.</div>`;
+  }
+
+  function renderQMResults(){
+    const q = $("qmSearch").value || "";
+    const type = $("qmType").value;
+    const list = $("qmList");
+    list.innerHTML = "";
+
+    let items = QM.data.slice();
+    if(type !== "all") items = items.filter(x => (x.type||"") === type);
+
+    const scored = items.map(it=>({ ...it, __score: scoreRelated(q, it.question||"") }))
+      .filter(it=> !normText(q) ? true : (it.__score >= 1.2))
+      .sort((a,b)=> b.__score - a.__score);
+
+    $("qmEmpty").style.display = scored.length ? "none" : "block";
+    if(!scored.length){
+      $("qmHint").textContent = QM.data.length ? "No related match found." : "No questions in this section yet.";
+      return;
+    }
+    $("qmHint").textContent = `Showing ${Math.min(scored.length,200)} / ${QM.data.length} (related match enabled)`;
+
+    scored.slice(0,200).forEach(it=>{
+      const isMCQ = it.type === "mcq";
+      const subtitle = isMCQ
+        ? `MCQ • correct: ${(it.correctIndex>=0 && it.correctIndex<=3) ? ["A","B","C","D"][it.correctIndex] : "?"}`
+        : `Written`;
+
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(it.question || "(no question)")}</p>
+          <div class="meta2">
+            <span class="chip">${subtitle}</span>
+            <span class="chip">score: ${it.__score.toFixed(1)}</span>
+            <span class="chip">id: ${it.id}</span>
+          </div>
+          ${isMCQ ? renderMCQPreview(it) : renderWrittenPreview(it)}
+          ${it.note ? `<div class="note" style="margin-top:8px"><b>Note:</b> ${esc(it.note)}</div>` : ``}
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editQuestionPrompt('${it.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteQuestion('${it.id}')">Delete</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  window.renderQMResults = renderQMResults;
+
+  async function deleteQuestion(qid){
+    const ok = confirm("Delete this question?");
+    if(!ok) return;
+    try{
+      if(QM.mode==="subject"){
+        await db.collection(COL_SUBJECT_QUESTIONS).doc(qid).delete();
+        await recomputeSubjectCounts(QM.subjectId);
+      }else if(QM.mode==="modeltest"){
+        await db.collection(COL_MODEL_TEST_QUESTIONS).doc(qid).delete();
+        await recomputeModelTestCounts(QM.modelTestId);
+      }else if(QM.mode==="university"){
+        await db.collection(COL_UNIVERSITY_QUESTIONS).doc(qid).delete();
+        await recomputeUniversityCounts(QM.universityId);
+      }
+      toast("Done","Question deleted");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Delete failed");
+    }
+  }
+  window.deleteQuestion = deleteQuestion;
+
+  async function editQuestionPrompt(qid){
+    const it = QM.data.find(x=>x.id===qid);
+    if(!it) return;
+
+    const col =
+      (QM.mode==="subject") ? COL_SUBJECT_QUESTIONS :
+      (QM.mode==="modeltest") ? COL_MODEL_TEST_QUESTIONS :
+      COL_UNIVERSITY_QUESTIONS;
+
+    if(it.type==="mcq"){
+      const q = prompt("Question:", it.question || "");
+      if(q===null) return;
+
+      const o1 = prompt("Option1:", (it.options||[])[0] || ""); if(o1===null) return;
+      const o2 = prompt("Option2:", (it.options||[])[1] || ""); if(o2===null) return;
+      const o3 = prompt("Option3:", (it.options||[])[2] || ""); if(o3===null) return;
+      const o4 = prompt("Option4:", (it.options||[])[3] || ""); if(o4===null) return;
+
+      const ci = prompt("Correct (A/B/C/D or 1/2/3/4):", (it.correctIndex>=0) ? ["A","B","C","D"][it.correctIndex] : "");
+      if(ci===null) return;
+
+      const note = prompt("Note (optional):", it.note || "");
+      if(note===null) return;
+
+      const options = [o1,o2,o3,o4].map(x=>String(x||"").trim());
+      const correctIndex = resolveCorrectIndex(String(ci||"").trim(), options, "auto");
+      if(!String(q||"").trim() || options.some(x=>!x) || correctIndex<0 || correctIndex>3){
+        return toast("Validation","Question/Options/Correct invalid");
+      }
+
+      try{
+        await db.collection(col).doc(qid).update({
+          question: String(q).trim(),
+          options,
+          correctIndex,
+          note: String(note||"").trim()
+        });
+        toast("Done","MCQ updated");
+      }catch(err){
+        console.error(err);
+        toast("Error", err?.message || "Update failed");
+      }
+      return;
+    }
+
+    const q = prompt("Question:", it.question || ""); if(q===null) return;
+    const ans = prompt("Right Ans:", it.rightAns || ""); if(ans===null) return;
+    const note = prompt("Note (optional):", it.note || ""); if(note===null) return;
+
+    if(!String(q||"").trim()) return toast("Validation","Question empty not allowed");
+
+    try{
+      await db.collection(col).doc(qid).update({
+        question: String(q).trim(),
+        rightAns: String(ans||"").trim(),
+        note: String(note||"").trim()
+      });
+      toast("Done","Written updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editQuestionPrompt = editQuestionPrompt;
+
+  async function recomputeSubjectCounts(subjectId){
+    try{
+      const snap = await db.collection(COL_SUBJECT_QUESTIONS).where("subjectId","==",subjectId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_SUBJECTS).doc(subjectId).update({
+        counts:{mcq,written},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  async function recomputeModelTestCounts(modelTestId){
+    try{
+      const snap = await db.collection(COL_MODEL_TEST_QUESTIONS).where("modelTestId","==",modelTestId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
+        counts:{mcq,written},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  async function recomputeUniversityCounts(universityId){
+    try{
+      const snap = await db.collection(COL_UNIVERSITY_QUESTIONS).where("universityId","==",universityId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_UNIVERSITIES).doc(universityId).update({
+        counts:{mcq,written},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  // initial gate
+  showGate("Checking login...");
+</script>
+</body>
+</html>
+```
