@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>eProstutiBD Admission Assistant — সকল প্রস্তুতি হোক গভীর থেকে</title>
+
+  <meta name="description" content="eProstutiBD Admission Assistant — বিষয়ভিত্তিক প্রশ্ন, বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন এবং Subject Model Test।" />
+  <meta name="keywords" content="Admission Assistant, বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন, প্রশ্নব্যাংক, MCQ, Written, Model Test, eProstutiBD" />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="author" content="eProstutiBD" />
+
+  <!-- ✅ Canonical (আপনার ডোমেইন দিন) -->
+  <link rel="canonical" href="https://example.com/admission-assistant" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="bn_BD" />
+  <meta property="og:title" content="eProstutiBD Admission Assistant — সকল প্রস্তুতি হোক গভীর থেকে" />
+  <meta property="og:description" content="বিষয়ভিত্তিক প্রশ্ন, বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন এবং Subject Model Test।" />
+  <meta property="og:url" content="https://example.com/admission-assistant" />
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="eProstutiBD Admission Assistant — সকল প্রস্তুতি হোক গভীর থেকে" />
+  <meta name="twitter:description" content="বিষয়ভিত্তিক প্রশ্ন, বিশ্ববিদ্যালয় ভিত্তিক প্রশ্ন এবং Subject Model Test।" />
+
+  <!-- ✅ Performance: Preconnect/DNS Prefetch -->
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.gstatic.com" />
+  <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
+  <link rel="preconnect" href="https://firebase.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firebase.googleapis.com" />
+
+  <style>
+    :root{
+      --bg1:#f6f8ff; --bg2:#eef6ff;
+      --line: rgba(18, 28, 55, .10);
+      --text:#0f1730; --muted:#5a6685;
+
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --footerA:#0b1b45;
+      --footerB:#071635;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(14,165,233,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{color:inherit}
+
+    .container{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    header{
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(135deg, rgba(29,78,216,.96), rgba(14,165,233,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(29,78,216,.18);
+    }
+    .topbar{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      flex:0 0 auto;
+      min-width:0;
+    }
+    .brand .name{
+      color:#fff;
+      font-weight:1000;
+      letter-spacing:.2px;
+      font-size:15px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .brand .tag{
+      color:rgba(255,255,255,.88);
+      font-size:12px;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 260px;
+    }
+
+    .nav{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width:none;
+      padding-bottom: 2px;
+      flex:1;
+    }
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{
+      flex:0 0 auto;
+      text-decoration:none;
+      color:#fff;
+      font-size:12px;
+      font-weight:1000;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      white-space:nowrap;
+      transition:.15s;
+    }
+    .nav a:hover{background: rgba(255,255,255,.16)}
+    .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
+
+    .menuBtn{
+      flex:0 0 auto;
+      margin-left:auto;
+      display:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
+      color:#fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight:1000;
+      font-size:12px;
+      cursor:pointer;
+      line-height:1;
+    }
+    @media (max-width: 860px){
+      .nav{display:none;}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
+      .brand .tag{max-width: 55vw;}
+    }
+
+    .mobileMenu{
+      display:none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+    }
+    .mobileMenu .overlay{
+      position:absolute;
+      inset:0;
+      background: transparent;
+    }
+    .mobileMenu .drawer{
+      position:absolute;
+      top: 64px;
+      right: 12px;
+      width: min(320px, calc(100vw - 24px));
+      border-radius: 16px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(8, 20, 55, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 18px 38px rgba(0,0,0,.35);
+    }
+    .mobileMenu a{
+      display:block;
+      text-decoration:none;
+      color:#ffffff;
+      font-weight:1000;
+      font-size:13px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      margin-bottom: 8px;
+      white-space:nowrap;
+    }
+    .mobileMenu a.active{
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.12);
+    }
+
+    .noticeBar{
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+    }
+    .noticeRow{display:flex;align-items:center;gap:10px;padding: 10px 12px;}
+    .noticeTag{
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:1000;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(29,78,216,.10);
+      border: 1px solid rgba(29,78,216,.18);
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .marq{flex:1;overflow:hidden;white-space:nowrap;color: var(--muted);font-size:12px;}
+    .marq span{display:inline-block;padding-left: 100%;animation: ticker 18s linear infinite;}
+    @keyframes ticker{0%{transform: translateX(0)}100%{transform: translateX(-100%)}}
+
+    .adBox{
+      margin-top: 10px;
+      border: 1px dashed rgba(18,28,55,.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .adHead{
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .adHead b{color: var(--text)}
+    .adBody{min-height: 110px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 300px;
+      gap: 10px;
+      align-items:start;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead b{font-size:14px}
+    .panelHead .muted{font-size:12px;color:var(--muted)}
+    .panelBody{padding: 12px 14px}
+
+    .searchRow{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+    .searchMini{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;}
+    .searchMini input{
+      width: 190px;
+      max-width: 70vw;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 14px;
+      outline:none;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-size: 13px;
+    }
+    @media (max-width: 560px){
+      .searchMini{width:100%;}
+      .searchMini input{width:100%;}
+    }
+    .btn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 8px 10px;
+      height: 36px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .btn.primary{border-color: rgba(29,78,216,.22);background: rgba(29,78,216,.10);}
+    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
+
+    .subjects{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 1100px){
+      .subjects{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px){
+      .subjects{ grid-template-columns: 1fr; }
+    }
+
+    .subCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      border-radius: 18px;
+      padding: 12px;
+      cursor:pointer;
+      transition:.15s;
+      box-shadow: 0 12px 26px rgba(15,23,48,.06);
+      position:relative;
+      overflow:hidden;
+    }
+    .subCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(560px 140px at 20% 0%, rgba(29,78,216,.10), transparent 55%),
+        radial-gradient(560px 140px at 100% 0%, rgba(14,165,233,.10), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .subCard h3{
+      position:relative;margin:0;font-size:14px;font-weight:1000;line-height: 1.2;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height: 34px;
+    }
+    .counts{
+      position:relative;
+      margin-top: 8px;
+      display:flex;
+      gap:8px;
+      flex-wrap: nowrap;
+      align-items:center;
+      overflow:hidden;
+    }
+    .countPill{
+      font-size:12px;
+      padding: 6px 9px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.78);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .countPill b{color: var(--text)}
+
+    .inlineAd{
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 90px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color: var(--muted);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .inlineAd .tag{
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
+    }
+
+    .empty{
+      display:none;border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-size:12px;
+    }
+
+    .secTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 2px;
+      margin-bottom: 10px;
+    }
+    .secTitleRow b{font-size:13px}
+    .secTitleRow .muted{font-size:12px;color:var(--muted)}
+
+    .mtSection{margin-top: 14px;border-top: 1px solid rgba(18,28,55,.10);padding-top: 12px;}
+    .mtTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom: 10px;}
+    .mtTitle b{font-size:13px}
+
+    .mtGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 900px){ .mtGrid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .mtGrid{ grid-template-columns: 1fr; } }
+
+    .mtCard{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow:hidden;
+      cursor: default;
+      transition:.15s;
+    }
+    .mtCard:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08); }
+
+    .mtCard h4{
+      margin:0 0 8px;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.25;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 34px;
+    }
+    .mtMeta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:12px;
+      margin-bottom:10px;
+    }
+    .mtMeta span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+    .mtActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .mtActions .btn{
+      height:34px;
+      padding:7px 10px;
+      border-radius:12px;
+    }
+
+    .sidePanel{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      height: fit-content;
+      position: sticky;
+      top: 72px;
+    }
+    @media (max-width: 980px){ .sidePanel{position: static; top:auto;} }
+    .sidePanel .head{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;
+      font-size:12px;color: var(--muted);
+    }
+    .sidePanel .head b{color:var(--text);font-size:13px}
+    .sidePanel .body{padding: 12px}
+    .sideAdBox{
+      border: 1px solid rgba(18,28,55,.22);
+      border-style:dashed;
+      background: rgba(255,255,255,.78);
+      border-radius: 16px;
+      min-height: 230px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding: 10px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      color: var(--muted);
+    }
+
+    footer{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(700px 240px at 20% 0%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(700px 240px at 80% 0%, rgba(34,197,94,.16), transparent 60%),
+        linear-gradient(180deg, var(--footerA), var(--footerB));
+      color: rgba(255,255,255,.92);
+    }
+    .foot{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 16px;
+      padding-bottom: 10px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 560px){
+      .foot{ grid-template-columns: 1fr 1fr; gap: 12px; }
+      .footLogo{grid-column: 1 / -1;}
+      .footFollow{grid-column: 1 / -1;}
+    }
+    .foot b{font-size:13px}
+    .foot a{display:block;text-decoration:none;color: rgba(255,255,255,.78);font-size:12px;padding: 6px 0;}
+    .foot a:hover{color:#fff}
+    .footBrand{display:flex;flex-direction:column;gap:3px;}
+    .footBrand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .footBrand .tag{color:rgba(255,255,255,.78);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 320px;}
+    .copy{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-bottom: 14px;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .skeleton{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 100px;
+      position: relative;
+      overflow:hidden;
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+    }
+    .shimmer{
+      position:absolute; inset:0;
+      background: linear-gradient(110deg, transparent 0%, rgba(0,0,0,.04) 20%, transparent 40%);
+      transform: translateX(-100%);
+      animation: sh 1.15s infinite;
+    }
+    @keyframes sh{to{transform: translateX(100%)}}
+  </style>
+</head>
+
+<body>
+  <noscript>
+    <div style="max-width:1320px;margin:12px auto;padding:12px;border:1px solid rgba(18,28,55,.12);border-radius:12px;background:#fff;">
+      এই ওয়েবসাইটটি চালাতে JavaScript প্রয়োজন। অনুগ্রহ করে আপনার ব্রাউজারে JavaScript চালু করুন।
+    </div>
+  </noscript>
+
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="name">eProstutiBD</div>
+        <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#">একাডেমী</a>
+        <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+        <a class="active" href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </nav>
+
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="mobileMenu" id="mobileMenu">
+      <div class="overlay" onclick="closeMenu()"></div>
+      <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+        <a href="#">একাডেমী</a>
+        <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+        <a class="active" href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+        <a href="#">জব অ্যাসিস্ট্যান্ট</a>
+        <a href="#">মডেল টেস্ট</a>
+        <a href="#">কারেন্ট এফেয়ার্স</a>
+        <a href="#">IELTS</a>
+        <a href="#">BCS</a>
+        <a href="#">নোটিশ</a>
+        <a href="#">ব্লগ</a>
+        <a href="#">ক্যারিয়ার</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="noticeBar" role="region" aria-label="Notice">
+      <div class="noticeRow">
+        <span class="noticeTag">নোটিশ</span>
+        <div class="marq">
+          <span>Admission Assistant আপডেট: Subjects • University ভিত্তিক প্রশ্ন • Latest Model Tests — সবকিছু Admin page থেকে Firebase এ আসছে।</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="adBox">
+      <div class="adHead">
+        <b>Ad Slot</b>
+        <span>Header নিচে • Responsive</span>
+      </div>
+      <div class="adBody">
+        <div>
+          <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Responsive Ad</div>
+          <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
+        </div>
+      </div>
+    </div>
+
+    <main class="grid">
+      <section class="panel">
+        <div class="panelHead">
+          <b>Admission Assistant</b>
+          <span class="muted" id="topHint">Loading…</span>
+        </div>
+
+        <div class="panelBody">
+
+          <!-- ===== SUBJECTS ===== -->
+          <div class="secTitleRow">
+            <b>Subjects</b>
+            <span class="muted" id="countHintSubjects">Loading…</span>
+          </div>
+
+          <div class="searchRow">
+            <div class="searchMini">
+              <input id="searchSubjects" placeholder="Search subject…" oninput="onSearchSubjects()" />
+              <button class="btn" onclick="onSearchSubjects()">Search</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="subjects" class="subjects" aria-live="polite"></div>
+          <div id="emptySubjects" class="empty">কোনো Subject পাওয়া যায়নি।</div>
+
+          <div style="display:flex;justify-content:center;margin-top:12px;">
+            <button id="btnMoreSubjects" class="btn primary" style="display:none" onclick="loadMoreSubjects()">More Subject</button>
+          </div>
+
+          <!-- ===== UNIVERSITY (between subjects and model tests) ===== -->
+          <div class="divider"></div>
+
+          <div class="secTitleRow">
+            <b>University ভিত্তিক প্রশ্ন</b>
+            <span class="muted" id="countHintUniversities">Loading…</span>
+          </div>
+
+          <div class="searchRow">
+            <div class="searchMini">
+              <input id="searchUniversities" placeholder="Search university…" oninput="onSearchUniversities()" />
+              <button class="btn" onclick="onSearchUniversities()">Search</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="universities" class="subjects" aria-live="polite"></div>
+          <div id="emptyUniversities" class="empty">কোনো University পাওয়া যায়নি।</div>
+
+          <div style="display:flex;justify-content:center;margin-top:12px;">
+            <button id="btnMoreUniversities" class="btn primary" style="display:none" onclick="loadMoreUniversities()">More University</button>
+          </div>
+
+          <!-- ===== LATEST MODEL TESTS ===== -->
+          <div class="mtSection" aria-label="Latest model tests">
+            <div class="mtTitle">
+              <b>Latest Model Tests</b>
+              <span class="muted" id="mtHint">Loading…</span>
+            </div>
+            <div id="latestMT" class="mtGrid"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <aside class="sidePanel" aria-label="Sidebar ads">
+        <div class="head">
+          <b>Sponsored</b>
+          <span>Ads</span>
+        </div>
+        <div class="body">
+          <div class="sideAdBox">
+            <div>
+              <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Sidebar Ad</div>
+              <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
+            </div>
+          </div>
+
+          <div style="height:10px"></div>
+
+          <div class="sideAdBox" style="min-height: 180px">
+            <div>
+              <div style="font-weight:1000;color:var(--text);margin-bottom:6px;">Bottom Ad</div>
+              <div style="font-size:12px;color:var(--muted)">Paste ad code here</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <footer>
+    <div class="foot">
+      <div class="footLogo">
+        <div class="footBrand">
+          <div class="name">eProstutiBD</div>
+          <div class="tag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+        </div>
+      </div>
+
+      <div>
+        <b>দরকারি পেজ</b>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <div>
+        <b>অন্যান্য</b>
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
+      </div>
+
+      <div>
+        <b>Follow</b>
+        <a href="#">Facebook</a>
+        <a href="#">YouTube</a>
+        <a href="#">Telegram</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+
+    <div class="copy">© 2026 eProstutiBD All rights reserved</div>
+  </footer>
+
+  <!-- ✅ Firebase scripts defer for performance -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Run after deferred firebase scripts loaded
+    window.addEventListener("load", () => {
+
+      // ===== Firebase Config =====
+      const firebaseConfig = {
+        apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+        authDomain: "eprostutibd-webapp.firebaseapp.com",
+        projectId: "eprostutibd-webapp",
+        storageBucket: "eprostutibd-webapp.firebasestorage.app",
+        messagingSenderId: "1044069942330",
+        appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+        measurementId: "G-T2G55NMDQT"
+      };
+
+      // ✅ All data comes from your Admin page collections (admission_ prefix)
+      const COL_ADM_SUBJECTS            = "admission_subjects";
+      const COL_ADM_UNIVERSITIES        = "admission_universities";
+      const COL_ADM_SUBJECT_MODEL_TESTS = "admission_subject_model_tests";
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const $ = (id)=>document.getElementById(id);
+
+      // ===== Menu =====
+      function openMenu(){
+        const menu = $("mobileMenu");
+        const btn = $("menuBtn");
+        menu.style.display = "block";
+        btn.setAttribute("aria-expanded", "true");
+      }
+      function closeMenu(){
+        const menu = $("mobileMenu");
+        const btn = $("menuBtn");
+        menu.style.display = "none";
+        btn.setAttribute("aria-expanded", "false");
+      }
+      function toggleMenu(){
+        const menu = $("mobileMenu");
+        if(menu.style.display === "block") closeMenu();
+        else openMenu();
+      }
+      window.openMenu = openMenu;
+      window.closeMenu = closeMenu;
+      window.toggleMenu = toggleMenu;
+
+      document.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape") closeMenu();
+      }, {passive:true});
+
+      // ===== Helpers =====
+      function esc(str){
+        return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+      }
+
+      function normalize(s){
+        return String(s||"").toLowerCase()
+          .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+      function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
+      function relatedScore(query, name){
+        const q = normalize(query), n = normalize(name);
+        if(!q) return 1;
+        if(n.includes(q)) return 100;
+        const qt = tokens(q), nt = new Set(tokens(n));
+        if(!qt.length) return 1;
+        let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
+        let partial=0;
+        qt.forEach(w=>{
+          if(w.length>=3){
+            for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
+          }
+        });
+        return (hit/qt.length)*10 + partial;
+      }
+
+      function toMillisAny(v){
+        if(v == null) return 0;
+        if(typeof v === "object"){
+          if(typeof v.toMillis === "function") return v.toMillis();
+          if(typeof v.seconds === "number") return (v.seconds * 1000) + (v.nanoseconds ? Math.floor(v.nanoseconds/1e6) : 0);
+          if(v instanceof Date) return v.getTime();
+        }
+        if(typeof v === "number"){
+          if(v > 0 && v < 1e12) return v * 1000;
+          return v;
+        }
+        if(typeof v === "string"){
+          const t = v.trim();
+          if(!t) return 0;
+          const n = Number(t);
+          if(!Number.isNaN(n)){
+            if(n > 0 && n < 1e12) return n * 1000;
+            return n;
+          }
+          const ms = Date.parse(t);
+          return Number.isNaN(ms) ? 0 : ms;
+        }
+        return 0;
+      }
+      function getDocSortTime(data){
+        const keys = [
+          "createdAt","created_at","created","createAt","timeCreated",
+          "updatedAt","updated_at","updated","modifiedAt","modified_at",
+          "timestamp","ts"
+        ];
+        for(const k of keys){
+          const ms = toMillisAny(data?.[k]);
+          if(ms) return ms;
+        }
+        return 0;
+      }
+
+      function makeInlineAdCard(){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
+          </div>
+        `;
+        return ad;
+      }
+
+      function renderSkeleton(targetId){
+        const wrap = $(targetId);
+        wrap.innerHTML = "";
+        for(let i=0;i<6;i++){
+          const d = document.createElement("div");
+          d.className = "skeleton";
+          d.innerHTML = `<div class="shimmer"></div>`;
+          wrap.appendChild(d);
+        }
+      }
+
+      // ===== Navigation (edit links if your pages are different) =====
+      function openSubjectDetails(subjectId){
+        window.open(`details-prosnobank.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
+      }
+      function openUniversityDetails(universityId){
+        // আপনার details page নাম যেটা হবে সেটাতে change করে দিন
+        window.open(`admission-university-details.html?universityId=${encodeURIComponent(universityId)}`, "_blank", "noopener");
+      }
+
+      // ===== State =====
+      let SUBJECTS = [];
+      let UNIVERSITIES = [];
+
+      const PAGE_SIZE = 6;
+
+      let visibleSubjects = PAGE_SIZE;
+      let visibleUniversities = PAGE_SIZE;
+
+      let querySubjects = "";
+      let queryUniversities = "";
+
+      // subjectId -> model test count (single aggregated listener)
+      const modelTestCountMap = new Map();
+      let latestModelTestsCache = [];
+
+      // ===== Render: Subjects =====
+      let rafSubjects = 0;
+      function scheduleRenderSubjects(){
+        if(rafSubjects) return;
+        rafSubjects = requestAnimationFrame(()=>{
+          rafSubjects = 0;
+          renderSubjects();
+        });
+      }
+
+      function renderSubjects(){
+        const q = querySubjects;
+        const scored = SUBJECTS
+          .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
+          .filter(s => !q ? true : (s.__score >= 1.2))
+          .sort((a,b)=>{
+            if(b.__score !== a.__score) return b.__score - a.__score;
+            return (a.name||"").localeCompare(b.name||"");
+          });
+
+        const total = scored.length;
+        const shown = scored.slice(0, visibleSubjects);
+
+        $("countHintSubjects").textContent = `Total: ${total}`;
+        $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
+
+        const wrap = $("subjects");
+        wrap.innerHTML = "";
+
+        if(!total){
+          $("emptySubjects").style.display = "block";
+          $("btnMoreSubjects").style.display = "none";
+          return;
+        }
+        $("emptySubjects").style.display = "none";
+
+        let cardCount = 0;
+        shown.forEach((s, idx)=>{
+          cardCount++;
+          const mcq = s.counts?.mcq || 0;
+          const written = s.counts?.written || 0;
+          const mtCount = modelTestCountMap.get(s.id) ?? 0;
+
+          const el = document.createElement("article");
+          el.className = "subCard";
+          el.setAttribute("role","button");
+          el.setAttribute("tabindex","0");
+          el.onclick = ()=>openSubjectDetails(s.id);
+          el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
+
+          el.innerHTML = `
+            <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
+            <div class="counts">
+              <span class="countPill">MCQ <b>${mcq}</b></span>
+              <span class="countPill">Written <b>${written}</b></span>
+              <span class="countPill">Model test <b>${mtCount}</b></span>
+            </div>
+          `;
+          wrap.appendChild(el);
+
+          if(cardCount % 6 === 0 && idx < shown.length - 1){
+            wrap.appendChild(makeInlineAdCard());
+          }
+        });
+
+        $("btnMoreSubjects").style.display = (total > shown.length) ? "inline-flex" : "none";
+      }
+
+      function onSearchSubjects(){
+        querySubjects = ($("searchSubjects").value || "").trim();
+        visibleSubjects = PAGE_SIZE;
+        scheduleRenderSubjects();
+      }
+      function loadMoreSubjects(){
+        visibleSubjects += PAGE_SIZE;
+        scheduleRenderSubjects();
+      }
+      window.onSearchSubjects = onSearchSubjects;
+      window.loadMoreSubjects = loadMoreSubjects;
+
+      // ===== Render: Universities =====
+      let rafUniversities = 0;
+      function scheduleRenderUniversities(){
+        if(rafUniversities) return;
+        rafUniversities = requestAnimationFrame(()=>{
+          rafUniversities = 0;
+          renderUniversities();
+        });
+      }
+
+      function renderUniversities(){
+        const q = queryUniversities;
+        const scored = UNIVERSITIES
+          .map(u => ({...u, __score: relatedScore(q, u.name || "")}))
+          .filter(u => !q ? true : (u.__score >= 1.2))
+          .sort((a,b)=>{
+            if(b.__score !== a.__score) return b.__score - a.__score;
+            return (a.name||"").localeCompare(b.name||"");
+          });
+
+        const total = scored.length;
+        const shown = scored.slice(0, visibleUniversities);
+
+        $("countHintUniversities").textContent = `Total: ${total}`;
+        $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
+
+        const wrap = $("universities");
+        wrap.innerHTML = "";
+
+        if(!total){
+          $("emptyUniversities").style.display = "block";
+          $("btnMoreUniversities").style.display = "none";
+          return;
+        }
+        $("emptyUniversities").style.display = "none";
+
+        let cardCount = 0;
+        shown.forEach((u, idx)=>{
+          cardCount++;
+          const mcq = u.counts?.mcq || 0;
+          const written = u.counts?.written || 0;
+
+          const el = document.createElement("article");
+          el.className = "subCard";
+          el.setAttribute("role","button");
+          el.setAttribute("tabindex","0");
+          el.onclick = ()=>openUniversityDetails(u.id);
+          el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openUniversityDetails(u.id);} };
+
+          el.innerHTML = `
+            <h3 title="${esc(u.name||"")}">${esc(u.name||"(no name)")}</h3>
+            <div class="counts">
+              <span class="countPill">MCQ <b>${mcq}</b></span>
+              <span class="countPill">Written <b>${written}</b></span>
+              <span class="countPill">University</span>
+            </div>
+          `;
+          wrap.appendChild(el);
+
+          if(cardCount % 6 === 0 && idx < shown.length - 1){
+            wrap.appendChild(makeInlineAdCard());
+          }
+        });
+
+        $("btnMoreUniversities").style.display = (total > shown.length) ? "inline-flex" : "none";
+      }
+
+      function onSearchUniversities(){
+        queryUniversities = ($("searchUniversities").value || "").trim();
+        visibleUniversities = PAGE_SIZE;
+        scheduleRenderUniversities();
+      }
+      function loadMoreUniversities(){
+        visibleUniversities += PAGE_SIZE;
+        scheduleRenderUniversities();
+      }
+      window.onSearchUniversities = onSearchUniversities;
+      window.loadMoreUniversities = loadMoreUniversities;
+
+      // ===== Latest Model Tests =====
+      function formatTimeMin(v){
+        if(v === undefined || v === null || v === "") return "-";
+        if(typeof v === "number") return `${v} min`;
+        if(typeof v === "string"){
+          const t=v.trim(); if(!t) return "-";
+          const n=Number(t);
+          if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
+          return t;
+        }
+        try{ return JSON.stringify(v); }catch(e){ return String(v); }
+      }
+
+      function getTimeField(data){
+        const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
+        for(const k of keys){
+          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+        }
+        return "-";
+      }
+      function getMarkField(data){
+        const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+        for(const k of keys){
+          if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+        }
+        return "-";
+      }
+      function getTitleField(data){
+        return data?.title ?? data?.name ?? "Subject Model Test";
+      }
+
+      // ✅ Total Question = totalMarks (আপনার আগের ফাইলের মতো)
+      function getTotalQuestionFromTotalMarks(data){
+        const v = data?.totalMarks ?? data?.totalMark ?? data?.total_mark ?? null;
+        if(v === null || v === undefined || v === "") return "-";
+        const n = Number(v);
+        return Number.isFinite(n) ? n : String(v);
+      }
+
+      function renderLatestModelTests(list){
+        const wrap = $("latestMT");
+        wrap.innerHTML = "";
+
+        if(!list.length){
+          $("mtHint").textContent = "0";
+          wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        $("mtHint").textContent = `${list.length}`;
+
+        list.forEach(item=>{
+          const data = item.data || {};
+          const id = item.id;
+
+          const title = getTitleField(data);
+          const timeVal = formatTimeMin(getTimeField(data));
+          const markVal = getMarkField(data);
+          const qCount = getTotalQuestionFromTotalMarks(data);
+
+          const card = document.createElement("div");
+          card.className = "mtCard";
+
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMeta">
+              <span>⏱ ${esc(timeVal)}</span>
+              <span>🧮 Mark: ${esc(markVal)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActions">
+              <button class="btn primary"
+                onclick="event.stopPropagation(); location.href='Start-model-test.html?modelTestId=${encodeURIComponent(id)}'">
+                Start test
+              </button>
+              <button class="btn"
+                onclick="event.stopPropagation(); location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(id)}'">
+                See Result
+              </button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }
+
+      function watchModelTestsAggregate(){
+        $("mtHint").textContent = "Loading…";
+        const LIMIT = 8;
+
+        db.collection(COL_ADM_SUBJECT_MODEL_TESTS)
+          .onSnapshot((snap)=>{
+            modelTestCountMap.clear();
+
+            const docs = snap.docs;
+            const tempList = [];
+
+            for(const d of docs){
+              const data = d.data() || {};
+              const subjectId = data.subjectId;
+
+              if(subjectId){
+                modelTestCountMap.set(subjectId, (modelTestCountMap.get(subjectId) || 0) + 1);
+              }
+
+              tempList.push({ id: d.id, data });
+            }
+
+            tempList.sort((a,b)=>{
+              const ta = getDocSortTime(a.data);
+              const tb = getDocSortTime(b.data);
+              if(tb !== ta) return tb - ta;
+              return (b.id || "").localeCompare(a.id || "");
+            });
+
+            latestModelTestsCache = tempList.slice(0, LIMIT);
+            renderLatestModelTests(latestModelTestsCache);
+
+            // update subject cards to show mt count
+            scheduleRenderSubjects();
+          }, (err)=>{
+            console.error(err);
+            $("mtHint").textContent = "Failed";
+            $("latestMT").innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">Failed to load model tests.</div>`;
+          });
+      }
+
+      // ===== Start: listeners =====
+      // skeletons
+      renderSkeleton("subjects");
+      renderSkeleton("universities");
+      $("emptySubjects").style.display = "none";
+      $("emptyUniversities").style.display = "none";
+
+      // Subjects (admission_subjects)
+      db.collection(COL_ADM_SUBJECTS).onSnapshot((snap)=>{
+        SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        scheduleRenderSubjects();
+      }, (err)=>{
+        console.error(err);
+        $("countHintSubjects").textContent = "Failed to load";
+        $("subjects").innerHTML = "";
+        $("emptySubjects").style.display = "block";
+        $("btnMoreSubjects").style.display = "none";
+      });
+
+      // Universities (admission_universities)
+      db.collection(COL_ADM_UNIVERSITIES).onSnapshot((snap)=>{
+        UNIVERSITIES = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        scheduleRenderUniversities();
+      }, (err)=>{
+        console.error(err);
+        $("countHintUniversities").textContent = "Failed to load";
+        $("universities").innerHTML = "";
+        $("emptyUniversities").style.display = "block";
+        $("btnMoreUniversities").style.display = "none";
+      });
+
+      // Model tests aggregate + latest
+      watchModelTestsAggregate();
+
+    });
+  </script>
+</body>
+</html>
