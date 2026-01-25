@@ -1149,10 +1149,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+    const COL_SUBJECT_MODEL_TESTS = "subject_model_tests","admission_subject_model_tests";
     const COL_MODEL_TEST_RESULT = "model_test_result"; // ✅ Firestore-safe name
     const QUESTION_COLLECTION_CANDIDATES = [
-      "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
+       "admission_modeltest_questions","modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
     ];
 
     // ===== modelTestId from URL =====
