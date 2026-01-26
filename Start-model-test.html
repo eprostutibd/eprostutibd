@@ -1085,888 +1085,553 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
-    /* ===========================
-   ✅ START: Replace your full JS with this
-   (Everything else same, only added "src=admission/subject" support
-   + admission_subject_tests + admission_subject_test_questions)
+   /* ===========================
+   ✅ START: Debug version
 =========================== */
 
-  // year
-  document.getElementById("year").textContent = new Date().getFullYear();
-  const $ = (id)=>document.getElementById(id);
+document.getElementById("year").textContent = new Date().getFullYear();
+const $ = (id)=>document.getElementById(id);
 
-  // ===== menu =====
-  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-  window.toggleMenu = toggleMenu;
-  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+// ===== menu =====
+function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+window.toggleMenu = toggleMenu;
+document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-  // ===== toast =====
-  function esc(str){
-    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+// ===== toast =====
+function esc(str){
+  return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+}
+function showToast(msg, sub=""){
+  const t = $("toast");
+  t.innerHTML = `
+    <div class="toastRow">
+      <div class="toastIcon">✓</div>
+      <div class="toastMsg">
+        <div>${esc(msg)}</div>
+        ${sub ? `<div class="toastSub">${esc(sub)}</div>` : ""}
+      </div>
+    </div>
+  `;
+  t.style.display = "block";
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2000);
+}
+
+// ===== Confirm modal =====
+let _confirmResolver = null;
+function openConfirm(title, text){
+  $("confirmTitle").textContent = title || "Confirm";
+  $("confirmText").textContent = text || "";
+  $("confirmModal").classList.add("show");
+  return new Promise((resolve)=>{ _confirmResolver = resolve; });
+}
+function closeConfirm(){ $("confirmModal").classList.remove("show"); }
+function confirmYes(){ closeConfirm(); if(_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
+function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
+window.confirmYes = confirmYes;
+window.confirmNo = confirmNo;
+
+// ===== utils =====
+function getParam(name){
+  const u = new URL(location.href);
+  return u.searchParams.get(name) || "";
+}
+
+const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
+const SRC = (getParam("src") || "subject").toLowerCase();
+const modelTestId = getParam("modelTestId");
+
+// ===== Firebase =====
+const firebaseConfig = {
+  apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+  authDomain: "eprostutibd-webapp.firebaseapp.com",
+  projectId: "eprostutibd-webapp",
+  storageBucket: "eprostutibd-webapp.firebasestorage.app",
+  messagingSenderId: "1044069942330",
+  appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+  measurementId: "G-T2G55NMDQT"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ✅ ALL POSSIBLE COLLECTIONS (DEBUG MODE)
+console.log("=== DEBUG START ===");
+console.log("SRC:", SRC);
+console.log("modelTestId:", modelTestId);
+console.log("URL:", window.location.href);
+
+// Define all possible collections
+const ALL_COLLECTIONS = {
+  // Admin page collections
+  admission_subject_tests: "admission_subject_tests",  // Admin: COL_SUBJECT_TESTS
+  admission_tests: "admission_tests",                  // Admin: COL_ADMISSION_TESTS
+  subject_model_tests: "subject_model_tests",          // Old collection
+  
+  // Question collections
+  admission_subject_test_questions: "admission_subject_test_questions",  // Admin: COL_SUBJECT_TEST_QUESTIONS
+  admission_model_test_questions: "admission_model_test_questions",
+  model_test_questions: "model_test_questions",
+  admission_subject_questions: "admission_subject_questions",  // Admin: COL_SUBJECT_QUESTIONS
+  
+  // University collections
+  admission_universities: "admission_universities"  // Admin: COL_UNIVERSITIES
+};
+
+// Try to detect which collection has data
+async function detectCollection() {
+  console.log("=== DETECTING COLLECTIONS ===");
+  
+  // First, let's check if modelTestId exists in ANY collection
+  const collectionsToCheck = [
+    "admission_subject_tests",
+    "admission_tests", 
+    "subject_model_tests"
+  ];
+  
+  for (const colName of collectionsToCheck) {
+    try {
+      const doc = await db.collection(colName).doc(modelTestId).get();
+      console.log(`Checking ${colName}:`, doc.exists ? "EXISTS" : "NOT EXISTS");
+      if (doc.exists) {
+        console.log(`✅ FOUND in ${colName}:`, doc.data());
+        return { collection: colName, data: doc.data() };
+      }
+    } catch (err) {
+      console.log(`❌ Error checking ${colName}:`, err.message);
+    }
   }
-  function showToast(msg, sub=""){
-    const t = $("toast");
-    t.innerHTML = `
-      <div class="toastRow">
-        <div class="toastIcon">✓</div>
-        <div class="toastMsg">
-          <div>${esc(msg)}</div>
-          ${sub ? `<div class="toastSub">${esc(sub)}</div>` : ""}
-        </div>
+  
+  // If not found by ID, let's list all documents in each collection
+  console.log("=== LISTING ALL DOCUMENTS ===");
+  for (const colName of collectionsToCheck) {
+    try {
+      const snapshot = await db.collection(colName).limit(5).get();
+      console.log(`📁 ${colName} has ${snapshot.size} documents:`);
+      snapshot.docs.forEach(doc => {
+        console.log(`  - ${doc.id}:`, doc.data());
+      });
+    } catch (err) {
+      console.log(`❌ Error listing ${colName}:`, err.message);
+    }
+  }
+  
+  return null;
+}
+
+// ===== state =====
+let mtDoc = null;
+let questions = [];
+const mcqAns = new Map();
+const writtenAns = new Map();
+
+// Name gate
+let studentName = "";
+let studentDistrict = "";
+let nameUnlocked = false;
+
+function openNameModal(){
+  $("nameModal").classList.add("show");
+  setTimeout(()=>{ $("studentName").focus(); }, 40);
+}
+function closeNameModal(){
+  $("nameModal").classList.remove("show");
+}
+window.closeNameModal = closeNameModal;
+
+function submitName(){
+  const v = ($("studentName").value || "").trim();
+  const d = ($("studentDistrict").value || "").trim();
+
+  if(!v){
+    showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
+    $("studentName").focus();
+    return;
+  }
+  if(!d){
+    showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন");
+    $("studentDistrict").focus();
+    return;
+  }
+
+  studentName = v;
+  studentDistrict = d;
+  nameUnlocked = true;
+  closeNameModal();
+  showToast("Start সফল", `${studentName} (${studentDistrict})`);
+}
+window.submitName = submitName;
+
+function guardAnswering(){
+  if(nameUnlocked) return true;
+  openNameModal();
+  showToast("নাম ও জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
+  return false;
+}
+
+// ===== helpers =====
+function getTitleField(data){ 
+  if (!data) return "No Data";
+  return data?.title ?? data?.name ?? data?.modelTestName ?? data?.testName ?? "Model Test"; 
+}
+
+function getTimeMinFromDoc(data){
+  if (!data) return 0;
+  const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
+  for(const k of keys){
+    const v = data?.[k];
+    if(v === undefined || v === null || v === "") continue;
+    const n = Number(v);
+    if(!Number.isNaN(n) && n > 0) return n;
+  }
+  return 0;
+}
+
+function getMarkFromDoc(data){
+  if (!data) return "--";
+  const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+  for(const k of keys){
+    const v = data?.[k];
+    if(v === undefined || v === null || v === "") continue;
+    return v;
+  }
+  return "--";
+}
+
+function pickQuestionText(q){
+  return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
+}
+
+function getOptions(q){
+  if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
+  if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
+  if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
+  const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
+  const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
+  const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
+  const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
+  return [o1,o2,o3,o4].map(x=>String(x ?? ""));
+}
+
+function getCorrectIndex(q){
+  if(Number.isFinite(q.correctIndex)) return q.correctIndex;
+  const v = Number(q.correctIndex);
+  return Number.isFinite(v) ? v : -1;
+}
+
+function isWrittenQuestion(q){
+  const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
+  return t === "written" || t === "cq" || t === "short" || t === "essay";
+}
+
+// ===== timer =====
+let endAtMs = 0;
+let timerHandle = null;
+let testStartAtMs = 0;
+let totalAllowedSeconds = 0;
+let timerStarted = false;
+
+function formatMMSS(sec){
+  sec = Math.max(0, Math.floor(sec));
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+}
+
+function startTimer(minutes){
+  if(timerStarted) return;
+  const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
+  if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
+
+  timerStarted = true;
+  totalAllowedSeconds = totalSeconds;
+  testStartAtMs = Date.now();
+  endAtMs = testStartAtMs + totalSeconds * 1000;
+
+  const tick = ()=>{
+    const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
+    $("timeLeft").textContent = formatMMSS(left);
+    $("timeLeft").style.color = (left <= 60) ? "var(--danger)" : "var(--text)";
+    if(left <= 0){
+      clearInterval(timerHandle);
+      timerHandle = null;
+      showToast("সময় শেষ!", "অটো সাবমিট হচ্ছে…");
+    }
+  };
+  tick();
+  clearInterval(timerHandle);
+  timerHandle = setInterval(tick, 1000);
+}
+
+// ===== Fetch questions =====
+async function fetchQuestionsFromCollection(colName, mtId){
+  try{
+    console.log(`Trying to fetch questions from ${colName} where modelTestId=${mtId}`);
+    const s = await db.collection(colName).where("modelTestId","==", mtId).get();
+    console.log(`Found ${s.docs.length} questions in ${colName}`);
+    return s.docs.map(d=>({ id:d.id, ...d.data() }));
+  }catch(e){
+    console.log(`Error fetching from ${colName}:`, e.message);
+    return [];
+  }
+}
+
+async function fetchQuestionsFromSubcollection(mtId, parentCollection){
+  try {
+    console.log(`Trying subcollection: ${parentCollection}/${mtId}/questions`);
+    const ref = db.collection(parentCollection).doc(mtId).collection("questions");
+    const s = await ref.get();
+    console.log(`Found ${s.docs.length} questions in subcollection`);
+    return s.docs.map(d=>({ id:d.id, ...d.data() }));
+  } catch(e) {
+    console.log("Subcollection not found:", e.message);
+    return [];
+  }
+}
+
+// Try ALL possible question collections
+async function fetchAllPossibleQuestions(mtId, parentCollection){
+  console.log("=== FETCHING QUESTIONS ===");
+  
+  const questionCollections = [
+    "admission_subject_test_questions",
+    "admission_model_test_questions", 
+    "model_test_questions",
+    "admission_subject_questions"
+  ];
+  
+  let allQuestions = [];
+  
+  // Try collections
+  for (const colName of questionCollections) {
+    const qs = await fetchQuestionsFromCollection(colName, mtId);
+    if (qs.length > 0) {
+      console.log(`✅ Found ${qs.length} questions in ${colName}`);
+      allQuestions = qs;
+      break;
+    }
+  }
+  
+  // Try subcollection
+  if (allQuestions.length === 0 && parentCollection) {
+    const qs = await fetchQuestionsFromSubcollection(mtId, parentCollection);
+    if (qs.length > 0) {
+      console.log(`✅ Found ${qs.length} questions in subcollection`);
+      allQuestions = qs;
+    }
+  }
+  
+  // If still no questions, try where subjectId = mtId
+  if (allQuestions.length === 0) {
+    console.log("Trying where subjectId = modelTestId");
+    try {
+      const s = await db.collection("admission_subject_questions").where("subjectId","==", mtId).get();
+      console.log(`Found ${s.docs.length} questions by subjectId`);
+      allQuestions = s.docs.map(d=>({ id:d.id, ...d.data() }));
+    } catch(e) {
+      console.log("Error fetching by subjectId:", e.message);
+    }
+  }
+  
+  console.log(`Total questions found: ${allQuestions.length}`);
+  return allQuestions;
+}
+
+function setMetaHeader(){
+  if (!mtDoc) {
+    $("mtName").textContent = "No Test Found";
+    $("mtTime").textContent = "--";
+    $("mtMark").textContent = "--";
+    $("mtTotalQ").textContent = "0";
+    $("timeLeft").textContent = "--:--";
+    return;
+  }
+  
+  const title = getTitleField(mtDoc);
+  $("mtName").textContent = title;
+  $("mtTime").textContent = getTimeMinFromDoc(mtDoc) || "--";
+  $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
+  $("mtTotalQ").textContent = String(questions.length || 0);
+  
+  const mins = getTimeMinFromDoc(mtDoc) || 0;
+  if(mins){ 
+    $("timeLeft").textContent = formatMMSS(mins*60); 
+  }
+}
+
+function renderAll(){
+  const wrap = $("content");
+  wrap.innerHTML = "";
+
+  if(!questions.length){
+    wrap.innerHTML = `
+      <div class="err">
+        <h3>কোনো প্রশ্ন পাওয়া যায়নি।</h3>
+        <p>সম্ভাব্য কারণ:</p>
+        <ul style="text-align:left; margin:10px 0; padding-left:20px;">
+          <li>এই Model Test-এ এখনও কোনো প্রশ্ন add করা হয়নি</li>
+          <li>Admin page থেকে প্রশ্ন Import করুন</li>
+          <li>বা অন্য Model Test চেষ্টা করুন</li>
+        </ul>
+        <button class="btn primary" onclick="location.href='admission.html'">Back to Admission</button>
       </div>
     `;
-    t.style.display = "block";
-    clearTimeout(showToast._tm);
-    showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2000);
+    return;
   }
 
-  // ===== Confirm modal (custom Yes/No) =====
-  let _confirmResolver = null;
-  function openConfirm(title, text){
-    $("confirmTitle").textContent = title || "Confirm";
-    $("confirmText").textContent = text || "";
-    $("confirmModal").classList.add("show");
-    return new Promise((resolve)=>{ _confirmResolver = resolve; });
-  }
-  function closeConfirm(){ $("confirmModal").classList.remove("show"); }
-  function confirmYes(){ closeConfirm(); if(_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
-  function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
-  window.confirmYes = confirmYes;
-  window.confirmNo = confirmNo;
+  const list = document.createElement("div");
+  list.className = "qList";
 
-  // ===== utils =====
-  function getParam(name){
-    const u = new URL(location.href);
-    return u.searchParams.get(name) || "";
-  }
+  const letters = ["A","B","C","D"];
 
-  // ✅ current page filename for internal links
-  const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
+  questions.forEach((q, i)=>{
+    const qno = i + 1;
+    const qid = q.id;
 
-  // ✅ NEW: src param (subject/admission)
-  // Use URL like: Start-model-test.html?src=admission&modelTestId=XXXX
-  const SRC = (getParam("src") || "subject").toLowerCase();
+    const row = document.createElement("div");
+    row.className = "qRow";
+    row.dataset.qid = qid;
 
-  // ===== Firebase =====
-  const firebaseConfig = {
-    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-    authDomain: "eprostutibd-webapp.firebaseapp.com",
-    projectId: "eprostutibd-webapp",
-    storageBucket: "eprostutibd-webapp.firebasestorage.app",
-    messagingSenderId: "1044069942330",
-    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-    measurementId: "G-T2G55NMDQT"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+    const qt = pickQuestionText(q);
+    row.innerHTML = `
+      <div class="qHead">
+        <span class="qNo">Q${qno}</span>
+        <p class="qText">${esc(qt || "(No question text)")}</p>
+      </div>
+    `;
 
-  // ✅ CORRECTED: Model test collection based on src
-  // Admin page-এ collection নাম: admission_subject_tests
-  // Subject (old) -> subject_model_tests
-  // Admission (new) -> admission_subject_tests ✅
-  const COL_MODEL_TESTS = (SRC === "admission")
-    ? "admission_subject_tests"  // Admin page: COL_SUBJECT_TESTS
-    : "subject_model_tests";
-
-  const COL_MODEL_TEST_RESULT = "model_test_result"; // same
-
-  // ✅ CORRECTED: Question collections based on src
-  const QUESTION_COLLECTION_CANDIDATES = (SRC === "admission")
-    ? [
-        "admission_subject_test_questions",  // Admin page: COL_SUBJECT_TEST_QUESTIONS ✅
-        "admission_model_test_questions",
-        "model_test_questions"
-      ]
-    : [
-        "model_test_questions",
-        "modeltest_questions",
-        "modeltest_question",
-        "modelTest_questions",
-        "modeltestQuestions"
-      ];
-
-  // ===== modelTestId from URL =====
-  const modelTestId = getParam("modelTestId");
-
-  // ===== state =====
-  let mtDoc = null;
-  let questions = [];
-  const mcqAns = new Map();
-  const writtenAns = new Map();
-
-  // Name gate
-  let studentName = "";
-  let studentDistrict = "";
-  let nameUnlocked = false;
-
-  function openNameModal(){
-    $("nameModal").classList.add("show");
-    setTimeout(()=>{ $("studentName").focus(); }, 40);
-  }
-  function closeNameModal(){
-    $("nameModal").classList.remove("show");
-  }
-  window.closeNameModal = closeNameModal;
-
-  function submitName(){
-    const v = ($("studentName").value || "").trim();
-    const d = ($("studentDistrict").value || "").trim();
-
-    if(!v){
-      showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
-      $("studentName").focus();
-      return;
-    }
-    if(!d){
-      showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন");
-      $("studentDistrict").focus();
-      return;
-    }
-
-    studentName = v;
-    studentDistrict = d;
-    nameUnlocked = true;
-    closeNameModal();
-
-    // ✅ Start countdown only after Name + District submitted
-    if(!timerStarted && mtDoc){
-      const __mins = getTimeMinFromDoc(mtDoc) || 0;
-      if(__mins){ startTimer(__mins); }
-    }
-
-    showToast("Start সফল", `${studentName} (${studentDistrict})`);
-  }
-  window.submitName = submitName;
-
-  function guardAnswering(){
-    if(nameUnlocked) return true;
-    openNameModal();
-    showToast("নাম ও জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
-    return false;
-  }
-
-  // ===== helpers =====
-  function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? "Model Test"; }
-  function getTimeMinFromDoc(data){
-    const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
-    for(const k of keys){
-      const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
-      const n = Number(v);
-      if(!Number.isNaN(n) && n > 0) return n;
-    }
-    return 0;
-  }
-  function getMarkFromDoc(data){
-    const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
-    for(const k of keys){
-      const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
-      return v;
-    }
-    return "-";
-  }
-  function pickQuestionText(q){
-    return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
-  }
-  function getOptions(q){
-    if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
-    const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
-    const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
-    const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
-    const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
-    return [o1,o2,o3,o4].map(x=>String(x ?? ""));
-  }
-  function getCorrectIndex(q){
-    if(Number.isFinite(q.correctIndex)) return q.correctIndex;
-    const v = Number(q.correctIndex);
-    return Number.isFinite(v) ? v : -1;
-  }
-  function isWrittenQuestion(q){
-    const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
-    return t === "written" || t === "cq" || t === "short" || t === "essay";
-  }
-
-  // ===== timer =====
-  let endAtMs = 0;
-  let timerHandle = null;
-  let testStartAtMs = 0;
-  let totalAllowedSeconds = 0;
-  let timerStarted = false;
-
-  function formatMMSS(sec){
-    sec = Math.max(0, Math.floor(sec));
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
-  }
-  function startTimer(minutes){
-    if(timerStarted) return;
-    const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
-    if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
-
-    timerStarted = true;
-    totalAllowedSeconds = totalSeconds;
-    testStartAtMs = Date.now();
-    endAtMs = testStartAtMs + totalSeconds * 1000;
-
-    const tick = ()=>{
-      const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
-      $("timeLeft").textContent = formatMMSS(left);
-      $("timeLeft").style.color = (left <= 60) ? "var(--danger)" : "var(--text)";
-      if(left <= 0){
-        clearInterval(timerHandle);
-        timerHandle = null;
-        showToast("সময় শেষ!", "অটো সাবমিট হচ্ছে…");
-        setTimeout(()=>submitTest(true), 350);
-      }
-    };
-    tick();
-    clearInterval(timerHandle);
-    timerHandle = setInterval(tick, 1000);
-  }
-
-  async function fetchQuestionsFromCollection(colName, mtId){
-    try{
-      const s = await db.collection(colName).where("modelTestId","==", mtId).orderBy("createdAt","asc").get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
-      const s = await db.collection(colName).where("modelTestId","==", mtId).get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }
-  }
-
-  // ✅ CORRECTED: subcollection fallback now based on COL_MODEL_TESTS
-  async function fetchQuestionsFromSubcollection(mtId){
-    try {
-      const ref = db.collection(COL_MODEL_TESTS).doc(mtId).collection("questions");
-      const s = await ref.get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    } catch(e) {
-      console.log("Subcollection not found:", e);
-      return [];
-    }
-  }
-
-  function setMetaHeader(){
-    const title = getTitleField(mtDoc);
-    $("mtName").textContent = title;
-    $("tickerText").textContent = `${title} • Test চলছে • Submit করার আগে সব প্রশ্ন দেখে নিন`;
-
-    const mins = getTimeMinFromDoc(mtDoc) || 0;
-    $("mtTime").textContent = mins ? String(mins) : "--";
-    $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
-    $("mtTotalQ").textContent = String(questions.length || 0);
-
-    document.title = `${title} — Model Test | eProstutiBD`;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if(metaDesc){
-      metaDesc.setAttribute("content", `${title} মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।`);
-    }
-  }
-
-  function renderAll(){
-    const wrap = $("content");
-    wrap.innerHTML = "";
-
-    if(!questions.length){
-      wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
-      return;
-    }
-
-    const list = document.createElement("div");
-    list.className = "qList";
-
-    const total = questions.length;
-    const adPos1 = total >= 6 ? Math.floor(total/3) : 3;
-    const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;
-
-    const letters = ["A","B","C","D"];
-
-    questions.forEach((q, i)=>{
-      if(i === adPos1){
-        const ad = document.createElement("div");
-        ad.className = "inlineAd";
-        ad.innerHTML = `
-          <div>
-            <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #1</div>
-            <div id="ad_inline_1" style="margin-top:8px;">Paste AdSense code here</div>
-          </div>
-        `;
-        list.appendChild(ad);
-      }
-      if(i === adPos2){
-        const ad = document.createElement("div");
-        ad.className = "inlineAd";
-        ad.innerHTML = `
-          <div>
-            <div class="tag">Ad Slot</div>
-            <div style="font-size:12px;">Inline Ad #2</div>
-            <div id="ad_inline_2" style="margin-top:8px;">Paste AdSense code here</div>
-          </div>
-        `;
-        list.appendChild(ad);
-      }
-
-      const qno = i + 1;
-      const qid = q.id;
-
-      const row = document.createElement("div");
-      row.className = "qRow";
-      row.dataset.qid = qid;
-
-      const qt = pickQuestionText(q);
-      row.innerHTML = `
-        <div class="qHead">
-          <span class="qNo">Q${qno}</span>
-          <p class="qText">${esc(qt || "(No question text)")}</p>
-        </div>
-      `;
-
-      if(isWrittenQuestion(q)){
-        const ta = document.createElement("textarea");
-        ta.style.width = "100%";
-        ta.style.minHeight = "120px";
-        ta.style.marginTop = "10px";
-        ta.style.border = "1px solid rgba(18,28,55,.12)";
-        ta.style.borderRadius = "12px";
-        ta.style.padding = "10px 12px";
-        ta.style.fontFamily = "inherit";
-        ta.style.fontSize = "13px";
-        ta.placeholder = "আপনার উত্তর লিখুন…";
-        ta.value = (writtenAns.get(qid) ?? "").toString();
-        ta.oninput = ()=>{
-          if(!guardAnswering()) return;
-          writtenAns.set(qid, ta.value);
-        };
-        row.appendChild(ta);
-      }else{
-        const opts = getOptions(q);
-        const chosen = mcqAns.get(qid);
-
-        const optWrap = document.createElement("div");
-        optWrap.className = "opts";
-
-        opts.slice(0,4).forEach((op, oi)=>{
-          const opt = document.createElement("div");
-          opt.className = "optLine" + (chosen === oi ? " selected" : "");
-          opt.setAttribute("role","button");
-          opt.setAttribute("tabindex","0");
-          opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
-          opt.innerHTML = `
-            <span class="tick">✓</span>
-            <span class="optKey">${letters[oi]}.</span>
-            <span class="optTxt">${esc(op || "")}</span>
-          `;
-          const pick = ()=>{
-            if(!guardAnswering()) return;
-            mcqAns.set(qid, oi);
-            renderAll();
-          };
-          opt.onclick = pick;
-          opt.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
-          optWrap.appendChild(opt);
-        });
-
-        row.appendChild(optWrap);
-      }
-
-      list.appendChild(row);
-    });
-
-    wrap.appendChild(list);
-  }
-
-  function getUnanswered(){
-    const missing = [];
-    questions.forEach((q, i)=>{
-      const qid = q.id;
-      if(isWrittenQuestion(q)){
-        const txt = (writtenAns.get(qid) ?? "").toString().trim();
-        if(!txt) missing.push({ index: i, id: qid });
-      }else{
-        const v = mcqAns.get(qid);
-        if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid });
-      }
-    });
-    return missing;
-  }
-
-  function scrollToQuestion(qid){
-    const el = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
-    if(el){
-      try{ el.scrollIntoView({behavior:"smooth", block:"center"}); }
-      catch(e){ el.scrollIntoView(); }
-      el.style.outline = "2px solid rgba(220,38,38,.35)";
-      el.style.outlineOffset = "4px";
-      setTimeout(()=>{ el.style.outline=""; el.style.outlineOffset=""; }, 1800);
-    }
-  }
-
-  // ===== Result compute (MCQ based) =====
-  function toNumberMaybe(v){
-    const n = Number(v);
-    return Number.isFinite(n) ? n : null;
-  }
-  function computeResult(){
-    const totalAllQ = questions.length || 0;
-
-    let totalMcq = 0;
-    let answeredMcq = 0;
-    let right = 0;
-    let wrong = 0;
-
-    questions.forEach((q)=>{
-      if(isWrittenQuestion(q)) return;
-
-      totalMcq++;
-      const qid = q.id;
+    if(isWrittenQuestion(q)){
+      const ta = document.createElement("textarea");
+      ta.style.width = "100%";
+      ta.style.minHeight = "120px";
+      ta.style.marginTop = "10px";
+      ta.style.border = "1px solid rgba(18,28,55,.12)";
+      ta.style.borderRadius = "12px";
+      ta.style.padding = "10px 12px";
+      ta.style.fontFamily = "inherit";
+      ta.style.fontSize = "13px";
+      ta.placeholder = "আপনার উত্তর লিখুন…";
+      ta.value = (writtenAns.get(qid) ?? "").toString();
+      ta.oninput = ()=>{
+        if(!guardAnswering()) return;
+        writtenAns.set(qid, ta.value);
+      };
+      row.appendChild(ta);
+    }else{
+      const opts = getOptions(q);
       const chosen = mcqAns.get(qid);
 
-      if(chosen === undefined || chosen === null || chosen === "") return;
+      const optWrap = document.createElement("div");
+      optWrap.className = "opts";
 
-      answeredMcq++;
-
-      const ci = getCorrectIndex(q);
-      if(Number.isFinite(ci) && ci >= 0){
-        if(Number(chosen) === Number(ci)) right++;
-        else wrong++;
-      }
-    });
-
-    const noAnswer = Math.max(0, totalMcq - answeredMcq);
-
-    const totalMarkDoc = toNumberMaybe(getMarkFromDoc(mtDoc));
-    const totalMark = (totalMarkDoc !== null && totalMarkDoc > 0)
-      ? totalMarkDoc
-      : (totalMcq || totalAllQ);
-
-    const perQ = (totalMcq > 0) ? (totalMark / totalMcq) : 0;
-    const obtained = Math.round((right * perQ) * 100) / 100;
-
-    return {
-      totalAllQ,
-      totalMcq,
-      answeredMcq,
-      noAnswer,
-      right,
-      wrong,
-      totalMark,
-      obtained
-    };
-  }
-
-  async function saveResultToFirebase(payload){
-    try{
-      const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
-      showToast("Firebase saved ✅", `Doc ID: ${ref.id}`);
-      return ref.id;
-    }catch(e){
-      console.error("Firestore write failed:", e);
-      showToast("Firebase save হয়নি ❌", e?.message || String(e));
-      return "";
-    }
-  }
-
-  // ===== Result modal =====
-  let _lastResultPayload = null;
-  let _lastResultDocId = "";
-  let _lastTimeTakenText = "";
-
-  function openResultModal(summary){
-    $("resTitle").textContent = "Result Published";
-    $("resSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
-    $("resTotalQ").textContent = String(summary.totalMcq);
-    $("resRight").textContent = String(summary.right);
-    $("resWrong").textContent = String(summary.wrong);
-    $("resNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq||0) - ((summary.right||0)+(summary.wrong||0))));
-    $("resMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
-    $("resTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
-    $("resultModal").classList.add("show");
-  }
-  function closeResultModal(){
-    $("resultModal").classList.remove("show");
-  }
-  window.closeResultModal = closeResultModal;
-
-  function goResultDetails(){
-    if(!modelTestId) return;
-    localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
-    if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
-    location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
-  }
-  window.goResultDetails = goResultDetails;
-
-  // ===== Submit =====
-  async function submitTest(isAuto=false){
-    if(!modelTestId) return;
-
-    if(!nameUnlocked){
-      openNameModal();
-      showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
-      return;
-    }
-
-    const missing = getUnanswered();
-
-    if(!isAuto && missing.length){
-      const ok = await openConfirm(
-        "Submit করার আগে",
-        `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
-      );
-      if(!ok){
-        scrollToQuestion(missing[0].id);
-        showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
-        return;
-      }
-    }else if(!isAuto){
-      const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
-      if(!ok) return;
-    }
-
-    const summary = computeResult();
-
-    const nowMs = Date.now();
-    const timeTakenSeconds = Math.min(
-      totalAllowedSeconds || 999999,
-      Math.max(0, Math.floor((nowMs - testStartAtMs) / 1000))
-    );
-    const timeTakenText = formatMMSS(timeTakenSeconds);
-    _lastTimeTakenText = timeTakenText;
-
-    const payload = {
-      modelTestId,
-      modelTestName: getTitleField(mtDoc),
-      submittedAt: Date.now(),
-      timeTakenText,
-      isAuto: !!isAuto,
-      studentName,
-      studentDistrict,
-      answers: {
-        mcq: Object.fromEntries(mcqAns),
-        written: Object.fromEntries(writtenAns)
-      },
-      result: {
-        totalQuestion: summary.totalMcq,
-        totalAllQuestion: summary.totalAllQ,
-        totalMcq: summary.totalMcq,
-        answeredMcq: summary.answeredMcq,
-        noAnswer: summary.noAnswer,
-        right: summary.right,
-        wrong: summary.wrong,
-        totalMark: summary.totalMark,
-        obtainedMark: summary.obtained
-      },
-      // ✅ optional: keep track which source user used
-      source: SRC
-    };
-
-    _lastResultPayload = payload;
-
-    showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
-
-    _lastResultDocId = await saveResultToFirebase(payload);
-
-    localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
-
-    if(!_lastResultDocId){
-      showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
-    }else{
-      showToast("Submit সম্পন্ন", "Result দেখুন");
-    }
-
-    openResultModal(summary);
-  }
-  window.submitTest = submitTest;
-
-  // ===== PDF =====
-  function chunk(arr, size){
-    const out = [];
-    for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
-    return out;
-  }
-  function buildPdfHeaderLines(title, mins, mark, totalQ){
-    return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
-  }
-  async function renderPageToCanvas(html){
-    const area = $("pdfPageArea");
-    area.innerHTML = html;
-    try{ await document.fonts.ready; }catch(e){}
-    const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
-    return canvas;
-  }
-
-  async function buildQuestionPaperCanvases(){
-    const title = getTitleField(mtDoc);
-    const mins = getTimeMinFromDoc(mtDoc) || 0;
-    const mark = getMarkFromDoc(mtDoc);
-    const totalQ = questions.length;
-    const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
-
-    const pages = chunk(questions, 30);
-    const letters = ["A","B","C","D"];
-    const canvases = [];
-
-    for(let p=0;p<pages.length;p++){
-      const pageQs = pages[p];
-
-      const qHtml = pageQs.map((q, idx)=>{
-        const qno = p*30 + idx + 1;
-        const qt = pickQuestionText(q);
-
-        if(isWrittenQuestion(q)){
-          return `
-            <div class="pdfQ">
-              <div class="qline">Q${qno}. ${esc(qt)}</div>
-              <div style="margin-top:8px;">উত্তর: ____________________________</div>
-            </div>
-          `;
-        }
-
-        const opts = getOptions(q);
-        const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
-
-        return `
-          <div class="pdfQ">
-            <div class="qline">Q${qno}. ${esc(qt)}</div>
-            <div class="pdfOpt">${optHtml}</div>
-          </div>
+      opts.slice(0,4).forEach((op, oi)=>{
+        const opt = document.createElement("div");
+        opt.className = "optLine" + (chosen === oi ? " selected" : "");
+        opt.setAttribute("role","button");
+        opt.setAttribute("tabindex","0");
+        opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
+        opt.innerHTML = `
+          <span class="tick">✓</span>
+          <span class="optKey">${letters[oi]}.</span>
+          <span class="optTxt">${esc(op || "")}</span>
         `;
-      }).join("");
-
-      const pageHtml = `
-        <div class="pdfFrame">
-          <div class="pdfWatermark">eProstutiBD</div>
-          <div class="pdfHeaderLine1">${esc(line1)}</div>
-          <div class="pdfHeaderLine2">${esc(line2)}</div>
-          <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
-          <div class="pdfGridWrap">
-            <div class="pdfGrid">${qHtml}</div>
-          </div>
-        </div>
-      `;
-      canvases.push(await renderPageToCanvas(pageHtml));
-    }
-    return canvases;
-  }
-
-  async function buildAnswerSheetCanvases(){
-    const title = getTitleField(mtDoc);
-    const mins = getTimeMinFromDoc(mtDoc) || 0;
-    const mark = getMarkFromDoc(mtDoc);
-    const totalQ = questions.length;
-    const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
-
-    const pages = chunk(questions, 30);
-    const canvases = [];
-    const letters = ["A","B","C","D"];
-
-    for(let p=0;p<pages.length;p++){
-      const pageQs = pages[p];
-
-      const rowsHtml = pageQs.map((q, idx)=>{
-        const qno = p*30 + idx + 1;
-
-        if(isWrittenQuestion(q)){
-          return `
-            <div class="ansRow">
-              <b style="min-width:42px;">Q${qno}</b>
-              <span>__________________________</span>
-            </div>
-          `;
-        }
-
-        const correctIdx = getCorrectIndex(q);
-        const bubbles = letters.map((l, i)=>{
-          const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
-          return `<span class="bubble ${sel}">${l}</span>`;
-        }).join("");
-
-        return `
-          <div class="ansRow">
-            <b style="min-width:42px;">Q${qno}</b>
-            <div class="bubbles">${bubbles}</div>
-          </div>
-        `;
-      }).join("");
-
-      const pageHtml = `
-        <div class="pdfFrame">
-          <div class="pdfWatermark">eProstutiBD</div>
-          <div class="pdfHeaderLine1">${esc(line1)}</div>
-          <div class="pdfHeaderLine2">${esc(line2)}</div>
-          <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
-          <div class="pdfASGrid">${rowsHtml}</div>
-        </div>
-      `;
-      canvases.push(await renderPageToCanvas(pageHtml));
-    }
-    return canvases;
-  }
-
-  async function downloadCombinedPDF(){
-    try{
-      if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
-      showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
-
-      const qCanvases = await buildQuestionPaperCanvases();
-      const aCanvases = await buildAnswerSheetCanvases();
-
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF("p", "pt", "a4");
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-
-      let first = true;
-      const addCanvas = (canvas)=>{
-        const imgData = canvas.toDataURL("image/jpeg", 0.95);
-        if(!first) pdf.addPage();
-        first = false;
-        pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
-      };
-
-      qCanvases.forEach(addCanvas);
-      aCanvases.forEach(addCanvas);
-
-      const title = getTitleField(mtDoc);
-      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "model-test";
-      pdf.save(`${safeName}-question+answer.pdf`);
-
-      showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
-    }catch(e){
-      console.error(e);
-      showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
-    }
-  }
-  window.downloadCombinedPDF = downloadCombinedPDF;
-
-  // ===== Recent Model Tests =====
-  async function loadRecentModelTests(){
-    const wrap = $("recentList");
-    try{
-      let snap = null;
-      try{
-        snap = await db.collection(COL_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
-      }catch(e){
-        snap = await db.collection(COL_MODEL_TESTS).limit(5).get();
-      }
-
-      const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
-      wrap.innerHTML = "";
-
-      if(!docs.length){
-        wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
-        return;
-      }
-
-      docs.forEach(doc=>{
-        const title = getTitleField(doc);
-        const mins = getTimeMinFromDoc(doc) || "--";
-        const mark = getMarkFromDoc(doc);
-        const a = document.createElement("a");
-        a.className = "recentItem";
-        a.href = `${BASE_PAGE}?src=${encodeURIComponent(SRC)}&modelTestId=${encodeURIComponent(doc.id)}`;
-        a.innerHTML = `
-          <span class="recentDot"></span>
-          <div>
-            <div class="recentTitle">${esc(title)}</div>
-            <div class="recentMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
-          </div>
-        `;
-        wrap.appendChild(a);
+        const pick = ()=>{
+          if(!guardAnswering()) return;
+          mcqAns.set(qid, oi);
+          renderAll();
+        };
+        opt.onclick = pick;
+        opt.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
+        optWrap.appendChild(opt);
       });
 
-      const more = document.createElement("a");
-      more.className = "recentItem";
-      more.href = "premium-model-test.html";
-      more.innerHTML = `
-        <span class="recentDot"></span>
-        <div>
-          <div class="recentTitle">See more</div>
-          <div class="recentMeta">Premium model tests দেখুন</div>
+      row.appendChild(optWrap);
+    }
+
+    list.appendChild(row);
+  });
+
+  wrap.appendChild(list);
+}
+
+// ===== boot =====
+async function loadAll(){
+  if(!modelTestId){
+    $("content").innerHTML = `
+      <div class="err">
+        <h3>Model Test ID পাওয়া যায়নি</h3>
+        <p>সঠিক URL: ${BASE_PAGE}?src=admission&modelTestId=XXXX</p>
+        <button class="btn primary" onclick="location.href='admission.html'">Admission Page এ যান</button>
+      </div>
+    `;
+    return;
+  }
+
+  $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+  $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+
+  showToast("লোড হচ্ছে...", "ডাটা চেক করছি");
+
+  try{
+    // First detect which collection has our test
+    const detection = await detectCollection();
+    
+    if (!detection) {
+      $("content").innerHTML = `
+        <div class="err">
+          <h3>এই Model Test পাওয়া যায়নি</h3>
+          <p>ID: ${modelTestId}</p>
+          <p>সম্ভাব্য কারণ:</p>
+          <ul style="text-align:left; margin:10px 0; padding-left:20px;">
+            <li>Model Test ID ভুল</li>
+            <li>Admin page থেকে Model Test তৈরি হয়নি</li>
+            <li>Firestore এ ডাটা save হয়নি</li>
+          </ul>
+          <div style="margin-top:20px;">
+            <button class="btn primary" onclick="location.href='admission.html'">Admission Page</button>
+            <button class="btn" onclick="location.reload()">Refresh</button>
+          </div>
         </div>
       `;
-      wrap.appendChild(more);
-
-    }catch(err){
-      console.error(err);
-      wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
-    }
-  }
-
-  // ===== boot =====
-  async function loadAll(){
-    if(!modelTestId){
-      $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: ${BASE_PAGE}?src=${encodeURIComponent(SRC)}&modelTestId=XXXX</div>`;
       return;
     }
-
-    $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
-    $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
-
-    loadRecentModelTests();
-
-    try{
-      // ✅ Read mt doc from selected collection
-      const mtSnap = await db.collection(COL_MODEL_TESTS).doc(modelTestId).get();
-      if(!mtSnap.exists){
-        $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
-        return;
-      }
-      mtDoc = { id: mtSnap.id, ...mtSnap.data() };
-
-      let qs = [];
-      
-      // Try collections first
-      for(const col of QUESTION_COLLECTION_CANDIDATES){
-        try{
-          const got = await fetchQuestionsFromCollection(col, modelTestId);
-          if(got && got.length){ 
-            console.log("Found questions in collection:", col);
-            qs = got; 
-            break; 
-          }
-        }catch(e){
-          console.log("Collection not found:", col, e);
-        }
-      }
-      
-      // If no questions found, try subcollection
-      if(!qs.length){
-        try{ 
-          qs = await fetchQuestionsFromSubcollection(modelTestId);
-          console.log("Found questions in subcollection:", qs.length);
-        }catch(e){
-          console.log("Subcollection not found:", e);
-        }
-      }
-
-      questions = qs || [];
-      setMetaHeader();
-
-      // ✅ Do NOT start countdown before Name+District submit
-      const __mins = getTimeMinFromDoc(mtDoc) || 0;
-      if(__mins){ $("timeLeft").textContent = formatMMSS(__mins*60); }
-
-      renderAll();
-      showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
-    }catch(err){
-      console.error(err);
-      $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
+    
+    mtDoc = { id: modelTestId, ...detection.data };
+    console.log("✅ Model Test found:", mtDoc);
+    
+    // Now fetch questions
+    questions = await fetchAllPossibleQuestions(modelTestId, detection.collection);
+    
+    setMetaHeader();
+    renderAll();
+    
+    if (questions.length === 0) {
+      showToast("Model Test found কিন্তু প্রশ্ন নেই", "Admin থেকে Import করুন");
+    } else {
+      showToast("Test প্রস্তুত", `${questions.length} প্রশ্ন লোড হয়েছে`);
+      openNameModal(); // Automatically open name modal
     }
+    
+  } catch(err) {
+    console.error("Load error:", err);
+    $("content").innerHTML = `
+      <div class="err">
+        <h3>লোড করতে সমস্যা হচ্ছে</h3>
+        <p>${err.message || "Unknown error"}</p>
+        <button class="btn primary" onclick="location.reload()">আবার চেষ্টা করুন</button>
+      </div>
+    `;
   }
+}
 
-  loadAll();
+// Start loading
+loadAll();
 
 /* ===========================
    ✅ END
 =========================== */
-
   </script>
 </body>
 </html>
