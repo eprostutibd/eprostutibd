@@ -1,4 +1,3 @@
-```html
 <!doctype html>
 <html lang="bn">
 <head>
@@ -101,13 +100,14 @@
       background: rgba(106,166,255,.12);
     }
 
-    /* updated to 4 stats */
+    /* updated to 5 stats */
     .stats{
       display:grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap:10px;
     }
-    @media (max-width: 900px){ .stats{grid-template-columns: repeat(2, 1fr)} }
+    @media (max-width: 1100px){ .stats{grid-template-columns: repeat(3, 1fr)} }
+    @media (max-width: 720px){ .stats{grid-template-columns: repeat(2, 1fr)} }
     @media (max-width: 520px){ .stats{grid-template-columns:1fr} }
 
     .stat{
@@ -294,7 +294,7 @@
         <div class="logo"></div>
         <div>
           <h1>প্রশ্নব্যাংক অ্যাডমিন পেজ</h1>
-          <div class="sub">Subjects + Subject Model Tests + Admission (University) • Import • Cascade delete • Question Manager</div>
+          <div class="sub">Subjects + Subject Tests + Admission Tests + Universities • Import • Cascade delete • Question Manager</div>
         </div>
       </div>
       <div class="pill">
@@ -317,8 +317,9 @@
       <div class="bd">
         <div class="stats">
           <div class="stat"><b id="statSubjects">0</b><span>Total Subjects</span></div>
-          <div class="stat"><b id="statModelTests">0</b><span>Total Subject Model Tests (selected subject)</span></div>
-          <div class="stat"><b id="statQuestions">0</b><span>Total Questions (from subject counts)</span></div>
+          <div class="stat"><b id="statSubjectTests">0</b><span>Total Subject Tests</span></div>
+          <div class="stat"><b id="statAdmissionTests">0</b><span>Total Admission Tests</span></div>
+          <div class="stat"><b id="statQuestions">0</b><span>Total Questions (approx)</span></div>
           <div class="stat"><b id="statUniversities">0</b><span>Total Universities</span></div>
         </div>
 
@@ -328,8 +329,11 @@
           <button id="tabSubjects" class="tabbtn active" onclick="showTab('subjects')">
             <span>Subjects</span><span class="small">Add / Import / Search</span>
           </button>
-          <button id="tabModelTests" class="tabbtn" onclick="showTab('modeltests')">
-            <span>Subject Model Tests</span><span class="small">Add / Import / Search</span>
+          <button id="tabSubjectTests" class="tabbtn" onclick="showTab('subjecttests')">
+            <span>Subject Tests</span><span class="small">Add / Import / Search</span>
+          </button>
+          <button id="tabAdmissionTests" class="tabbtn" onclick="showTab('admissiontests')">
+            <span>Admission Tests</span><span class="small">Add / Import / Search</span>
           </button>
           <button id="tabAdmission" class="tabbtn" onclick="showTab('admission')">
             <span>Admission Wise Question</span><span class="small">University / Import / Search</span>
@@ -347,8 +351,8 @@
 
         <div class="note">
           ✅ Popup/modal scroll fixed<br/>
-          ✅ Question edit/delete via “Questions” button<br/>
-          ✅ Admission-wise: University + Questions
+          ✅ Question edit/delete via "Questions" button<br/>
+          ✅ Admission-wise: University + Questions + Tests
         </div>
       </div>
     </div>
@@ -389,31 +393,31 @@
           <div id="subjectsEmpty" class="note" style="display:none">এখনও কোনো Subject নেই।</div>
         </section>
 
-        <!-- SUBJECT MODEL TESTS -->
-        <section id="modelTestsSection" style="display:none">
+        <!-- SUBJECT TESTS -->
+        <section id="subjectTestsSection" style="display:none">
           <div class="row">
             <div class="field">
               <label>Subject Select</label>
-              <select id="mtSubjectSelect" onchange="onMtSubjectChange()"></select>
+              <select id="stSubjectSelect" onchange="onStSubjectChange()"></select>
             </div>
             <div class="field">
-              <label>Subject Model Test Title</label>
-              <input id="mtTitle" placeholder="যেমন: Model Test 1" />
+              <label>Subject Test Title</label>
+              <input id="stTitle" placeholder="যেমন: Physics Test 1" />
             </div>
           </div>
 
           <div class="row">
             <div class="field">
               <label>Total Time (minutes)</label>
-              <input id="mtTime" type="number" min="0" placeholder="যেমন: 60" />
+              <input id="stTime" type="number" min="0" placeholder="যেমন: 60" />
             </div>
             <div class="field">
               <label>Total Marks</label>
-              <input id="mtMarks" type="number" min="0" placeholder="যেমন: 100" />
+              <input id="stMarks" type="number" min="0" placeholder="যেমন: 100" />
             </div>
             <div class="field" style="flex:0 0 190px">
               <label>&nbsp;</label>
-              <button class="btn primary" id="btnAddModelTest" onclick="addModelTest()" disabled style="width:100%">Add Model Test</button>
+              <button class="btn primary" id="btnAddSubjectTest" onclick="addSubjectTest()" disabled style="width:100%">Add Subject Test</button>
             </div>
           </div>
 
@@ -421,15 +425,58 @@
 
           <div class="row">
             <div class="field">
-              <label>Search Model Test</label>
-              <input id="mtSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderModelTests()" />
+              <label>Search Subject Test</label>
+              <input id="stSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderSubjectTests()" />
             </div>
           </div>
 
           <div class="divider"></div>
 
-          <div id="modelTestsList" class="list"></div>
-          <div id="modelTestsEmpty" class="note" style="display:none">এই Subject এ এখনও কোনো Model Test নেই।</div>
+          <div id="subjectTestsList" class="list"></div>
+          <div id="subjectTestsEmpty" class="note" style="display:none">এই Subject এ এখনও কোনো Test নেই।</div>
+        </section>
+
+        <!-- ADMISSION TESTS -->
+        <section id="admissionTestsSection" style="display:none">
+          <div class="row">
+            <div class="field">
+              <label>University Select</label>
+              <select id="atUniversitySelect" onchange="onAtUniversityChange()"></select>
+            </div>
+            <div class="field">
+              <label>Admission Test Title</label>
+              <input id="atTitle" placeholder="যেমন: DU Admission Test 2024" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Total Time (minutes)</label>
+              <input id="atTime" type="number" min="0" placeholder="যেমন: 120" />
+            </div>
+            <div class="field">
+              <label>Total Marks</label>
+              <input id="atMarks" type="number" min="0" placeholder="যেমন: 200" />
+            </div>
+            <div class="field" style="flex:0 0 190px">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btnAddAdmissionTest" onclick="addAdmissionTest()" disabled style="width:100%">Add Admission Test</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="field">
+              <label>Search Admission Test</label>
+              <input id="atSearch" placeholder="টাইপ করে খুঁজুন..." oninput="renderAdmissionTests()" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="admissionTestsList" class="list"></div>
+          <div id="admissionTestsEmpty" class="note" style="display:none">এই University এ এখনও কোনো Admission Test নেই।</div>
         </section>
 
         <!-- ADMISSION WISE (UNIVERSITIES) -->
@@ -606,10 +653,14 @@
 
   const COL_SUBJECTS = PREFIX + "subjects";
   const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
-  const COL_SUBJECT_MODEL_TESTS = PREFIX + "subject_model_tests";
-  const COL_MODEL_TEST_QUESTIONS = PREFIX + "model_test_questions";
-
-  // ✅ NEW: admission-wise (university)
+  const COL_SUBJECT_TESTS = PREFIX + "subject_tests";
+  const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
+  
+  // ✅ NEW: Admission tests
+  const COL_ADMISSION_TESTS = PREFIX + "tests";
+  const COL_ADMISSION_TEST_QUESTIONS = PREFIX + "test_questions";
+  
+  // ✅ Admission-wise (university)
   const COL_UNIVERSITIES = PREFIX + "universities";
   const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
 
@@ -634,7 +685,8 @@
   function setAuthorizedUI(isAuthorized, userEmail){
     $("btnRefresh").disabled = !isAuthorized;
     $("btnAddSubject").disabled = !isAuthorized;
-    $("btnAddModelTest").disabled = !isAuthorized;
+    $("btnAddSubjectTest").disabled = !isAuthorized;
+    $("btnAddAdmissionTest").disabled = !isAuthorized;
     $("btnAddUni").disabled = !isAuthorized;
     $("btnDoImport").disabled = !isAuthorized;
 
@@ -656,13 +708,15 @@
   }
 
   let SUBJECTS = [];
-  let MODEL_TESTS = [];
+  let SUBJECT_TESTS = [];
+  let ADMISSION_TESTS = [];
   let UNIVERSITIES = [];
   let CURRENT_TAB = "subjects";
   let importTarget = null;
 
   let unsubSubjects = null;
-  let unsubModelTests = null;
+  let unsubSubjectTests = null;
+  let unsubAdmissionTests = null;
   let unsubUniversities = null;
 
   function toMs(ts){
@@ -735,7 +789,8 @@
 
   function detachAll(){
     if(unsubSubjects){ unsubSubjects(); unsubSubjects=null; }
-    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+    if(unsubSubjectTests){ unsubSubjectTests(); unsubSubjectTests=null; }
+    if(unsubAdmissionTests){ unsubAdmissionTests(); unsubAdmissionTests=null; }
     if(unsubUniversities){ unsubUniversities(); unsubUniversities=null; }
   }
 
@@ -747,7 +802,7 @@
       populateSubjectSelect();
       renderSubjects();
       refreshStats();
-      if(CURRENT_TAB === "modeltests") attachModelTestsSnapshot();
+      if(CURRENT_TAB === "subjecttests") attachSubjectTestsSnapshot();
     }, (err)=>{
       console.error(err);
       toast("Firestore error", err?.message || "Subjects snapshot failed");
@@ -760,6 +815,7 @@
     unsubUniversities = db.collection(COL_UNIVERSITIES).onSnapshot((snap)=>{
       UNIVERSITIES = snap.docs.map(d=>({ id:d.id, ...d.data() }));
       UNIVERSITIES.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+      if(CURRENT_TAB === "admissiontests") renderAdmissionTests();
       if(CURRENT_TAB === "admission") renderUniversities();
       refreshStats();
     }, (err)=>{
@@ -768,25 +824,47 @@
     });
   }
 
-  function attachModelTestsSnapshot(){
-    if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
-    const subjectId = $("mtSubjectSelect").value;
+  function attachSubjectTestsSnapshot(){
+    if(unsubSubjectTests){ unsubSubjectTests(); unsubSubjectTests=null; }
+    const subjectId = $("stSubjectSelect").value;
     if(!subjectId){
-      MODEL_TESTS = [];
-      renderModelTests();
+      SUBJECT_TESTS = [];
+      renderSubjectTests();
       refreshStats();
       return;
     }
-    unsubModelTests = db.collection(COL_SUBJECT_MODEL_TESTS)
+    unsubSubjectTests = db.collection(COL_SUBJECT_TESTS)
       .where("subjectId","==",subjectId)
       .onSnapshot((snap)=>{
-        MODEL_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        MODEL_TESTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
-        renderModelTests();
+        SUBJECT_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        SUBJECT_TESTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+        renderSubjectTests();
         refreshStats();
       }, (err)=>{
         console.error(err);
-        toast("Firestore error", err?.message || "Model tests snapshot failed");
+        toast("Firestore error", err?.message || "Subject tests snapshot failed");
+      });
+  }
+
+  function attachAdmissionTestsSnapshot(){
+    if(unsubAdmissionTests){ unsubAdmissionTests(); unsubAdmissionTests=null; }
+    const universityId = $("atUniversitySelect").value;
+    if(!universityId){
+      ADMISSION_TESTS = [];
+      renderAdmissionTests();
+      refreshStats();
+      return;
+    }
+    unsubAdmissionTests = db.collection(COL_ADMISSION_TESTS)
+      .where("universityId","==",universityId)
+      .onSnapshot((snap)=>{
+        ADMISSION_TESTS = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        ADMISSION_TESTS.sort((a,b)=> (toMs(b.createdAt)||toMs(b.updatedAt)||0) - (toMs(a.createdAt)||toMs(a.updatedAt)||0));
+        renderAdmissionTests();
+        refreshStats();
+      }, (err)=>{
+        console.error(err);
+        toast("Firestore error", err?.message || "Admission tests snapshot failed");
       });
   }
 
@@ -794,27 +872,32 @@
     CURRENT_TAB = tab;
 
     $("tabSubjects").classList.toggle("active", tab==="subjects");
-    $("tabModelTests").classList.toggle("active", tab==="modeltests");
+    $("tabSubjectTests").classList.toggle("active", tab==="subjecttests");
+    $("tabAdmissionTests").classList.toggle("active", tab==="admissiontests");
     $("tabAdmission").classList.toggle("active", tab==="admission");
 
     $("subjectsSection").style.display = tab==="subjects" ? "block" : "none";
-    $("modelTestsSection").style.display = tab==="modeltests" ? "block" : "none";
+    $("subjectTestsSection").style.display = tab==="subjecttests" ? "block" : "none";
+    $("admissionTestsSection").style.display = tab==="admissiontests" ? "block" : "none";
     $("admissionSection").style.display = tab==="admission" ? "block" : "none";
 
     $("pageTitle").textContent =
       tab==="subjects" ? "Subjects" :
-      tab==="modeltests" ? "Subject Model Tests" :
+      tab==="subjecttests" ? "Subject Tests" :
+      tab==="admissiontests" ? "Admission Tests" :
       "Admission Wise Question";
 
     $("pageHint").textContent =
-      tab==="subjects"
-        ? "Manage subjects & import questions"
-        : tab==="modeltests"
-          ? "Manage subject model tests & import questions"
-          : "Manage universities & import admission questions";
+      tab==="subjects" ? "Manage subjects & import questions" :
+      tab==="subjecttests" ? "Manage subject tests & import questions" :
+      tab==="admissiontests" ? "Manage admission tests & import questions" :
+      "Manage universities & import admission questions";
 
-    if(tab==="modeltests") attachModelTestsSnapshot();
-    else if(unsubModelTests){ unsubModelTests(); unsubModelTests=null; }
+    if(tab==="subjecttests") attachSubjectTestsSnapshot();
+    else if(unsubSubjectTests){ unsubSubjectTests(); unsubSubjectTests=null; }
+
+    if(tab==="admissiontests") attachAdmissionTestsSnapshot();
+    else if(unsubAdmissionTests){ unsubAdmissionTests(); unsubAdmissionTests=null; }
 
     if(tab==="admission") renderUniversities();
   }
@@ -822,8 +905,10 @@
 
   function manualRefresh(){
     populateSubjectSelect();
+    populateUniversitySelect();
     if(CURRENT_TAB==="subjects") renderSubjects();
-    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+    if(CURRENT_TAB==="subjecttests") attachSubjectTestsSnapshot();
+    if(CURRENT_TAB==="admissiontests") attachAdmissionTestsSnapshot();
     if(CURRENT_TAB==="admission") renderUniversities();
     toast("Refreshed", "UI updated");
   }
@@ -831,14 +916,15 @@
 
   function refreshStats(){
     $("statSubjects").textContent = String(SUBJECTS.length);
-    $("statModelTests").textContent = String(MODEL_TESTS.length);
+    $("statSubjectTests").textContent = String(SUBJECT_TESTS.length);
+    $("statAdmissionTests").textContent = String(ADMISSION_TESTS.length);
     const approxQ = SUBJECTS.reduce((sum,s)=> sum + (s.counts?.mcq||0) + (s.counts?.written||0), 0);
     $("statQuestions").textContent = String(approxQ);
     $("statUniversities").textContent = String(UNIVERSITIES.length);
   }
 
   function populateSubjectSelect(){
-    const sel = $("mtSubjectSelect");
+    const sel = $("stSubjectSelect");
     const prev = sel.value;
     sel.innerHTML = "";
     const opt0 = document.createElement("option");
@@ -854,10 +940,34 @@
     if(prev) sel.value = prev;
     if(!sel.value && SUBJECTS.length) sel.value = SUBJECTS[0].id;
   }
-  function onMtSubjectChange(){
-    if(CURRENT_TAB==="modeltests") attachModelTestsSnapshot();
+
+  function populateUniversitySelect(){
+    const sel = $("atUniversitySelect");
+    const prev = sel.value;
+    sel.innerHTML = "";
+    const opt0 = document.createElement("option");
+    opt0.value = "";
+    opt0.textContent = UNIVERSITIES.length ? "Select university..." : "No universities yet";
+    sel.appendChild(opt0);
+    UNIVERSITIES.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"")).forEach(u=>{
+      const o = document.createElement("option");
+      o.value = u.id;
+      o.textContent = u.name;
+      sel.appendChild(o);
+    });
+    if(prev) sel.value = prev;
+    if(!sel.value && UNIVERSITIES.length) sel.value = UNIVERSITIES[0].id;
   }
-  window.onMtSubjectChange = onMtSubjectChange;
+
+  function onStSubjectChange(){
+    if(CURRENT_TAB==="subjecttests") attachSubjectTestsSnapshot();
+  }
+  window.onStSubjectChange = onStSubjectChange;
+
+  function onAtUniversityChange(){
+    if(CURRENT_TAB==="admissiontests") attachAdmissionTestsSnapshot();
+  }
+  window.onAtUniversityChange = onAtUniversityChange;
 
   // ===== SUBJECTS RENDER =====
   function renderSubjects(){
@@ -896,13 +1006,13 @@
   }
   window.renderSubjects = renderSubjects;
 
-  // ===== MODEL TESTS RENDER =====
-  function renderModelTests(){
-    const q = ($("mtSearch").value||"").trim().toLowerCase();
-    const list = $("modelTestsList");
+  // ===== SUBJECT TESTS RENDER =====
+  function renderSubjectTests(){
+    const q = ($("stSearch").value||"").trim().toLowerCase();
+    const list = $("subjectTestsList");
     list.innerHTML = "";
-    const filtered = MODEL_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
-    $("modelTestsEmpty").style.display = filtered.length ? "none" : "block";
+    const filtered = SUBJECT_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
+    $("subjectTestsEmpty").style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(m=>{
       const counts = m.counts || { mcq:0, written:0 };
@@ -922,10 +1032,10 @@
           <div class="note" style="margin-top:8px">Edit/Delete questions → <b>Questions</b></div>
         </div>
         <div class="actions">
-          <button class="btn" onclick="editModelTestPrompt('${m.id}')">Edit</button>
-          <button class="btn danger" onclick="deleteModelTestCascade('${m.id}')">Delete (Cascade)</button>
-          <button class="btn ok" onclick="openModelTestImport('${m.id}')">Import</button>
-          <button class="btn" onclick="openQMForModelTest('${m.id}','${safeTitle}')">Questions</button>
+          <button class="btn" onclick="editSubjectTestPrompt('${m.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteSubjectTestCascade('${m.id}')">Delete (Cascade)</button>
+          <button class="btn ok" onclick="openSubjectTestImport('${m.id}')">Import</button>
+          <button class="btn" onclick="openQMForSubjectTest('${m.id}','${safeTitle}')">Questions</button>
         </div>
       `;
       list.appendChild(el);
@@ -933,7 +1043,46 @@
 
     refreshStats();
   }
-  window.renderModelTests = renderModelTests;
+  window.renderSubjectTests = renderSubjectTests;
+
+  // ===== ADMISSION TESTS RENDER =====
+  function renderAdmissionTests(){
+    const q = ($("atSearch").value||"").trim().toLowerCase();
+    const list = $("admissionTestsList");
+    list.innerHTML = "";
+    const filtered = ADMISSION_TESTS.filter(m=>(m.title||"").toLowerCase().includes(q));
+    $("admissionTestsEmpty").style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(m=>{
+      const counts = m.counts || { mcq:0, written:0 };
+      const safeTitle = (m.title||"").replace(/'/g,"\\'");
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <p class="title">${esc(m.title||"(no title)")}</p>
+          <div class="meta2">
+            <span class="chip">Time: <b>${m.totalTimeMin||0}</b> min</span>
+            <span class="chip">Marks: <b>${m.totalMarks||0}</b></span>
+            <span class="chip">MCQ: <b>${counts.mcq||0}</b></span>
+            <span class="chip">Written: <b>${counts.written||0}</b></span>
+            <span class="chip">ID: ${m.id}</span>
+          </div>
+          <div class="note" style="margin-top:8px">Edit/Delete questions → <b>Questions</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editAdmissionTestPrompt('${m.id}')">Edit</button>
+          <button class="btn danger" onclick="deleteAdmissionTestCascade('${m.id}')">Delete (Cascade)</button>
+          <button class="btn ok" onclick="openAdmissionTestImport('${m.id}')">Import</button>
+          <button class="btn" onclick="openQMForAdmissionTest('${m.id}','${safeTitle}')">Questions</button>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    refreshStats();
+  }
+  window.renderAdmissionTests = renderAdmissionTests;
 
   // ===== UNIVERSITIES (ADMISSION) RENDER =====
   function renderUniversities(){
@@ -1012,33 +1161,33 @@
   }
   window.editSubjectPrompt = editSubjectPrompt;
 
-  // ===== CRUD: MODEL TESTS =====
-  async function addModelTest(){
-    const subjectId = $("mtSubjectSelect").value;
+  // ===== CRUD: SUBJECT TESTS =====
+  async function addSubjectTest(){
+    const subjectId = $("stSubjectSelect").value;
     if(!subjectId) return toast("Validation","Subject select করুন।");
-    const title = ($("mtTitle").value||"").trim();
+    const title = ($("stTitle").value||"").trim();
     if(!title) return toast("Validation","Title দিন।");
-    const totalTimeMin = Number($("mtTime").value||0) || 0;
-    const totalMarks = Number($("mtMarks").value||0) || 0;
+    const totalTimeMin = Number($("stTime").value||0) || 0;
+    const totalMarks = Number($("stMarks").value||0) || 0;
 
     try{
-      await db.collection(COL_SUBJECT_MODEL_TESTS).add({
+      await db.collection(COL_SUBJECT_TESTS).add({
         subjectId, title, totalTimeMin, totalMarks,
         counts:{ mcq:0, written:0 },
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      $("mtTitle").value=""; $("mtTime").value=""; $("mtMarks").value="";
-      toast("Done","Model test added");
+      $("stTitle").value=""; $("stTime").value=""; $("stMarks").value="";
+      toast("Done","Subject test added");
     }catch(err){
       console.error(err);
-      toast("Error", err?.message || "Add model test failed");
+      toast("Error", err?.message || "Add subject test failed");
     }
   }
-  window.addModelTest = addModelTest;
+  window.addSubjectTest = addSubjectTest;
 
-  async function editModelTestPrompt(modelTestId){
-    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+  async function editSubjectTestPrompt(testId){
+    const mt = SUBJECT_TESTS.find(x=>x.id===testId);
     if(!mt) return;
 
     const title = prompt("Title:", mt.title||"");
@@ -1052,19 +1201,73 @@
     if(newMarks===null) return;
 
     try{
-      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
+      await db.collection(COL_SUBJECT_TESTS).doc(testId).update({
         title: t,
         totalTimeMin: Number(newTime)||0,
         totalMarks: Number(newMarks)||0,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      toast("Done","Model test updated");
+      toast("Done","Subject test updated");
     }catch(err){
       console.error(err);
       toast("Error", err?.message || "Update failed");
     }
   }
-  window.editModelTestPrompt = editModelTestPrompt;
+  window.editSubjectTestPrompt = editSubjectTestPrompt;
+
+  // ===== CRUD: ADMISSION TESTS =====
+  async function addAdmissionTest(){
+    const universityId = $("atUniversitySelect").value;
+    if(!universityId) return toast("Validation","University select করুন।");
+    const title = ($("atTitle").value||"").trim();
+    if(!title) return toast("Validation","Title দিন।");
+    const totalTimeMin = Number($("atTime").value||0) || 0;
+    const totalMarks = Number($("atMarks").value||0) || 0;
+
+    try{
+      await db.collection(COL_ADMISSION_TESTS).add({
+        universityId, title, totalTimeMin, totalMarks,
+        counts:{ mcq:0, written:0 },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      $("atTitle").value=""; $("atTime").value=""; $("atMarks").value="";
+      toast("Done","Admission test added");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Add admission test failed");
+    }
+  }
+  window.addAdmissionTest = addAdmissionTest;
+
+  async function editAdmissionTestPrompt(testId){
+    const mt = ADMISSION_TESTS.find(x=>x.id===testId);
+    if(!mt) return;
+
+    const title = prompt("Title:", mt.title||"");
+    if(title===null) return;
+    const t = title.trim();
+    if(!t) return toast("Validation","Title empty not allowed");
+
+    const newTime = prompt("Total Time (min):", String(mt.totalTimeMin ?? 0));
+    if(newTime===null) return;
+    const newMarks = prompt("Total Marks:", String(mt.totalMarks ?? 0));
+    if(newMarks===null) return;
+
+    try{
+      await db.collection(COL_ADMISSION_TESTS).doc(testId).update({
+        title: t,
+        totalTimeMin: Number(newTime)||0,
+        totalMarks: Number(newMarks)||0,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast("Done","Admission test updated");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Update failed");
+    }
+  }
+  window.editAdmissionTestPrompt = editAdmissionTestPrompt;
 
   // ===== CRUD: UNIVERSITIES =====
   async function addUniversity(){
@@ -1132,10 +1335,15 @@
     if(!s) return;
     openImportModal({ mode:"subject", subjectId, title:`Subject: ${s.name}` });
   }
-  function openModelTestImport(modelTestId){
-    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+  function openSubjectTestImport(testId){
+    const mt = SUBJECT_TESTS.find(x=>x.id===testId);
     if(!mt) return;
-    openImportModal({ mode:"modeltest", modelTestId, subjectId: mt.subjectId, title:`Model Test: ${mt.title}` });
+    openImportModal({ mode:"subjecttest", testId, subjectId: mt.subjectId, title:`Subject Test: ${mt.title}` });
+  }
+  function openAdmissionTestImport(testId){
+    const mt = ADMISSION_TESTS.find(x=>x.id===testId);
+    if(!mt) return;
+    openImportModal({ mode:"admissiontest", testId, universityId: mt.universityId, title:`Admission Test: ${mt.title}` });
   }
   function openUniversityImport(universityId){
     const u = UNIVERSITIES.find(x=>x.id===universityId);
@@ -1143,7 +1351,8 @@
     openImportModal({ mode:"university", universityId, title:`University: ${u.name}` });
   }
   window.openSubjectImport = openSubjectImport;
-  window.openModelTestImport = openModelTestImport;
+  window.openSubjectTestImport = openSubjectTestImport;
+  window.openAdmissionTestImport = openAdmissionTestImport;
   window.openUniversityImport = openUniversityImport;
 
   // CSV/XLSX parse
@@ -1267,9 +1476,13 @@
         await importToSubject(importTarget.subjectId, type, items);
         logImport(`✅ Imported ${items.length} to Subject`);
         toast("Import done", `${items.length} questions added`);
-      }else if(importTarget.mode==="modeltest"){
-        await importToModelTest(importTarget.modelTestId, importTarget.subjectId, type, items);
-        logImport(`✅ Imported ${items.length} to Model Test`);
+      }else if(importTarget.mode==="subjecttest"){
+        await importToSubjectTest(importTarget.testId, importTarget.subjectId, type, items);
+        logImport(`✅ Imported ${items.length} to Subject Test`);
+        toast("Import done", `${items.length} questions added`);
+      }else if(importTarget.mode==="admissiontest"){
+        await importToAdmissionTest(importTarget.testId, importTarget.universityId, type, items);
+        logImport(`✅ Imported ${items.length} to Admission Test`);
         toast("Import done", `${items.length} questions added`);
       }else if(importTarget.mode==="university"){
         await importToUniversity(importTarget.universityId, type, items);
@@ -1322,20 +1535,20 @@
     await recomputeSubjectCounts(subjectId);
   }
 
-  async function importToModelTest(modelTestId, subjectId, type, items){
+  async function importToSubjectTest(testId, subjectId, type, items){
     const CHUNK = 450;
     const total = items.length;
 
     for(let i=0; i<total; i+=CHUNK){
       const slice = items.slice(i, i+CHUNK);
       const batch = db.batch();
-      const qcol = db.collection(COL_MODEL_TEST_QUESTIONS);
+      const qcol = db.collection(COL_SUBJECT_TEST_QUESTIONS);
 
       slice.forEach(q=>{
         const ref = qcol.doc();
         if(type==="mcq"){
           batch.set(ref, {
-            modelTestId, subjectId, type,
+            testId, subjectId, type,
             question: q.question,
             options: q.options,
             correctIndex: q.correctIndex,
@@ -1344,7 +1557,7 @@
           });
         }else{
           batch.set(ref, {
-            modelTestId, subjectId, type,
+            testId, subjectId, type,
             question: q.question,
             rightAns: q.rightAns,
             note: q.note,
@@ -1357,7 +1570,45 @@
       logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
     }
 
-    await recomputeModelTestCounts(modelTestId);
+    await recomputeSubjectTestCounts(testId);
+  }
+
+  async function importToAdmissionTest(testId, universityId, type, items){
+    const CHUNK = 450;
+    const total = items.length;
+
+    for(let i=0; i<total; i+=CHUNK){
+      const slice = items.slice(i, i+CHUNK);
+      const batch = db.batch();
+      const qcol = db.collection(COL_ADMISSION_TEST_QUESTIONS);
+
+      slice.forEach(q=>{
+        const ref = qcol.doc();
+        if(type==="mcq"){
+          batch.set(ref, {
+            testId, universityId, type,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correctIndex,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }else{
+          batch.set(ref, {
+            testId, universityId, type,
+            question: q.question,
+            rightAns: q.rightAns,
+            note: q.note,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      });
+
+      await batch.commit();
+      logImport(`Uploaded ${Math.min(i+CHUNK, total)} / ${total}`);
+    }
+
+    await recomputeAdmissionTestCounts(testId);
   }
 
   async function importToUniversity(universityId, type, items){
@@ -1409,39 +1660,56 @@
     }
   }
 
-  async function deleteModelTestCascade(modelTestId){
-    const mt = MODEL_TESTS.find(x=>x.id===modelTestId);
+  async function deleteSubjectTestCascade(testId){
+    const mt = SUBJECT_TESTS.find(x=>x.id===testId);
     if(!mt) return;
-    const ok = confirm(`Delete model test "${mt.title}"?\nসব প্রশ্নও ডিলিট হবে।`);
+    const ok = confirm(`Delete subject test "${mt.title}"?\nসব প্রশ্নও ডিলিট হবে।`);
     if(!ok) return;
 
     try{
-      await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",modelTestId);
-      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).delete();
-      toast("Done","Model test deleted (cascade)");
+      await deleteByQueryInBatches(COL_SUBJECT_TEST_QUESTIONS,"testId",testId);
+      await db.collection(COL_SUBJECT_TESTS).doc(testId).delete();
+      toast("Done","Subject test deleted (cascade)");
     }catch(err){
       console.error(err);
       toast("Error", err?.message || "Cascade delete failed");
     }
   }
-  window.deleteModelTestCascade = deleteModelTestCascade;
+  window.deleteSubjectTestCascade = deleteSubjectTestCascade;
+
+  async function deleteAdmissionTestCascade(testId){
+    const mt = ADMISSION_TESTS.find(x=>x.id===testId);
+    if(!mt) return;
+    const ok = confirm(`Delete admission test "${mt.title}"?\nসব প্রশ্নও ডিলিট হবে।`);
+    if(!ok) return;
+
+    try{
+      await deleteByQueryInBatches(COL_ADMISSION_TEST_QUESTIONS,"testId",testId);
+      await db.collection(COL_ADMISSION_TESTS).doc(testId).delete();
+      toast("Done","Admission test deleted (cascade)");
+    }catch(err){
+      console.error(err);
+      toast("Error", err?.message || "Cascade delete failed");
+    }
+  }
+  window.deleteAdmissionTestCascade = deleteAdmissionTestCascade;
 
   async function deleteSubjectCascade(subjectId){
     const s = SUBJECTS.find(x=>x.id===subjectId);
     if(!s) return;
 
-    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- ${COL_SUBJECT_QUESTIONS}\n- ${COL_SUBJECT_MODEL_TESTS}\n- ${COL_MODEL_TEST_QUESTIONS}\nসব ডিলিট হবে।`);
+    const ok = confirm(`Delete subject "${s.name}"?\n\nএটা করলে:\n- ${COL_SUBJECT_QUESTIONS}\n- ${COL_SUBJECT_TESTS}\n- ${COL_SUBJECT_TEST_QUESTIONS}\nসব ডিলিট হবে।`);
     if(!ok) return;
 
     try{
       await deleteByQueryInBatches(COL_SUBJECT_QUESTIONS,"subjectId",subjectId);
 
-      const mtSnap = await db.collection(COL_SUBJECT_MODEL_TESTS).where("subjectId","==",subjectId).get();
+      const mtSnap = await db.collection(COL_SUBJECT_TESTS).where("subjectId","==",subjectId).get();
       const mtIds = mtSnap.docs.map(d=>d.id);
 
       for(const mtId of mtIds){
-        await deleteByQueryInBatches(COL_MODEL_TEST_QUESTIONS,"modelTestId",mtId);
-        await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).delete();
+        await deleteByQueryInBatches(COL_SUBJECT_TEST_QUESTIONS,"testId",mtId);
+        await db.collection(COL_SUBJECT_TESTS).doc(mtId).delete();
       }
 
       await db.collection(COL_SUBJECTS).doc(subjectId).delete();
@@ -1472,20 +1740,20 @@
   window.deleteUniversityCascade = deleteUniversityCascade;
 
   // Question Manager
-  let QM = { mode:null, subjectId:null, modelTestId:null, universityId:null, title:"", unsub:null, data:[] };
+  let QM = { mode:null, subjectId:null, testId:null, universityId:null, title:"", unsub:null, data:[] };
 
   function closeQM(e){
     if(e && e.target && e.target.id !== "qmBack") return;
     if(QM.unsub){ QM.unsub(); QM.unsub=null; }
     QM.data=[];
-    QM.subjectId=null; QM.modelTestId=null; QM.universityId=null; QM.mode=null;
+    QM.subjectId=null; QM.testId=null; QM.universityId=null; QM.mode=null;
     $("qmBack").classList.remove("show");
   }
   window.closeQM = closeQM;
 
   function openQMForSubject(subjectId, subjectName){
     if(QM.unsub){ QM.unsub(); QM.unsub=null; }
-    QM.mode="subject"; QM.subjectId=subjectId; QM.modelTestId=null; QM.universityId=null; QM.title=`Subject: ${subjectName}`;
+    QM.mode="subject"; QM.subjectId=subjectId; QM.testId=null; QM.universityId=null; QM.title=`Subject: ${subjectName}`;
     $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
     $("qmSearch").value=""; $("qmType").value="all";
     $("qmHint").textContent="Loading questions...";
@@ -1504,15 +1772,15 @@
   }
   window.openQMForSubject = openQMForSubject;
 
-  function openQMForModelTest(modelTestId, modelTestTitle){
+  function openQMForSubjectTest(testId, testTitle){
     if(QM.unsub){ QM.unsub(); QM.unsub=null; }
-    QM.mode="modeltest"; QM.modelTestId=modelTestId; QM.subjectId=null; QM.universityId=null; QM.title=`Model Test: ${modelTestTitle}`;
+    QM.mode="subjecttest"; QM.testId=testId; QM.subjectId=null; QM.universityId=null; QM.title=`Subject Test: ${testTitle}`;
     $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
     $("qmSearch").value=""; $("qmType").value="all";
     $("qmHint").textContent="Loading questions...";
     $("qmBack").classList.add("show");
 
-    QM.unsub = db.collection(COL_MODEL_TEST_QUESTIONS).where("modelTestId","==",modelTestId)
+    QM.unsub = db.collection(COL_SUBJECT_TEST_QUESTIONS).where("testId","==",testId)
       .onSnapshot((snap)=>{
         QM.data = snap.docs.map(d=>({id:d.id,...d.data()}));
         $("qmHint").textContent = `Total: ${QM.data.length} questions`;
@@ -1523,11 +1791,32 @@
         toast("Error", err?.message || "QM load failed");
       });
   }
-  window.openQMForModelTest = openQMForModelTest;
+  window.openQMForSubjectTest = openQMForSubjectTest;
+
+  function openQMForAdmissionTest(testId, testTitle){
+    if(QM.unsub){ QM.unsub(); QM.unsub=null; }
+    QM.mode="admissiontest"; QM.testId=testId; QM.subjectId=null; QM.universityId=null; QM.title=`Admission Test: ${testTitle}`;
+    $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
+    $("qmSearch").value=""; $("qmType").value="all";
+    $("qmHint").textContent="Loading questions...";
+    $("qmBack").classList.add("show");
+
+    QM.unsub = db.collection(COL_ADMISSION_TEST_QUESTIONS).where("testId","==",testId)
+      .onSnapshot((snap)=>{
+        QM.data = snap.docs.map(d=>({id:d.id,...d.data()}));
+        $("qmHint").textContent = `Total: ${QM.data.length} questions`;
+        renderQMResults();
+      }, (err)=>{
+        console.error(err);
+        $("qmHint").textContent="Failed to load questions.";
+        toast("Error", err?.message || "QM load failed");
+      });
+  }
+  window.openQMForAdmissionTest = openQMForAdmissionTest;
 
   function openQMForUniversity(universityId, uniName){
     if(QM.unsub){ QM.unsub(); QM.unsub=null; }
-    QM.mode="university"; QM.universityId=universityId; QM.subjectId=null; QM.modelTestId=null; QM.title=`University: ${uniName}`;
+    QM.mode="university"; QM.universityId=universityId; QM.subjectId=null; QM.testId=null; QM.title=`University: ${uniName}`;
     $("qmTitle").textContent = `Manage Questions → ${QM.title}`;
     $("qmSearch").value=""; $("qmType").value="all";
     $("qmHint").textContent="Loading questions...";
@@ -1643,9 +1932,12 @@
       if(QM.mode==="subject"){
         await db.collection(COL_SUBJECT_QUESTIONS).doc(qid).delete();
         await recomputeSubjectCounts(QM.subjectId);
-      }else if(QM.mode==="modeltest"){
-        await db.collection(COL_MODEL_TEST_QUESTIONS).doc(qid).delete();
-        await recomputeModelTestCounts(QM.modelTestId);
+      }else if(QM.mode==="subjecttest"){
+        await db.collection(COL_SUBJECT_TEST_QUESTIONS).doc(qid).delete();
+        await recomputeSubjectTestCounts(QM.testId);
+      }else if(QM.mode==="admissiontest"){
+        await db.collection(COL_ADMISSION_TEST_QUESTIONS).doc(qid).delete();
+        await recomputeAdmissionTestCounts(QM.testId);
       }else if(QM.mode==="university"){
         await db.collection(COL_UNIVERSITY_QUESTIONS).doc(qid).delete();
         await recomputeUniversityCounts(QM.universityId);
@@ -1664,7 +1956,8 @@
 
     const col =
       (QM.mode==="subject") ? COL_SUBJECT_QUESTIONS :
-      (QM.mode==="modeltest") ? COL_MODEL_TEST_QUESTIONS :
+      (QM.mode==="subjecttest") ? COL_SUBJECT_TEST_QUESTIONS :
+      (QM.mode==="admissiontest") ? COL_ADMISSION_TEST_QUESTIONS :
       COL_UNIVERSITY_QUESTIONS;
 
     if(it.type==="mcq"){
@@ -1739,16 +2032,32 @@
     }catch(e){}
   }
 
-  async function recomputeModelTestCounts(modelTestId){
+  async function recomputeSubjectTestCounts(testId){
     try{
-      const snap = await db.collection(COL_MODEL_TEST_QUESTIONS).where("modelTestId","==",modelTestId).get();
+      const snap = await db.collection(COL_SUBJECT_TEST_QUESTIONS).where("testId","==",testId).get();
       let mcq=0, written=0;
       snap.docs.forEach(d=>{
         const t = d.data()?.type;
         if(t==="mcq") mcq++;
         else if(t==="written") written++;
       });
-      await db.collection(COL_SUBJECT_MODEL_TESTS).doc(modelTestId).update({
+      await db.collection(COL_SUBJECT_TESTS).doc(testId).update({
+        counts:{mcq,written},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }catch(e){}
+  }
+
+  async function recomputeAdmissionTestCounts(testId){
+    try{
+      const snap = await db.collection(COL_ADMISSION_TEST_QUESTIONS).where("testId","==",testId).get();
+      let mcq=0, written=0;
+      snap.docs.forEach(d=>{
+        const t = d.data()?.type;
+        if(t==="mcq") mcq++;
+        else if(t==="written") written++;
+      });
+      await db.collection(COL_ADMISSION_TESTS).doc(testId).update({
         counts:{mcq,written},
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -1776,4 +2085,3 @@
 </script>
 </body>
 </html>
-```
