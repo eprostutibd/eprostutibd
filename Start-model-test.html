@@ -1088,7 +1088,7 @@
     /* ===========================
    ✅ START: Replace your full JS with this
    (Everything else same, only added "src=admission/subject" support
-   + admission_subject_model_tests + admission_model_test_questions)
+   + admission_subject_tests + admission_subject_test_questions)
 =========================== */
 
   // year
@@ -1162,24 +1162,30 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // ✅ NEW: Model test collection based on src
-  // subject -> subject_model_tests (old)
-  // admission -> admission_subject_model_tests (new)
+  // ✅ CORRECTED: Model test collection based on src
+  // Admin page-এ collection নাম: admission_subject_tests
+  // Subject (old) -> subject_model_tests
+  // Admission (new) -> admission_subject_tests ✅
   const COL_MODEL_TESTS = (SRC === "admission")
-    ? "admission_subject_model_tests"
+    ? "admission_subject_tests"  // Admin page: COL_SUBJECT_TESTS
     : "subject_model_tests";
 
   const COL_MODEL_TEST_RESULT = "model_test_result"; // same
 
-  // ✅ NEW: Question collections (admission one added FIRST)
-  const QUESTION_COLLECTION_CANDIDATES = [
-    "admission_model_test_questions", // ✅ NEW
-    "model_test_questions",
-    "modeltest_questions",
-    "modeltest_question",
-    "modelTest_questions",
-    "modeltestQuestions"
-  ];
+  // ✅ CORRECTED: Question collections based on src
+  const QUESTION_COLLECTION_CANDIDATES = (SRC === "admission")
+    ? [
+        "admission_subject_test_questions",  // Admin page: COL_SUBJECT_TEST_QUESTIONS ✅
+        "admission_model_test_questions",
+        "model_test_questions"
+      ]
+    : [
+        "model_test_questions",
+        "modeltest_questions",
+        "modeltest_question",
+        "modelTest_questions",
+        "modeltestQuestions"
+      ];
 
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
@@ -1334,15 +1340,15 @@
     }
   }
 
-  // ✅ NEW: subcollection fallback now based on COL_MODEL_TESTS (subject/admission)
+  // ✅ CORRECTED: subcollection fallback now based on COL_MODEL_TESTS
   async function fetchQuestionsFromSubcollection(mtId){
-    const ref = db.collection(COL_MODEL_TESTS).doc(mtId).collection("questions");
-    try{
-      const s = await ref.orderBy("createdAt","asc").get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
+    try {
+      const ref = db.collection(COL_MODEL_TESTS).doc(mtId).collection("questions");
       const s = await ref.get();
       return s.docs.map(d=>({ id:d.id, ...d.data() }));
+    } catch(e) {
+      console.log("Subcollection not found:", e);
+      return [];
     }
   }
 
@@ -1906,7 +1912,7 @@
     loadRecentModelTests();
 
     try{
-      // ✅ NEW: read mt doc from selected collection
+      // ✅ Read mt doc from selected collection
       const mtSnap = await db.collection(COL_MODEL_TESTS).doc(modelTestId).get();
       if(!mtSnap.exists){
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -1915,14 +1921,29 @@
       mtDoc = { id: mtSnap.id, ...mtSnap.data() };
 
       let qs = [];
+      
+      // Try collections first
       for(const col of QUESTION_COLLECTION_CANDIDATES){
         try{
           const got = await fetchQuestionsFromCollection(col, modelTestId);
-          if(got && got.length){ qs = got; break; }
-        }catch(e){}
+          if(got && got.length){ 
+            console.log("Found questions in collection:", col);
+            qs = got; 
+            break; 
+          }
+        }catch(e){
+          console.log("Collection not found:", col, e);
+        }
       }
+      
+      // If no questions found, try subcollection
       if(!qs.length){
-        try{ qs = await fetchQuestionsFromSubcollection(modelTestId); }catch(e){}
+        try{ 
+          qs = await fetchQuestionsFromSubcollection(modelTestId);
+          console.log("Found questions in subcollection:", qs.length);
+        }catch(e){
+          console.log("Subcollection not found:", e);
+        }
       }
 
       questions = qs || [];
