@@ -1087,11 +1087,14 @@
 
 <script>
 /* ===========================
-   eProstutiBD Model Test JS (Optimized)
+   eProstutiBD Model Test JS (Optimized + PDF Layout Update)
    - Faster Firestore loading
    - No full rerender on MCQ click
    - Defer recent list
    - Lazy-load PDF libs if missing
+   - PDF:
+      * Question Paper: 25 Q per page (2-column same design)
+      * Answer Sheet: 50 per page (3-column)
 =========================== */
 
 (() => {
@@ -1320,7 +1323,6 @@
   // Firestore fetch helpers
   // =======================================
   async function safeQueryWhereOrder(colName, fieldName, fieldValue) {
-    // try ordered query (needs index)
     try {
       const s = await db.collection(colName)
         .where(fieldName, "==", fieldValue)
@@ -1328,7 +1330,6 @@
         .get();
       return s.docs.map(d => ({ id: d.id, ...d.data() }));
     } catch (e) {
-      // fallback without orderBy (no extra wait of sequential callers; still one query here)
       const s = await db.collection(colName)
         .where(fieldName, "==", fieldValue)
         .get();
@@ -1361,14 +1362,12 @@
   }
 
   async function loadQuestionsForTestFast(mtId, source) {
-    // ✅ Source-based (fast path) — avoid unnecessary sequential loops
     if (source === COL_SUBJECT_MODEL_TESTS) {
-      // Prefer subcollection first
       try {
         const sub = await fetchQuestionsFromSubcollection(mtId);
         if (sub?.length) return sub;
       } catch (_) { }
-      // Legacy candidates fallback (parallel)
+      // fallback below
     }
 
     if (source === COL_ADMISSION_SUBJECT_TESTS) {
@@ -1387,13 +1386,9 @@
       return [];
     }
 
-    // ✅ Parallel fallback (legacy / unknown source)
     const loaders = [
-      // candidates: modelTestId
       ...QUESTION_COLLECTION_CANDIDATES.map(col => () => safeQueryWhereOrder(col, "modelTestId", mtId)),
-      // subject subcollection
       () => fetchQuestionsFromSubcollection(mtId),
-      // new admissions
       () => safeQueryWhereOrder(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId),
       () => safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId)
     ];
@@ -1401,7 +1396,6 @@
     const settled = await Promise.allSettled(loaders.map(fn => fn()));
     const results = settled.map(x => (x.status === "fulfilled" ? x.value : []));
 
-    // priority: candidates -> subcollection -> admission subject -> admission
     for (const arr of results) {
       if (Array.isArray(arr) && arr.length) return arr;
     }
@@ -1543,7 +1537,6 @@
     wrap.appendChild(list);
   }
 
-  // ✅ Update MCQ UI without full rerender
   function setSelectedOptionUI(qid, oi) {
     const row = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
     if (!row) return;
@@ -1555,7 +1548,6 @@
     if (target) target.classList.add("selected");
   }
 
-  // Event delegation for options + keyboard
   function attachAnswerHandlers() {
     const wrap = $("content");
 
@@ -1787,7 +1779,6 @@
   // =======================================
   function loadScriptOnce(src) {
     return new Promise((resolve, reject) => {
-      // already loaded?
       const existing = [...document.scripts].find(s => s.src && s.src.includes(src));
       if (existing) { resolve(true); return; }
 
@@ -1801,12 +1792,10 @@
   }
 
   async function ensurePdfLibs() {
-    // If libs already present, skip
     const hasHtml2Canvas = typeof window.html2canvas === "function";
     const hasJsPDF = !!(window.jspdf && window.jspdf.jsPDF);
     if (hasHtml2Canvas && hasJsPDF) return true;
 
-    // Lazy-load if missing
     try {
       if (!hasHtml2Canvas) {
         await loadScriptOnce("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
@@ -1827,6 +1816,7 @@
     for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
     return out;
   }
+
   function buildPdfHeaderLines(title, mins, mark, totalQ) {
     return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
   }
@@ -1839,6 +1829,7 @@
     return canvas;
   }
 
+  // ✅ Question Paper: 25 per page (same 2-column design)
   async function buildQuestionPaperCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -1846,7 +1837,9 @@
     const totalQ = questions.length;
     const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
 
-    const pages = chunk(questions, 30);
+    const PER_PAGE_Q = 25;
+    const pages = chunk(questions, PER_PAGE_Q);
+
     const letters = ["A", "B", "C", "D"];
     const canvases = [];
 
@@ -1854,7 +1847,7 @@
       const pageQs = pages[p];
 
       const qHtml = pageQs.map((q, idx) => {
-        const qno = p * 30 + idx + 1;
+        const qno = p * PER_PAGE_Q + idx + 1;
         const qt = pickQuestionText(q);
 
         if (isWrittenQuestion(q)) {
@@ -1893,6 +1886,7 @@
     return canvases;
   }
 
+  // ✅ Answer Sheet: 50 per page, 3-column
   async function buildAnswerSheetCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -1900,7 +1894,9 @@
     const totalQ = questions.length;
     const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
 
-    const pages = chunk(questions, 30);
+    const PER_PAGE_A = 50;
+    const pages = chunk(questions, PER_PAGE_A);
+
     const canvases = [];
     const letters = ["A", "B", "C", "D"];
 
@@ -1908,13 +1904,13 @@
       const pageQs = pages[p];
 
       const rowsHtml = pageQs.map((q, idx) => {
-        const qno = p * 30 + idx + 1;
+        const qno = p * PER_PAGE_A + idx + 1;
 
         if (isWrittenQuestion(q)) {
           return `
-            <div class="ansRow">
-              <b style="min-width:42px;">Q${qno}</b>
-              <span>__________________________</span>
+            <div class="ansRow" style="gap:8px; white-space:normal; font-size:11px;">
+              <b style="min-width:34px;">Q${qno}</b>
+              <span>____________________</span>
             </div>
           `;
         }
@@ -1922,13 +1918,13 @@
         const correctIdx = getCorrectIndex(q);
         const bubbles = letters.map((l, i) => {
           const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
-          return `<span class="bubble ${sel}">${l}</span>`;
+          return `<span class="bubble ${sel}" style="width:14px;height:14px;font-size:9px;">${l}</span>`;
         }).join("");
 
         return `
-          <div class="ansRow">
-            <b style="min-width:42px;">Q${qno}</b>
-            <div class="bubbles">${bubbles}</div>
+          <div class="ansRow" style="gap:8px; white-space:normal; font-size:11px;">
+            <b style="min-width:34px;">Q${qno}</b>
+            <div class="bubbles" style="gap:6px;">${bubbles}</div>
           </div>
         `;
       }).join("");
@@ -1939,7 +1935,10 @@
           <div class="pdfHeaderLine1">${esc(line1)}</div>
           <div class="pdfHeaderLine2">${esc(line2)}</div>
           <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
-          <div class="pdfASGrid">${rowsHtml}</div>
+
+          <div class="pdfASGrid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 14px; margin-top: 12px;">
+            ${rowsHtml}
+          </div>
         </div>
       `;
       canvases.push(await renderPageToCanvas(pageHtml));
@@ -2051,7 +2050,7 @@
     $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    // Defer recent list (so main content loads first)
+    // Defer recent list
     setTimeout(() => loadRecentModelTests(), 250);
 
     try {
@@ -2083,15 +2082,9 @@
     }
   }
 
-  // expose submitTest (used by button onclick)
-  window.submitTest = submitTest;
-
   loadAll();
 })();
 </script>
-
-
-
 
 
 </body>
