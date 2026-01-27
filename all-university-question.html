@@ -1013,6 +1013,9 @@
   const COL_UNIVERSITIES = "admission_universities";
   const COL_UNIVERSITY_QUESTIONS = "admission_university_questions";
 
+  /* ✅ University model test collection (change here if needed) */
+  const COL_UNIVERSITY_MODEL_TESTS = "admission_university_tests";
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const $ = (id)=>document.getElementById(id);
@@ -1080,7 +1083,7 @@
     if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
   });
 
-  $("year").textContent = new Date().getFullYear();
+  if($("year")) $("year").textContent = new Date().getFullYear();
 
   function syncStickyOffsets(){
     const h = document.querySelector("header")?.offsetHeight || 64;
@@ -1127,6 +1130,47 @@
     return -1;
   }
 
+  /* =========================
+     ✅ Model Test Qty (University)
+     ========================= */
+  const uniMtCountMap = new Map();
+  let unsubUniTests = null;
+
+  function getUniIdFromTest(data){
+    // ✅ add your real key here if different
+    return String(
+      data?.universityId ||
+      data?.uniId ||
+      data?.university_id ||
+      data?.universityID ||
+      ""
+    ).trim();
+  }
+
+  function attachUniversityModelTestCounts(){
+    if(unsubUniTests){ try{unsubUniTests();}catch(e){} unsubUniTests=null; }
+
+    unsubUniTests = db.collection(COL_UNIVERSITY_MODEL_TESTS)
+      .onSnapshot((snap)=>{
+        uniMtCountMap.clear();
+
+        snap.docs.forEach(d=>{
+          const data = d.data() || {};
+          const uid = getUniIdFromTest(data);
+          if(!uid) return;
+
+          uniMtCountMap.set(uid, (uniMtCountMap.get(uid) || 0) + 1);
+        });
+
+        // ✅ two places update
+        renderUniversityList();
+        renderUniversitySheet();
+        attachLatestUniversities(true); // rerender right cards with fresh counts
+      }, (err)=>{
+        console.error(err);
+      });
+  }
+
   /* ===== State ===== */
   let UNIVERSITIES = [];
   let selectedUniversityId = "";
@@ -1162,7 +1206,7 @@
       ansMode,
       page,
       cursorByPage,
-      q: $("qSearch").value || "",
+      q: $("qSearch") ? ($("qSearch").value || "") : "",
       s: $("sSearch") ? ($("sSearch").value || "") : ""
     };
     localStorage.setItem(LS_KEY, JSON.stringify(payload));
@@ -1226,8 +1270,8 @@
     mode = m;
     document.body.setAttribute("data-mode", mode);
 
-    $("tabMcq").classList.toggle("active", mode==="mcq");
-    $("tabWritten").classList.toggle("active", mode==="written");
+    if($("tabMcq")) $("tabMcq").classList.toggle("active", mode==="mcq");
+    if($("tabWritten")) $("tabWritten").classList.toggle("active", mode==="written");
 
     page = 1;
     cursorByPage = { 1: null };
@@ -1241,8 +1285,8 @@
 
   function setAnsMode(m){
     ansMode = m;
-    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    if($("ansHideBtn")) $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    if($("ansShowBtn")) $("ansShowBtn").classList.toggle("active", ansMode==="show");
     saveState();
     renderContent();
   }
@@ -1260,25 +1304,26 @@
     return hit / Math.max(1, qw.length);
   }
 
+  /* ===== LEFT LIST ===== */
   function renderUniversityList(){
     const list = $("sList");
     if(!list) return;
 
-    const q = $("sSearch").value || "";
+    const q = $("sSearch") ? ($("sSearch").value || "") : "";
     const filtered = UNIVERSITIES
-      .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
-      .filter(s => !q ? true : s._score >= 0.25)
+      .map(u => ({...u, _score: relatedMatch(q, u.name||"")}))
+      .filter(u => !q ? true : u._score >= 0.25)
       .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
 
-    $("leftHint").textContent = `Total: ${UNIVERSITIES.length}`;
-    $("sEmpty").style.display = filtered.length ? "none" : "block";
+    if($("leftHint")) $("leftHint").textContent = `Total: ${UNIVERSITIES.length}`;
+    if($("sEmpty")) $("sEmpty").style.display = filtered.length ? "none" : "block";
 
     list.innerHTML = "";
     filtered.forEach(u=>{
       const counts = u.counts || {};
       const mcq = Number(counts.mcq||0);
       const written = Number(counts.written||0);
-      const total = mcq + written;
+      const mt = uniMtCountMap.get(u.id) ?? 0;
 
       const el = document.createElement("div");
       el.className = "sItem" + (u.id === selectedUniversityId ? " active" : "");
@@ -1286,9 +1331,9 @@
       el.innerHTML = `
         <b title="${esc(u.name||"")}">${esc(u.name||"(no name)")}</b>
         <div class="chips">
-          <span class="chip">Total <b>${total}</b></span>
           <span class="chip">MCQ <b>${mcq}</b></span>
           <span class="chip">Written <b>${written}</b></span>
+          <span class="chip">Model <b>${mt}</b></span>
         </div>
       `;
       list.appendChild(el);
@@ -1296,6 +1341,7 @@
   }
   window.renderUniversityList = renderUniversityList;
 
+  /* ===== MOBILE SHEET ===== */
   function renderUniversitySheet(){
     const grid = $("subjectSheetGrid");
     if(!grid) return;
@@ -1307,7 +1353,7 @@
       const counts = u.counts || {};
       const mcq = Number(counts.mcq||0);
       const written = Number(counts.written||0);
-      const total = mcq + written;
+      const mt = uniMtCountMap.get(u.id) ?? 0;
 
       const it = document.createElement("div");
       it.className = "sheetItem" + (u.id===selectedUniversityId ? " active" : "");
@@ -1318,9 +1364,9 @@
       it.innerHTML = `
         <b title="${esc(u.name||"")}">${esc(u.name||"(no name)")}</b>
         <div class="mini">
-          <span>Total: ${total}</span>
           <span>MCQ: ${mcq}</span>
           <span>W: ${written}</span>
+          <span>M: ${mt}</span>
         </div>
       `;
       grid.appendChild(it);
@@ -1336,10 +1382,12 @@
     const found = UNIVERSITIES.find(s=>s.id===id);
     selectedUniversityName = found?.name || "";
 
-    $("subName").textContent = selectedUniversityName || "University Questions";
-    $("headerTag").textContent = selectedUniversityName
-      ? `University ভিত্তিক প্রশ্ন • ${selectedUniversityName}`
-      : "University ভিত্তিক প্রশ্ন • Admission Assistant";
+    if($("subName")) $("subName").textContent = selectedUniversityName || "University Questions";
+    if($("headerTag")){
+      $("headerTag").textContent = selectedUniversityName
+        ? `University ভিত্তিক প্রশ্ন • ${selectedUniversityName}`
+        : "University ভিত্তিক প্রশ্ন • Admission Assistant";
+    }
 
     renderUniversityList();
     renderUniversitySheet();
@@ -1359,7 +1407,7 @@
   }
 
   function buildQuery(){
-    const searchText = $("qSearch").value || "";
+    const searchText = $("qSearch") ? ($("qSearch").value || "") : "";
     const cursor = cursorByPage[page] || null;
 
     let q = db.collection(COL_UNIVERSITY_QUESTIONS)
@@ -1380,9 +1428,9 @@
 
   function resetAndReload(){
     if(!selectedUniversityId){
-      $("emptyRight").style.display = "block";
-      $("content").innerHTML = "";
-      $("pageHint").textContent = "";
+      if($("emptyRight")) $("emptyRight").style.display = "block";
+      if($("content")) $("content").innerHTML = "";
+      if($("pageHint")) $("pageHint").textContent = "";
       renderPager();
       toast("আগে University নির্বাচন করুন", "warn", "Select University");
       return;
@@ -1463,9 +1511,9 @@
     if(!selectedUniversityId) return;
 
     detachRight();
-    $("emptyRight").style.display = "none";
-    $("content").innerHTML = "";
-    $("pageHint").textContent = `Page ${page}`;
+    if($("emptyRight")) $("emptyRight").style.display = "none";
+    if($("content")) $("content").innerHTML = "";
+    if($("pageHint")) $("pageHint").textContent = `Page ${page}`;
 
     const built = buildQuery();
     unsubRight = built.q.onSnapshot((snap)=>{
@@ -1487,9 +1535,9 @@
 
       renderContent();
 
-      $("emptyRight").style.display = currentItems.length ? "none" : "block";
-      $("prevBtn").disabled = page <= 1;
-      $("nextBtn").disabled = !hasNext;
+      if($("emptyRight")) $("emptyRight").style.display = currentItems.length ? "none" : "block";
+      if($("prevBtn")) $("prevBtn").disabled = page <= 1;
+      if($("nextBtn")) $("nextBtn").disabled = !hasNext;
 
       renderPager();
 
@@ -1497,8 +1545,8 @@
       saveState();
     }, (err)=>{
       console.error(err);
-      $("content").innerHTML = "";
-      $("emptyRight").style.display = "block";
+      if($("content")) $("content").innerHTML = "";
+      if($("emptyRight")) $("emptyRight").style.display = "block";
       hasNext = false;
       renderPager();
       toast("ডাটা লোড করা যায়নি। Firestore rules/Index চেক করুন।", "error", "Load Failed");
@@ -1517,7 +1565,7 @@
   function nextPage(){
     if(!hasNext) return;
     if(lastDoc){
-      const data = lastDoc.data() || {};
+      const data = lastDoc.data ? (lastDoc.data() || {}) : {};
       const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
       if(ts){
         cursorByPage[page+1] = { t: ts, id: lastDoc.id };
@@ -1534,11 +1582,14 @@
 
   function renderContent(){
     const wrap = $("content");
+    if(!wrap) return;
     wrap.innerHTML = "";
 
-    $("rightTitle").textContent =
-      mode==="mcq" ? "University MCQ প্রশ্ন" :
-      "University Written প্রশ্ন";
+    if($("rightTitle")){
+      $("rightTitle").textContent =
+        mode==="mcq" ? "University MCQ প্রশ্ন" :
+        "University Written প্রশ্ন";
+    }
 
     if(!currentItems.length) return;
 
@@ -1636,7 +1687,18 @@
     wrap.appendChild(paper);
   }
 
-  function attachLatestUniversities(){
+  /* ===== RIGHT: Latest Universities (show MCQ/Written/Model only) ===== */
+  function attachLatestUniversities(forceRenderOnly=false){
+    if(forceRenderOnly){
+      // just rerender existing if already loaded
+      // (when model test count updates)
+      // If not loaded yet, the listener below will handle
+      if($("latestUni")) {
+        // no-op; listener will run. kept for call compatibility
+      }
+      return;
+    }
+
     if(unsubLatestUni){ try{unsubLatestUni();}catch(e){} unsubLatestUni=null; }
 
     unsubLatestUni = db.collection(COL_UNIVERSITIES)
@@ -1645,6 +1707,8 @@
       .onSnapshot((snap)=>{
         const wrap = $("latestUni");
         const empty = $("latestUniEmpty");
+        if(!wrap || !empty) return;
+
         wrap.innerHTML = "";
 
         const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
@@ -1655,16 +1719,16 @@
           const counts = u.counts || {};
           const mcq = Number(counts.mcq||0);
           const written = Number(counts.written||0);
-          const total = mcq + written;
+          const mt = uniMtCountMap.get(u.id) ?? 0;
 
           const card = document.createElement("div");
           card.className = "mtCardMini";
           card.innerHTML = `
             <h4 title="${esc(name)}">${esc(name)}</h4>
             <div class="mtMetaMini">
-              <span>📌 Total: ${esc(total)}</span>
               <span>MCQ: ${esc(mcq)}</span>
               <span>Written: ${esc(written)}</span>
+              <span>Model: ${esc(mt)}</span>
             </div>
             <div class="mtActionsMini">
               <button class="btn primary" onclick="selectUniversityFromRight('${esc(u.id)}')">Open</button>
@@ -1676,7 +1740,6 @@
   }
 
   window.selectUniversityFromRight = (id)=>{
-    // right side থেকে open করলে sheet/list sync হবে
     selectUniversity(String(id||""), true);
   };
 
@@ -1690,10 +1753,10 @@
         selectedUniversityId = UNIVERSITIES[0].id;
       }
 
-      $("tabMcq").classList.toggle("active", mode==="mcq");
-      $("tabWritten").classList.toggle("active", mode==="written");
-      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      if($("tabMcq")) $("tabMcq").classList.toggle("active", mode==="mcq");
+      if($("tabWritten")) $("tabWritten").classList.toggle("active", mode==="written");
+      if($("ansHideBtn")) $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      if($("ansShowBtn")) $("ansShowBtn").classList.toggle("active", ansMode==="show");
       document.body.setAttribute("data-mode", mode);
 
       renderUniversityList();
@@ -1702,10 +1765,12 @@
       if(selectedUniversityId){
         const found = UNIVERSITIES.find(s=>s.id===selectedUniversityId);
         selectedUniversityName = found?.name || "";
-        $("subName").textContent = selectedUniversityName || "University Questions";
-        $("headerTag").textContent = selectedUniversityName
-          ? `University ভিত্তিক প্রশ্ন • ${selectedUniversityName}`
-          : "University ভিত্তিক প্রশ্ন • Admission Assistant";
+        if($("subName")) $("subName").textContent = selectedUniversityName || "University Questions";
+        if($("headerTag")){
+          $("headerTag").textContent = selectedUniversityName
+            ? `University ভিত্তিক প্রশ্ন • ${selectedUniversityName}`
+            : "University ভিত্তিক প্রশ্ন • Admission Assistant";
+        }
 
         setUrlState();
         saveState();
@@ -1725,7 +1790,6 @@
 
     function update(){
       ticking = false;
-
       const fr = footer.getBoundingClientRect();
       const overlap = window.innerHeight - fr.top;
       const lift = Math.max(0, overlap);
@@ -1743,8 +1807,11 @@
     onScroll();
   })();
 
+  // ===== Start =====
   attachUniversities();
   attachLatestUniversities();
+  attachUniversityModelTestCounts();  // ✅ this enables model test qty everywhere
+
 </script>
 </body>
 </html>
