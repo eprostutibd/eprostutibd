@@ -845,8 +845,10 @@
       <div class="subName" id="subName">University Questions</div>
       <div class="tabsLine" aria-label="Tabs">
         <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
-        <span class="sepDot" aria-hidden="true"></span>
-        <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+<span class="sepDot"></span>
+<button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+<span class="sepDot"></span>
+<button class="tab" id="tabModel" onclick="setMode('model')">মডেল টেস্ট</button>
       </div>
     </div>
 
@@ -911,10 +913,12 @@
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
 
-        <div class="latestBoxTitle" style="margin-top:2px;">Latest Universities</div>
-        <div class="latestMT" id="latestUni"></div>
-        <div class="empty" id="latestUniEmpty">কোনো University পাওয়া যায়নি।</div>
-
+        <div class="latestBoxTitle" style="margin-top:2px;">Latest Subject Model Tests</div>
+<div class="latestMT" id="latestSubjectMT"></div>
+<div class="empty" id="latestSubjectMTEmpty">কোনো Model Test পাওয়া যায়নি।</div>
+<div class="seeMoreRow">
+  <button class="btn linky" onclick="location.href='admission-assistant.html?mode=model'">See more</button>
+</div>
         <div class="divider"></div>
 
         <div class="inlineAd" style="min-height:240px;">
@@ -1009,18 +1013,21 @@
     measurementId: "G-T2G55NMDQT"
   };
 
-  /* ✅ admission prefix collections */
-  const COL_UNIVERSITIES = "admission_universities";
-  const COL_UNIVERSITY_QUESTIONS = "admission_university_questions";
+  /* ✅ Collections */
+  const COL_UNIVERSITIES           = "admission_universities";
+  const COL_UNIVERSITY_QUESTIONS   = "admission_university_questions";
 
-  /* ✅ FIXED: University model tests same as working page logic */
+  /* ✅ University-wise model tests (same logic as working page) */
   const COL_UNIVERSITY_MODEL_TESTS = "admission_tests";
+
+  /* ✅ Latest subject model tests (right sidebar) */
+  const COL_SUBJECT_MODEL_TESTS    = "admission_subject_tests";
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const $ = (id)=>document.getElementById(id);
 
-  /* ===== Toast ===== */
+  /* ===== Toast & helpers ===== */
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
@@ -1130,58 +1137,34 @@
     return -1;
   }
 
+  function relatedMatch(query, text){
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
+  }
+
   /* =========================
-     ✅ Model Test Qty (University) — FIXED
+     ✅ University Model Test Qty (counts)
      ========================= */
   const uniMtCountMap = new Map();
   let unsubUniTests = null;
 
   function getUniIdFromTest(data){
-    // ✅ match the working page behavior (more fallbacks)
     return String(
       data?.universityId ||
       data?.university_id ||
       data?.uniId ||
       data?.uni_id ||
       data?.universityID ||
-      data?.university ||     // ✅ added
+      data?.university ||
       ""
     ).trim();
-  }
-
-  // ✅ cache for right-side latest universities so we can rerender when counts change
-  let latestUniCache = [];
-
-  function renderLatestUniversitiesFromCache(){
-    const wrap = $("latestUni");
-    const empty = $("latestUniEmpty");
-    if(!wrap || !empty) return;
-
-    wrap.innerHTML = "";
-    empty.style.display = latestUniCache.length ? "none" : "block";
-
-    latestUniCache.forEach((u)=>{
-      const name = u.name ?? u.title ?? "University";
-      const counts = u.counts || {};
-      const mcq = Number(counts.mcq||0);
-      const written = Number(counts.written||0);
-      const mt = uniMtCountMap.get(u.id) ?? 0;
-
-      const card = document.createElement("div");
-      card.className = "mtCardMini";
-      card.innerHTML = `
-        <h4 title="${esc(name)}">${esc(name)}</h4>
-        <div class="mtMetaMini">
-          <span>MCQ: ${esc(mcq)}</span>
-          <span>Written: ${esc(written)}</span>
-          <span>Model: ${esc(mt)}</span>
-        </div>
-        <div class="mtActionsMini">
-          <button class="btn primary" onclick="selectUniversityFromRight('${esc(u.id)}')">Open</button>
-        </div>
-      `;
-      wrap.appendChild(card);
-    });
   }
 
   function attachUniversityModelTestCounts(){
@@ -1195,27 +1178,24 @@
           const data = d.data() || {};
           const uid = getUniIdFromTest(data);
           if(!uid) return;
-
           uniMtCountMap.set(uid, (uniMtCountMap.get(uid) || 0) + 1);
         });
 
-        // ✅ update all places
         renderUniversityList();
         renderUniversitySheet();
-        // ✅ rerender right mini cards to show latest counts
-        renderLatestUniversitiesFromCache();
-      }, (err)=>{
-        console.error(err);
-      });
+      }, (err)=>console.error(err));
   }
 
-  /* ===== State ===== */
+  /* =========================
+     ✅ State
+     ========================= */
   let UNIVERSITIES = [];
   let selectedUniversityId = "";
   let selectedUniversityName = "";
 
-  let mode = "mcq";
-  let ansMode = "hide";
+  // ✅ 3 modes
+  let mode = "mcq";      // mcq | written | model
+  let ansMode = "hide";  // hide | show
 
   const PAGE_SIZE = 30;
   let page = 1;
@@ -1228,9 +1208,8 @@
 
   let unsubUniversities = null;
   let unsubRight = null;
-  let unsubLatestUni = null;
 
-  const LS_KEY = "epbd_all_university_question_state_v1";
+  const LS_KEY = "epbd_all_university_question_state_v2";
 
   function getParam(name){
     const u = new URL(location.href);
@@ -1286,7 +1265,7 @@
       if(urlPage > 1) page = urlPage;
     }
 
-    if(urlMode && ["mcq","written"].includes(urlMode)){
+    if(urlMode && ["mcq","written","model"].includes(urlMode)){
       mode = urlMode;
     }
 
@@ -1310,6 +1289,10 @@
 
     if($("tabMcq")) $("tabMcq").classList.toggle("active", mode==="mcq");
     if($("tabWritten")) $("tabWritten").classList.toggle("active", mode==="written");
+    if($("tabModel")) $("tabModel").classList.toggle("active", mode==="model");
+
+    // ✅ Model mode: answer bar hide
+    if($("ansBarWrap")) $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
 
     page = 1;
     cursorByPage = { 1: null };
@@ -1329,18 +1312,6 @@
     renderContent();
   }
   window.setAnsMode = setAnsMode;
-
-  function relatedMatch(query, text){
-    const q = normalize(query);
-    const t = normalize(text);
-    if(!q) return 1;
-    if(t.includes(q)) return 10;
-    const qw = q.split(" ").filter(Boolean);
-    const tw = new Set(t.split(" ").filter(Boolean));
-    let hit = 0;
-    qw.forEach(w => { if(tw.has(w)) hit++; });
-    return hit / Math.max(1, qw.length);
-  }
 
   /* ===== LEFT LIST ===== */
   function renderUniversityList(){
@@ -1448,6 +1419,21 @@
     const searchText = $("qSearch") ? ($("qSearch").value || "") : "";
     const cursor = cursorByPage[page] || null;
 
+    // ✅ model tests
+    if(mode === "model"){
+      let q = db.collection(COL_UNIVERSITY_MODEL_TESTS)
+        .where("universityId","==", selectedUniversityId)
+        .orderBy("createdAt","desc")
+        .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+        .limit(PAGE_SIZE + 1);
+
+      if(cursor && cursor.t && cursor.id){
+        q = q.startAfter(new Date(cursor.t), cursor.id);
+      }
+      return { q, searchText, kind:"model" };
+    }
+
+    // ✅ questions
     let q = db.collection(COL_UNIVERSITY_QUESTIONS)
       .where("universityId","==", selectedUniversityId)
       .where("type","==", mode) /* mcq|written */
@@ -1458,8 +1444,7 @@
     if(cursor && cursor.t && cursor.id){
       q = q.startAfter(new Date(cursor.t), cursor.id);
     }
-
-    return { q, searchText };
+    return { q, searchText, kind:"q" };
   }
 
   let currentItems = [];
@@ -1566,7 +1551,13 @@
       const qtxt = normalize(built.searchText);
       if(qtxt){
         currentItems = currentItems
-          .map(it => ({ ...it, _score: relatedMatch(qtxt, (it.question || it.title || "")) }))
+          .map(it => ({
+            ...it,
+            _score: relatedMatch(qtxt, built.kind==="model"
+              ? (it.title || it.name || "")
+              : (it.question || it.title || "")
+            )
+          }))
           .filter(it => it._score >= 0.25)
           .sort((a,b)=> (b._score - a._score));
       }
@@ -1618,6 +1609,7 @@
   window.prevPage = prevPage;
   window.nextPage = nextPage;
 
+  /* ===== Render MAIN ===== */
   function renderContent(){
     const wrap = $("content");
     if(!wrap) return;
@@ -1626,11 +1618,51 @@
     if($("rightTitle")){
       $("rightTitle").textContent =
         mode==="mcq" ? "University MCQ প্রশ্ন" :
-        "University Written প্রশ্ন";
+        mode==="written" ? "University Written প্রশ্ন" :
+        "University Model Tests";
     }
 
     if(!currentItems.length) return;
 
+    // ✅ MODEL TEST cards
+    if(mode === "model"){
+      const grid = document.createElement("div");
+      grid.className = "latestMT";
+
+      currentItems.forEach((mt)=>{
+        const title = mt.title ?? mt.name ?? "University Model Test";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+        const qCount = (
+          Number(mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0) ||
+          Number(mt.totalMarks ?? mt.totalMark ?? mt.total_mark ?? 0) ||
+          "-"
+        );
+
+        const card = document.createElement("div");
+        card.className = "mtCardMini";
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="mtMetaMini">
+            <span>⏱ ${esc(time)} min</span>
+            <span>🧮 Mark: ${esc(marks)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="mtActionsMini">
+            <button class="btn primary"
+              onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+            <button class="btn"
+              onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      wrap.appendChild(grid);
+      return;
+    }
+
+    // ✅ QUESTIONS paper
     const paper = document.createElement("div");
     paper.className = "paper";
     const list = document.createElement("div");
@@ -1663,7 +1695,6 @@
         opts.slice(0,4).forEach((op, oi)=>{
           const opt = document.createElement("div");
           opt.className = "optLine";
-
           opt.innerHTML = `
             <span class="optMark"></span>
             <span class="optKey">${letters[oi]}.</span>
@@ -1725,28 +1756,60 @@
     wrap.appendChild(paper);
   }
 
-  /* ===== RIGHT: Latest Universities (show MCQ/Written/Model only) ===== */
-  function attachLatestUniversities(forceRenderOnly=false){
-    if(forceRenderOnly){
-      renderLatestUniversitiesFromCache();
-      return;
-    }
+  /* =========================
+     ✅ Right Sidebar: Latest Subject Model Tests
+     ========================= */
+  let unsubLatestSubjectMT = null;
 
-    if(unsubLatestUni){ try{unsubLatestUni();}catch(e){} unsubLatestUni=null; }
+  function attachLatestSubjectModelTests(){
+    if(unsubLatestSubjectMT){ try{unsubLatestSubjectMT();}catch(e){} unsubLatestSubjectMT=null; }
 
-    unsubLatestUni = db.collection(COL_UNIVERSITIES)
+    unsubLatestSubjectMT = db.collection(COL_SUBJECT_MODEL_TESTS)
       .orderBy("createdAt","desc")
-      .limit(5)
+      .limit(8)
       .onSnapshot((snap)=>{
-        latestUniCache = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        renderLatestUniversitiesFromCache();
+        const wrap = $("latestSubjectMT");
+        const empty = $("latestSubjectMTEmpty");
+        if(!wrap || !empty) return;
+
+        wrap.innerHTML = "";
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Subject Model Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+          const qCount = (
+            Number(mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0) ||
+            Number(mt.totalMarks ?? mt.totalMark ?? mt.total_mark ?? 0) ||
+            "-"
+          );
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMetaMini">
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary"
+                onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+              <button class="btn"
+                onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
       }, (err)=>console.error(err));
   }
 
-  window.selectUniversityFromRight = (id)=>{
-    selectUniversity(String(id||""), true);
-  };
-
+  /* =========================
+     ✅ Universities loader
+     ========================= */
   function attachUniversities(){
     if(unsubUniversities){ try{unsubUniversities();}catch(e){} unsubUniversities=null; }
 
@@ -1759,8 +1822,11 @@
 
       if($("tabMcq")) $("tabMcq").classList.toggle("active", mode==="mcq");
       if($("tabWritten")) $("tabWritten").classList.toggle("active", mode==="written");
+      if($("tabModel")) $("tabModel").classList.toggle("active", mode==="model");
+
       if($("ansHideBtn")) $("ansHideBtn").classList.toggle("active", ansMode==="hide");
       if($("ansShowBtn")) $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      if($("ansBarWrap")) $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
       document.body.setAttribute("data-mode", mode);
 
       renderUniversityList();
@@ -1769,6 +1835,7 @@
       if(selectedUniversityId){
         const found = UNIVERSITIES.find(s=>s.id===selectedUniversityId);
         selectedUniversityName = found?.name || "";
+
         if($("subName")) $("subName").textContent = selectedUniversityName || "University Questions";
         if($("headerTag")){
           $("headerTag").textContent = selectedUniversityName
@@ -1782,9 +1849,10 @@
       }else{
         renderPager();
       }
-    });
+    }, (err)=>console.error(err));
   }
 
+  /* ===== keep answer bar above footer ===== */
   (function keepAnsBarAboveFooter(){
     const footer = document.querySelector("footer");
     const bar = document.getElementById("ansBarWrap");
@@ -1794,6 +1862,12 @@
 
     function update(){
       ticking = false;
+
+      if(bar.style.display === "none"){
+        document.documentElement.style.setProperty("--liftFromFooter", "0px");
+        return;
+      }
+
       const fr = footer.getBoundingClientRect();
       const overlap = window.innerHeight - fr.top;
       const lift = Math.max(0, overlap);
@@ -1813,9 +1887,12 @@
 
   // ===== Start =====
   attachUniversities();
-  attachLatestUniversities();
-  attachUniversityModelTestCounts();  // ✅ this enables model test qty everywhere
+  attachUniversityModelTestCounts();
+
+  // ✅ Right sidebar replacement
+  attachLatestSubjectModelTests();
 </script>
+
 
 </body>
 </html>
