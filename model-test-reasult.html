@@ -857,835 +857,939 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-    const $ = (id)=>document.getElementById(id);
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const $ = (id)=>document.getElementById(id);
 
-    // ===== menu =====
-    function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-    function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-    function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-    window.toggleMenu = toggleMenu;
+  // ===== menu =====
+  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+  window.toggleMenu = toggleMenu;
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+  // ===== utils =====
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+  function getParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name) || "";
+  }
+  function fmtTime(ms){
+    const n = Number(ms);
+    if(!Number.isFinite(n) || n <= 0) return "--";
+    return new Date(n).toLocaleString("bn-BD", { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  }
+  function safeNum(x, fallback){
+    const n = Number(x);
+    return Number.isFinite(n) ? n : fallback;
+  }
 
-    // ===== utils =====
-    function esc(str){
-      return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  // ✅ parse timeTakenText to seconds (for tie-break)
+  function parseTimeTakenTextToSeconds(t){
+    const s = String(t ?? "").trim().toLowerCase();
+    if(!s) return Number.POSITIVE_INFINITY;
+
+    if(/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)){
+      const parts = s.split(":").map(x=>Number(x));
+      if(parts.some(n=>!Number.isFinite(n))) return Number.POSITIVE_INFINITY;
+      if(parts.length === 2) return parts[0]*60 + parts[1];
+      if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
     }
-    function getParam(name){
-      const u = new URL(location.href);
-      return u.searchParams.get(name) || "";
-    }
-    function fmtTime(ms){
-      const n = Number(ms);
-      if(!Number.isFinite(n) || n <= 0) return "--";
-      return new Date(n).toLocaleString("bn-BD", { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
-    }
-    function safeNum(x, fallback){
-      const n = Number(x);
-      return Number.isFinite(n) ? n : fallback;
-    }
-
-    // ✅ parse timeTakenText to seconds (for tie-break)
-    function parseTimeTakenTextToSeconds(t){
-      const s = String(t ?? "").trim().toLowerCase();
-      if(!s) return Number.POSITIVE_INFINITY;
-
-      if(/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)){
-        const parts = s.split(":").map(x=>Number(x));
-        if(parts.some(n=>!Number.isFinite(n))) return Number.POSITIVE_INFINITY;
-        if(parts.length === 2) return parts[0]*60 + parts[1];
-        if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
-      }
-      if(/^\d+(\.\d+)?s$/.test(s)){
-        const n = Number(s.replace("s",""));
-        return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
-      }
-
-      let total = 0;
-      let matched = false;
-
-      const h = s.match(/(\d+)\s*(h|hr|hrs|hour|hours|ঘণ্টা)/);
-      if(h){ total += Number(h[1]) * 3600; matched = true; }
-
-      const m = s.match(/(\d+)\s*(m|min|mins|minute|minutes|মিনিট)/);
-      if(m){ total += Number(m[1]) * 60; matched = true; }
-
-      const sec = s.match(/(\d+)\s*(s|sec|secs|second|seconds|সেকেন্ড)/);
-      if(sec){ total += Number(sec[1]); matched = true; }
-
-      return matched ? total : Number.POSITIVE_INFINITY;
+    if(/^\d+(\.\d+)?s$/.test(s)){
+      const n = Number(s.replace("s",""));
+      return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
     }
 
-    function setUrlResultId(resId){
-      const u = new URL(location.href);
-      if(modelTestId) u.searchParams.set("modelTestId", modelTestId);
-      u.searchParams.set("resultId", resId);
-      history.replaceState({}, "", u.toString());
-    }
-    function clearUrlResultId(){
-      const u = new URL(location.href);
-      u.searchParams.delete("resultId");
-      history.replaceState({}, "", u.toString());
-    }
-
-    // ===== Firebase =====
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-      authDomain: "eprostutibd-webapp.firebaseapp.com",
-      projectId: "eprostutibd-webapp",
-      storageBucket: "eprostutibd-webapp.firebasestorage.app",
-      messagingSenderId: "1044069942330",
-      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-      measurementId: "G-T2G55NMDQT"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const COL_RESULTS = "model_test_result";
-    const COL_MODELTESTS = "subject_model_tests";
-    const QUESTION_COLLECTION_CANDIDATES = [
-      "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
-    ];
-
-    // ✅ URL params
-    let modelTestId = getParam("modelTestId");
-    const resultIdFromUrl = getParam("resultId");
-
-    // ===== state =====
-    let resultPayload = null;
-    let questions = [];
-
-    let allRows = [];
-    let filteredRows = [];
-    let page = 1;
-    const PAGE_SIZE = 25;
-
-    // ✅ highlight target (resultId)
-    let highlightResultId = resultIdFromUrl || "";
-
-    function backToTest(){
-      if(!modelTestId) location.href = "Start-model-test.html";
-      else location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
-    }
-    window.backToTest = backToTest;
-
-    // ===== answers map =====
-    function getMcqMap(p){
-      const o = p?.answers?.mcq;
-      if(o && typeof o === "object" && !Array.isArray(o)) return o;
-      if(Array.isArray(p?.answers?.mcq)){
-        const out = {};
-        try{ p.answers.mcq.forEach(([k,v])=> out[String(k)] = v); }catch(e){}
-        return out;
-      }
-      return {};
-    }
-    function getWrittenMap(p){
-      const o = p?.answers?.written;
-      if(o && typeof o === "object" && !Array.isArray(o)) return o;
-      if(Array.isArray(p?.answers?.written)){
-        const out = {};
-        try{ p.answers.written.forEach(([k,v])=> out[String(k)] = v); }catch(e){}
-        return out;
-      }
-      return {};
-    }
-
-    // ===== question helpers =====
-    function getQText(q){
-      return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
-    }
-    function getOptions(q){
-      if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
-      if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
-      if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
-      const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
-      const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
-      const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
-      const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
-      return [o1,o2,o3,o4].map(x=>String(x ?? ""));
-    }
-    function getCorrectIndex(q){
-      const v = Number(q.correctIndex);
-      return Number.isFinite(v) ? v : -1;
-    }
-    function isWrittenQuestion(q){
-      const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
-      return t === "written" || t === "cq" || t === "short" || t === "essay";
-    }
-
-    async function fetchQuestionsFromCollection(colName, mtId){
-      try{
-        const s = await db.collection(colName).where("modelTestId","==", mtId).orderBy("createdAt","asc").get();
-        return s.docs.map(d=>({ id:d.id, ...d.data() }));
-      }catch(e){
-        const s = await db.collection(colName).where("modelTestId","==", mtId).get();
-        return s.docs.map(d=>({ id:d.id, ...d.data() }));
-      }
-    }
-    async function fetchQuestionsFromSubcollection(mtId){
-      const ref = db.collection(COL_MODELTESTS).doc(mtId).collection("questions");
-      try{
-        const s = await ref.orderBy("createdAt","asc").get();
-        return s.docs.map(d=>({ id:d.id, ...d.data() }));
-      }catch(e){
-        const s = await ref.get();
-        return s.docs.map(d=>({ id:d.id, ...d.data() }));
-      }
-    }
-
-    async function loadQuestionsOnce(){
-      if(questions.length) return questions;
-      let qs = [];
-      for(const col of QUESTION_COLLECTION_CANDIDATES){
-        try{
-          const got = await fetchQuestionsFromCollection(col, modelTestId);
-          if(got && got.length){ qs = got; break; }
-        }catch(e){}
-      }
-      if(!qs.length){
-        try{ qs = await fetchQuestionsFromSubcollection(modelTestId); }catch(e){}
-      }
-      questions = qs || [];
-      return questions;
-    }
-
-    function calcNoAns(r){
-      const totalQ = safeNum(r?.totalQuestion, NaN);
-      const right = safeNum(r?.right, NaN);
-      const wrong = safeNum(r?.wrong, NaN);
-
-      if(Number.isFinite(safeNum(r?.noAnswer, NaN))) return safeNum(r?.noAnswer, 0);
-      if(Number.isFinite(totalQ) && Number.isFinite(right) && Number.isFinite(wrong)){
-        const na = totalQ - (right + wrong);
-        return na >= 0 ? na : 0;
-      }
-      return "--";
-    }
-
-    function getPassFail(obtained, total){
-      const o = safeNum(obtained, 0);
-      const t = safeNum(total, 0);
-      if(t <= 0) return { ok: null, label: "—" };
-      const pct = (o / t) * 100;
-      if(pct < 30) return { ok: false, label: "FAIL" };
-      return { ok: true, label: "PASS" };
-    }
-
-    function normalizeText(s){ return String(s ?? "").toLowerCase().trim(); }
-
-    function applyFilters(){
-      const nameQ = normalizeText($("fName").value);
-      const zilaQ = normalizeText($("fZila").value);
-
-      filteredRows = allRows.filter(x=>{
-        const p = x.p || {};
-        const name = normalizeText(p.studentName);
-        const zila = normalizeText(p.studentDistrict || p.studentAddress || p.address);
-        const okName = !nameQ || name.includes(nameQ);
-        const okZila = !zilaQ || zila.includes(zilaQ);
-        return okName && okZila;
-      });
-
-      page = 1;
-      renderPage();
-
-      if(highlightResultId) jumpToAndHighlightResult(highlightResultId);
-    }
-
-    function resetFilters(){
-      $("fName").value = "";
-      $("fZila").value = "";
-      applyFilters();
-    }
-    window.resetFilters = resetFilters;
-
-    function nextPage(){
-      const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
-      if(page < totalPages){ page++; renderPage(); }
-      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
-    }
-    function prevPage(){
-      if(page > 1){ page--; renderPage(); }
-      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
-    }
-    window.nextPage = nextPage;
-    window.prevPage = prevPage;
-
-    function renderPage(){
-      const total = filteredRows.length;
-      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-      if(page > totalPages) page = totalPages;
-
-      const start = (page - 1) * PAGE_SIZE;
-      const slice = filteredRows.slice(start, start + PAGE_SIZE);
-
-      if(!slice.length){
-        $("rankBody").innerHTML = `<tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>`;
-        $("pageInfo").textContent = `Page 1 / 1`;
-        return;
-      }
-
-      const html = slice.map((x, idx)=>{
-        const p = x.p, r = x.r;
-        const name = p.studentName || "--";
-        const addr = p.studentDistrict || p.studentAddress || p.address || "--";
-        const submitted = fmtTime(p.submittedAt);
-
-        const right = (r.right ?? "--");
-        const wrong = (r.wrong ?? "--");
-        const noAns = calcNoAns(r);
-        const mark = (r.obtainedMark ?? x.obtained ?? "--");
-        const timeTakenText = (p.timeTakenText ?? "--");
-
-        const pf = getPassFail(r.obtainedMark, r.totalMark);
-        const pfBadge = pf.ok === true
-          ? `<span class="badge ok">PASS</span>`
-          : pf.ok === false
-            ? `<span class="badge bad">FAIL</span>`
-            : `<span class="badge">—</span>`;
-
-        const globalRank = start + idx + 1;
-
-        return `
-          <tr data-result-id="${esc(p.id)}">
-            <td><span class="badge">${globalRank}</span></td>
-            <td style="white-space:nowrap;">${esc(name)}</td>
-            <td style="white-space:nowrap;">${esc(addr)}</td>
-            <td style="white-space:nowrap;">${esc(submitted)}</td>
-            <td>${esc(right)}</td>
-            <td>${esc(wrong)}</td>
-            <td><span class="badge noAnsRed">${esc(noAns)}</span></td>
-            <td><span class="badge warn">${esc(mark)}</span></td>
-            <td><span class="badge">${esc(timeTakenText)}</span></td>
-            <td>${pfBadge}</td>
-            <td>
-              <button class="btn" style="padding:6px 10px;font-size:12px;"
-                type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
-            </td>
-          </tr>
-        `;
-      }).join("");
-
-      $("rankBody").innerHTML = html;
-      $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
-
-      if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
-    }
-
-    function clearHighlights(){
-      document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
-    }
-    function applyHighlightOnCurrentPage(resId){
-      clearHighlights();
-      const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
-      if(tr) tr.classList.add("hl");
-    }
-    function jumpToAndHighlightResult(resId){
-      if(!resId) return;
-
-      const idx = filteredRows.findIndex(x => x?.p?.id === resId);
-      if(idx < 0) return;
-
-      const targetPage = Math.floor(idx / PAGE_SIZE) + 1;
-      if(page !== targetPage){
-        page = targetPage;
-        renderPage();
-      }else{
-        applyHighlightOnCurrentPage(resId);
-      }
-
-      setTimeout(()=>{
-        const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
-        if(tr) tr.scrollIntoView({ behavior:"smooth", block:"center" });
-      }, 80);
-    }
-
-    // ===== Popup (Details) open/close =====
-    function openDetailsPopup(){
-      $("detailsModal").classList.add("show");
-      $("detailsModal").setAttribute("aria-hidden","false");
-      document.body.style.overflow = "hidden";
-    }
-    function closeDetails(){
-      $("detailsModal").classList.remove("show");
-      $("detailsModal").setAttribute("aria-hidden","true");
-      $("markStamp").style.display = "none";
-      $("detailContent").innerHTML = `<div class="loading">প্রশ্ন লোড হচ্ছে…</div>`;
-      clearUrlResultId();
-      document.body.style.overflow = "";
-    }
-    window.closeDetails = closeDetails;
-
-    document.addEventListener("keydown",(e)=>{
-      if(e.key === "Escape"){
-        closeMenu();
-        closeDetails();
-      }
-    });
-
-    function buildStatBadges(){
-      const r = resultPayload?.result || {};
-      const right = (r.right ?? "--");
-      const wrong = (r.wrong ?? "--");
-      const totalQ = (r.totalQuestion ?? "--");
-      const noAns = calcNoAns(r);
-      return `
-        <span class="badge">${esc(totalQ)} Q</span>
-        <span class="badge ok">✓ ${esc(right)} Right</span>
-        <span class="badge bad">✗ ${esc(wrong)} Wrong</span>
-        <span class="badge warn">${esc(noAns)} No Ans</span>
-      `;
-    }
-
-    function renderMarkStamp(){
-      const r = resultPayload?.result || {};
-      const obtained = (r.obtainedMark ?? "--");
-      const total = (r.totalMark ?? "--");
-      const pf = getPassFail(r.obtainedMark, r.totalMark);
-
-      const el = $("markStamp");
-      el.innerHTML = `
-        <div class="score">${esc(obtained)} / ${esc(total)}</div>
-        <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
-        <div class="note">Teacher Checked</div>
-      `;
-      el.style.display = "block";
-    }
-
-    function renderDetails(){
-      const p = resultPayload || {};
-      const r = p.result || {};
-      const name = p.studentName || "--";
-      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
-      const test = p.modelTestName || "Model Test";
-      const timeTakenText = p.timeTakenText || "--";
-
-      $("detailTimeTaken").textContent = `Time: ${timeTakenText}`;
-
-      $("sheetTitle").textContent = `${test} — Details Sheet`;
-      $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
-
-      $("sheetStats").innerHTML = buildStatBadges();
-      renderMarkStamp();
-
-      const mcqMap = getMcqMap(p);
-      const wrMap = getWrittenMap(p);
-      const letters = ["A","B","C","D"];
-
-      if(!questions.length){
-        $("detailContent").innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
-        return;
-      }
-
-      const wrap = document.createElement("div");
-      wrap.className = "qList";
-
-      questions.forEach((q, i)=>{
-        const qid = q.id;
-        const qno = i + 1;
-        const qt = getQText(q) || "(No question text)";
-
-        const row = document.createElement("div");
-        row.className = "qRow";
-        row.innerHTML = `
-          <div class="qHead">
-            <span class="qNo">Q${qno}</span>
-            <p class="qText">${esc(qt)}</p>
-          </div>
-        `;
-
-        if(isWrittenQuestion(q)){
-          const ans = (wrMap[qid] ?? "").toString().trim();
-          const box = document.createElement("div");
-          box.style.marginTop = "10px";
-          box.style.padding = "10px 12px";
-          box.style.border = "1px solid rgba(18,28,55,.12)";
-          box.style.borderRadius = "12px";
-          box.style.background = "rgba(255,255,255,.75)";
-          box.innerHTML = `
-            <div style="font-size:12px;color:var(--muted);font-weight:1000;">Your Answer (Written)</div>
-            <div style="margin-top:6px;font-weight:900;line-height:1.6;">${esc(ans || "(No Answer)")}</div>
-          `;
-          row.appendChild(box);
-          wrap.appendChild(row);
-          return;
-        }
-
-        const opts = getOptions(q);
-        const correctIdx = getCorrectIndex(q);
-        const chosenIdx = Number(mcqMap[qid]);
-
-        const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
-        const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
-
-        const optWrap = document.createElement("div");
-        optWrap.className = "opts";
-
-        opts.slice(0,4).forEach((op, oi)=>{
-          const isCorrect = (hasCorrect && oi === correctIdx);
-          const isChosen = (hasChosen && oi === chosenIdx);
-
-          let iconCls = "";
-          let iconTxt = "";
-          let txtCls = "";
-
-          if(!hasChosen && isCorrect){
-            iconCls = "warn"; iconTxt = "✓"; txtCls = "warn";
-          }else if(hasChosen && isCorrect){
-            iconCls = "ok"; iconTxt = "✓"; txtCls = "ok";
-          }
-          if(isChosen && !isCorrect){
-            iconCls = "bad"; iconTxt = "✗"; txtCls = "bad";
-          }
-
-          const div = document.createElement("div");
-          div.className = "optLine";
-          div.innerHTML = `
-            <span class="markIcon ${iconCls}">${iconTxt || ""}</span>
-            <span class="optKey">${letters[oi]}.</span>
-            <span class="optTxt ${txtCls}">${esc(op || "")}</span>
-          `;
-          optWrap.appendChild(div);
-        });
-
-        row.appendChild(optWrap);
-
-        if(!hasChosen){
-          const note = document.createElement("div");
-          note.className = "noAnsText";
-          note.textContent = "দুঃখিত! এই প্রশ্নের কোনো উত্তর সিলেক্ট করেননি";
-          row.appendChild(note);
-        }
-
-        wrap.appendChild(row);
-      });
-
-      $("detailContent").innerHTML = "";
-      $("detailContent").appendChild(wrap);
-    }
-
-    async function openDetailsByResultId(resId){
-      try{
-        setUrlResultId(resId);
-
-        $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
-        openDetailsPopup();
-
-        const doc = await db.collection(COL_RESULTS).doc(resId).get();
-        if(!doc.exists){
-          $("detailContent").innerHTML = `<div class="err">Result পাওয়া যায়নি।</div>`;
-          return;
-        }
-
-        resultPayload = { id: doc.id, ...doc.data() };
-
-        if(!modelTestId && resultPayload.modelTestId){
-          modelTestId = resultPayload.modelTestId;
-        }
-
-        await loadModelTestTitle();
-        await loadQuestionsOnce();
-        renderDetails();
-      }catch(e){
-        console.error(e);
-        $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
-      }
-    }
-    window.openDetailsByResultId = openDetailsByResultId;
-
-    // ===== Load ranking table =====
-    async function loadResultSheet(){
-      try{
-        const snap = await db.collection(COL_RESULTS)
-          .where("modelTestId","==", modelTestId)
-          .get();
-
-        if(snap.empty){
-          $("rankBody").innerHTML = `<tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>`;
-          allRows = [];
-          filteredRows = [];
-          renderPage();
-          return;
-        }
-
-        allRows = snap.docs.map(d => {
-          const p = { id: d.id, ...d.data() };
-          const r = p.result || {};
-          const obtained = safeNum(r.obtainedMark, 0);
-          const submittedAt = safeNum(p.submittedAt, Number.POSITIVE_INFINITY);
-
-          const timeTakenText = p.timeTakenText || "";
-          const timeTakenSec = parseTimeTakenTextToSeconds(timeTakenText);
-
-          return { p, r, obtained, submittedAt, timeTakenSec };
-        });
-
-        // ✅ Rank rule:
-        // 1) obtainedMark DESC (বেশি মার্ক = ভালো র‍্যাঙ্ক)
-        // 2) টাই হলে timeTakenSec ASC (কম সময় = ভালো)
-        // 3) submittedAt ASC (internal tie-break)
-        allRows.sort((a,b)=>{
-          if(b.obtained !== a.obtained) return b.obtained - a.obtained;
-          if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
-          return a.submittedAt - b.submittedAt;
-        });
-
-        filteredRows = allRows.slice();
-        page = 1;
-        renderPage();
-      }catch(e){
-        console.error(e);
-        $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
-      }
-    }
-
-    // ===== ✅ Model Test Title loader =====
-    async function loadModelTestTitle(){
-      try{
-        if(!modelTestId){
-          $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
-          return;
-        }
-        const doc = await db.collection(COL_MODELTESTS).doc(modelTestId).get();
-        if(doc.exists){
-          const data = doc.data() || {};
-          const name = data.modelTestName || data.title || data.name || "Model Test";
-          $("modelTestTitle").textContent = name;
-        }else{
-          $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
-        }
-      }catch(e){
-        $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
-      }
-    }
-
-    // ===== PDF helpers =====
-    async function renderPageToCanvas(html){
-      const area = $("pdfPageArea");
-      area.innerHTML = html;
-      try{ await document.fonts.ready; }catch(e){}
-      return await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
-    }
-
-    function buildPdfMark(){
-      const r = resultPayload?.result || {};
-      const obtained = r.obtainedMark ?? "--";
-      const total = r.totalMark ?? "--";
-      const pf = getPassFail(r.obtainedMark, r.totalMark);
-      return `
-        <div class="pdfMark">
-          <div class="score">${esc(obtained)} / ${esc(total)}</div>
-          <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
-        </div>
-      `;
-    }
-
-    function chunk(arr, size){
-      const out = [];
-      for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+    let total = 0;
+    let matched = false;
+
+    const h = s.match(/(\d+)\s*(h|hr|hrs|hour|hours|ঘণ্টা)/);
+    if(h){ total += Number(h[1]) * 3600; matched = true; }
+
+    const m = s.match(/(\d+)\s*(m|min|mins|minute|minutes|মিনিট)/);
+    if(m){ total += Number(m[1]) * 60; matched = true; }
+
+    const sec = s.match(/(\d+)\s*(s|sec|secs|second|seconds|সেকেন্ড)/);
+    if(sec){ total += Number(sec[1]); matched = true; }
+
+    return matched ? total : Number.POSITIVE_INFINITY;
+  }
+
+  function setUrlResultId(resId){
+    const u = new URL(location.href);
+    if(modelTestId) u.searchParams.set("modelTestId", modelTestId);
+    u.searchParams.set("resultId", resId);
+    history.replaceState({}, "", u.toString());
+  }
+  function clearUrlResultId(){
+    const u = new URL(location.href);
+    u.searchParams.delete("resultId");
+    history.replaceState({}, "", u.toString());
+  }
+
+  // ✅ 5s highlight helper
+  function highlightRowForSeconds(resId, sec=5){
+    if(!resId) return;
+    clearHighlights();
+    const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+    if(!tr) return;
+    tr.classList.add("hl");
+    tr.scrollIntoView({ behavior:"smooth", block:"center" });
+
+    clearTimeout(highlightRowForSeconds._tm);
+    highlightRowForSeconds._tm = setTimeout(()=>{
+      tr.classList.remove("hl");
+    }, sec * 1000);
+  }
+
+  // ===== Firebase =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // ==========================================
+  // ✅ MATCH WITH START PAGE (OLD + NEW SOURCES)
+  // ==========================================
+  const COL_RESULTS = "model_test_result";
+
+  // OLD meta/questions
+  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+  const QUESTION_COLLECTION_CANDIDATES = [
+    "modeltest_questions","model_test_questions","modeltest_question","modelTest_questions","modeltestQuestions"
+  ];
+
+  // ✅ NEW (admin) meta/questions
+  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";
+  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // field: testId
+  const COL_ADMISSION_TESTS = "admission_tests";
+  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions"; // field: testId
+
+  // ✅ URL params
+  let modelTestId = getParam("modelTestId");
+  const resultIdFromUrl = getParam("resultId");
+
+  // ===== state =====
+  let resultPayload = null;
+  let questions = [];
+  let mtSource = ""; // which meta collection matched
+
+  let allRows = [];
+  let filteredRows = [];
+  let page = 1;
+  const PAGE_SIZE = 25;
+
+  // ✅ highlight target (resultId)
+  let highlightResultId = resultIdFromUrl || "";
+
+  function backToTest(){
+    if(!modelTestId) location.href = "Start-model-test.html";
+    else location.href = `Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+  }
+  window.backToTest = backToTest;
+
+  // ===== answers map =====
+  function getMcqMap(p){
+    const o = p?.answers?.mcq;
+    if(o && typeof o === "object" && !Array.isArray(o)) return o;
+    if(Array.isArray(p?.answers?.mcq)){
+      const out = {};
+      try{ p.answers.mcq.forEach(([k,v])=> out[String(k)] = v); }catch(e){}
       return out;
     }
+    return {};
+  }
+  function getWrittenMap(p){
+    const o = p?.answers?.written;
+    if(o && typeof o === "object" && !Array.isArray(o)) return o;
+    if(Array.isArray(p?.answers?.written)){
+      const out = {};
+      try{ p.answers.written.forEach(([k,v])=> out[String(k)] = v); }catch(e){}
+      return out;
+    }
+    return {};
+  }
 
-    function buildPdfQuestionsHtml(qs, startNo){
-      const p = resultPayload || {};
-      const mcqMap = getMcqMap(p);
-      const wrMap = getWrittenMap(p);
-      const letters = ["A","B","C","D"];
+  // ===== question helpers =====
+  function getQText(q){
+    return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
+  }
+  function getOptions(q){
+    if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
+    if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
+    if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
+    const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
+    const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
+    const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
+    const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
+    return [o1,o2,o3,o4].map(x=>String(x ?? ""));
+  }
+  function getCorrectIndex(q){
+    const v = Number(q.correctIndex);
+    return Number.isFinite(v) ? v : -1;
+  }
+  function isWrittenQuestion(q){
+    const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
+    return t === "written" || t === "cq" || t === "short" || t === "essay";
+  }
 
-      return qs.map((q, idx)=>{
-        const qno = startNo + idx;
-        const qt = getQText(q) || "(No question text)";
-        const qid = q.id;
+  // ===========================
+  // ✅ FETCH HELPERS (old + new)
+  // ===========================
+  async function fetchQuestionsByField(colName, fieldName, fieldValue){
+    try{
+      const s = await db.collection(colName).where(fieldName,"==", fieldValue).orderBy("createdAt","asc").get();
+      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+    }catch(e){
+      const s = await db.collection(colName).where(fieldName,"==", fieldValue).get();
+      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+    }
+  }
 
-        if(isWrittenQuestion(q)){
-          const ans = (wrMap[qid] ?? "").toString().trim();
-          return `
-            <div class="pdfQ">
-              <div class="qline">Q${qno}. ${esc(qt)}</div>
-              <div class="pdfOpt">
-                <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
-              </div>
-            </div>
-          `;
+  async function fetchQuestionsFromSubcollection(mtId){
+    const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
+    try{
+      const s = await ref.orderBy("createdAt","asc").get();
+      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+    }catch(e){
+      const s = await ref.get();
+      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+    }
+  }
+
+  async function loadQuestionsOnce(){
+    if(questions.length) return questions;
+    if(!modelTestId) return [];
+
+    // A) OLD: candidate collections (field modelTestId)
+    for(const col of QUESTION_COLLECTION_CANDIDATES){
+      try{
+        const got = await fetchQuestionsByField(col, "modelTestId", modelTestId);
+        if(got && got.length){ questions = got; return questions; }
+      }catch(e){}
+    }
+
+    // B) OLD: subcollection
+    try{
+      const gotSub = await fetchQuestionsFromSubcollection(modelTestId);
+      if(gotSub && gotSub.length){ questions = gotSub; return questions; }
+    }catch(e){}
+
+    // C) NEW: admission_subject_test_questions (field testId)
+    try{
+      const got = await fetchQuestionsByField(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", modelTestId);
+      if(got && got.length){ questions = got; return questions; }
+    }catch(e){}
+
+    // D) NEW: admission_test_questions (field testId)
+    try{
+      const got = await fetchQuestionsByField(COL_ADMISSION_TEST_QUESTIONS, "testId", modelTestId);
+      if(got && got.length){ questions = got; return questions; }
+    }catch(e){}
+
+    questions = [];
+    return questions;
+  }
+
+  // ✅ meta loader (same logic as Start page)
+  function getTitleField(data){
+    return data?.title ?? data?.name ?? data?.modelTestName ?? data?.modelTestTitle ?? "Model Test";
+  }
+  async function loadModelTestMeta(mtId){
+    // OLD
+    const s1 = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).get();
+    if(s1.exists) return { source: COL_SUBJECT_MODEL_TESTS, doc: { id:s1.id, ...s1.data() } };
+
+    // NEW: admission_subject_tests
+    const s2 = await db.collection(COL_ADMISSION_SUBJECT_TESTS).doc(mtId).get();
+    if(s2.exists) return { source: COL_ADMISSION_SUBJECT_TESTS, doc: { id:s2.id, ...s2.data() } };
+
+    // NEW: admission_tests
+    const s3 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
+    if(s3.exists) return { source: COL_ADMISSION_TESTS, doc: { id:s3.id, ...s3.data() } };
+
+    return { source:"", doc:null };
+  }
+
+  function calcNoAns(r){
+    const totalQ = safeNum(r?.totalQuestion, NaN);
+    const right = safeNum(r?.right, NaN);
+    const wrong = safeNum(r?.wrong, NaN);
+
+    if(Number.isFinite(safeNum(r?.noAnswer, NaN))) return safeNum(r?.noAnswer, 0);
+    if(Number.isFinite(totalQ) && Number.isFinite(right) && Number.isFinite(wrong)){
+      const na = totalQ - (right + wrong);
+      return na >= 0 ? na : 0;
+    }
+    return "--";
+  }
+
+  function getPassFail(obtained, total){
+    const o = safeNum(obtained, 0);
+    const t = safeNum(total, 0);
+    if(t <= 0) return { ok: null, label: "—" };
+    const pct = (o / t) * 100;
+    if(pct < 30) return { ok: false, label: "FAIL" };
+    return { ok: true, label: "PASS" };
+  }
+
+  function normalizeText(s){ return String(s ?? "").toLowerCase().trim(); }
+
+  function applyFilters(){
+    const nameQ = normalizeText($("fName").value);
+    const zilaQ = normalizeText($("fZila").value);
+
+    filteredRows = allRows.filter(x=>{
+      const p = x.p || {};
+      const name = normalizeText(p.studentName);
+      const zila = normalizeText(p.studentDistrict || p.studentAddress || p.address);
+      const okName = !nameQ || name.includes(nameQ);
+      const okZila = !zilaQ || zila.includes(zilaQ);
+      return okName && okZila;
+    });
+
+    page = 1;
+    renderPage();
+
+    // 🔥 if a highlight id is set, jump to it after filtering
+    if(highlightResultId) jumpToAndHighlightResult(highlightResultId, true);
+  }
+
+  function resetFilters(){
+    $("fName").value = "";
+    $("fZila").value = "";
+    applyFilters();
+  }
+  window.resetFilters = resetFilters;
+
+  function nextPage(){
+    const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
+    if(page < totalPages){ page++; renderPage(); }
+    if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
+  }
+  function prevPage(){
+    if(page > 1){ page--; renderPage(); }
+    if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
+  }
+  window.nextPage = nextPage;
+  window.prevPage = prevPage;
+
+  function renderPage(){
+    const total = filteredRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if(page > totalPages) page = totalPages;
+
+    const start = (page - 1) * PAGE_SIZE;
+    const slice = filteredRows.slice(start, start + PAGE_SIZE);
+
+    if(!slice.length){
+      $("rankBody").innerHTML = `<tr><td colspan="11">কোনো রেজাল্ট পাওয়া যায়নি</td></tr>`;
+      $("pageInfo").textContent = `Page 1 / 1`;
+      return;
+    }
+
+    const html = slice.map((x, idx)=>{
+      const p = x.p, r = x.r;
+      const name = p.studentName || "--";
+      const addr = p.studentDistrict || p.studentAddress || p.address || "--";
+      const submitted = fmtTime(p.submittedAt);
+
+      const right = (r.right ?? "--");
+      const wrong = (r.wrong ?? "--");
+      const noAns = calcNoAns(r);
+      const mark = (r.obtainedMark ?? x.obtained ?? "--");
+      const timeTakenText = (p.timeTakenText ?? "--");
+
+      const pf = getPassFail(r.obtainedMark, r.totalMark);
+      const pfBadge = pf.ok === true
+        ? `<span class="badge ok">PASS</span>`
+        : pf.ok === false
+          ? `<span class="badge bad">FAIL</span>`
+          : `<span class="badge">—</span>`;
+
+      const globalRank = start + idx + 1;
+
+      return `
+        <tr data-result-id="${esc(p.id)}">
+          <td><span class="badge">${globalRank}</span></td>
+          <td style="white-space:nowrap;">${esc(name)}</td>
+          <td style="white-space:nowrap;">${esc(addr)}</td>
+          <td style="white-space:nowrap;">${esc(submitted)}</td>
+          <td>${esc(right)}</td>
+          <td>${esc(wrong)}</td>
+          <td><span class="badge noAnsRed">${esc(noAns)}</span></td>
+          <td><span class="badge warn">${esc(mark)}</span></td>
+          <td><span class="badge">${esc(timeTakenText)}</span></td>
+          <td>${pfBadge}</td>
+          <td>
+            <button class="btn" style="padding:6px 10px;font-size:12px;"
+              type="button" onclick="openDetailsByResultId('${esc(p.id)}')">Details</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    $("rankBody").innerHTML = html;
+    $("pageInfo").textContent = `Page ${page} / ${totalPages}`;
+
+    if(highlightResultId) applyHighlightOnCurrentPage(highlightResultId);
+  }
+
+  function clearHighlights(){
+    document.querySelectorAll("#rankBody tr.hl").forEach(tr=>tr.classList.remove("hl"));
+  }
+  function applyHighlightOnCurrentPage(resId){
+    clearHighlights();
+    const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+    if(tr) tr.classList.add("hl");
+  }
+
+  // ✅ jump: (1) go page, (2) apply highlight, (3) optional 5s auto-remove
+  function jumpToAndHighlightResult(resId, autoRemove=false){
+    if(!resId) return;
+
+    const idx = filteredRows.findIndex(x => x?.p?.id === resId);
+    if(idx < 0) return;
+
+    const targetPage = Math.floor(idx / PAGE_SIZE) + 1;
+    if(page !== targetPage){
+      page = targetPage;
+      renderPage();
+    }else{
+      applyHighlightOnCurrentPage(resId);
+    }
+
+    setTimeout(()=>{
+      const tr = document.querySelector(`#rankBody tr[data-result-id="${CSS.escape(resId)}"]`);
+      if(tr) tr.scrollIntoView({ behavior:"smooth", block:"center" });
+
+      if(autoRemove){
+        highlightRowForSeconds(resId, 5);
+      }
+    }, 80);
+  }
+
+  // ✅ See all result button support:
+  // Call this from your "See all result" button onclick.
+  // Example: <button onclick="seeAllResult()">See all result</button>
+  function seeAllResult(){
+    // Close details + clear filters so the row is visible
+    closeDetails();
+
+    // Reset filters (will call applyFilters + jump)
+    resetFilters();
+
+    // 🔥 highlight for 5 sec if we have a target result id
+    if(highlightResultId){
+      setTimeout(()=> jumpToAndHighlightResult(highlightResultId, true), 120);
+    }
+  }
+  window.seeAllResult = seeAllResult;
+
+  // ===== Popup (Details) open/close =====
+  function openDetailsPopup(){
+    $("detailsModal").classList.add("show");
+    $("detailsModal").setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDetails(){
+    $("detailsModal").classList.remove("show");
+    $("detailsModal").setAttribute("aria-hidden","true");
+    $("markStamp").style.display = "none";
+    $("detailContent").innerHTML = `<div class="loading">প্রশ্ন লোড হচ্ছে…</div>`;
+    clearUrlResultId();
+    document.body.style.overflow = "";
+  }
+  window.closeDetails = closeDetails;
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key === "Escape"){
+      closeMenu();
+      closeDetails();
+    }
+  });
+
+  function buildStatBadges(){
+    const r = resultPayload?.result || {};
+    const right = (r.right ?? "--");
+    const wrong = (r.wrong ?? "--");
+    const totalQ = (r.totalQuestion ?? "--");
+    const noAns = calcNoAns(r);
+    return `
+      <span class="badge">${esc(totalQ)} Q</span>
+      <span class="badge ok">✓ ${esc(right)} Right</span>
+      <span class="badge bad">✗ ${esc(wrong)} Wrong</span>
+      <span class="badge warn">${esc(noAns)} No Ans</span>
+    `;
+  }
+
+  function renderMarkStamp(){
+    const r = resultPayload?.result || {};
+    const obtained = (r.obtainedMark ?? "--");
+    const total = (r.totalMark ?? "--");
+    const pf = getPassFail(r.obtainedMark, r.totalMark);
+
+    const el = $("markStamp");
+    el.innerHTML = `
+      <div class="score">${esc(obtained)} / ${esc(total)}</div>
+      <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
+      <div class="note">Teacher Checked</div>
+    `;
+    el.style.display = "block";
+  }
+
+  function renderDetails(){
+    const p = resultPayload || {};
+    const r = p.result || {};
+    const name = p.studentName || "--";
+    const dist = p.studentDistrict || p.studentAddress || p.address || "--";
+    const test = p.modelTestName || "Model Test";
+    const timeTakenText = p.timeTakenText || "--";
+
+    $("detailTimeTaken").textContent = `Time: ${timeTakenText}`;
+
+    $("sheetTitle").textContent = `${test} — Details Sheet`;
+    $("sheetSub").textContent = `${name} (${dist}) • Submitted: ${fmtTime(p.submittedAt)}`;
+
+    $("sheetStats").innerHTML = buildStatBadges();
+    renderMarkStamp();
+
+    const mcqMap = getMcqMap(p);
+    const wrMap = getWrittenMap(p);
+    const letters = ["A","B","C","D"];
+
+    if(!questions.length){
+      $("detailContent").innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
+      return;
+    }
+
+    const wrap = document.createElement("div");
+    wrap.className = "qList";
+
+    questions.forEach((q, i)=>{
+      const qid = q.id;
+      const qno = i + 1;
+      const qt = getQText(q) || "(No question text)";
+
+      const row = document.createElement("div");
+      row.className = "qRow";
+      row.innerHTML = `
+        <div class="qHead">
+          <span class="qNo">Q${qno}</span>
+          <p class="qText">${esc(qt)}</p>
+        </div>
+      `;
+
+      if(isWrittenQuestion(q)){
+        const ans = (wrMap[qid] ?? "").toString().trim();
+        const box = document.createElement("div");
+        box.style.marginTop = "10px";
+        box.style.padding = "10px 12px";
+        box.style.border = "1px solid rgba(18,28,55,.12)";
+        box.style.borderRadius = "12px";
+        box.style.background = "rgba(255,255,255,.75)";
+        box.innerHTML = `
+          <div style="font-size:12px;color:var(--muted);font-weight:1000;">Your Answer (Written)</div>
+          <div style="margin-top:6px;font-weight:900;line-height:1.6;">${esc(ans || "(No Answer)")}</div>
+        `;
+        row.appendChild(box);
+        wrap.appendChild(row);
+        return;
+      }
+
+      const opts = getOptions(q);
+      const correctIdx = getCorrectIndex(q);
+      const chosenIdx = Number(mcqMap[qid]);
+
+      const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
+      const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
+
+      const optWrap = document.createElement("div");
+      optWrap.className = "opts";
+
+      opts.slice(0,4).forEach((op, oi)=>{
+        const isCorrect = (hasCorrect && oi === correctIdx);
+        const isChosen = (hasChosen && oi === chosenIdx);
+
+        let iconCls = "";
+        let iconTxt = "";
+        let txtCls = "";
+
+        if(!hasChosen && isCorrect){
+          iconCls = "warn"; iconTxt = "✓"; txtCls = "warn";
+        }else if(hasChosen && isCorrect){
+          iconCls = "ok"; iconTxt = "✓"; txtCls = "ok";
+        }
+        if(isChosen && !isCorrect){
+          iconCls = "bad"; iconTxt = "✗"; txtCls = "bad";
         }
 
-        const opts = getOptions(q);
-        const correctIdx = getCorrectIndex(q);
-        const chosenIdx = Number(mcqMap[qid]);
-        const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
-        const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
+        const div = document.createElement("div");
+        div.className = "optLine";
+        div.innerHTML = `
+          <span class="markIcon ${iconCls}">${iconTxt || ""}</span>
+          <span class="optKey">${letters[oi]}.</span>
+          <span class="optTxt ${txtCls}">${esc(op || "")}</span>
+        `;
+        optWrap.appendChild(div);
+      });
 
-        const optHtml = opts.slice(0,4).map((op, oi)=>{
-          const isCorrect = (hasCorrect && oi === correctIdx);
-          const isChosen = (hasChosen && oi === chosenIdx);
+      row.appendChild(optWrap);
 
-          let cls = "dim";
-          let prefix = `${letters[oi]}. `;
+      if(!hasChosen){
+        const note = document.createElement("div");
+        note.className = "noAnsText";
+        note.textContent = "দুঃখিত! এই প্রশ্নের কোনো উত্তর সিলেক্ট করেননি";
+        row.appendChild(note);
+      }
 
-          if(!hasChosen && isCorrect){
-            cls = "warn"; prefix = `✓ ${letters[oi]}. `;
-          }else if(hasChosen && isCorrect){
-            cls = "ok"; prefix = `✓ ${letters[oi]}. `;
-          }
-          if(isChosen && !isCorrect){
-            cls = "bad"; prefix = `✗ ${letters[oi]}. `;
-          }
-          return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
-        }).join("");
+      wrap.appendChild(row);
+    });
 
-        const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
+    $("detailContent").innerHTML = "";
+    $("detailContent").appendChild(wrap);
+  }
 
+  async function openDetailsByResultId(resId){
+    try{
+      setUrlResultId(resId);
+
+      $("detailContent").innerHTML = `<div class="loading">Details লোড হচ্ছে…</div>`;
+      openDetailsPopup();
+
+      const doc = await db.collection(COL_RESULTS).doc(resId).get();
+      if(!doc.exists){
+        $("detailContent").innerHTML = `<div class="err">Result পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      resultPayload = { id: doc.id, ...doc.data() };
+
+      // ✅ ensure modelTestId is present
+      if(!modelTestId && resultPayload.modelTestId){
+        modelTestId = resultPayload.modelTestId;
+      }
+
+      // ✅ keep highlight id for "see all result"
+      highlightResultId = resId;
+
+      await loadModelTestTitle();
+      await loadQuestionsOnce();
+      renderDetails();
+    }catch(e){
+      console.error(e);
+      $("detailContent").innerHTML = `<div class="err">Details লোড করতে সমস্যা হচ্ছে।</div>`;
+    }
+  }
+  window.openDetailsByResultId = openDetailsByResultId;
+
+  // ===== Load ranking table =====
+  async function loadResultSheet(){
+    try{
+      const snap = await db.collection(COL_RESULTS)
+        .where("modelTestId","==", modelTestId)
+        .get();
+
+      if(snap.empty){
+        $("rankBody").innerHTML = `<tr><td colspan="11">এই modelTestId এর কোনো result নেই</td></tr>`;
+        allRows = [];
+        filteredRows = [];
+        renderPage();
+        return;
+      }
+
+      allRows = snap.docs.map(d => {
+        const p = { id: d.id, ...d.data() };
+        const r = p.result || {};
+        const obtained = safeNum(r.obtainedMark, 0);
+        const submittedAt = safeNum(p.submittedAt, Number.POSITIVE_INFINITY);
+
+        const timeTakenText = p.timeTakenText || "";
+        const timeTakenSec = parseTimeTakenTextToSeconds(timeTakenText);
+
+        return { p, r, obtained, submittedAt, timeTakenSec };
+      });
+
+      // ✅ Rank rule:
+      // 1) obtainedMark DESC
+      // 2) timeTakenSec ASC
+      // 3) submittedAt ASC
+      allRows.sort((a,b)=>{
+        if(b.obtained !== a.obtained) return b.obtained - a.obtained;
+        if(a.timeTakenSec !== b.timeTakenSec) return a.timeTakenSec - b.timeTakenSec;
+        return a.submittedAt - b.submittedAt;
+      });
+
+      filteredRows = allRows.slice();
+      page = 1;
+      renderPage();
+    }catch(e){
+      console.error(e);
+      $("rankBody").innerHTML = `<tr><td colspan="11">Result Sheet লোড করতে সমস্যা হচ্ছে</td></tr>`;
+    }
+  }
+
+  // ===== ✅ Model Test Title loader (now supports 3 meta sources) =====
+  async function loadModelTestTitle(){
+    try{
+      // If details already open, trust payload name first
+      const payloadName = resultPayload?.modelTestName;
+      if(payloadName){
+        $("modelTestTitle").textContent = payloadName;
+        return;
+      }
+
+      if(!modelTestId){
+        $("modelTestTitle").textContent = "Model Test";
+        return;
+      }
+
+      const meta = await loadModelTestMeta(modelTestId);
+      if(meta.doc){
+        mtSource = meta.source;
+        $("modelTestTitle").textContent = getTitleField(meta.doc);
+        return;
+      }
+
+      // fallback
+      $("modelTestTitle").textContent = "Model Test";
+    }catch(e){
+      $("modelTestTitle").textContent = resultPayload?.modelTestName || "Model Test";
+    }
+  }
+
+  // ===== PDF helpers =====
+  async function renderPageToCanvas(html){
+    const area = $("pdfPageArea");
+    area.innerHTML = html;
+    try{ await document.fonts.ready; }catch(e){}
+    return await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+  }
+
+  function buildPdfMark(){
+    const r = resultPayload?.result || {};
+    const obtained = r.obtainedMark ?? "--";
+    const total = r.totalMark ?? "--";
+    const pf = getPassFail(r.obtainedMark, r.totalMark);
+    return `
+      <div class="pdfMark">
+        <div class="score">${esc(obtained)} / ${esc(total)}</div>
+        <div class="pf ${pf.ok === true ? "pass" : pf.ok === false ? "fail" : ""}">${esc(pf.label)}</div>
+      </div>
+    `;
+  }
+
+  function chunk(arr, size){
+    const out = [];
+    for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+    return out;
+  }
+
+  function buildPdfQuestionsHtml(qs, startNo){
+    const p = resultPayload || {};
+    const mcqMap = getMcqMap(p);
+    const wrMap = getWrittenMap(p);
+    const letters = ["A","B","C","D"];
+
+    return qs.map((q, idx)=>{
+      const qno = startNo + idx;
+      const qt = getQText(q) || "(No question text)";
+      const qid = q.id;
+
+      if(isWrittenQuestion(q)){
+        const ans = (wrMap[qid] ?? "").toString().trim();
         return `
           <div class="pdfQ">
             <div class="qline">Q${qno}. ${esc(qt)}</div>
-            <div class="pdfOpt">${optHtml}</div>
-            ${noAns}
+            <div class="pdfOpt">
+              <div class="dim" style="grid-column:1 / -1;">Your Answer: ${esc(ans || "(No Answer)")}</div>
+            </div>
           </div>
         `;
+      }
+
+      const opts = getOptions(q);
+      const correctIdx = getCorrectIndex(q);
+      const chosenIdx = Number(mcqMap[qid]);
+      const hasChosen = Number.isFinite(chosenIdx) && chosenIdx >= 0;
+      const hasCorrect = Number.isFinite(correctIdx) && correctIdx >= 0;
+
+      const optHtml = opts.slice(0,4).map((op, oi)=>{
+        const isCorrect = (hasCorrect && oi === correctIdx);
+        const isChosen = (hasChosen && oi === chosenIdx);
+
+        let cls = "dim";
+        let prefix = `${letters[oi]}. `;
+
+        if(!hasChosen && isCorrect){
+          cls = "warn"; prefix = `✓ ${letters[oi]}. `;
+        }else if(hasChosen && isCorrect){
+          cls = "ok"; prefix = `✓ ${letters[oi]}. `;
+        }
+        if(isChosen && !isCorrect){
+          cls = "bad"; prefix = `✗ ${letters[oi]}. `;
+        }
+        return `<div class="${cls}">${prefix}${esc(op || "")}</div>`;
       }).join("");
-    }
 
-    function buildPdfPage1_DetailsLike(firstQs){
-      const p = resultPayload || {};
-      const r = p.result || {};
-      const name = p.studentName || "--";
-      const dist = p.studentDistrict || p.studentAddress || p.address || "--";
-      const test = p.modelTestName || "Model Test";
-      const timeTakenText = p.timeTakenText || "--";
-
-      const right = r.right ?? "--";
-      const wrong = r.wrong ?? "--";
-      const noAns = calcNoAns(r);
-
-      const qHtml = buildPdfQuestionsHtml(firstQs, 1);
+      const noAns = !hasChosen ? `<div class="pdfNoAns">আপনি কোনো উত্তর সিলেক্ট করেননি।</div>` : ``;
 
       return `
-        <div class="pdfFrame">
-          <div class="pdfWatermark"><span>eProstutiBD</span></div>
-          ${buildPdfMark()}
-
-          <div class="pdfH1">${esc(test)} — Details Sheet</div>
-          <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
-
-          <div class="pdfStatsRow">
-            <span class="pdfPill">Total: ${esc(r.totalQuestion ?? "--")} Q</span>
-            <span class="pdfPill ok">✓ Right: ${esc(right)}</span>
-            <span class="pdfPill bad">✗ Wrong: ${esc(wrong)}</span>
-            <span class="pdfPill warn">No Ans: ${esc(noAns)}</span>
-          </div>
-
-          <div class="pdfQuestions">${qHtml}</div>
-
-          <div class="pdfFooter">
-            <span>eProstutiBD</span>
-            <span>Questions</span>
-          </div>
+        <div class="pdfQ">
+          <div class="qline">Q${qno}. ${esc(qt)}</div>
+          <div class="pdfOpt">${optHtml}</div>
+          ${noAns}
         </div>
       `;
-    }
+    }).join("");
+  }
 
-    function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
-      const qHtml = buildPdfQuestionsHtml(qs, startNo);
-      return `
-        <div class="pdfFrame">
-          <div class="pdfWatermark"><span>eProstutiBD</span></div>
-          <div class="pdfQuestions" style="margin-top:0;">${qHtml}</div>
-          <div class="pdfFooter">
-            <span>Questions</span>
-            <span>Page ${pageIndex} / ${totalPages}</span>
-          </div>
+  function buildPdfPage1_DetailsLike(firstQs){
+    const p = resultPayload || {};
+    const r = p.result || {};
+    const name = p.studentName || "--";
+    const dist = p.studentDistrict || p.studentAddress || p.address || "--";
+    const test = p.modelTestName || "Model Test";
+    const timeTakenText = p.timeTakenText || "--";
+
+    const right = r.right ?? "--";
+    const wrong = r.wrong ?? "--";
+    const noAns = calcNoAns(r);
+
+    const qHtml = buildPdfQuestionsHtml(firstQs, 1);
+
+    return `
+      <div class="pdfFrame">
+        <div class="pdfWatermark"><span>eProstutiBD</span></div>
+        ${buildPdfMark()}
+
+        <div class="pdfH1">${esc(test)} — Details Sheet</div>
+        <div class="pdfH2">${esc(name)} (${esc(dist)}) • Submitted: ${esc(fmtTime(p.submittedAt))} • Time: ${esc(timeTakenText)}</div>
+
+        <div class="pdfStatsRow">
+          <span class="pdfPill">Total: ${esc(r.totalQuestion ?? "--")} Q</span>
+          <span class="pdfPill ok">✓ Right: ${esc(right)}</span>
+          <span class="pdfPill bad">✗ Wrong: ${esc(wrong)}</span>
+          <span class="pdfPill warn">No Ans: ${esc(noAns)}</span>
         </div>
-      `;
-    }
 
-    // ✅ PDF: per page 20 questions
-    const PDF_FIRST_PAGE_Q = 20;
-    const PDF_NEXT_PAGE_Q  = 20;
+        <div class="pdfQuestions">${qHtml}</div>
 
-    async function downloadResultPDF(){
-      try{
-        if(!resultPayload){
-          alert("Details থেকে একজনের result খুলে তারপর PDF ডাউনলোড করুন।");
-          return;
-        }
-        await loadQuestionsOnce();
+        <div class="pdfFooter">
+          <span>eProstutiBD</span>
+          <span>Questions</span>
+        </div>
+      </div>
+    `;
+  }
 
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF("p", "pt", "a4");
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
+  function buildPdfQuestionsOnlyPage(qs, startNo, pageIndex, totalPages){
+    const qHtml = buildPdfQuestionsHtml(qs, startNo);
+    return `
+      <div class="pdfFrame">
+        <div class="pdfWatermark"><span>eProstutiBD</span></div>
+        <div class="pdfQuestions" style="margin-top:0;">${qHtml}</div>
+        <div class="pdfFooter">
+          <span>Questions</span>
+          <span>Page ${pageIndex} / ${totalPages}</span>
+        </div>
+      </div>
+    `;
+  }
 
-        let first = true;
-        const addCanvas = (canvas)=>{
-          const imgData = canvas.toDataURL("image/jpeg", 0.95);
-          if(!first) pdf.addPage();
-          first = false;
-          pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
-        };
+  // ✅ PDF: per page 20 questions
+  const PDF_FIRST_PAGE_Q = 20;
+  const PDF_NEXT_PAGE_Q  = 20;
 
-        const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
-        addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
-
-        const rest = questions.slice(PDF_FIRST_PAGE_Q);
-        const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
-
-        const totalPages = 1 + restChunks.length;
-        for(let i=0;i<restChunks.length;i++){
-          const startNo = PDF_FIRST_PAGE_Q + (i * PDF_NEXT_PAGE_Q) + 1;
-          addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(restChunks[i], startNo, (i+2), totalPages)));
-        }
-
-        const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
-        const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
-        pdf.save(`${testName}-${name}-result.pdf`);
-      }catch(e){
-        console.error(e);
-        alert("PDF তৈরি করতে সমস্যা হচ্ছে। Console দেখুন।");
-      }
-    }
-    window.downloadResultPDF = downloadResultPDF;
-
-    // ===== Boot =====
-    async function boot(){
-      // ✅ if only resultId is provided, infer modelTestId from that result
-      if(!modelTestId && resultIdFromUrl){
-        try{
-          const doc = await db.collection(COL_RESULTS).doc(resultIdFromUrl).get();
-          if(doc.exists){
-            const p = { id: doc.id, ...doc.data() };
-            if(p.modelTestId) modelTestId = p.modelTestId;
-          }
-        }catch(e){}
-      }
-
-      if(!modelTestId && !resultIdFromUrl){
-        $("modelTestTitle").textContent = "modelTestId পাওয়া যায়নি";
-        $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX অথবা result-sheet.html?resultId=YYYY</td></tr>`;
+  async function downloadResultPDF(){
+    try{
+      if(!resultPayload){
+        alert("Details থেকে একজনের result খুলে তারপর PDF ডাউনলোড করুন।");
         return;
       }
+      await loadQuestionsOnce();
 
-      $("fName").addEventListener("input", ()=> applyFilters());
-      $("fZila").addEventListener("input", ()=> applyFilters());
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "pt", "a4");
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
 
-      await loadModelTestTitle();
+      let first = true;
+      const addCanvas = (canvas)=>{
+        const imgData = canvas.toDataURL("image/jpeg", 0.95);
+        if(!first) pdf.addPage();
+        first = false;
+        pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+      };
 
-      if(modelTestId){
-        await loadResultSheet();
-        loadQuestionsOnce().catch(()=>{});
+      const firstChunk = questions.slice(0, PDF_FIRST_PAGE_Q);
+      addCanvas(await renderPageToCanvas(buildPdfPage1_DetailsLike(firstChunk)));
+
+      const rest = questions.slice(PDF_FIRST_PAGE_Q);
+      const restChunks = chunk(rest, PDF_NEXT_PAGE_Q);
+
+      const totalPages = 1 + restChunks.length;
+      for(let i=0;i<restChunks.length;i++){
+        const startNo = PDF_FIRST_PAGE_Q + (i * PDF_NEXT_PAGE_Q) + 1;
+        addCanvas(await renderPageToCanvas(buildPdfQuestionsOnlyPage(restChunks[i], startNo, (i+2), totalPages)));
       }
 
-      // ✅ when coming from another page: highlight that row in table
-      if(resultIdFromUrl){
-        highlightResultId = resultIdFromUrl;
-        setTimeout(()=>{
-          jumpToAndHighlightResult(resultIdFromUrl);
-        }, 120);
-      }
+      const testName = (resultPayload.modelTestName || "model-test").replace(/[\\/:*?"<>|]+/g, "_").trim();
+      const name = (resultPayload.studentName || "student").replace(/[\\/:*?"<>|]+/g, "_").trim();
+      pdf.save(`${testName}-${name}-result.pdf`);
+    }catch(e){
+      console.error(e);
+      alert("PDF তৈরি করতে সমস্যা হচ্ছে। Console দেখুন।");
+    }
+  }
+  window.downloadResultPDF = downloadResultPDF;
+
+  // ===== Boot =====
+  async function boot(){
+    // ✅ if only resultId is provided, infer modelTestId from that result
+    if(!modelTestId && resultIdFromUrl){
+      try{
+        const doc = await db.collection(COL_RESULTS).doc(resultIdFromUrl).get();
+        if(doc.exists){
+          const p = { id: doc.id, ...doc.data() };
+          if(p.modelTestId) modelTestId = p.modelTestId;
+        }
+      }catch(e){}
     }
 
-    boot();
-  </script>
+    if(!modelTestId && !resultIdFromUrl){
+      $("modelTestTitle").textContent = "modelTestId পাওয়া যায়নি";
+      $("rankBody").innerHTML = `<tr><td colspan="11">URL এ দিন: result-sheet.html?modelTestId=XXXX অথবা result-sheet.html?resultId=YYYY</td></tr>`;
+      return;
+    }
+
+    $("fName").addEventListener("input", ()=> applyFilters());
+    $("fZila").addEventListener("input", ()=> applyFilters());
+
+    await loadModelTestTitle();
+
+    if(modelTestId){
+      await loadResultSheet();
+      loadQuestionsOnce().catch(()=>{});
+    }
+
+    // ✅ when coming from another page: jump + highlight 5 sec
+    if(resultIdFromUrl){
+      highlightResultId = resultIdFromUrl;
+      setTimeout(()=>{ jumpToAndHighlightResult(resultIdFromUrl, true); }, 160);
+    }
+  }
+
+  boot();
+</script>
+
 </body>
 </html>
