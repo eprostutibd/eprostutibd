@@ -1014,407 +1014,420 @@
 
 <script>
   const firebaseConfig = {
-  apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-  authDomain: "eprostutibd-webapp.firebaseapp.com",
-  projectId: "eprostutibd-webapp",
-  storageBucket: "eprostutibd-webapp.firebasestorage.app",
-  messagingSenderId: "1044069942330",
-  appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-  measurementId: "G-T2G55NMDQT"
-};
-
-/* ✅ admission prefix added - Admin page এর সাথে match করানো */
-const COL_SUBJECTS = "admission_subjects";
-const COL_SUBJECT_QUESTIONS = "admission_subject_questions";
-const COL_SUBJECT_MODEL_TESTS = "admission_subject_tests"; // Admin page: COL_SUBJECT_TESTS
-
-/* ✅ new university collections (admin page থেকে এগুলো fill হবে) */
-const COL_UNIVERSITIES = "admission_universities";
-const COL_UNIVERSITY_QUESTIONS = "admission_university_questions";
-
-/* ✅ Admission Tests collection (যদি প্রয়োজন হয়) */
-const COL_ADMISSION_TESTS = "admission_tests"; // Admin page: COL_ADMISSION_TESTS
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const $ = (id)=>document.getElementById(id);
-
-/* =========================
-   ✅ Toast
-   ========================= */
-function esc(str){
-  return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-}
-function toast(message, type="info", title){
-  const host = $("toastHost");
-  if(!host) return;
-
-  const t = document.createElement("div");
-  t.className = "toast " + type;
-
-  const ico = type==="success" ? "✓" :
-              type==="warn" ? "!" :
-              type==="error" ? "×" : "i";
-
-  const ttl = title || (
-    type==="success" ? "Success" :
-    type==="warn" ? "Warning" :
-    type==="error" ? "Error" : "Info"
-  );
-
-  t.innerHTML = `
-    <div class="ico">${ico}</div>
-    <div class="body">
-      <div class="title">${ttl}</div>
-      <div class="msg">${esc(message)}</div>
-    </div>
-    <button class="x" aria-label="Close">×</button>
-  `;
-
-  const close = ()=>{
-    t.classList.add("out");
-    setTimeout(()=>t.remove(), 180);
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
   };
-  t.querySelector(".x").onclick = close;
 
-  host.appendChild(t);
-  setTimeout(close, 2600);
-}
-window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
+  /* ✅ admission prefix added - Admin page এর সাথে match করানো */
+  const COL_SUBJECTS = "admission_subjects";
+  const COL_SUBJECT_QUESTIONS = "admission_subject_questions";
+  const COL_SUBJECT_MODEL_TESTS = "admission_subject_tests"; // Admin page: COL_SUBJECT_TESTS
 
-function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-window.toggleMenu=toggleMenu; window.closeMenu=closeMenu;
+  /* ✅ new university collections (admin page থেকে এগুলো fill হবে) */
+  const COL_UNIVERSITIES = "admission_universities";
+  const COL_UNIVERSITY_QUESTIONS = "admission_university_questions";
 
-function openSubjectSheet(){
-  const ss = $("subjectSheet");
-  ss.style.display = "block";
-  ss.setAttribute("aria-hidden","false");
-}
-function closeSubjectSheet(){
-  const ss = $("subjectSheet");
-  ss.style.display = "none";
-  ss.setAttribute("aria-hidden","true");
-}
-window.openSubjectSheet = openSubjectSheet;
-window.closeSubjectSheet = closeSubjectSheet;
+  /* ✅ Admission Tests collection (university wise model test count) */
+  const COL_ADMISSION_TESTS = "admission_tests";
 
-document.addEventListener("keydown",(e)=>{
-  if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
-});
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
 
-$("year").textContent = new Date().getFullYear();
-
-function syncStickyOffsets(){
-  const h = document.querySelector("header")?.offsetHeight || 64;
-  document.documentElement.style.setProperty("--headerH", h + "px");
-}
-window.addEventListener("resize", syncStickyOffsets);
-window.addEventListener("load", syncStickyOffsets);
-syncStickyOffsets();
-
-function normalize(s){
-  s = String(s||"").toLowerCase();
-  try{
-    return s.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
-  }catch(e){
-    return s.replace(/[^a-z0-9\u0980-\u09FF\s]+/g, " ").replace(/\s+/g, " ").trim();
+  /* =========================
+     ✅ Toast
+     ========================= */
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
-}
+  function toast(message, type="info", title){
+    const host = $("toastHost");
+    if(!host) return;
 
-// debounce search
-let searchTimer = null;
-function debouncedSearch(){
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(()=>resetAndReload(true), 350);
-}
-window.debouncedSearch = debouncedSearch;
+    const t = document.createElement("div");
+    t.className = "toast " + type;
 
-function getOptions(doc){
-  if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
-  return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
-}
-function getCorrectIndex(doc, opts){
-  if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
-  const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
-  if(!ra) return -1;
+    const ico = type==="success" ? "✓" :
+                type==="warn" ? "!" :
+                type==="error" ? "×" : "i";
 
-  const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
-  const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
-  if(map[low] !== undefined) return map[low];
+    const ttl = title || (
+      type==="success" ? "Success" :
+      type==="warn" ? "Warning" :
+      type==="error" ? "Error" : "Info"
+    );
 
-  const nra = normalize(ra);
-  for(let i=0;i<opts.length;i++){
-    if(normalize(opts[i]) === nra) return i;
+    t.innerHTML = `
+      <div class="ico">${ico}</div>
+      <div class="body">
+        <div class="title">${ttl}</div>
+        <div class="msg">${esc(message)}</div>
+      </div>
+      <button class="x" aria-label="Close">×</button>
+    `;
+
+    const close = ()=>{
+      t.classList.add("out");
+      setTimeout(()=>t.remove(), 180);
+    };
+    t.querySelector(".x").onclick = close;
+
+    host.appendChild(t);
+    setTimeout(close, 2600);
   }
-  return -1;
-}
+  window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
 
-let SUBJECTS = [];
-let selectedSubjectId = "";
-let selectedSubjectName = "";
+  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
+  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
+  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+  window.toggleMenu=toggleMenu; window.closeMenu=closeMenu;
 
-let mode = "mcq";
-let ansMode = "hide";
+  function openSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "block";
+    ss.setAttribute("aria-hidden","false");
+  }
+  function closeSubjectSheet(){
+    const ss = $("subjectSheet");
+    ss.style.display = "none";
+    ss.setAttribute("aria-hidden","true");
+  }
+  window.openSubjectSheet = openSubjectSheet;
+  window.closeSubjectSheet = closeSubjectSheet;
 
-const PAGE_SIZE = 30;
-let page = 1;
+  document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
+  });
 
-let cursorByPage = { 1: null };
-let lastDoc = null;
-let hasNext = false;
+  $("year").textContent = new Date().getFullYear();
 
-let selectedOptionMap = new Map();
+  function syncStickyOffsets(){
+    const h = document.querySelector("header")?.offsetHeight || 64;
+    document.documentElement.style.setProperty("--headerH", h + "px");
+  }
+  window.addEventListener("resize", syncStickyOffsets);
+  window.addEventListener("load", syncStickyOffsets);
+  syncStickyOffsets();
 
-const mtCountMap = new Map();
-const mtUnsubMap = new Map();
-
-let unsubSubjects = null;
-let unsubRight = null;
-let unsubLatest = null;
-let unsubUni = null;
-
-const LS_KEY = "epbd_admission_assistant_state_v1";
-
-function getParam(name){
-  const u = new URL(location.href);
-  return u.searchParams.get(name) || "";
-}
-
-function saveState(){
-  const payload = {
-    subjectId: selectedSubjectId,
-    mode,
-    ansMode,
-    page,
-    cursorByPage,
-    q: $("qSearch").value || "",
-    s: $("sSearch") ? ($("sSearch").value || "") : ""
-  };
-  localStorage.setItem(LS_KEY, JSON.stringify(payload));
-}
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    if(!raw) return;
-    const st = JSON.parse(raw);
-    if(st && typeof st === "object"){
-      selectedSubjectId = st.subjectId || selectedSubjectId;
-      mode = st.mode || mode;
-      ansMode = st.ansMode || ansMode;
-      page = Number(st.page || 1) || 1;
-
-      if(st.cursorByPage && typeof st.cursorByPage === "object"){
-        cursorByPage = st.cursorByPage;
-        if(!cursorByPage[1]) cursorByPage[1] = null;
-      }
-
-      if($("qSearch")) $("qSearch").value = st.q || "";
-      if($("sSearch")) $("sSearch").value = st.s || "";
+  function normalize(s){
+    s = String(s||"").toLowerCase();
+    try{
+      return s.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+    }catch(e){
+      return s.replace(/[^a-z0-9\u0980-\u09FF\s]+/g, " ").replace(/\s+/g, " ").trim();
     }
-  }catch(e){}
-}
+  }
 
-function applyUrlOverrides(){
-  const urlSubjectId = getParam("subjectId");
-  const urlMode = getParam("mode");
-  const urlPage = Number(getParam("page") || "1") || 1;
+  // debounce search
+  let searchTimer = null;
+  function debouncedSearch(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(()=>resetAndReload(true), 350);
+  }
+  window.debouncedSearch = debouncedSearch;
 
-  if(urlSubjectId){
-    selectedSubjectId = urlSubjectId;
-    page = urlPage > 0 ? urlPage : 1;
+  function getOptions(doc){
+    if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+    return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+  }
+  function getCorrectIndex(doc, opts){
+    if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+    const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+    if(!ra) return -1;
+
+    const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
+    const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
+    if(map[low] !== undefined) return map[low];
+
+    const nra = normalize(ra);
+    for(let i=0;i<opts.length;i++){
+      if(normalize(opts[i]) === nra) return i;
+    }
+    return -1;
+  }
+
+  let SUBJECTS = [];
+  let selectedSubjectId = "";
+  let selectedSubjectName = "";
+
+  let mode = "mcq";
+  let ansMode = "hide";
+
+  const PAGE_SIZE = 30;
+  let page = 1;
+
+  let cursorByPage = { 1: null };
+  let lastDoc = null;
+  let hasNext = false;
+
+  let selectedOptionMap = new Map();
+
+  const mtCountMap = new Map();
+  const mtUnsubMap = new Map();
+
+  let unsubSubjects = null;
+  let unsubRight = null;
+  let unsubLatest = null;
+  let unsubUni = null;
+
+  const LS_KEY = "epbd_admission_assistant_state_v1";
+
+  function getParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name) || "";
+  }
+
+  function saveState(){
+    const payload = {
+      subjectId: selectedSubjectId,
+      mode,
+      ansMode,
+      page,
+      cursorByPage,
+      q: $("qSearch").value || "",
+      s: $("sSearch") ? ($("sSearch").value || "") : ""
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return;
+      const st = JSON.parse(raw);
+      if(st && typeof st === "object"){
+        selectedSubjectId = st.subjectId || selectedSubjectId;
+        mode = st.mode || mode;
+        ansMode = st.ansMode || ansMode;
+        page = Number(st.page || 1) || 1;
+
+        if(st.cursorByPage && typeof st.cursorByPage === "object"){
+          cursorByPage = st.cursorByPage;
+          if(!cursorByPage[1]) cursorByPage[1] = null;
+        }
+
+        if($("qSearch")) $("qSearch").value = st.q || "";
+        if($("sSearch")) $("sSearch").value = st.s || "";
+      }
+    }catch(e){}
+  }
+
+  function applyUrlOverrides(){
+    const urlSubjectId = getParam("subjectId");
+    const urlMode = getParam("mode");
+    const urlPage = Number(getParam("page") || "1") || 1;
+
+    if(urlSubjectId){
+      selectedSubjectId = urlSubjectId;
+      page = urlPage > 0 ? urlPage : 1;
+      cursorByPage = { 1: null };
+      selectedOptionMap.clear();
+    }else{
+      if(urlPage > 1) page = urlPage;
+    }
+
+    if(urlMode && ["mcq","written","model"].includes(urlMode)){
+      mode = urlMode;
+    }
+
+    document.body.setAttribute("data-mode", mode);
+  }
+
+  loadState();
+  applyUrlOverrides();
+
+  function setUrlState(){
+    const u = new URL(location.href);
+    if(selectedSubjectId) u.searchParams.set("subjectId", selectedSubjectId);
+    u.searchParams.set("page", String(page));
+    u.searchParams.set("mode", mode);
+    history.replaceState({}, "", u.toString());
+  }
+
+  function setMode(m){
+    mode = m;
+    document.body.setAttribute("data-mode", mode);
+
+    $("tabMcq").classList.toggle("active", mode==="mcq");
+    $("tabWritten").classList.toggle("active", mode==="written");
+    $("tabModel").classList.toggle("active", mode==="model");
+
+    $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+
+    page = 1;
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
-  }else{
-    if(urlPage > 1) page = urlPage;
+
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  window.setMode = setMode;
+
+  function setAnsMode(m){
+    ansMode = m;
+    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    saveState();
+    renderContent();
+  }
+  window.setAnsMode = setAnsMode;
+
+  function relatedMatch(query, text){
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
   }
 
-  if(urlMode && ["mcq","written","model"].includes(urlMode)){
-    mode = urlMode;
+  function syncModelTestListeners(){
+    const alive = new Set(SUBJECTS.map(s=>s.id));
+    for(const [sid, unsub] of mtUnsubMap.entries()){
+      if(!alive.has(sid)){
+        try{unsub();}catch(e){}
+        mtUnsubMap.delete(sid);
+        mtCountMap.delete(sid);
+      }
+    }
+    SUBJECTS.forEach(s=>{
+      if(mtUnsubMap.has(s.id)) return;
+      const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", s.id)
+        .onSnapshot((snap)=>{
+          mtCountMap.set(s.id, snap.size || 0);
+          renderSubjectList();
+          renderSubjectSheet();
+        });
+      mtUnsubMap.set(s.id, unsub);
+    });
   }
 
-  document.body.setAttribute("data-mode", mode);
-}
+  function renderSubjectList(){
+    const list = $("sList");
+    if(!list) return;
 
-loadState();
-applyUrlOverrides();
+    const q = $("sSearch").value || "";
+    const filtered = SUBJECTS
+      .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
+      .filter(s => !q ? true : s._score >= 0.25)
+      .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
 
-function setUrlState(){
-  const u = new URL(location.href);
-  if(selectedSubjectId) u.searchParams.set("subjectId", selectedSubjectId);
-  u.searchParams.set("page", String(page));
-  u.searchParams.set("mode", mode);
-  history.replaceState({}, "", u.toString());
-}
+    $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
+    $("sEmpty").style.display = filtered.length ? "none" : "block";
 
-function setMode(m){
-  mode = m;
-  document.body.setAttribute("data-mode", mode);
+    list.innerHTML = "";
+    filtered.forEach(s=>{
+      const mcq = s.counts?.mcq || 0;
+      const written = s.counts?.written || 0;
+      const mt = mtCountMap.get(s.id) ?? 0;
 
-  $("tabMcq").classList.toggle("active", mode==="mcq");
-  $("tabWritten").classList.toggle("active", mode==="written");
-  $("tabModel").classList.toggle("active", mode==="model");
+      const el = document.createElement("div");
+      el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
+      el.onclick = ()=> selectSubject(s.id, true);
+      el.innerHTML = `
+        <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+        <div class="chips">
+          <span class="chip">MCQ <b>${mcq}</b></span>
+          <span class="chip">Written <b>${written}</b></span>
+          <span class="chip">Model <b>${mt}</b></span>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  window.renderSubjectList = renderSubjectList;
 
-  $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+  function renderSubjectSheet(){
+    const grid = $("subjectSheetGrid");
+    if(!grid) return;
 
-  page = 1;
-  cursorByPage = { 1: null };
-  selectedOptionMap.clear();
+    grid.innerHTML = "";
+    const sorted = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""));
 
-  setUrlState();
-  saveState();
-  loadRight();
-}
-window.setMode = setMode;
+    sorted.forEach(s=>{
+      const mcq = s.counts?.mcq || 0;
+      const written = s.counts?.written || 0;
+      const mt = mtCountMap.get(s.id) ?? 0;
 
-function setAnsMode(m){
-  ansMode = m;
-  $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-  $("ansShowBtn").classList.toggle("active", ansMode==="show");
-  saveState();
-  renderContent();
-}
-window.setAnsMode = setAnsMode;
+      const it = document.createElement("div");
+      it.className = "sheetItem" + (s.id===selectedSubjectId ? " active" : "");
+      it.onclick = ()=>{
+        selectSubject(s.id, true);
+        closeSubjectSheet();
+      };
+      it.innerHTML = `
+        <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
+        <div class="mini">
+          <span>MCQ: ${mcq}</span>
+          <span>W: ${written}</span>
+          <span>M: ${mt}</span>
+        </div>
+      `;
+      grid.appendChild(it);
+    });
+  }
 
-function relatedMatch(query, text){
-  const q = normalize(query);
-  const t = normalize(text);
-  if(!q) return 1;
-  if(t.includes(q)) return 10;
-  const qw = q.split(" ").filter(Boolean);
-  const tw = new Set(t.split(" ").filter(Boolean));
-  let hit = 0;
-  qw.forEach(w => { if(tw.has(w)) hit++; });
-  return hit / Math.max(1, qw.length);
-}
+  function selectSubject(id, shouldScrollTop){
+    selectedSubjectId = id;
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
 
-function syncModelTestListeners(){
-  const alive = new Set(SUBJECTS.map(s=>s.id));
-  for(const [sid, unsub] of mtUnsubMap.entries()){
-    if(!alive.has(sid)){
-      try{unsub();}catch(e){}
-      mtUnsubMap.delete(sid);
-      mtCountMap.delete(sid);
+    const found = SUBJECTS.find(s=>s.id===id);
+    selectedSubjectName = found?.name || "";
+
+    $("subName").textContent = selectedSubjectName || "Admission Assistant";
+    $("headerTag").textContent = selectedSubjectName
+      ? `Admission Assistant • ${selectedSubjectName}`
+      : "Admission Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
+
+    renderSubjectList();
+    renderSubjectSheet();
+
+    setUrlState();
+    saveState();
+    loadRight();
+
+    if(shouldScrollTop){
+      try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch(e){ window.scrollTo(0,0); }
     }
   }
-  SUBJECTS.forEach(s=>{
-    if(mtUnsubMap.has(s.id)) return;
-    const unsub = db.collection(COL_SUBJECT_MODEL_TESTS)
-      .where("subjectId","==", s.id)
-      .onSnapshot((snap)=>{
-        mtCountMap.set(s.id, snap.size || 0);
-        renderSubjectList();
-        renderSubjectSheet();
-      });
-    mtUnsubMap.set(s.id, unsub);
-  });
-}
 
-function renderSubjectList(){
-  const list = $("sList");
-  if(!list) return;
-
-  const q = $("sSearch").value || "";
-  const filtered = SUBJECTS
-    .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
-    .filter(s => !q ? true : s._score >= 0.25)
-    .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
-
-  $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
-  $("sEmpty").style.display = filtered.length ? "none" : "block";
-
-  list.innerHTML = "";
-  filtered.forEach(s=>{
-    const mcq = s.counts?.mcq || 0;
-    const written = s.counts?.written || 0;
-    const mt = mtCountMap.get(s.id) ?? 0;
-
-    const el = document.createElement("div");
-    el.className = "sItem" + (s.id === selectedSubjectId ? " active" : "");
-    el.onclick = ()=> selectSubject(s.id, true);
-    el.innerHTML = `
-      <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
-      <div class="chips">
-        <span class="chip">MCQ <b>${mcq}</b></span>
-        <span class="chip">Written <b>${written}</b></span>
-        <span class="chip">Model <b>${mt}</b></span>
-      </div>
-    `;
-    list.appendChild(el);
-  });
-}
-window.renderSubjectList = renderSubjectList;
-
-function renderSubjectSheet(){
-  const grid = $("subjectSheetGrid");
-  if(!grid) return;
-
-  grid.innerHTML = "";
-  const sorted = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""));
-
-  sorted.forEach(s=>{
-    const mcq = s.counts?.mcq || 0;
-    const written = s.counts?.written || 0;
-    const mt = mtCountMap.get(s.id) ?? 0;
-
-    const it = document.createElement("div");
-    it.className = "sheetItem" + (s.id===selectedSubjectId ? " active" : "");
-    it.onclick = ()=>{
-      selectSubject(s.id, true);
-      closeSubjectSheet();
-    };
-    it.innerHTML = `
-      <b title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</b>
-      <div class="mini">
-        <span>MCQ: ${mcq}</span>
-        <span>W: ${written}</span>
-        <span>M: ${mt}</span>
-      </div>
-    `;
-    grid.appendChild(it);
-  });
-}
-
-function selectSubject(id, shouldScrollTop){
-  selectedSubjectId = id;
-  page = 1;
-  cursorByPage = { 1: null };
-  selectedOptionMap.clear();
-
-  const found = SUBJECTS.find(s=>s.id===id);
-  selectedSubjectName = found?.name || "";
-
-  $("subName").textContent = selectedSubjectName || "Admission Assistant";
-  $("headerTag").textContent = selectedSubjectName
-    ? `Admission Assistant • ${selectedSubjectName}`
-    : "Admission Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
-
-  renderSubjectList();
-  renderSubjectSheet();
-
-  setUrlState();
-  saveState();
-  loadRight();
-
-  if(shouldScrollTop){
-    try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
-    catch(e){ window.scrollTo(0,0); }
+  function detachRight(){
+    if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
   }
-}
 
-function detachRight(){
-  if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
-}
+  function buildQuery(){
+    const searchText = $("qSearch").value || "";
+    const cursor = cursorByPage[page] || null;
 
-function buildQuery(){
-  const searchText = $("qSearch").value || "";
-  const cursor = cursorByPage[page] || null;
+    if(mode === "model"){
+      let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+        .where("subjectId","==", selectedSubjectId)
+        .orderBy("createdAt","desc")
+        .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+        .limit(PAGE_SIZE + 1);
 
-  if(mode === "model"){
-    let q = db.collection(COL_SUBJECT_MODEL_TESTS)
+      if(cursor && cursor.t && cursor.id){
+        q = q.startAfter(new Date(cursor.t), cursor.id);
+      }
+      return { q, searchText, kind:"model" };
+    }
+
+    let q = db.collection(COL_SUBJECT_QUESTIONS)
       .where("subjectId","==", selectedSubjectId)
+      .where("type","==", mode)
       .orderBy("createdAt","desc")
       .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
       .limit(PAGE_SIZE + 1);
@@ -1422,336 +1435,188 @@ function buildQuery(){
     if(cursor && cursor.t && cursor.id){
       q = q.startAfter(new Date(cursor.t), cursor.id);
     }
-    return { q, searchText, kind:"model" };
+    return { q, searchText, kind:"q" };
   }
 
-  let q = db.collection(COL_SUBJECT_QUESTIONS)
-    .where("subjectId","==", selectedSubjectId)
-    .where("type","==", mode)
-    .orderBy("createdAt","desc")
-    .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
-    .limit(PAGE_SIZE + 1);
+  let currentItems = [];
 
-  if(cursor && cursor.t && cursor.id){
-    q = q.startAfter(new Date(cursor.t), cursor.id);
-  }
-  return { q, searchText, kind:"q" };
-}
-
-let currentItems = [];
-
-function resetAndReload(){
-  if(!selectedSubjectId){
-    $("emptyRight").style.display = "block";
-    $("content").innerHTML = "";
-    $("pageHint").textContent = "";
-    renderPager();
-    toast("আগে Subject নির্বাচন করুন", "warn", "Select Subject");
-    return;
-  }
-  loadRight();
-}
-window.resetAndReload = resetAndReload;
-
-function renderPager(){
-  const wrap = $("pager");
-  if(!wrap) return;
-
-  const keys = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
-  let maxVisited = keys.length ? Math.max(...keys) : 1;
-  if(maxVisited < 1) maxVisited = 1;
-
-  const canShowNextNum = hasNext === true;
-
-  const pages = [];
-  for(let i=1;i<=maxVisited;i++) pages.push(i);
-  if(canShowNextNum) pages.push(maxVisited + 1);
-
-  const out = [];
-  const total = pages.length;
-
-  if(total <= 9){
-    out.push(...pages);
-  }else{
-    const last = pages[pages.length-1];
-    out.push(1);
-    if(page > 4) out.push("dots1");
-    const start = Math.max(2, page - 2);
-    const end = Math.min(last - 1, page + 2);
-    for(let p=start; p<=end; p++) out.push(p);
-    if(page < last - 3) out.push("dots2");
-    out.push(last);
-  }
-
-  wrap.innerHTML = "";
-  out.forEach(item=>{
-    if(String(item).startsWith("dots")){
-      const s = document.createElement("span");
-      s.className = "pDots";
-      s.textContent = "…";
-      wrap.appendChild(s);
+  function resetAndReload(){
+    if(!selectedSubjectId){
+      $("emptyRight").style.display = "block";
+      $("content").innerHTML = "";
+      $("pageHint").textContent = "";
+      renderPager();
+      toast("আগে Subject নির্বাচন করুন", "warn", "Select Subject");
       return;
     }
+    loadRight();
+  }
+  window.resetAndReload = resetAndReload;
 
-    const p = item;
-    const b = document.createElement("button");
-    b.className = "pBtn" + (p===page ? " active" : "");
-    b.textContent = String(p);
+  function renderPager(){
+    const wrap = $("pager");
+    if(!wrap) return;
 
-    b.onclick = ()=>{
-      if(p===page) return;
+    const keys = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+    let maxVisited = keys.length ? Math.max(...keys) : 1;
+    if(maxVisited < 1) maxVisited = 1;
 
-      const keys2 = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
-      let maxV = keys2.length ? Math.max(...keys2) : 1;
-      if(maxV < 1) maxV = 1;
+    const canShowNextNum = hasNext === true;
 
-      if(p === maxV + 1){
-        nextPage();
+    const pages = [];
+    for(let i=1;i<=maxVisited;i++) pages.push(i);
+    if(canShowNextNum) pages.push(maxVisited + 1);
+
+    const out = [];
+    const total = pages.length;
+
+    if(total <= 9){
+      out.push(...pages);
+    }else{
+      const last = pages[pages.length-1];
+      out.push(1);
+      if(page > 4) out.push("dots1");
+      const start = Math.max(2, page - 2);
+      const end = Math.min(last - 1, page + 2);
+      for(let p=start; p<=end; p++) out.push(p);
+      if(page < last - 3) out.push("dots2");
+      out.push(last);
+    }
+
+    wrap.innerHTML = "";
+    out.forEach(item=>{
+      if(String(item).startsWith("dots")){
+        const s = document.createElement("span");
+        s.className = "pDots";
+        s.textContent = "…";
+        wrap.appendChild(s);
         return;
       }
 
-      if(!cursorByPage[p] && p !== 1) return;
+      const p = item;
+      const b = document.createElement("button");
+      b.className = "pBtn" + (p===page ? " active" : "");
+      b.textContent = String(p);
 
-      page = p;
-      selectedOptionMap.clear();
+      b.onclick = ()=>{
+        if(p===page) return;
+
+        const keys2 = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+        let maxV = keys2.length ? Math.max(...keys2) : 1;
+        if(maxV < 1) maxV = 1;
+
+        if(p === maxV + 1){
+          nextPage();
+          return;
+        }
+
+        if(!cursorByPage[p] && p !== 1) return;
+
+        page = p;
+        selectedOptionMap.clear();
+        setUrlState();
+        saveState();
+        loadRight();
+      };
+
+      wrap.appendChild(b);
+    });
+  }
+
+  function loadRight(){
+    if(!selectedSubjectId) return;
+
+    detachRight();
+    $("emptyRight").style.display = "none";
+    $("content").innerHTML = "";
+    $("pageHint").textContent = `Page ${page}`;
+
+    const built = buildQuery();
+    unsubRight = built.q.onSnapshot((snap)=>{
+      let docs = snap.docs;
+
+      hasNext = docs.length > PAGE_SIZE;
+      if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+
+      lastDoc = docs.length ? docs[docs.length-1] : null;
+      currentItems = docs.map(d=>({id:d.id, ...d.data()}));
+
+      const qtxt = normalize(built.searchText);
+      if(qtxt){
+        currentItems = currentItems
+          .map(it => ({
+            ...it,
+            _score: relatedMatch(qtxt, built.kind==="model"
+              ? (it.title || it.name || "")
+              : (it.question || "")
+            )
+          }))
+          .filter(it => it._score >= 0.25)
+          .sort((a,b)=> (b._score - a._score));
+      }
+
+      renderContent();
+
+      $("emptyRight").style.display = currentItems.length ? "none" : "block";
+      $("prevBtn").disabled = page <= 1;
+      $("nextBtn").disabled = !hasNext;
+
+      renderPager();
+
       setUrlState();
       saveState();
-      loadRight();
-    };
+    }, (err)=>{
+      console.error(err);
+      $("content").innerHTML = "";
+      $("emptyRight").style.display = "block";
+      hasNext = false;
+      renderPager();
+      toast("ডাটা লোড করা যায়নি। Firestore rules/Index চেক করুন।", "error", "Load Failed");
+    });
+  }
 
-    wrap.appendChild(b);
-  });
-}
-
-function loadRight(){
-  if(!selectedSubjectId) return;
-
-  detachRight();
-  $("emptyRight").style.display = "none";
-  $("content").innerHTML = "";
-  $("pageHint").textContent = `Page ${page}`;
-
-  const built = buildQuery();
-  unsubRight = built.q.onSnapshot((snap)=>{
-    let docs = snap.docs;
-
-    hasNext = docs.length > PAGE_SIZE;
-    if(hasNext) docs = docs.slice(0, PAGE_SIZE);
-
-    lastDoc = docs.length ? docs[docs.length-1] : null;
-    currentItems = docs.map(d=>({id:d.id, ...d.data()}));
-
-    const qtxt = normalize(built.searchText);
-    if(qtxt){
-      currentItems = currentItems
-        .map(it => ({
-          ...it,
-          _score: relatedMatch(qtxt, built.kind==="model"
-            ? (it.title || it.name || "")
-            : (it.question || "")
-          )
-        }))
-        .filter(it => it._score >= 0.25)
-        .sort((a,b)=> (b._score - a._score));
-    }
-
-    renderContent();
-
-    $("emptyRight").style.display = currentItems.length ? "none" : "block";
-    $("prevBtn").disabled = page <= 1;
-    $("nextBtn").disabled = !hasNext;
-
-    renderPager();
-
+  function prevPage(){
+    if(page <= 1) return;
+    page -= 1;
+    selectedOptionMap.clear();
     setUrlState();
     saveState();
-  }, (err)=>{
-    console.error(err);
-    $("content").innerHTML = "";
-    $("emptyRight").style.display = "block";
-    hasNext = false;
-    renderPager();
-    toast("ডাটা লোড করা যায়নি। Firestore rules/Index চেক করুন।", "error", "Load Failed");
-  });
-}
-
-function prevPage(){
-  if(page <= 1) return;
-  page -= 1;
-  selectedOptionMap.clear();
-  setUrlState();
-  saveState();
-  loadRight();
-}
-
-function nextPage(){
-  if(!hasNext) return;
-  if(lastDoc){
-    const data = lastDoc.data() || {};
-    const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
-    if(ts){
-      cursorByPage[page+1] = { t: ts, id: lastDoc.id };
-    }
-  }
-  page += 1;
-  selectedOptionMap.clear();
-  setUrlState();
-  saveState();
-  loadRight();
-}
-window.prevPage = prevPage;
-window.nextPage = nextPage;
-
-function renderContent(){
-  const wrap = $("content");
-  wrap.innerHTML = "";
-
-  $("rightTitle").textContent =
-    mode==="mcq" ? "MCQ প্রশ্ন" :
-    mode==="written" ? "Written প্রশ্ন" :
-    "Subject Model Tests";
-
-  if(!currentItems.length) return;
-
-  if(mode === "model"){
-    const grid = document.createElement("div");
-    grid.className = "latestMT";
-    currentItems.forEach((mt)=>{
-      const title = mt.title ?? mt.name ?? "Subject Model Test";
-      const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
-      const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
-      const counts = mt.counts || {};
-      const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
-
-      const card = document.createElement("div");
-      card.className = "mtCardMini";
-      card.innerHTML = `
-        <h4 title="${esc(title)}">${esc(title)}</h4>
-        <div class="mtMetaMini">
-          <span>⏱ ${esc(time)} min</span>
-          <span>🧮 Mark: ${esc(marks)}</span>
-          <span>📌 Q: ${esc(qCount)}</span>
-        </div>
-        <div class="mtActionsMini">
-          <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
-          <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-    wrap.appendChild(grid);
-    return;
+    loadRight();
   }
 
-  const paper = document.createElement("div");
-  paper.className = "paper";
-  const list = document.createElement("div");
-  list.className = "qList";
-  const letters = ["A","B","C","D"];
-
-  currentItems.forEach((it, idx)=>{
-    const qno = ((page-1)*PAGE_SIZE) + (idx+1);
-    const note = (it.note ?? it.explain ?? "").toString().trim();
-
-    const row = document.createElement("div");
-    row.className = "qRow";
-
-    row.innerHTML = `
-      <div class="qHead">
-        <span class="qNo">Q${qno}</span>
-        <p class="qText">${esc(it.question || "")}</p>
-      </div>
-      ${note ? `<div class="noteInline"><b>Note:</b> ${esc(note)}</div>` : ``}
-    `;
-
-    if(mode === "mcq"){
-      const opts = getOptions(it);
-      const correctIndex = getCorrectIndex(it, opts);
-      const chosen = selectedOptionMap.get(it.id);
-
-      const optWrap = document.createElement("div");
-      optWrap.className = "opts";
-
-      opts.slice(0,4).forEach((op, oi)=>{
-        const opt = document.createElement("div");
-        opt.className = "optLine";
-
-        opt.innerHTML = `
-          <span class="optMark"></span>
-          <span class="optKey">${letters[oi]}.</span>
-          <span class="optTxt">${esc(op || "")}</span>
-        `;
-        const mark = opt.querySelector(".optMark");
-
-        if(ansMode === "show"){
-          opt.classList.add("locked");
-          if(oi === correctIndex){
-            opt.classList.add("correct");
-            mark.textContent = "✓";
-          }
-        }else{
-          if(chosen !== undefined){
-            opt.classList.add("locked");
-            if(oi === correctIndex){
-              opt.classList.add("correct");
-              mark.textContent = "✓";
-            }
-            if(oi === chosen && chosen !== correctIndex){
-              opt.classList.add("wrong");
-              mark.textContent = "✕";
-            }
-          }else{
-            opt.onclick = ()=>{
-              selectedOptionMap.set(it.id, oi);
-              renderContent();
-            };
-          }
-        }
-        optWrap.appendChild(opt);
-      });
-
-      row.appendChild(optWrap);
-    }
-
-    if(mode === "written"){
-      const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
-      if(ansMode === "show"){
-        const box = document.createElement("div");
-        box.className = "noteInline";
-        box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
-        row.appendChild(box);
+  function nextPage(){
+    if(!hasNext) return;
+    if(lastDoc){
+      const data = lastDoc.data() || {};
+      const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
+      if(ts){
+        cursorByPage[page+1] = { t: ts, id: lastDoc.id };
       }
     }
+    page += 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  window.prevPage = prevPage;
+  window.nextPage = nextPage;
 
-    list.appendChild(row);
+  function renderContent(){
+    const wrap = $("content");
+    wrap.innerHTML = "";
 
-    if((idx+1)%10===0 && idx < currentItems.length-1){
-      const ad = document.createElement("div");
-      ad.className = "inlineAd";
-      ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad (Every 10)</div></div>`;
-      list.appendChild(ad);
-    }
-  });
+    $("rightTitle").textContent =
+      mode==="mcq" ? "MCQ প্রশ্ন" :
+      mode==="written" ? "Written প্রশ্ন" :
+      "Subject Model Tests";
 
-  paper.appendChild(list);
-  wrap.appendChild(paper);
-}
+    if(!currentItems.length) return;
 
-function attachLatestModelTests(){
-  if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
-
-  unsubLatest = db.collection(COL_SUBJECT_MODEL_TESTS)
-    .orderBy("createdAt","desc")
-    .limit(10)
-    .onSnapshot((snap)=>{
-      const wrap = $("latestMT");
-      const empty = $("latestEmpty");
-      wrap.innerHTML = "";
-
-      const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-      empty.style.display = docs.length ? "none" : "block";
-
-      docs.forEach((mt)=>{
+    if(mode === "model"){
+      const grid = document.createElement("div");
+      grid.className = "latestMT";
+      currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Subject Model Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
         const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
@@ -1772,41 +1637,200 @@ function attachLatestModelTests(){
             <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
           </div>
         `;
-        wrap.appendChild(card);
+        grid.appendChild(card);
       });
-    }, (err)=>console.error(err));
-}
+      wrap.appendChild(grid);
+      return;
+    }
 
-/* ✅ University section: show 5 (model-test like cards) */
-function attachUniversities(){
-  if(unsubUni){ try{unsubUni();}catch(e){} unsubUni=null; }
+    const paper = document.createElement("div");
+    paper.className = "paper";
+    const list = document.createElement("div");
+    list.className = "qList";
+    const letters = ["A","B","C","D"];
 
-  unsubUni = db.collection(COL_UNIVERSITIES)
-    .orderBy("createdAt","desc")
-    .limit(5)
-    .onSnapshot((snap)=>{
+    currentItems.forEach((it, idx)=>{
+      const qno = ((page-1)*PAGE_SIZE) + (idx+1);
+      const note = (it.note ?? it.explain ?? "").toString().trim();
+
+      const row = document.createElement("div");
+      row.className = "qRow";
+
+      row.innerHTML = `
+        <div class="qHead">
+          <span class="qNo">Q${qno}</span>
+          <p class="qText">${esc(it.question || "")}</p>
+        </div>
+        ${note ? `<div class="noteInline"><b>Note:</b> ${esc(note)}</div>` : ``}
+      `;
+
+      if(mode === "mcq"){
+        const opts = getOptions(it);
+        const correctIndex = getCorrectIndex(it, opts);
+        const chosen = selectedOptionMap.get(it.id);
+
+        const optWrap = document.createElement("div");
+        optWrap.className = "opts";
+
+        opts.slice(0,4).forEach((op, oi)=>{
+          const opt = document.createElement("div");
+          opt.className = "optLine";
+
+          opt.innerHTML = `
+            <span class="optMark"></span>
+            <span class="optKey">${letters[oi]}.</span>
+            <span class="optTxt">${esc(op || "")}</span>
+          `;
+          const mark = opt.querySelector(".optMark");
+
+          if(ansMode === "show"){
+            opt.classList.add("locked");
+            if(oi === correctIndex){
+              opt.classList.add("correct");
+              mark.textContent = "✓";
+            }
+          }else{
+            if(chosen !== undefined){
+              opt.classList.add("locked");
+              if(oi === correctIndex){
+                opt.classList.add("correct");
+                mark.textContent = "✓";
+              }
+              if(oi === chosen && chosen !== correctIndex){
+                opt.classList.add("wrong");
+                mark.textContent = "✕";
+              }
+            }else{
+              opt.onclick = ()=>{
+                selectedOptionMap.set(it.id, oi);
+                renderContent();
+              };
+            }
+          }
+          optWrap.appendChild(opt);
+        });
+
+        row.appendChild(optWrap);
+      }
+
+      if(mode === "written"){
+        const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+        if(ansMode === "show"){
+          const box = document.createElement("div");
+          box.className = "noteInline";
+          box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
+          row.appendChild(box);
+        }
+      }
+
+      list.appendChild(row);
+
+      if((idx+1)%10===0 && idx < currentItems.length-1){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad (Every 10)</div></div>`;
+        list.appendChild(ad);
+      }
+    });
+
+    paper.appendChild(list);
+    wrap.appendChild(paper);
+  }
+
+  function attachLatestModelTests(){
+    if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
+
+    unsubLatest = db.collection(COL_SUBJECT_MODEL_TESTS)
+      .orderBy("createdAt","desc")
+      .limit(10)
+      .onSnapshot((snap)=>{
+        const wrap = $("latestMT");
+        const empty = $("latestEmpty");
+        wrap.innerHTML = "";
+
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Subject Model Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+          const counts = mt.counts || {};
+          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMetaMini">
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}'">Start</button>
+              <button class="btn" onclick="location.href='model-test-reasult.html?modelTestId=${encodeURIComponent(mt.id)}'">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }, (err)=>console.error(err));
+  }
+
+  /* ✅ University section: Total বাদ
+     ✅ MCQ, Written (from university counts)
+     ✅ Model (from admission_tests count by universityId)
+  */
+  function attachUniversities(){
+    if(unsubUni){ try{unsubUni();}catch(e){} unsubUni=null; }
+
+    const uniMTCount = new Map();
+    const uniMTUnsub = new Map();
+    let latestUniversities = [];
+
+    function cleanupMTListeners(activeIds){
+      for(const [uid, unsub] of uniMTUnsub.entries()){
+        if(!activeIds.has(uid)){
+          try{unsub();}catch(e){}
+          uniMTUnsub.delete(uid);
+          uniMTCount.delete(uid);
+        }
+      }
+    }
+
+    function ensureMTListener(universityId){
+      if(uniMTUnsub.has(universityId)) return;
+      const unsub = db.collection(COL_ADMISSION_TESTS)
+        .where("universityId","==", universityId)
+        .onSnapshot((snap)=>{
+          uniMTCount.set(universityId, snap.size || 0);
+          renderUniCards();
+        });
+      uniMTUnsub.set(universityId, unsub);
+    }
+
+    function renderUniCards(){
       const wrap = $("uniList");
       const empty = $("uniEmpty");
       wrap.innerHTML = "";
 
-      const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-      empty.style.display = docs.length ? "none" : "block";
+      empty.style.display = latestUniversities.length ? "none" : "block";
 
-      docs.forEach((u)=>{
+      latestUniversities.forEach((u)=>{
         const name = u.name ?? u.title ?? "University";
         const counts = u.counts || {};
         const mcq = Number(counts.mcq||0);
         const written = Number(counts.written||0);
-        const total = mcq + written;
+        const model = Number(uniMTCount.get(u.id) ?? 0);
 
         const card = document.createElement("div");
         card.className = "mtCardMini";
         card.innerHTML = `
           <h4 title="${esc(name)}">${esc(name)}</h4>
           <div class="mtMetaMini">
-            <span>📌 Total: ${esc(total)}</span>
             <span>MCQ: ${esc(mcq)}</span>
             <span>Written: ${esc(written)}</span>
+            <span>Model: ${esc(model)}</span>
           </div>
           <div class="mtActionsMini">
             <button class="btn primary" onclick="location.href='all-university-question.html?universityId=${encodeURIComponent(u.id)}'">Open</button>
@@ -1815,83 +1839,98 @@ function attachUniversities(){
         `;
         wrap.appendChild(card);
       });
-    }, (err)=>console.error(err));
-}
-
-function attachSubjects(){
-  if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
-
-  unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
-    SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
-    syncModelTestListeners();
-
-    if(!selectedSubjectId && SUBJECTS.length){
-      selectedSubjectId = SUBJECTS[0].id;
     }
 
-    $("tabMcq").classList.toggle("active", mode==="mcq");
-    $("tabWritten").classList.toggle("active", mode==="written");
-    $("tabModel").classList.toggle("active", mode==="model");
-    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
-    $("ansShowBtn").classList.toggle("active", ansMode==="show");
-    $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
-    document.body.setAttribute("data-mode", mode);
+    unsubUni = db.collection(COL_UNIVERSITIES)
+      .orderBy("createdAt","desc")
+      .limit(5)
+      .onSnapshot((snap)=>{
+        latestUniversities = snap.docs.map(d=>({ id:d.id, ...d.data() }));
 
-    renderSubjectList();
-    renderSubjectSheet();
+        const activeIds = new Set(latestUniversities.map(x=>x.id));
+        cleanupMTListeners(activeIds);
 
-    if(selectedSubjectId){
-      const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
-      selectedSubjectName = found?.name || "";
-      $("subName").textContent = selectedSubjectName || "Admission Assistant";
-      $("headerTag").textContent = selectedSubjectName
-        ? `Admission Assistant • ${selectedSubjectName}`
-        : "Admission Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
+        latestUniversities.forEach(u => ensureMTListener(u.id));
 
-      setUrlState();
-      saveState();
-      loadRight();
-    }else{
-      renderPager();
-    }
-  });
-}
-
-(function keepAnsBarAboveFooter(){
-  const footer = document.querySelector("footer");
-  const bar = document.getElementById("ansBarWrap");
-  if(!footer || !bar) return;
-
-  let ticking = false;
-
-  function update(){
-    ticking = false;
-
-    if(bar.style.display === "none"){
-      document.documentElement.style.setProperty("--liftFromFooter", "0px");
-      return;
-    }
-
-    const fr = footer.getBoundingClientRect();
-    const overlap = window.innerHeight - fr.top;
-    const lift = Math.max(0, overlap);
-    document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
+        renderUniCards();
+      }, (err)=>console.error(err));
   }
 
-  function onScroll(){
-    if(ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
+  function attachSubjects(){
+    if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
+
+    unsubSubjects = db.collection(COL_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      syncModelTestListeners();
+
+      if(!selectedSubjectId && SUBJECTS.length){
+        selectedSubjectId = SUBJECTS[0].id;
+      }
+
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+      document.body.setAttribute("data-mode", mode);
+
+      renderSubjectList();
+      renderSubjectSheet();
+
+      if(selectedSubjectId){
+        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        selectedSubjectName = found?.name || "";
+        $("subName").textContent = selectedSubjectName || "Admission Assistant";
+        $("headerTag").textContent = selectedSubjectName
+          ? `Admission Assistant • ${selectedSubjectName}`
+          : "Admission Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
+
+        setUrlState();
+        saveState();
+        loadRight();
+      }else{
+        renderPager();
+      }
+    });
   }
 
-  window.addEventListener("scroll", onScroll, { passive:true });
-  window.addEventListener("resize", onScroll);
-  onScroll();
-})();
+  (function keepAnsBarAboveFooter(){
+    const footer = document.querySelector("footer");
+    const bar = document.getElementById("ansBarWrap");
+    if(!footer || !bar) return;
 
-attachSubjects();
-attachLatestModelTests();
-attachUniversities();
+    let ticking = false;
+
+    function update(){
+      ticking = false;
+
+      if(bar.style.display === "none"){
+        document.documentElement.style.setProperty("--liftFromFooter", "0px");
+        return;
+      }
+
+      const fr = footer.getBoundingClientRect();
+      const overlap = window.innerHeight - fr.top;
+      const lift = Math.max(0, overlap);
+      document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
+    }
+
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive:true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  })();
+
+  attachSubjects();
+  attachLatestModelTests();
+  attachUniversities();
 </script>
+
 </body>
 </html>
