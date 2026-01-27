@@ -1085,23 +1085,34 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
- <script>
+<script>
+/* ===========================
+   eProstutiBD Model Test JS (Optimized)
+   - Faster Firestore loading
+   - No full rerender on MCQ click
+   - Defer recent list
+   - Lazy-load PDF libs if missing
+=========================== */
+
+(() => {
   // year
   document.getElementById("year").textContent = new Date().getFullYear();
-  const $ = (id)=>document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
   // ===== menu =====
-  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
+  function openMenu() { $("mobileMenu").style.display = "block"; $("menuBtn").setAttribute("aria-expanded", "true"); }
+  function closeMenu() { $("mobileMenu").style.display = "none"; $("menuBtn").setAttribute("aria-expanded", "false"); }
+  function toggleMenu() { const m = $("mobileMenu"); (m.style.display === "block") ? closeMenu() : openMenu(); }
   window.toggleMenu = toggleMenu;
-  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
   // ===== toast =====
-  function esc(str){
-    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  function esc(str) {
+    return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[m]));
   }
-  function showToast(msg, sub=""){
+  function showToast(msg, sub = "") {
     const t = $("toast");
     t.innerHTML = `
       <div class="toastRow">
@@ -1114,25 +1125,25 @@
     `;
     t.style.display = "block";
     clearTimeout(showToast._tm);
-    showToast._tm = setTimeout(()=>{ t.style.display = "none"; }, 2000);
+    showToast._tm = setTimeout(() => { t.style.display = "none"; }, 2000);
   }
 
   // ===== Confirm modal (custom Yes/No) =====
   let _confirmResolver = null;
-  function openConfirm(title, text){
+  function openConfirm(title, text) {
     $("confirmTitle").textContent = title || "Confirm";
     $("confirmText").textContent = text || "";
     $("confirmModal").classList.add("show");
-    return new Promise((resolve)=>{ _confirmResolver = resolve; });
+    return new Promise((resolve) => { _confirmResolver = resolve; });
   }
-  function closeConfirm(){ $("confirmModal").classList.remove("show"); }
-  function confirmYes(){ closeConfirm(); if(_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
-  function confirmNo(){ closeConfirm(); if(_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
+  function closeConfirm() { $("confirmModal").classList.remove("show"); }
+  function confirmYes() { closeConfirm(); if (_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
+  function confirmNo() { closeConfirm(); if (_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
   window.confirmYes = confirmYes;
   window.confirmNo = confirmNo;
 
   // ===== utils =====
-  function getParam(name){
+  function getParam(name) {
     const u = new URL(location.href);
     return u.searchParams.get(name) || "";
   }
@@ -1151,16 +1162,11 @@
   const db = firebase.firestore();
 
   // =========================
-  // ✅ COLLECTIONS (OLD + NEW)
+  // COLLECTIONS
   // =========================
-
-  // OLD: meta
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+  const COL_MODEL_TEST_RESULT = "model_test_result";
 
-  // OLD: results
-  const COL_MODEL_TEST_RESULT = "model_test_result"; // Firestore-safe name
-
-  // OLD: questions candidates (field: modelTestId)
   const QUESTION_COLLECTION_CANDIDATES = [
     "modeltest_questions",
     "model_test_questions",
@@ -1169,23 +1175,18 @@
     "modeltestQuestions"
   ];
 
-  // ✅ NEW (from admin) — Admission Subject Tests
   const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";
   const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // field: testId
-
-  // ✅ NEW (from admin) — Admission Tests (university)
   const COL_ADMISSION_TESTS = "admission_tests";
   const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions"; // field: testId
 
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
-
-  // ✅ current page filename for internal links
   const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
 
   // ===== state =====
   let mtDoc = null;
-  let mtSource = ""; // track which meta collection loaded
+  let mtSource = "";
   let questions = [];
   const mcqAns = new Map();
   const writtenAns = new Map();
@@ -1195,29 +1196,19 @@
   let studentDistrict = "";
   let nameUnlocked = false;
 
-  function openNameModal(){
+  function openNameModal() {
     $("nameModal").classList.add("show");
-    setTimeout(()=>{ $("studentName").focus(); }, 40);
+    setTimeout(() => { $("studentName").focus(); }, 40);
   }
-  function closeNameModal(){
-    $("nameModal").classList.remove("show");
-  }
+  function closeNameModal() { $("nameModal").classList.remove("show"); }
   window.closeNameModal = closeNameModal;
 
-  function submitName(){
+  function submitName() {
     const v = ($("studentName").value || "").trim();
     const d = ($("studentDistrict").value || "").trim();
 
-    if(!v){
-      showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন");
-      $("studentName").focus();
-      return;
-    }
-    if(!d){
-      showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন");
-      $("studentDistrict").focus();
-      return;
-    }
+    if (!v) { showToast("নাম লিখুন", "শুরু করতে নাম প্রয়োজন"); $("studentName").focus(); return; }
+    if (!d) { showToast("জেলা লিখুন", "শুরু করতে জেলা প্রয়োজন"); $("studentDistrict").focus(); return; }
 
     studentName = v;
     studentDistrict = d;
@@ -1225,62 +1216,63 @@
     closeNameModal();
 
     // Start countdown only after Name+District submitted
-    if(!timerStarted && mtDoc){
+    if (!timerStarted && mtDoc) {
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
-      if(__mins){ startTimer(__mins); }
+      if (__mins) startTimer(__mins);
     }
-
     showToast("Start সফল", `${studentName} (${studentDistrict})`);
   }
   window.submitName = submitName;
 
-  function guardAnswering(){
-    if(nameUnlocked) return true;
+  function guardAnswering() {
+    if (nameUnlocked) return true;
     openNameModal();
     showToast("নাম ও জেলা Submit করুন", "তারপর উত্তর দিতে পারবেন");
     return false;
   }
 
   // ===== helpers =====
-  function getTitleField(data){ return data?.title ?? data?.name ?? data?.modelTestName ?? data?.modelTestTitle ?? "Model Test"; }
-  function getTimeMinFromDoc(data){
-    const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes","min"];
-    for(const k of keys){
+  function getTitleField(data) {
+    return data?.title ?? data?.name ?? data?.modelTestName ?? data?.modelTestTitle ?? "Model Test";
+  }
+  function getTimeMinFromDoc(data) {
+    const keys = ["totalTimeMin", "totalTime", "total_time", "duration", "time", "minutes", "min"];
+    for (const k of keys) {
       const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
+      if (v === undefined || v === null || v === "") continue;
       const n = Number(v);
-      if(!Number.isNaN(n) && n > 0) return n;
+      if (!Number.isNaN(n) && n > 0) return n;
     }
     return 0;
   }
-  function getMarkFromDoc(data){
-    const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
-    for(const k of keys){
+  function getMarkFromDoc(data) {
+    const keys = ["totalMarks", "totalMark", "total_mark", "mark", "marks"];
+    for (const k of keys) {
       const v = data?.[k];
-      if(v === undefined || v === null || v === "") continue;
+      if (v === undefined || v === null || v === "") continue;
       return v;
     }
     return "-";
   }
-  function pickQuestionText(q){
+  function pickQuestionText(q) {
     return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
   }
-  function getOptions(q){
-    if(Array.isArray(q.options) && q.options.length) return q.options.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0,4).map(x=>String(x ?? ""));
-    if(Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0,4).map(x=>String(x ?? ""));
+  function getOptions(q) {
+    if (Array.isArray(q.options) && q.options.length) return q.options.slice(0, 4).map(x => String(x ?? ""));
+    if (Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0, 4).map(x => String(x ?? ""));
+    if (Array.isArray(q.opts) && q.opts.length) return q.opts.slice(0, 4).map(x => String(x ?? ""));
     const o1 = q.option1 ?? q.opt1 ?? q.a ?? q.A ?? q.optionA ?? q.optA ?? q.choiceA;
     const o2 = q.option2 ?? q.opt2 ?? q.b ?? q.B ?? q.optionB ?? q.optB ?? q.choiceB;
     const o3 = q.option3 ?? q.opt3 ?? q.c ?? q.C ?? q.optionC ?? q.optC ?? q.choiceC;
     const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
-    return [o1,o2,o3,o4].map(x=>String(x ?? ""));
+    return [o1, o2, o3, o4].map(x => String(x ?? ""));
   }
-  function getCorrectIndex(q){
-    if(Number.isFinite(q.correctIndex)) return q.correctIndex;
+  function getCorrectIndex(q) {
+    if (Number.isFinite(q.correctIndex)) return q.correctIndex;
     const v = Number(q.correctIndex);
     return Number.isFinite(v) ? v : -1;
   }
-  function isWrittenQuestion(q){
+  function isWrittenQuestion(q) {
     const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
     return t === "written" || t === "cq" || t === "short" || t === "essay";
   }
@@ -1292,31 +1284,31 @@
   let totalAllowedSeconds = 0;
   let timerStarted = false;
 
-  function formatMMSS(sec){
+  function formatMMSS(sec) {
     sec = Math.max(0, Math.floor(sec));
     const m = Math.floor(sec / 60);
     const s = sec % 60;
-    return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+    return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
   }
-  function startTimer(minutes){
-    if(timerStarted) return;
+  function startTimer(minutes) {
+    if (timerStarted) return;
     const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
-    if(!totalSeconds){ $("timeLeft").textContent="--:--"; return; }
+    if (!totalSeconds) { $("timeLeft").textContent = "--:--"; return; }
 
     timerStarted = true;
     totalAllowedSeconds = totalSeconds;
     testStartAtMs = Date.now();
     endAtMs = testStartAtMs + totalSeconds * 1000;
 
-    const tick = ()=>{
+    const tick = () => {
       const left = Math.max(0, Math.floor((endAtMs - Date.now()) / 1000));
       $("timeLeft").textContent = formatMMSS(left);
       $("timeLeft").style.color = (left <= 60) ? "var(--danger)" : "var(--text)";
-      if(left <= 0){
+      if (left <= 0) {
         clearInterval(timerHandle);
         timerHandle = null;
         showToast("সময় শেষ!", "অটো সাবমিট হচ্ছে…");
-        setTimeout(()=>submitTest(true), 350);
+        setTimeout(() => submitTest(true), 350);
       }
     };
     tick();
@@ -1325,81 +1317,99 @@
   }
 
   // =======================================
-  // ✅ FETCH HELPERS (support different keys)
+  // Firestore fetch helpers
   // =======================================
-  async function fetchQuestionsByField(colName, fieldName, fieldValue){
-    try{
+  async function safeQueryWhereOrder(colName, fieldName, fieldValue) {
+    // try ordered query (needs index)
+    try {
       const s = await db.collection(colName)
-        .where(fieldName,"==", fieldValue)
-        .orderBy("createdAt","asc")
+        .where(fieldName, "==", fieldValue)
+        .orderBy("createdAt", "asc")
         .get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
+      return s.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (e) {
+      // fallback without orderBy (no extra wait of sequential callers; still one query here)
       const s = await db.collection(colName)
-        .where(fieldName,"==", fieldValue)
+        .where(fieldName, "==", fieldValue)
         .get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      return s.docs.map(d => ({ id: d.id, ...d.data() }));
     }
   }
 
-  // OLD: subject_model_tests/{id}/questions subcollection
-  async function fetchQuestionsFromSubcollection(mtId){
+  async function fetchQuestionsFromSubcollection(mtId) {
     const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
-    try{
-      const s = await ref.orderBy("createdAt","asc").get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
-    }catch(e){
+    try {
+      const s = await ref.orderBy("createdAt", "asc").get();
+      return s.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (e) {
       const s = await ref.get();
-      return s.docs.map(d=>({ id:d.id, ...d.data() }));
+      return s.docs.map(d => ({ id: d.id, ...d.data() }));
     }
   }
 
-  // =========================
-  // ✅ META LOAD (3 sources)
-  // =========================
-  async function loadModelTestMeta(mtId){
+  async function loadModelTestMeta(mtId) {
     const snap1 = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).get();
-    if(snap1.exists) return { source: COL_SUBJECT_MODEL_TESTS, doc: { id:snap1.id, ...snap1.data() } };
+    if (snap1.exists) return { source: COL_SUBJECT_MODEL_TESTS, doc: { id: snap1.id, ...snap1.data() } };
 
     const snap2 = await db.collection(COL_ADMISSION_SUBJECT_TESTS).doc(mtId).get();
-    if(snap2.exists) return { source: COL_ADMISSION_SUBJECT_TESTS, doc: { id:snap2.id, ...snap2.data() } };
+    if (snap2.exists) return { source: COL_ADMISSION_SUBJECT_TESTS, doc: { id: snap2.id, ...snap2.data() } };
 
     const snap3 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
-    if(snap3.exists) return { source: COL_ADMISSION_TESTS, doc: { id:snap3.id, ...snap3.data() } };
+    if (snap3.exists) return { source: COL_ADMISSION_TESTS, doc: { id: snap3.id, ...snap3.data() } };
 
-    return { source:"", doc:null };
+    return { source: "", doc: null };
   }
 
-  // =======================================
-  // ✅ LOAD QUESTIONS (OLD + NEW collections)
-  // =======================================
-  async function loadQuestionsForTest(mtId){
-    for(const col of QUESTION_COLLECTION_CANDIDATES){
-      try{
-        const got = await fetchQuestionsByField(col, "modelTestId", mtId);
-        if(got && got.length) return got;
-      }catch(e){}
+  async function loadQuestionsForTestFast(mtId, source) {
+    // ✅ Source-based (fast path) — avoid unnecessary sequential loops
+    if (source === COL_SUBJECT_MODEL_TESTS) {
+      // Prefer subcollection first
+      try {
+        const sub = await fetchQuestionsFromSubcollection(mtId);
+        if (sub?.length) return sub;
+      } catch (_) { }
+      // Legacy candidates fallback (parallel)
     }
 
-    try{
-      const gotSub = await fetchQuestionsFromSubcollection(mtId);
-      if(gotSub && gotSub.length) return gotSub;
-    }catch(e){}
+    if (source === COL_ADMISSION_SUBJECT_TESTS) {
+      try {
+        const got = await safeQueryWhereOrder(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
+        if (got?.length) return got;
+      } catch (_) { }
+      return [];
+    }
 
-    try{
-      const gotAdmSub = await fetchQuestionsByField(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
-      if(gotAdmSub && gotAdmSub.length) return gotAdmSub;
-    }catch(e){}
+    if (source === COL_ADMISSION_TESTS) {
+      try {
+        const got = await safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
+        if (got?.length) return got;
+      } catch (_) { }
+      return [];
+    }
 
-    try{
-      const gotAdm = await fetchQuestionsByField(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
-      if(gotAdm && gotAdm.length) return gotAdm;
-    }catch(e){}
+    // ✅ Parallel fallback (legacy / unknown source)
+    const loaders = [
+      // candidates: modelTestId
+      ...QUESTION_COLLECTION_CANDIDATES.map(col => () => safeQueryWhereOrder(col, "modelTestId", mtId)),
+      // subject subcollection
+      () => fetchQuestionsFromSubcollection(mtId),
+      // new admissions
+      () => safeQueryWhereOrder(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId),
+      () => safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId)
+    ];
 
+    const settled = await Promise.allSettled(loaders.map(fn => fn()));
+    const results = settled.map(x => (x.status === "fulfilled" ? x.value : []));
+
+    // priority: candidates -> subcollection -> admission subject -> admission
+    for (const arr of results) {
+      if (Array.isArray(arr) && arr.length) return arr;
+    }
     return [];
   }
 
-  function setMetaHeader(){
+  // ===== Meta header =====
+  function setMetaHeader() {
     const title = getTitleField(mtDoc);
     $("mtName").textContent = title;
     $("tickerText").textContent = `${title} • Test চলছে • Submit করার আগে সব প্রশ্ন দেখে নিন`;
@@ -1411,7 +1421,7 @@
 
     document.title = `${title} — Model Test | eProstutiBD`;
     const metaDesc = document.querySelector('meta[name="description"]');
-    if(metaDesc){
+    if (metaDesc) {
       metaDesc.setAttribute(
         "content",
         `${title} মডেল টেস্ট — সকল প্রশ্ন একপেজে। সময় গণনা, Submit warning, এবং Question Paper + Answer Sheet (Correct) PDF ডাউনলোড (Bangla support)।`
@@ -1419,11 +1429,14 @@
     }
   }
 
-  function renderAll(){
+  // =======================================
+  // Render (single time) + Event Delegation
+  // =======================================
+  function renderAllOnce() {
     const wrap = $("content");
     wrap.innerHTML = "";
 
-    if(!questions.length){
+    if (!questions.length) {
       wrap.innerHTML = `<div class="err">কোনো প্রশ্ন পাওয়া যায়নি।</div>`;
       return;
     }
@@ -1432,11 +1445,13 @@
     list.className = "qList";
 
     const total = questions.length;
-    const adPos1 = total >= 6 ? Math.floor(total/3) : 3;
-    const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;
+    const adPos1 = total >= 6 ? Math.floor(total / 3) : 3;
+    const adPos2 = total >= 10 ? Math.floor((2 * total) / 3) : 7;
 
-    questions.forEach((q, i)=>{
-      if(i === adPos1){
+    const letters = ["A", "B", "C", "D"];
+
+    questions.forEach((q, i) => {
+      if (i === adPos1) {
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `
@@ -1448,7 +1463,7 @@
         `;
         list.appendChild(ad);
       }
-      if(i === adPos2){
+      if (i === adPos2) {
         const ad = document.createElement("div");
         ad.className = "inlineAd";
         ad.innerHTML = `
@@ -1476,7 +1491,7 @@
         </div>
       `;
 
-      if(isWrittenQuestion(q)){
+      if (isWrittenQuestion(q)) {
         const ta = document.createElement("textarea");
         ta.style.width = "100%";
         ta.style.minHeight = "120px";
@@ -1488,36 +1503,34 @@
         ta.style.fontSize = "13px";
         ta.placeholder = "আপনার উত্তর লিখুন…";
         ta.value = (writtenAns.get(qid) ?? "").toString();
-        ta.oninput = ()=>{
-          if(!guardAnswering()) return;
+
+        ta.addEventListener("input", () => {
+          if (!guardAnswering()) return;
           writtenAns.set(qid, ta.value);
-        };
+        });
+
         row.appendChild(ta);
-      }else{
+      } else {
         const opts = getOptions(q);
         const chosen = mcqAns.get(qid);
 
         const optWrap = document.createElement("div");
         optWrap.className = "opts";
 
-        opts.slice(0,4).forEach((op, oi)=>{
+        opts.slice(0, 4).forEach((op, oi) => {
           const opt = document.createElement("div");
           opt.className = "optLine" + (chosen === oi ? " selected" : "");
-          opt.setAttribute("role","button");
-          opt.setAttribute("tabindex","0");
-          opt.setAttribute("aria-label", `Q${qno} Option ${["A","B","C","D"][oi]}`);
+          opt.setAttribute("role", "button");
+          opt.setAttribute("tabindex", "0");
+          opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
+          opt.dataset.qid = qid;
+          opt.dataset.oi = String(oi);
+
           opt.innerHTML = `
             <span class="tick">✓</span>
-            <span class="optKey">${["A","B","C","D"][oi]}.</span>
+            <span class="optKey">${letters[oi]}.</span>
             <span class="optTxt">${esc(op || "")}</span>
           `;
-          const pick = ()=>{
-            if(!guardAnswering()) return;
-            mcqAns.set(qid, oi);
-            renderAll();
-          };
-          opt.onclick = pick;
-          opt.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
           optWrap.appendChild(opt);
         });
 
@@ -1530,38 +1543,84 @@
     wrap.appendChild(list);
   }
 
-  function getUnanswered(){
+  // ✅ Update MCQ UI without full rerender
+  function setSelectedOptionUI(qid, oi) {
+    const row = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
+    if (!row) return;
+
+    const options = row.querySelectorAll(".optLine");
+    options.forEach(el => el.classList.remove("selected"));
+
+    const target = row.querySelector(`.optLine[data-qid="${CSS.escape(qid)}"][data-oi="${String(oi)}"]`);
+    if (target) target.classList.add("selected");
+  }
+
+  // Event delegation for options + keyboard
+  function attachAnswerHandlers() {
+    const wrap = $("content");
+
+    wrap.addEventListener("click", (e) => {
+      const opt = e.target.closest?.(".optLine");
+      if (!opt) return;
+      if (!guardAnswering()) return;
+
+      const qid = opt.dataset.qid;
+      const oi = Number(opt.dataset.oi);
+      if (!qid || !Number.isFinite(oi)) return;
+
+      mcqAns.set(qid, oi);
+      setSelectedOptionUI(qid, oi);
+    });
+
+    wrap.addEventListener("keydown", (e) => {
+      const opt = e.target.closest?.(".optLine");
+      if (!opt) return;
+      if (!(e.key === "Enter" || e.key === " ")) return;
+
+      e.preventDefault();
+      if (!guardAnswering()) return;
+
+      const qid = opt.dataset.qid;
+      const oi = Number(opt.dataset.oi);
+      if (!qid || !Number.isFinite(oi)) return;
+
+      mcqAns.set(qid, oi);
+      setSelectedOptionUI(qid, oi);
+    });
+  }
+
+  function getUnanswered() {
     const missing = [];
-    questions.forEach((q, i)=>{
+    questions.forEach((q, i) => {
       const qid = q.id;
-      if(isWrittenQuestion(q)){
+      if (isWrittenQuestion(q)) {
         const txt = (writtenAns.get(qid) ?? "").toString().trim();
-        if(!txt) missing.push({ index: i, id: qid });
-      }else{
+        if (!txt) missing.push({ index: i, id: qid });
+      } else {
         const v = mcqAns.get(qid);
-        if(v === undefined || v === null || v === "") missing.push({ index: i, id: qid });
+        if (v === undefined || v === null || v === "") missing.push({ index: i, id: qid });
       }
     });
     return missing;
   }
 
-  function scrollToQuestion(qid){
+  function scrollToQuestion(qid) {
     const el = document.querySelector(`[data-qid="${CSS.escape(qid)}"]`);
-    if(el){
-      try{ el.scrollIntoView({behavior:"smooth", block:"center"}); }
-      catch(e){ el.scrollIntoView(); }
+    if (el) {
+      try { el.scrollIntoView({ behavior: "smooth", block: "center" }); }
+      catch (e) { el.scrollIntoView(); }
       el.style.outline = "2px solid rgba(220,38,38,.35)";
       el.style.outlineOffset = "4px";
-      setTimeout(()=>{ el.style.outline=""; el.style.outlineOffset=""; }, 1800);
+      setTimeout(() => { el.style.outline = ""; el.style.outlineOffset = ""; }, 1800);
     }
   }
 
   // ===== Result compute (MCQ based) =====
-  function toNumberMaybe(v){
+  function toNumberMaybe(v) {
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
   }
-  function computeResult(){
+  function computeResult() {
     const totalAllQ = questions.length || 0;
 
     let totalMcq = 0;
@@ -1569,20 +1628,20 @@
     let right = 0;
     let wrong = 0;
 
-    questions.forEach((q)=>{
-      if(isWrittenQuestion(q)) return;
+    questions.forEach((q) => {
+      if (isWrittenQuestion(q)) return;
 
       totalMcq++;
       const qid = q.id;
       const chosen = mcqAns.get(qid);
 
-      if(chosen === undefined || chosen === null || chosen === "") return;
+      if (chosen === undefined || chosen === null || chosen === "") return;
 
       answeredMcq++;
 
       const ci = getCorrectIndex(q);
-      if(Number.isFinite(ci) && ci >= 0){
-        if(Number(chosen) === Number(ci)) right++;
+      if (Number.isFinite(ci) && ci >= 0) {
+        if (Number(chosen) === Number(ci)) right++;
         else wrong++;
       }
     });
@@ -1600,12 +1659,12 @@
     return { totalAllQ, totalMcq, answeredMcq, noAnswer, right, wrong, totalMark, obtained };
   }
 
-  async function saveResultToFirebase(payload){
-    try{
+  async function saveResultToFirebase(payload) {
+    try {
       const ref = await db.collection(COL_MODEL_TEST_RESULT).add(payload);
       showToast("Firebase saved ✅", `Doc ID: ${ref.id}`);
       return ref.id;
-    }catch(e){
+    } catch (e) {
       console.error("Firestore write failed:", e);
       showToast("Firebase save হয়নি ❌", e?.message || String(e));
       return "";
@@ -1617,42 +1676,40 @@
   let _lastResultDocId = "";
   let _lastTimeTakenText = "";
 
-  function openResultModal(summary){
+  function openResultModal(summary) {
     $("resTitle").textContent = "Result Published";
     $("resSub").textContent = `${studentName} (${studentDistrict}) • ${getTitleField(mtDoc)}`;
     $("resTotalQ").textContent = String(summary.totalMcq);
     $("resRight").textContent = String(summary.right);
     $("resWrong").textContent = String(summary.wrong);
-    $("resNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq||0) - ((summary.right||0)+(summary.wrong||0))));
+    $("resNoAns").textContent = String(summary.noAnswer ?? Math.max(0, (summary.totalMcq || 0) - ((summary.right || 0) + (summary.wrong || 0))));
     $("resMark").textContent = `${summary.obtained} / ${summary.totalMark}`;
     $("resTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
     $("resultModal").classList.add("show");
   }
-  function closeResultModal(){ $("resultModal").classList.remove("show"); }
+  function closeResultModal() { $("resultModal").classList.remove("show"); }
   window.closeResultModal = closeResultModal;
 
-  // ✅ UPDATED: pass resultId + from=seeall (so result page highlights for 5s)
-  function goResultDetails(){
-    if(!modelTestId) return;
+  function goResultDetails() {
+    if (!modelTestId) return;
 
-    // keep local cache (optional)
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
-    if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
+    if (_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
 
     const rid = _lastResultDocId || "";
-    if(rid){
+    if (rid) {
       location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}&resultId=${encodeURIComponent(rid)}&from=seeall`;
-    }else{
+    } else {
       location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
     }
   }
   window.goResultDetails = goResultDetails;
 
   // ===== Submit =====
-  async function submitTest(isAuto=false){
-    if(!modelTestId) return;
+  async function submitTest(isAuto = false) {
+    if (!modelTestId) return;
 
-    if(!nameUnlocked){
+    if (!nameUnlocked) {
       openNameModal();
       showToast("নাম ও জেলা Submit করুন", "তারপর Submit করতে পারবেন");
       return;
@@ -1660,24 +1717,23 @@
 
     const missing = getUnanswered();
 
-    if(!isAuto && missing.length){
+    if (!isAuto && missing.length) {
       const ok = await openConfirm(
         "Submit করার আগে",
         `আপনার ${missing.length} টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও Submit করবেন?`
       );
-      if(!ok){
+      if (!ok) {
         scrollToQuestion(missing[0].id);
         showToast("Submit বাতিল", "প্রথম unanswered প্রশ্নে নিয়ে যাওয়া হয়েছে");
         return;
       }
-    }else if(!isAuto){
+    } else if (!isAuto) {
       const ok = await openConfirm("Confirm Submit", "আপনি কি নিশ্চিতভাবে Submit করতে চান?");
-      if(!ok) return;
+      if (!ok) return;
     }
 
     const summary = computeResult();
 
-    // Visitor time (MM:SS)
     const nowMs = Date.now();
     const timeTakenSeconds = Math.min(
       totalAllowedSeconds || 999999,
@@ -1719,34 +1775,71 @@
 
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
 
-    if(!_lastResultDocId){
-      showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
-    }else{
-      showToast("Submit সম্পন্ন", "Result দেখুন");
-    }
+    if (!_lastResultDocId) showToast("Warning", "Firebase save হয়নি, তবে Result দেখানো হচ্ছে");
+    else showToast("Submit সম্পন্ন", "Result দেখুন");
 
     openResultModal(summary);
   }
   window.submitTest = submitTest;
 
-  // ===== PDF (combined single PDF multi-page) =====
-  function chunk(arr, size){
+  // =======================================
+  // PDF lazy-load helpers + PDF build
+  // =======================================
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      // already loaded?
+      const existing = [...document.scripts].find(s => s.src && s.src.includes(src));
+      if (existing) { resolve(true); return; }
+
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = () => resolve(true);
+      s.onerror = () => reject(new Error("Script load failed: " + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function ensurePdfLibs() {
+    // If libs already present, skip
+    const hasHtml2Canvas = typeof window.html2canvas === "function";
+    const hasJsPDF = !!(window.jspdf && window.jspdf.jsPDF);
+    if (hasHtml2Canvas && hasJsPDF) return true;
+
+    // Lazy-load if missing
+    try {
+      if (!hasHtml2Canvas) {
+        await loadScriptOnce("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
+      }
+      if (!hasJsPDF) {
+        await loadScriptOnce("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+      }
+      return true;
+    } catch (e) {
+      console.error(e);
+      showToast("PDF লাইব্রেরি লোড হয়নি", "নেটওয়ার্ক সমস্যা হতে পারে");
+      return false;
+    }
+  }
+
+  function chunk(arr, size) {
     const out = [];
-    for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+    for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
     return out;
   }
-  function buildPdfHeaderLines(title, mins, mark, totalQ){
+  function buildPdfHeaderLines(title, mins, mark, totalQ) {
     return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
   }
-  async function renderPageToCanvas(html){
+
+  async function renderPageToCanvas(html) {
     const area = $("pdfPageArea");
     area.innerHTML = html;
-    try{ await document.fonts.ready; }catch(e){}
-    const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+    try { await document.fonts.ready; } catch (e) { }
+    const canvas = await window.html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
     return canvas;
   }
 
-  async function buildQuestionPaperCanvases(){
+  async function buildQuestionPaperCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
     const mark = getMarkFromDoc(mtDoc);
@@ -1754,17 +1847,17 @@
     const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
 
     const pages = chunk(questions, 30);
-    const letters = ["A","B","C","D"];
+    const letters = ["A", "B", "C", "D"];
     const canvases = [];
 
-    for(let p=0;p<pages.length;p++){
+    for (let p = 0; p < pages.length; p++) {
       const pageQs = pages[p];
 
-      const qHtml = pageQs.map((q, idx)=>{
-        const qno = p*30 + idx + 1;
+      const qHtml = pageQs.map((q, idx) => {
+        const qno = p * 30 + idx + 1;
         const qt = pickQuestionText(q);
 
-        if(isWrittenQuestion(q)){
+        if (isWrittenQuestion(q)) {
           return `
             <div class="pdfQ">
               <div class="qline">Q${qno}. ${esc(qt)}</div>
@@ -1774,7 +1867,7 @@
         }
 
         const opts = getOptions(q);
-        const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
+        const optHtml = opts.slice(0, 4).map((op, oi) => `<div>${letters[oi]}. ${esc(op || "")}</div>`).join("");
 
         return `
           <div class="pdfQ">
@@ -1800,7 +1893,7 @@
     return canvases;
   }
 
-  async function buildAnswerSheetCanvases(){
+  async function buildAnswerSheetCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
     const mark = getMarkFromDoc(mtDoc);
@@ -1809,15 +1902,15 @@
 
     const pages = chunk(questions, 30);
     const canvases = [];
-    const letters = ["A","B","C","D"];
+    const letters = ["A", "B", "C", "D"];
 
-    for(let p=0;p<pages.length;p++){
+    for (let p = 0; p < pages.length; p++) {
       const pageQs = pages[p];
 
-      const rowsHtml = pageQs.map((q, idx)=>{
-        const qno = p*30 + idx + 1;
+      const rowsHtml = pageQs.map((q, idx) => {
+        const qno = p * 30 + idx + 1;
 
-        if(isWrittenQuestion(q)){
+        if (isWrittenQuestion(q)) {
           return `
             <div class="ansRow">
               <b style="min-width:42px;">Q${qno}</b>
@@ -1827,7 +1920,7 @@
         }
 
         const correctIdx = getCorrectIndex(q);
-        const bubbles = letters.map((l, i)=>{
+        const bubbles = letters.map((l, i) => {
           const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
           return `<span class="bubble ${sel}">${l}</span>`;
         }).join("");
@@ -1854,9 +1947,13 @@
     return canvases;
   }
 
-  async function downloadCombinedPDF(){
-    try{
-      if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
+  async function downloadCombinedPDF() {
+    try {
+      if (!questions.length) { showToast("কোনো প্রশ্ন নেই"); return; }
+
+      const ok = await ensurePdfLibs();
+      if (!ok) return;
+
       showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
 
       const qCanvases = await buildQuestionPaperCanvases();
@@ -1868,9 +1965,9 @@
       const pageH = pdf.internal.pageSize.getHeight();
 
       let first = true;
-      const addCanvas = (canvas)=>{
+      const addCanvas = (canvas) => {
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
-        if(!first) pdf.addPage();
+        if (!first) pdf.addPage();
         first = false;
         pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
       };
@@ -1883,33 +1980,33 @@
       pdf.save(`${safeName}-question+answer.pdf`);
 
       showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
-    }catch(e){
+    } catch (e) {
       console.error(e);
       showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
     }
   }
   window.downloadCombinedPDF = downloadCombinedPDF;
 
-  // ===== Recent Model Tests (subject_model_tests থেকে) =====
-  async function loadRecentModelTests(){
+  // ===== Recent Model Tests (defer) =====
+  async function loadRecentModelTests() {
     const wrap = $("recentList");
-    try{
+    try {
       let snap = null;
-      try{
-        snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt","desc").limit(5).get();
-      }catch(e){
+      try {
+        snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt", "desc").limit(5).get();
+      } catch (e) {
         snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
       }
 
-      const docs = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       wrap.innerHTML = "";
 
-      if(!docs.length){
+      if (!docs.length) {
         wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
         return;
       }
 
-      docs.forEach(doc=>{
+      docs.forEach(doc => {
         const title = getTitleField(doc);
         const mins = getTimeMinFromDoc(doc) || "--";
         const mark = getMarkFromDoc(doc);
@@ -1938,51 +2035,62 @@
       `;
       wrap.appendChild(more);
 
-    }catch(err){
+    } catch (err) {
       console.error(err);
       wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
     }
   }
 
   // ===== boot =====
-  async function loadAll(){
-    if(!modelTestId){
+  async function loadAll() {
+    if (!modelTestId) {
       $("content").innerHTML = `<div class="err">modelTestId পাওয়া যায়নি। URL: ${BASE_PAGE}?modelTestId=XXXX</div>`;
       return;
     }
 
-    $("studentName").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
-    $("studentDistrict").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+    $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
+    $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    loadRecentModelTests();
+    // Defer recent list (so main content loads first)
+    setTimeout(() => loadRecentModelTests(), 250);
 
-    try{
+    try {
       const meta = await loadModelTestMeta(modelTestId);
-      if(!meta.doc){
+      if (!meta.doc) {
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
         return;
       }
+
       mtSource = meta.source;
       mtDoc = meta.doc;
 
-      questions = await loadQuestionsForTest(modelTestId);
+      // ✅ Faster questions load
+      questions = await loadQuestionsForTestFast(modelTestId, mtSource);
 
       setMetaHeader();
 
       // Do NOT start countdown before Name+District submit
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
-      if(__mins){ $("timeLeft").textContent = formatMMSS(__mins*60); }
+      if (__mins) $("timeLeft").textContent = formatMMSS(__mins * 60);
 
-      renderAll();
+      renderAllOnce();
+      attachAnswerHandlers();
+
       showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
-    }catch(err){
+    } catch (err) {
       console.error(err);
       $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
     }
   }
 
+  // expose submitTest (used by button onclick)
+  window.submitTest = submitTest;
+
   loadAll();
+})();
 </script>
+
+
 
 
 
