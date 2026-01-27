@@ -836,505 +836,536 @@
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
   <script>
-    // Run after deferred firebase scripts loaded
-window.addEventListener("load", () => {
+  // Run after deferred firebase scripts loaded
+  window.addEventListener("load", () => {
 
-  // ===== Firebase Config =====
-  const firebaseConfig = {
-    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-    authDomain: "eprostutibd-webapp.firebaseapp.com",
-    projectId: "eprostutibd-webapp",
-    storageBucket: "eprostutibd-webapp.firebasestorage.app",
-    messagingSenderId: "1044069942330",
-    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
-    measurementId: "G-T2G55NMDQT"
-  };
+    // ===== Firebase Config =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+      authDomain: "eprostutibd-webapp.firebaseapp.com",
+      projectId: "eprostutibd-webapp",
+      storageBucket: "eprostutibd-webapp.firebasestorage.app",
+      messagingSenderId: "1044069942330",
+      appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+      measurementId: "G-T2G55NMDQT"
+    };
 
-  // ✅ Admin page collection names (admission_ prefix)
-  // Admin page থেকে নেওয়া:
-  const COL_ADM_SUBJECTS            = "admission_subjects";           // Admin: COL_SUBJECTS
-  const COL_ADM_UNIVERSITIES        = "admission_universities";       // Admin: COL_UNIVERSITIES
-  
-  // ✅ IMPORTANT: Admin page-এ দুই ধরনের test আছে:
-  // 1. Subject Tests (admission_subject_tests)
-  // 2. Admission Tests (admission_tests)
-  // Model Tests দেখানোর জন্য admission_subject_tests collection ব্যবহার করব
-  const COL_ADM_SUBJECT_MODEL_TESTS = "admission_subject_tests";      // Admin: COL_SUBJECT_TESTS
-  
-  // ✅ Additional collections from Admin page (যদি প্রয়োজন হয়):
-  const COL_ADM_SUBJECT_QUESTIONS   = "admission_subject_questions";   // Admin: COL_SUBJECT_QUESTIONS
-  const COL_ADM_UNIVERSITY_QUESTIONS = "admission_university_questions"; // Admin: COL_UNIVERSITY_QUESTIONS
-  const COL_ADM_ADMISSION_TESTS     = "admission_tests";               // Admin: COL_ADMISSION_TESTS
+    // ✅ Admin page collection names (admission_ prefix)
+    const COL_ADM_SUBJECTS             = "admission_subjects";
+    const COL_ADM_UNIVERSITIES         = "admission_universities";
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const $ = (id)=>document.getElementById(id);
+    // ✅ Subject Model Tests
+    const COL_ADM_SUBJECT_MODEL_TESTS  = "admission_subject_tests";
 
-  // ===== Menu =====
-  function openMenu(){
-    const menu = $("mobileMenu");
-    const btn = $("menuBtn");
-    menu.style.display = "block";
-    btn.setAttribute("aria-expanded", "true");
-  }
-  function closeMenu(){
-    const menu = $("mobileMenu");
-    const btn = $("menuBtn");
-    menu.style.display = "none";
-    btn.setAttribute("aria-expanded", "false");
-  }
-  function toggleMenu(){
-    const menu = $("mobileMenu");
-    if(menu.style.display === "block") closeMenu();
-    else openMenu();
-  }
-  window.openMenu = openMenu;
-  window.closeMenu = closeMenu;
-  window.toggleMenu = toggleMenu;
+    // ✅ University/Admission Model Tests (University wise count)
+    const COL_ADM_ADMISSION_TESTS      = "admission_tests";
 
-  document.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape") closeMenu();
-  }, {passive:true});
+    // (Optional)
+    const COL_ADM_SUBJECT_QUESTIONS    = "admission_subject_questions";
+    const COL_ADM_UNIVERSITY_QUESTIONS = "admission_university_questions";
 
-  // ===== Helpers =====
-  function esc(str){
-    return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-  }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const $ = (id)=>document.getElementById(id);
 
-  function normalize(s){
-    return String(s||"").toLowerCase()
-      .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-  function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
-  function relatedScore(query, name){
-    const q = normalize(query), n = normalize(name);
-    if(!q) return 1;
-    if(n.includes(q)) return 100;
-    const qt = tokens(q), nt = new Set(tokens(n));
-    if(!qt.length) return 1;
-    let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
-    let partial=0;
-    qt.forEach(w=>{
-      if(w.length>=3){
-        for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
-      }
-    });
-    return (hit/qt.length)*10 + partial;
-  }
-
-  function toMillisAny(v){
-    if(v == null) return 0;
-    if(typeof v === "object"){
-      if(typeof v.toMillis === "function") return v.toMillis();
-      if(typeof v.seconds === "number") return (v.seconds * 1000) + (v.nanoseconds ? Math.floor(v.nanoseconds/1e6) : 0);
-      if(v instanceof Date) return v.getTime();
+    // ===== Menu =====
+    function openMenu(){
+      const menu = $("mobileMenu");
+      const btn = $("menuBtn");
+      menu.style.display = "block";
+      btn.setAttribute("aria-expanded", "true");
     }
-    if(typeof v === "number"){
-      if(v > 0 && v < 1e12) return v * 1000;
-      return v;
+    function closeMenu(){
+      const menu = $("mobileMenu");
+      const btn = $("menuBtn");
+      menu.style.display = "none";
+      btn.setAttribute("aria-expanded", "false");
     }
-    if(typeof v === "string"){
-      const t = v.trim();
-      if(!t) return 0;
-      const n = Number(t);
-      if(!Number.isNaN(n)){
-        if(n > 0 && n < 1e12) return n * 1000;
-        return n;
-      }
-      const ms = Date.parse(t);
-      return Number.isNaN(ms) ? 0 : ms;
+    function toggleMenu(){
+      const menu = $("mobileMenu");
+      if(menu.style.display === "block") closeMenu();
+      else openMenu();
     }
-    return 0;
-  }
-  function getDocSortTime(data){
-    const keys = [
-      "createdAt","created_at","created","createAt","timeCreated",
-      "updatedAt","updated_at","updated","modifiedAt","modified_at",
-      "timestamp","ts"
-    ];
-    for(const k of keys){
-      const ms = toMillisAny(data?.[k]);
-      if(ms) return ms;
-    }
-    return 0;
-  }
+    window.openMenu = openMenu;
+    window.closeMenu = closeMenu;
+    window.toggleMenu = toggleMenu;
 
-  function makeInlineAdCard(){
-    const ad = document.createElement("div");
-    ad.className = "inlineAd";
-    ad.innerHTML = `
-      <div>
-        <div class="tag">Ad Slot</div>
-        <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
-      </div>
-    `;
-    return ad;
-  }
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") closeMenu();
+    }, {passive:true});
 
-  function renderSkeleton(targetId){
-    const wrap = $(targetId);
-    wrap.innerHTML = "";
-    for(let i=0;i<6;i++){
-      const d = document.createElement("div");
-      d.className = "skeleton";
-      d.innerHTML = `<div class="shimmer"></div>`;
-      wrap.appendChild(d);
-    }
-  }
-
-  // ===== Navigation (edit links if your pages are different) =====
-  function openSubjectDetails(subjectId){
-    window.open(`admission-details.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
-  }
-  function openUniversityDetails(universityId){
-    // আপনার details page নাম যেটা হবে সেটাতে change করে দিন
-    window.open(`all-university-question.html?universityId=${encodeURIComponent(universityId)}`, "_blank", "noopener");
-  }
-  
-  // Model Test খুলার জন্য function
-  function openModelTest(modelTestId){
-    window.open(`Start-model-test.html?modelTestId=${encodeURIComponent(modelTestId)}`, "_blank", "noopener");
-  }
-  
-  function openAdmissionTest(admissionTestId){
-    // যদি Admission Test এর জন্য আলাদা page থাকে
-    window.open(`start-admission-test.html?testId=${encodeURIComponent(admissionTestId)}`, "_blank", "noopener");
-  }
-
-  // ===== State =====
-  let SUBJECTS = [];
-  let UNIVERSITIES = [];
-
-  const PAGE_SIZE = 6;
-
-  let visibleSubjects = PAGE_SIZE;
-  let visibleUniversities = PAGE_SIZE;
-
-  let querySubjects = "";
-  let queryUniversities = "";
-
-  // subjectId -> model test count (single aggregated listener)
-  const modelTestCountMap = new Map();
-  let latestModelTestsCache = [];
-
-  // ===== Render: Subjects =====
-  let rafSubjects = 0;
-  function scheduleRenderSubjects(){
-    if(rafSubjects) return;
-    rafSubjects = requestAnimationFrame(()=>{
-      rafSubjects = 0;
-      renderSubjects();
-    });
-  }
-
-  function renderSubjects(){
-    const q = querySubjects;
-    const scored = SUBJECTS
-      .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
-      .filter(s => !q ? true : (s.__score >= 1.2))
-      .sort((a,b)=>{
-        if(b.__score !== a.__score) return b.__score - a.__score;
-        return (a.name||"").localeCompare(b.name||"");
-      });
-
-    const total = scored.length;
-    const shown = scored.slice(0, visibleSubjects);
-
-    $("countHintSubjects").textContent = `Total: ${total}`;
-    $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
-
-    const wrap = $("subjects");
-    wrap.innerHTML = "";
-
-    if(!total){
-      $("emptySubjects").style.display = "block";
-      $("btnMoreSubjects").style.display = "none";
-      return;
-    }
-    $("emptySubjects").style.display = "none";
-
-    let cardCount = 0;
-    shown.forEach((s, idx)=>{
-      cardCount++;
-      const mcq = s.counts?.mcq || 0;
-      const written = s.counts?.written || 0;
-      const mtCount = modelTestCountMap.get(s.id) ?? 0;
-
-      const el = document.createElement("article");
-      el.className = "subCard";
-      el.setAttribute("role","button");
-      el.setAttribute("tabindex","0");
-      el.onclick = ()=>openSubjectDetails(s.id);
-      el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
-
-      el.innerHTML = `
-        <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
-        <div class="counts">
-          <span class="countPill">MCQ <b>${mcq}</b></span>
-          <span class="countPill">Written <b>${written}</b></span>
-          <span class="countPill">Model test <b>${mtCount}</b></span>
-        </div>
-      `;
-      wrap.appendChild(el);
-
-      if(cardCount % 6 === 0 && idx < shown.length - 1){
-        wrap.appendChild(makeInlineAdCard());
-      }
-    });
-
-    $("btnMoreSubjects").style.display = (total > shown.length) ? "inline-flex" : "none";
-  }
-
-  function onSearchSubjects(){
-    querySubjects = ($("searchSubjects").value || "").trim();
-    visibleSubjects = PAGE_SIZE;
-    scheduleRenderSubjects();
-  }
-  function loadMoreSubjects(){
-    visibleSubjects += PAGE_SIZE;
-    scheduleRenderSubjects();
-  }
-  window.onSearchSubjects = onSearchSubjects;
-  window.loadMoreSubjects = loadMoreSubjects;
-
-  // ===== Render: Universities =====
-  let rafUniversities = 0;
-  function scheduleRenderUniversities(){
-    if(rafUniversities) return;
-    rafUniversities = requestAnimationFrame(()=>{
-      rafUniversities = 0;
-      renderUniversities();
-    });
-  }
-
-  function renderUniversities(){
-    const q = queryUniversities;
-    const scored = UNIVERSITIES
-      .map(u => ({...u, __score: relatedScore(q, u.name || "")}))
-      .filter(u => !q ? true : (u.__score >= 1.2))
-      .sort((a,b)=>{
-        if(b.__score !== a.__score) return b.__score - a.__score;
-        return (a.name||"").localeCompare(b.name||"");
-      });
-
-    const total = scored.length;
-    const shown = scored.slice(0, visibleUniversities);
-
-    $("countHintUniversities").textContent = `Total: ${total}`;
-    $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
-
-    const wrap = $("universities");
-    wrap.innerHTML = "";
-
-    if(!total){
-      $("emptyUniversities").style.display = "block";
-      $("btnMoreUniversities").style.display = "none";
-      return;
-    }
-    $("emptyUniversities").style.display = "none";
-
-    let cardCount = 0;
-    shown.forEach((u, idx)=>{
-      cardCount++;
-      const mcq = u.counts?.mcq || 0;
-      const written = u.counts?.written || 0;
-
-      const el = document.createElement("article");
-      el.className = "subCard";
-      el.setAttribute("role","button");
-      el.setAttribute("tabindex","0");
-      el.onclick = ()=>openUniversityDetails(u.id);
-      el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openUniversityDetails(u.id);} };
-
-      el.innerHTML = `
-        <h3 title="${esc(u.name||"")}">${esc(u.name||"(no name)")}</h3>
-        <div class="counts">
-          <span class="countPill">MCQ <b>${mcq}</b></span>
-          <span class="countPill">Written <b>${written}</b></span>
-        </div>
-      `;
-      wrap.appendChild(el);
-
-      if(cardCount % 6 === 0 && idx < shown.length - 1){
-        wrap.appendChild(makeInlineAdCard());
-      }
-    });
-
-    $("btnMoreUniversities").style.display = (total > shown.length) ? "inline-flex" : "none";
-  }
-
-  function onSearchUniversities(){
-    queryUniversities = ($("searchUniversities").value || "").trim();
-    visibleUniversities = PAGE_SIZE;
-    scheduleRenderUniversities();
-  }
-  function loadMoreUniversities(){
-    visibleUniversities += PAGE_SIZE;
-    scheduleRenderUniversities();
-  }
-  window.onSearchUniversities = onSearchUniversities;
-  window.loadMoreUniversities = loadMoreUniversities;
-
-  // ===== Latest Model Tests =====
-  function formatTimeMin(v){
-    if(v === undefined || v === null || v === "") return "-";
-    if(typeof v === "number") return `${v} min`;
-    if(typeof v === "string"){
-      const t=v.trim(); if(!t) return "-";
-      const n=Number(t);
-      if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
-      return t;
-    }
-    try{ return JSON.stringify(v); }catch(e){ return String(v); }
-  }
-
-  function getTimeField(data){
-    const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
-    for(const k of keys){
-      if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-    }
-    return "-";
-  }
-  function getMarkField(data){
-    const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
-    for(const k of keys){
-      if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
-    }
-    return "-";
-  }
-  function getTitleField(data){
-    return data?.title ?? data?.name ?? "Subject Model Test";
-  }
-
-  // ✅ Total Question = totalMarks
-  function getTotalQuestionFromTotalMarks(data){
-    const v = data?.totalMarks ?? data?.totalMark ?? data?.total_mark ?? null;
-    if(v === null || v === undefined || v === "") return "-";
-    const n = Number(v);
-    return Number.isFinite(n) ? n : String(v);
-  }
-
-  function renderLatestModelTests(list){
-    const wrap = $("latestMT");
-    wrap.innerHTML = "";
-
-    if(!list.length){
-      $("mtHint").textContent = "0";
-      wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
-      return;
+    // ===== Helpers =====
+    function esc(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
     }
 
-    $("mtHint").textContent = `${list.length}`;
-
-    list.forEach(item=>{
-      const data = item.data || {};
-      const id = item.id;
-
-      const title = getTitleField(data);
-      const timeVal = formatTimeMin(getTimeField(data));
-      const markVal = getMarkField(data);
-      const qCount = getTotalQuestionFromTotalMarks(data);
-
-      const card = document.createElement("div");
-      card.className = "mtCard";
-
-      card.innerHTML = `
-        <h4 title="${esc(title)}">${esc(title)}</h4>
-        <div class="mtMeta">
-          <span>⏱ ${esc(timeVal)}</span>
-          <span>🧮 Mark: ${esc(markVal)}</span>
-          <span>📌 Q: ${esc(qCount)}</span>
-        </div>
-        <div class="mtActions">
-          <button class="btn primary"
-            onclick="event.stopPropagation(); window.open('Start-model-test.html?modelTestId=${encodeURIComponent(id)}', '_blank', 'noopener')">
-            Start test
-          </button>
-          <button class="btn"
-            onclick="event.stopPropagation(); window.open('model-test-reasult.html?modelTestId=${encodeURIComponent(id)}', '_blank', 'noopener')">
-            See Result
-          </button>
-        </div>
-      `;
-      wrap.appendChild(card);
-    });
-  }
-
-  function watchModelTestsAggregate(){
-    $("mtHint").textContent = "Loading…";
-    const LIMIT = 8;
-
-    db.collection(COL_ADM_SUBJECT_MODEL_TESTS)
-      .onSnapshot((snap)=>{
-        modelTestCountMap.clear();
-
-        const docs = snap.docs;
-        const tempList = [];
-
-        for(const d of docs){
-          const data = d.data() || {};
-          const subjectId = data.subjectId;
-
-          if(subjectId){
-            modelTestCountMap.set(subjectId, (modelTestCountMap.get(subjectId) || 0) + 1);
-          }
-
-          tempList.push({ id: d.id, data });
+    function normalize(s){
+      return String(s||"").toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function tokens(s){ const t=normalize(s); return t ? t.split(" ").filter(Boolean) : []; }
+    function relatedScore(query, name){
+      const q = normalize(query), n = normalize(name);
+      if(!q) return 1;
+      if(n.includes(q)) return 100;
+      const qt = tokens(q), nt = new Set(tokens(n));
+      if(!qt.length) return 1;
+      let hit=0; qt.forEach(w=>{ if(nt.has(w)) hit++; });
+      let partial=0;
+      qt.forEach(w=>{
+        if(w.length>=3){
+          for(const tw of nt){ if(tw.startsWith(w) || w.startsWith(tw)){ partial += 0.35; break; } }
         }
+      });
+      return (hit/qt.length)*10 + partial;
+    }
 
-        tempList.sort((a,b)=>{
-          const ta = getDocSortTime(a.data);
-          const tb = getDocSortTime(b.data);
-          if(tb !== ta) return tb - ta;
-          return (b.id || "").localeCompare(a.id || "");
+    function toMillisAny(v){
+      if(v == null) return 0;
+      if(typeof v === "object"){
+        if(typeof v.toMillis === "function") return v.toMillis();
+        if(typeof v.seconds === "number") return (v.seconds * 1000) + (v.nanoseconds ? Math.floor(v.nanoseconds/1e6) : 0);
+        if(v instanceof Date) return v.getTime();
+      }
+      if(typeof v === "number"){
+        if(v > 0 && v < 1e12) return v * 1000;
+        return v;
+      }
+      if(typeof v === "string"){
+        const t = v.trim();
+        if(!t) return 0;
+        const n = Number(t);
+        if(!Number.isNaN(n)){
+          if(n > 0 && n < 1e12) return n * 1000;
+          return n;
+        }
+        const ms = Date.parse(t);
+        return Number.isNaN(ms) ? 0 : ms;
+      }
+      return 0;
+    }
+    function getDocSortTime(data){
+      const keys = [
+        "createdAt","created_at","created","createAt","timeCreated",
+        "updatedAt","updated_at","updated","modifiedAt","modified_at",
+        "timestamp","ts"
+      ];
+      for(const k of keys){
+        const ms = toMillisAny(data?.[k]);
+        if(ms) return ms;
+      }
+      return 0;
+    }
+
+    function makeInlineAdCard(){
+      const ad = document.createElement("div");
+      ad.className = "inlineAd";
+      ad.innerHTML = `
+        <div>
+          <div class="tag">Ad Slot</div>
+          <div style="font-size:12px;">এখানে AdSense/Adstra কোড বসবে</div>
+        </div>
+      `;
+      return ad;
+    }
+
+    function renderSkeleton(targetId){
+      const wrap = $(targetId);
+      wrap.innerHTML = "";
+      for(let i=0;i<6;i++){
+        const d = document.createElement("div");
+        d.className = "skeleton";
+        d.innerHTML = `<div class="shimmer"></div>`;
+        wrap.appendChild(d);
+      }
+    }
+
+    // ===== Navigation =====
+    function openSubjectDetails(subjectId){
+      window.open(`admission-details.html?subjectId=${encodeURIComponent(subjectId)}`, "_blank", "noopener");
+    }
+    function openUniversityDetails(universityId){
+      window.open(`all-university-question.html?universityId=${encodeURIComponent(universityId)}`, "_blank", "noopener");
+    }
+
+    // ===== State =====
+    let SUBJECTS = [];
+    let UNIVERSITIES = [];
+
+    const PAGE_SIZE = 6;
+
+    let visibleSubjects = PAGE_SIZE;
+    let visibleUniversities = PAGE_SIZE;
+
+    let querySubjects = "";
+    let queryUniversities = "";
+
+    // subjectId -> model test count
+    const modelTestCountMap = new Map();
+    let latestModelTestsCache = [];
+
+    // ✅ universityId -> model test count (admission_tests)
+    const uniModelTestCountMap = new Map();
+
+    // ===== Render: Subjects =====
+    let rafSubjects = 0;
+    function scheduleRenderSubjects(){
+      if(rafSubjects) return;
+      rafSubjects = requestAnimationFrame(()=>{
+        rafSubjects = 0;
+        renderSubjects();
+      });
+    }
+
+    function renderSubjects(){
+      const q = querySubjects;
+      const scored = SUBJECTS
+        .map(s => ({...s, __score: relatedScore(q, s.name || "")}))
+        .filter(s => !q ? true : (s.__score >= 1.2))
+        .sort((a,b)=>{
+          if(b.__score !== a.__score) return b.__score - a.__score;
+          return (a.name||"").localeCompare(b.name||"");
         });
 
-        latestModelTestsCache = tempList.slice(0, LIMIT);
-        renderLatestModelTests(latestModelTestsCache);
+      const total = scored.length;
+      const shown = scored.slice(0, visibleSubjects);
 
-        scheduleRenderSubjects();
-      }, (err)=>{
-        console.error(err);
-        $("mtHint").textContent = "Failed";
-        $("latestMT").innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">Failed to load model tests.</div>`;
+      $("countHintSubjects").textContent = `Total: ${total}`;
+      $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
+
+      const wrap = $("subjects");
+      wrap.innerHTML = "";
+
+      if(!total){
+        $("emptySubjects").style.display = "block";
+        $("btnMoreSubjects").style.display = "none";
+        return;
+      }
+      $("emptySubjects").style.display = "none";
+
+      let cardCount = 0;
+      shown.forEach((s, idx)=>{
+        cardCount++;
+        const mcq = s.counts?.mcq || 0;
+        const written = s.counts?.written || 0;
+        const mtCount = modelTestCountMap.get(s.id) ?? 0;
+
+        const el = document.createElement("article");
+        el.className = "subCard";
+        el.setAttribute("role","button");
+        el.setAttribute("tabindex","0");
+        el.onclick = ()=>openSubjectDetails(s.id);
+        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSubjectDetails(s.id);} };
+
+        el.innerHTML = `
+          <h3 title="${esc(s.name||"")}">${esc(s.name||"(no name)")}</h3>
+          <div class="counts">
+            <span class="countPill">MCQ <b>${mcq}</b></span>
+            <span class="countPill">Written <b>${written}</b></span>
+            <span class="countPill">Model test <b>${mtCount}</b></span>
+          </div>
+        `;
+        wrap.appendChild(el);
+
+        if(cardCount % 6 === 0 && idx < shown.length - 1){
+          wrap.appendChild(makeInlineAdCard());
+        }
       });
-  }
 
-  // ===== Start: listeners =====
-  renderSkeleton("subjects");
-  renderSkeleton("universities");
-  $("emptySubjects").style.display = "none";
-  $("emptyUniversities").style.display = "none";
+      $("btnMoreSubjects").style.display = (total > shown.length) ? "inline-flex" : "none";
+    }
 
-  // ✅ Load Subjects from admission_subjects
-  db.collection(COL_ADM_SUBJECTS).onSnapshot((snap)=>{
-    SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    scheduleRenderSubjects();
-  }, (err)=>{
-    console.error(err);
-    $("countHintSubjects").textContent = "Failed to load";
-    $("subjects").innerHTML = "";
-    $("emptySubjects").style.display = "block";
-    $("btnMoreSubjects").style.display = "none";
+    function onSearchSubjects(){
+      querySubjects = ($("searchSubjects").value || "").trim();
+      visibleSubjects = PAGE_SIZE;
+      scheduleRenderSubjects();
+    }
+    function loadMoreSubjects(){
+      visibleSubjects += PAGE_SIZE;
+      scheduleRenderSubjects();
+    }
+    window.onSearchSubjects = onSearchSubjects;
+    window.loadMoreSubjects = loadMoreSubjects;
+
+    // ===== Render: Universities =====
+    let rafUniversities = 0;
+    function scheduleRenderUniversities(){
+      if(rafUniversities) return;
+      rafUniversities = requestAnimationFrame(()=>{
+        rafUniversities = 0;
+        renderUniversities();
+      });
+    }
+
+    function renderUniversities(){
+      const q = queryUniversities;
+      const scored = UNIVERSITIES
+        .map(u => ({...u, __score: relatedScore(q, u.name || "")}))
+        .filter(u => !q ? true : (u.__score >= 1.2))
+        .sort((a,b)=>{
+          if(b.__score !== a.__score) return b.__score - a.__score;
+          return (a.name||"").localeCompare(b.name||"");
+        });
+
+      const total = scored.length;
+      const shown = scored.slice(0, visibleUniversities);
+
+      $("countHintUniversities").textContent = `Total: ${total}`;
+      $("topHint").textContent = `Subjects: ${SUBJECTS.length} • Universities: ${UNIVERSITIES.length}`;
+
+      const wrap = $("universities");
+      wrap.innerHTML = "";
+
+      if(!total){
+        $("emptyUniversities").style.display = "block";
+        $("btnMoreUniversities").style.display = "none";
+        return;
+      }
+      $("emptyUniversities").style.display = "none";
+
+      let cardCount = 0;
+      shown.forEach((u, idx)=>{
+        cardCount++;
+
+        const mcq = u.counts?.mcq || 0;
+        const written = u.counts?.written || 0;
+
+        // ✅ University wise model test count from admission_tests
+        const model = uniModelTestCountMap.get(u.id) ?? 0;
+
+        const el = document.createElement("article");
+        el.className = "subCard";
+        el.setAttribute("role","button");
+        el.setAttribute("tabindex","0");
+        el.onclick = ()=>openUniversityDetails(u.id);
+        el.onkeydown = (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openUniversityDetails(u.id);} };
+
+        el.innerHTML = `
+          <h3 title="${esc(u.name||"")}">${esc(u.name||"(no name)")}</h3>
+          <div class="counts">
+            <span class="countPill">MCQ <b>${mcq}</b></span>
+            <span class="countPill">Written <b>${written}</b></span>
+            <span class="countPill">Model test <b>${model}</b></span>
+          </div>
+        `;
+        wrap.appendChild(el);
+
+        if(cardCount % 6 === 0 && idx < shown.length - 1){
+          wrap.appendChild(makeInlineAdCard());
+        }
+      });
+
+      $("btnMoreUniversities").style.display = (total > shown.length) ? "inline-flex" : "none";
+    }
+
+    function onSearchUniversities(){
+      queryUniversities = ($("searchUniversities").value || "").trim();
+      visibleUniversities = PAGE_SIZE;
+      scheduleRenderUniversities();
+    }
+    function loadMoreUniversities(){
+      visibleUniversities += PAGE_SIZE;
+      scheduleRenderUniversities();
+    }
+    window.onSearchUniversities = onSearchUniversities;
+    window.loadMoreUniversities = loadMoreUniversities;
+
+    // ===== Latest Model Tests (Subject) =====
+    function formatTimeMin(v){
+      if(v === undefined || v === null || v === "") return "-";
+      if(typeof v === "number") return `${v} min`;
+      if(typeof v === "string"){
+        const t=v.trim(); if(!t) return "-";
+        const n=Number(t);
+        if(!Number.isNaN(n) && t.match(/^\d+(\.\d+)?$/)) return `${n} min`;
+        return t;
+      }
+      try{ return JSON.stringify(v); }catch(e){ return String(v); }
+    }
+
+    function getTimeField(data){
+      const keys = ["totalTimeMin","totalTime","total_time","duration","time","minutes"];
+      for(const k of keys){
+        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+      }
+      return "-";
+    }
+    function getMarkField(data){
+      const keys = ["totalMarks","totalMark","total_mark","mark","marks"];
+      for(const k of keys){
+        if(data && data[k] !== undefined && data[k] !== null && data[k] !== "") return data[k];
+      }
+      return "-";
+    }
+    function getTitleField(data){
+      return data?.title ?? data?.name ?? "Subject Model Test";
+    }
+
+    // ✅ Total Question = totalMarks
+    function getTotalQuestionFromTotalMarks(data){
+      const v = data?.totalMarks ?? data?.totalMark ?? data?.total_mark ?? null;
+      if(v === null || v === undefined || v === "") return "-";
+      const n = Number(v);
+      return Number.isFinite(n) ? n : String(v);
+    }
+
+    function renderLatestModelTests(list){
+      const wrap = $("latestMT");
+      wrap.innerHTML = "";
+
+      if(!list.length){
+        $("mtHint").textContent = "0";
+        wrap.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">কোনো Model Test পাওয়া যায়নি।</div>`;
+        return;
+      }
+
+      $("mtHint").textContent = `${list.length}`;
+
+      list.forEach(item=>{
+        const data = item.data || {};
+        const id = item.id;
+
+        const title = getTitleField(data);
+        const timeVal = formatTimeMin(getTimeField(data));
+        const markVal = getMarkField(data);
+        const qCount = getTotalQuestionFromTotalMarks(data);
+
+        const card = document.createElement("div");
+        card.className = "mtCard";
+
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="mtMeta">
+            <span>⏱ ${esc(timeVal)}</span>
+            <span>🧮 Mark: ${esc(markVal)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="mtActions">
+            <button class="btn primary"
+              onclick="event.stopPropagation(); window.open('Start-model-test.html?modelTestId=${encodeURIComponent(id)}', '_blank', 'noopener')">
+              Start test
+            </button>
+            <button class="btn"
+              onclick="event.stopPropagation(); window.open('model-test-reasult.html?modelTestId=${encodeURIComponent(id)}', '_blank', 'noopener')">
+              See Result
+            </button>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function watchModelTestsAggregate(){
+      $("mtHint").textContent = "Loading…";
+      const LIMIT = 8;
+
+      db.collection(COL_ADM_SUBJECT_MODEL_TESTS)
+        .onSnapshot((snap)=>{
+          modelTestCountMap.clear();
+
+          const docs = snap.docs;
+          const tempList = [];
+
+          for(const d of docs){
+            const data = d.data() || {};
+            const subjectId = data.subjectId;
+
+            if(subjectId){
+              modelTestCountMap.set(subjectId, (modelTestCountMap.get(subjectId) || 0) + 1);
+            }
+
+            tempList.push({ id: d.id, data });
+          }
+
+          tempList.sort((a,b)=>{
+            const ta = getDocSortTime(a.data);
+            const tb = getDocSortTime(b.data);
+            if(tb !== ta) return tb - ta;
+            return (b.id || "").localeCompare(a.id || "");
+          });
+
+          latestModelTestsCache = tempList.slice(0, LIMIT);
+          renderLatestModelTests(latestModelTestsCache);
+
+          scheduleRenderSubjects();
+        }, (err)=>{
+          console.error(err);
+          $("mtHint").textContent = "Failed";
+          $("latestMT").innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-size:12px;">Failed to load model tests.</div>`;
+        });
+    }
+
+    // ✅ University wise model test aggregate (from admission_tests)
+    function watchUniversityModelTestsAggregate(){
+      // এখানে আলাদা hint না থাকলে কিছু দেখাতে হবে না, শুধু map fill করবো
+      db.collection(COL_ADM_ADMISSION_TESTS)
+        .onSnapshot((snap)=>{
+          uniModelTestCountMap.clear();
+
+          for(const d of snap.docs){
+            const data = d.data() || {};
+
+            // admin এ field নাম আলাদা হলে এখানে add করে দাও
+            const uniId =
+              data.universityId ||
+              data.university_id ||
+              data.uniId ||
+              data.uni_id ||
+              data.university ||
+              "";
+
+            if(!uniId) continue;
+            uniModelTestCountMap.set(uniId, (uniModelTestCountMap.get(uniId) || 0) + 1);
+          }
+
+          scheduleRenderUniversities();
+        }, (err)=>{
+          console.error(err);
+          // fail হলে 0 ধরে দেখাবে
+          uniModelTestCountMap.clear();
+          scheduleRenderUniversities();
+        });
+    }
+
+    // ===== Start: listeners =====
+    renderSkeleton("subjects");
+    renderSkeleton("universities");
+    $("emptySubjects").style.display = "none";
+    $("emptyUniversities").style.display = "none";
+
+    // ✅ Load Subjects
+    db.collection(COL_ADM_SUBJECTS).onSnapshot((snap)=>{
+      SUBJECTS = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      scheduleRenderSubjects();
+    }, (err)=>{
+      console.error(err);
+      $("countHintSubjects").textContent = "Failed to load";
+      $("subjects").innerHTML = "";
+      $("emptySubjects").style.display = "block";
+      $("btnMoreSubjects").style.display = "none";
+    });
+
+    // ✅ Load Universities
+    db.collection(COL_ADM_UNIVERSITIES).onSnapshot((snap)=>{
+      UNIVERSITIES = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      scheduleRenderUniversities();
+    }, (err)=>{
+      console.error(err);
+      $("countHintUniversities").textContent = "Failed to load";
+      $("universities").innerHTML = "";
+      $("emptyUniversities").style.display = "block";
+      $("btnMoreUniversities").style.display = "none";
+    });
+
+    // ✅ Subject model tests
+    watchModelTestsAggregate();
+
+    // ✅ University model tests (per university)
+    watchUniversityModelTestsAggregate();
+
   });
-
-  // ✅ Load Universities from admission_universities
-  db.collection(COL_ADM_UNIVERSITIES).onSnapshot((snap)=>{
-    UNIVERSITIES = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    scheduleRenderUniversities();
-  }, (err)=>{
-    console.error(err);
-    $("countHintUniversities").textContent = "Failed to load";
-    $("universities").innerHTML = "";
-    $("emptyUniversities").style.display = "block";
-    $("btnMoreUniversities").style.display = "none";
-  });
-
-  // ✅ Load Model Tests from admission_subject_tests
-  watchModelTestsAggregate();
-});
-  </script>
+</script>
 </body>
 </html>
