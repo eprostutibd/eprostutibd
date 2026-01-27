@@ -1170,12 +1170,12 @@
   ];
 
   // ✅ NEW (from admin) — Admission Subject Tests
-  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";                 // admission_subject_tests
-  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // admission_subject_test_questions (field: testId)
+  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";
+  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // field: testId
 
   // ✅ NEW (from admin) — Admission Tests (university)
-  const COL_ADMISSION_TESTS = "admission_tests";                                 // admission_tests
-  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";               // admission_test_questions (field: testId)
+  const COL_ADMISSION_TESTS = "admission_tests";
+  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions"; // field: testId
 
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
@@ -1358,15 +1358,12 @@
   // ✅ META LOAD (3 sources)
   // =========================
   async function loadModelTestMeta(mtId){
-    // 1) OLD: subject_model_tests/{id}
     const snap1 = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).get();
     if(snap1.exists) return { source: COL_SUBJECT_MODEL_TESTS, doc: { id:snap1.id, ...snap1.data() } };
 
-    // 2) NEW: admission_subject_tests/{id}
     const snap2 = await db.collection(COL_ADMISSION_SUBJECT_TESTS).doc(mtId).get();
     if(snap2.exists) return { source: COL_ADMISSION_SUBJECT_TESTS, doc: { id:snap2.id, ...snap2.data() } };
 
-    // 3) NEW: admission_tests/{id}
     const snap3 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
     if(snap3.exists) return { source: COL_ADMISSION_TESTS, doc: { id:snap3.id, ...snap3.data() } };
 
@@ -1377,7 +1374,6 @@
   // ✅ LOAD QUESTIONS (OLD + NEW collections)
   // =======================================
   async function loadQuestionsForTest(mtId){
-    // A) OLD: try question candidates (field: modelTestId)
     for(const col of QUESTION_COLLECTION_CANDIDATES){
       try{
         const got = await fetchQuestionsByField(col, "modelTestId", mtId);
@@ -1385,19 +1381,16 @@
       }catch(e){}
     }
 
-    // B) OLD fallback: subject_model_tests/{id}/questions
     try{
       const gotSub = await fetchQuestionsFromSubcollection(mtId);
       if(gotSub && gotSub.length) return gotSub;
     }catch(e){}
 
-    // C) NEW: admission_subject_test_questions (field: testId)
     try{
       const gotAdmSub = await fetchQuestionsByField(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
       if(gotAdmSub && gotAdmSub.length) return gotAdmSub;
     }catch(e){}
 
-    // D) NEW: admission_test_questions (field: testId)
     try{
       const gotAdm = await fetchQuestionsByField(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
       if(gotAdm && gotAdm.length) return gotAdm;
@@ -1441,8 +1434,6 @@
     const total = questions.length;
     const adPos1 = total >= 6 ? Math.floor(total/3) : 3;
     const adPos2 = total >= 10 ? Math.floor((2*total)/3) : 7;
-
-    const letters = ["A","B","C","D"];
 
     questions.forEach((q, i)=>{
       if(i === adPos1){
@@ -1571,7 +1562,6 @@
     return Number.isFinite(n) ? n : null;
   }
   function computeResult(){
-    // totalAllQ = MCQ + Written (info)
     const totalAllQ = questions.length || 0;
 
     let totalMcq = 0;
@@ -1641,11 +1631,20 @@
   function closeResultModal(){ $("resultModal").classList.remove("show"); }
   window.closeResultModal = closeResultModal;
 
+  // ✅ UPDATED: pass resultId + from=seeall (so result page highlights for 5s)
   function goResultDetails(){
     if(!modelTestId) return;
+
+    // keep local cache (optional)
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(_lastResultPayload || {}));
     if(_lastResultDocId) localStorage.setItem(`epbd_result_doc_${modelTestId}`, _lastResultDocId);
-    location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+
+    const rid = _lastResultDocId || "";
+    if(rid){
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}&resultId=${encodeURIComponent(rid)}&from=seeall`;
+    }else{
+      location.href = `model-test-reasult.html?modelTestId=${encodeURIComponent(modelTestId)}`;
+    }
   }
   window.goResultDetails = goResultDetails;
 
@@ -1687,11 +1686,10 @@
     const timeTakenText = formatMMSS(timeTakenSeconds);
     _lastTimeTakenText = timeTakenText;
 
-    // Firestore-safe payload
     const payload = {
       modelTestId,
       modelTestName: getTitleField(mtDoc),
-      modelTestSource: mtSource, // useful debug
+      modelTestSource: mtSource,
       submittedAt: Date.now(),
       timeTakenText,
       isAuto: !!isAuto,
@@ -1719,7 +1717,6 @@
     showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
     _lastResultDocId = await saveResultToFirebase(payload);
 
-    // local cache for result page
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
 
     if(!_lastResultDocId){
@@ -1893,7 +1890,7 @@
   }
   window.downloadCombinedPDF = downloadCombinedPDF;
 
-  // ===== Recent Model Tests (আগের মতোই subject_model_tests থেকে) =====
+  // ===== Recent Model Tests (subject_model_tests থেকে) =====
   async function loadRecentModelTests(){
     const wrap = $("recentList");
     try{
@@ -1960,7 +1957,6 @@
     loadRecentModelTests();
 
     try{
-      // meta from 3 possible collections
       const meta = await loadModelTestMeta(modelTestId);
       if(!meta.doc){
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -1969,7 +1965,6 @@
       mtSource = meta.source;
       mtDoc = meta.doc;
 
-      // questions from old + new collections
       questions = await loadQuestionsForTest(modelTestId);
 
       setMetaHeader();
@@ -1988,6 +1983,7 @@
 
   loadAll();
 </script>
+
 
 
 </body>
