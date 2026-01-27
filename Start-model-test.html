@@ -1154,26 +1154,28 @@
   // ✅ COLLECTIONS (OLD + NEW)
   // =========================
 
-  // ✅ OLD model test meta + results
+  // OLD: meta
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
-  const COL_MODEL_TEST_RESULT = "model_test_result";
 
-  // ✅ OLD questions candidates (modelTestId field)
+  // OLD: results
+  const COL_MODEL_TEST_RESULT = "model_test_result"; // Firestore-safe name
+
+  // OLD: questions candidates (field: modelTestId)
   const QUESTION_COLLECTION_CANDIDATES = [
-     "modeltest_questions",
-     "model_test_questions",
-     "modeltest_question",
-     "modelTest_questions",
-     "modeltestQuestions"
+    "modeltest_questions",
+    "model_test_questions",
+    "modeltest_question",
+    "modelTest_questions",
+    "modeltestQuestions"
   ];
 
-  // ✅ NEW (from your admin code) — Admission Subject Tests
-  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";               // COL_SUBJECT_TESTS
-  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // COL_SUBJECT_TEST_QUESTIONS
+  // ✅ NEW (from admin) — Admission Subject Tests
+  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";                 // admission_subject_tests
+  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // admission_subject_test_questions (field: testId)
 
-  // ✅ NEW (from your admin code) — Admission Tests (university)
-  const COL_ADMISSION_TESTS = "admission_tests";                              // COL_ADMISSION_TESTS
-  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";            // COL_ADMISSION_TEST_QUESTIONS
+  // ✅ NEW (from admin) — Admission Tests (university)
+  const COL_ADMISSION_TESTS = "admission_tests";                                 // admission_tests
+  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";               // admission_test_questions (field: testId)
 
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
@@ -1183,7 +1185,7 @@
 
   // ===== state =====
   let mtDoc = null;
-  let mtSource = ""; // ✅ track which meta collection it came from
+  let mtSource = ""; // track which meta collection loaded
   let questions = [];
   const mcqAns = new Map();
   const writtenAns = new Map();
@@ -1222,7 +1224,7 @@
     nameUnlocked = true;
     closeNameModal();
 
-    // ✅ Start countdown only after Name + District submitted
+    // Start countdown only after Name+District submitted
     if(!timerStarted && mtDoc){
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if(__mins){ startTimer(__mins); }
@@ -1326,7 +1328,6 @@
   // ✅ FETCH HELPERS (support different keys)
   // =======================================
   async function fetchQuestionsByField(colName, fieldName, fieldValue){
-    // tries orderBy(createdAt) then fallback
     try{
       const s = await db.collection(colName)
         .where(fieldName,"==", fieldValue)
@@ -1341,7 +1342,7 @@
     }
   }
 
-  // OLD: subject_model_tests/{id}/questions (subcollection)
+  // OLD: subject_model_tests/{id}/questions subcollection
   async function fetchQuestionsFromSubcollection(mtId){
     const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
     try{
@@ -1370,6 +1371,39 @@
     if(snap3.exists) return { source: COL_ADMISSION_TESTS, doc: { id:snap3.id, ...snap3.data() } };
 
     return { source:"", doc:null };
+  }
+
+  // =======================================
+  // ✅ LOAD QUESTIONS (OLD + NEW collections)
+  // =======================================
+  async function loadQuestionsForTest(mtId){
+    // A) OLD: try question candidates (field: modelTestId)
+    for(const col of QUESTION_COLLECTION_CANDIDATES){
+      try{
+        const got = await fetchQuestionsByField(col, "modelTestId", mtId);
+        if(got && got.length) return got;
+      }catch(e){}
+    }
+
+    // B) OLD fallback: subject_model_tests/{id}/questions
+    try{
+      const gotSub = await fetchQuestionsFromSubcollection(mtId);
+      if(gotSub && gotSub.length) return gotSub;
+    }catch(e){}
+
+    // C) NEW: admission_subject_test_questions (field: testId)
+    try{
+      const gotAdmSub = await fetchQuestionsByField(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
+      if(gotAdmSub && gotAdmSub.length) return gotAdmSub;
+    }catch(e){}
+
+    // D) NEW: admission_test_questions (field: testId)
+    try{
+      const gotAdm = await fetchQuestionsByField(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
+      if(gotAdm && gotAdm.length) return gotAdm;
+    }catch(e){}
+
+    return [];
   }
 
   function setMetaHeader(){
@@ -1480,10 +1514,10 @@
           opt.className = "optLine" + (chosen === oi ? " selected" : "");
           opt.setAttribute("role","button");
           opt.setAttribute("tabindex","0");
-          opt.setAttribute("aria-label", `Q${qno} Option ${letters[oi]}`);
+          opt.setAttribute("aria-label", `Q${qno} Option ${["A","B","C","D"][oi]}`);
           opt.innerHTML = `
             <span class="tick">✓</span>
-            <span class="optKey">${letters[oi]}.</span>
+            <span class="optKey">${["A","B","C","D"][oi]}.</span>
             <span class="optTxt">${esc(op || "")}</span>
           `;
           const pick = ()=>{
@@ -1537,6 +1571,7 @@
     return Number.isFinite(n) ? n : null;
   }
   function computeResult(){
+    // totalAllQ = MCQ + Written (info)
     const totalAllQ = questions.length || 0;
 
     let totalMcq = 0;
@@ -1643,6 +1678,7 @@
 
     const summary = computeResult();
 
+    // Visitor time (MM:SS)
     const nowMs = Date.now();
     const timeTakenSeconds = Math.min(
       totalAllowedSeconds || 999999,
@@ -1651,10 +1687,11 @@
     const timeTakenText = formatMMSS(timeTakenSeconds);
     _lastTimeTakenText = timeTakenText;
 
+    // Firestore-safe payload
     const payload = {
       modelTestId,
       modelTestName: getTitleField(mtDoc),
-      modelTestSource: mtSource, // ✅ shows which meta collection used
+      modelTestSource: mtSource, // useful debug
       submittedAt: Date.now(),
       timeTakenText,
       isAuto: !!isAuto,
@@ -1682,6 +1719,7 @@
     showToast("Submit হচ্ছে…", "Result তৈরি হচ্ছে");
     _lastResultDocId = await saveResultToFirebase(payload);
 
+    // local cache for result page
     localStorage.setItem(`epbd_result_${modelTestId}`, JSON.stringify(payload));
 
     if(!_lastResultDocId){
@@ -1694,11 +1732,168 @@
   }
   window.submitTest = submitTest;
 
-  // ===== PDF (your existing PDF functions can stay as-is) =====
-  // NOTE: PDF functions omitted here for brevity IF you already have them below in the same file.
-  // If you want, paste your PDF functions here unchanged.
+  // ===== PDF (combined single PDF multi-page) =====
+  function chunk(arr, size){
+    const out = [];
+    for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size));
+    return out;
+  }
+  function buildPdfHeaderLines(title, mins, mark, totalQ){
+    return { line1: title, line2: `সময়: ${mins} মিনিট মার্ক: ${mark} মোট প্রশ্ন: ${totalQ}` };
+  }
+  async function renderPageToCanvas(html){
+    const area = $("pdfPageArea");
+    area.innerHTML = html;
+    try{ await document.fonts.ready; }catch(e){}
+    const canvas = await html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+    return canvas;
+  }
 
-  // ===== Recent Model Tests (unchanged old list) =====
+  async function buildQuestionPaperCanvases(){
+    const title = getTitleField(mtDoc);
+    const mins = getTimeMinFromDoc(mtDoc) || 0;
+    const mark = getMarkFromDoc(mtDoc);
+    const totalQ = questions.length;
+    const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+    const pages = chunk(questions, 30);
+    const letters = ["A","B","C","D"];
+    const canvases = [];
+
+    for(let p=0;p<pages.length;p++){
+      const pageQs = pages[p];
+
+      const qHtml = pageQs.map((q, idx)=>{
+        const qno = p*30 + idx + 1;
+        const qt = pickQuestionText(q);
+
+        if(isWrittenQuestion(q)){
+          return `
+            <div class="pdfQ">
+              <div class="qline">Q${qno}. ${esc(qt)}</div>
+              <div style="margin-top:8px;">উত্তর: ____________________________</div>
+            </div>
+          `;
+        }
+
+        const opts = getOptions(q);
+        const optHtml = opts.slice(0,4).map((op, oi)=>`<div>${letters[oi]}. ${esc(op||"")}</div>`).join("");
+
+        return `
+          <div class="pdfQ">
+            <div class="qline">Q${qno}. ${esc(qt)}</div>
+            <div class="pdfOpt">${optHtml}</div>
+          </div>
+        `;
+      }).join("");
+
+      const pageHtml = `
+        <div class="pdfFrame">
+          <div class="pdfWatermark">eProstutiBD</div>
+          <div class="pdfHeaderLine1">${esc(line1)}</div>
+          <div class="pdfHeaderLine2">${esc(line2)}</div>
+          <div style="text-align:center; font-weight:1000; margin: 0 0 10px;">Question Paper</div>
+          <div class="pdfGridWrap">
+            <div class="pdfGrid">${qHtml}</div>
+          </div>
+        </div>
+      `;
+      canvases.push(await renderPageToCanvas(pageHtml));
+    }
+    return canvases;
+  }
+
+  async function buildAnswerSheetCanvases(){
+    const title = getTitleField(mtDoc);
+    const mins = getTimeMinFromDoc(mtDoc) || 0;
+    const mark = getMarkFromDoc(mtDoc);
+    const totalQ = questions.length;
+    const { line1, line2 } = buildPdfHeaderLines(title, mins, mark, totalQ);
+
+    const pages = chunk(questions, 30);
+    const canvases = [];
+    const letters = ["A","B","C","D"];
+
+    for(let p=0;p<pages.length;p++){
+      const pageQs = pages[p];
+
+      const rowsHtml = pageQs.map((q, idx)=>{
+        const qno = p*30 + idx + 1;
+
+        if(isWrittenQuestion(q)){
+          return `
+            <div class="ansRow">
+              <b style="min-width:42px;">Q${qno}</b>
+              <span>__________________________</span>
+            </div>
+          `;
+        }
+
+        const correctIdx = getCorrectIndex(q);
+        const bubbles = letters.map((l, i)=>{
+          const sel = (Number.isFinite(correctIdx) && correctIdx === i) ? "selected" : "";
+          return `<span class="bubble ${sel}">${l}</span>`;
+        }).join("");
+
+        return `
+          <div class="ansRow">
+            <b style="min-width:42px;">Q${qno}</b>
+            <div class="bubbles">${bubbles}</div>
+          </div>
+        `;
+      }).join("");
+
+      const pageHtml = `
+        <div class="pdfFrame">
+          <div class="pdfWatermark">eProstutiBD</div>
+          <div class="pdfHeaderLine1">${esc(line1)}</div>
+          <div class="pdfHeaderLine2">${esc(line2)}</div>
+          <div style="text-align:center; font-weight:1000; margin-top: 4px;">Answer Sheet (Correct)</div>
+          <div class="pdfASGrid">${rowsHtml}</div>
+        </div>
+      `;
+      canvases.push(await renderPageToCanvas(pageHtml));
+    }
+    return canvases;
+  }
+
+  async function downloadCombinedPDF(){
+    try{
+      if(!questions.length){ showToast("কোনো প্রশ্ন নেই"); return; }
+      showToast("PDF তৈরি হচ্ছে…", "Question + Answer একসাথে");
+
+      const qCanvases = await buildQuestionPaperCanvases();
+      const aCanvases = await buildAnswerSheetCanvases();
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "pt", "a4");
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+
+      let first = true;
+      const addCanvas = (canvas)=>{
+        const imgData = canvas.toDataURL("image/jpeg", 0.95);
+        if(!first) pdf.addPage();
+        first = false;
+        pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+      };
+
+      qCanvases.forEach(addCanvas);
+      aCanvases.forEach(addCanvas);
+
+      const title = getTitleField(mtDoc);
+      const safeName = title.replace(/[\\/:*?"<>|]+/g, "_").trim() || "model-test";
+      pdf.save(`${safeName}-question+answer.pdf`);
+
+      showToast("ডাউনলোড সম্পন্ন", "একটি PDF (Multi-page)");
+    }catch(e){
+      console.error(e);
+      showToast("PDF তৈরি করতে সমস্যা", "Console এ error দেখুন");
+    }
+  }
+  window.downloadCombinedPDF = downloadCombinedPDF;
+
+  // ===== Recent Model Tests (আগের মতোই subject_model_tests থেকে) =====
   async function loadRecentModelTests(){
     const wrap = $("recentList");
     try{
@@ -1752,40 +1947,6 @@
     }
   }
 
-  // =======================================
-  // ✅ LOAD QUESTIONS (OLD + NEW collections)
-  // =======================================
-  async function loadQuestionsForTest(mtId, metaSource){
-    // Priority:
-    // A) OLD: try question candidates where field = modelTestId
-    for(const col of QUESTION_COLLECTION_CANDIDATES){
-      try{
-        const got = await fetchQuestionsByField(col, "modelTestId", mtId);
-        if(got && got.length) return got;
-      }catch(e){}
-    }
-
-    // B) OLD fallback: subject_model_tests/{id}/questions
-    try{
-      const gotSub = await fetchQuestionsFromSubcollection(mtId);
-      if(gotSub && gotSub.length) return gotSub;
-    }catch(e){}
-
-    // C) NEW: admission_subject_test_questions (field: testId)
-    try{
-      const gotAdmSub = await fetchQuestionsByField(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
-      if(gotAdmSub && gotAdmSub.length) return gotAdmSub;
-    }catch(e){}
-
-    // D) NEW: admission_test_questions (field: testId)
-    try{
-      const gotAdm = await fetchQuestionsByField(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
-      if(gotAdm && gotAdm.length) return gotAdm;
-    }catch(e){}
-
-    return [];
-  }
-
   // ===== boot =====
   async function loadAll(){
     if(!modelTestId){
@@ -1799,7 +1960,7 @@
     loadRecentModelTests();
 
     try{
-      // ✅ meta from 3 possible collections
+      // meta from 3 possible collections
       const meta = await loadModelTestMeta(modelTestId);
       if(!meta.doc){
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -1808,12 +1969,12 @@
       mtSource = meta.source;
       mtDoc = meta.doc;
 
-      // ✅ questions from old + new collections
-      questions = await loadQuestionsForTest(modelTestId, mtSource);
+      // questions from old + new collections
+      questions = await loadQuestionsForTest(modelTestId);
 
       setMetaHeader();
 
-      // ✅ Do NOT start countdown before Name+District submit
+      // Do NOT start countdown before Name+District submit
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if(__mins){ $("timeLeft").textContent = formatMMSS(__mins*60); }
 
@@ -1827,6 +1988,7 @@
 
   loadAll();
 </script>
+
 
 </body>
 </html>
