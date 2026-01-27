@@ -1013,8 +1013,8 @@
   const COL_UNIVERSITIES = "admission_universities";
   const COL_UNIVERSITY_QUESTIONS = "admission_university_questions";
 
-  /* ✅ University model test collection (change here if needed) */
-  const COL_UNIVERSITY_MODEL_TESTS = "admission_university_tests";
+  /* ✅ FIXED: University model tests same as working page logic */
+  const COL_UNIVERSITY_MODEL_TESTS = "admission_tests";
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
@@ -1131,20 +1131,57 @@
   }
 
   /* =========================
-     ✅ Model Test Qty (University)
+     ✅ Model Test Qty (University) — FIXED
      ========================= */
   const uniMtCountMap = new Map();
   let unsubUniTests = null;
 
   function getUniIdFromTest(data){
-    // ✅ add your real key here if different
+    // ✅ match the working page behavior (more fallbacks)
     return String(
       data?.universityId ||
-      data?.uniId ||
       data?.university_id ||
+      data?.uniId ||
+      data?.uni_id ||
       data?.universityID ||
+      data?.university ||     // ✅ added
       ""
     ).trim();
+  }
+
+  // ✅ cache for right-side latest universities so we can rerender when counts change
+  let latestUniCache = [];
+
+  function renderLatestUniversitiesFromCache(){
+    const wrap = $("latestUni");
+    const empty = $("latestUniEmpty");
+    if(!wrap || !empty) return;
+
+    wrap.innerHTML = "";
+    empty.style.display = latestUniCache.length ? "none" : "block";
+
+    latestUniCache.forEach((u)=>{
+      const name = u.name ?? u.title ?? "University";
+      const counts = u.counts || {};
+      const mcq = Number(counts.mcq||0);
+      const written = Number(counts.written||0);
+      const mt = uniMtCountMap.get(u.id) ?? 0;
+
+      const card = document.createElement("div");
+      card.className = "mtCardMini";
+      card.innerHTML = `
+        <h4 title="${esc(name)}">${esc(name)}</h4>
+        <div class="mtMetaMini">
+          <span>MCQ: ${esc(mcq)}</span>
+          <span>Written: ${esc(written)}</span>
+          <span>Model: ${esc(mt)}</span>
+        </div>
+        <div class="mtActionsMini">
+          <button class="btn primary" onclick="selectUniversityFromRight('${esc(u.id)}')">Open</button>
+        </div>
+      `;
+      wrap.appendChild(card);
+    });
   }
 
   function attachUniversityModelTestCounts(){
@@ -1162,10 +1199,11 @@
           uniMtCountMap.set(uid, (uniMtCountMap.get(uid) || 0) + 1);
         });
 
-        // ✅ two places update
+        // ✅ update all places
         renderUniversityList();
         renderUniversitySheet();
-        attachLatestUniversities(true); // rerender right cards with fresh counts
+        // ✅ rerender right mini cards to show latest counts
+        renderLatestUniversitiesFromCache();
       }, (err)=>{
         console.error(err);
       });
@@ -1690,12 +1728,7 @@
   /* ===== RIGHT: Latest Universities (show MCQ/Written/Model only) ===== */
   function attachLatestUniversities(forceRenderOnly=false){
     if(forceRenderOnly){
-      // just rerender existing if already loaded
-      // (when model test count updates)
-      // If not loaded yet, the listener below will handle
-      if($("latestUni")) {
-        // no-op; listener will run. kept for call compatibility
-      }
+      renderLatestUniversitiesFromCache();
       return;
     }
 
@@ -1705,37 +1738,8 @@
       .orderBy("createdAt","desc")
       .limit(5)
       .onSnapshot((snap)=>{
-        const wrap = $("latestUni");
-        const empty = $("latestUniEmpty");
-        if(!wrap || !empty) return;
-
-        wrap.innerHTML = "";
-
-        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        empty.style.display = docs.length ? "none" : "block";
-
-        docs.forEach((u)=>{
-          const name = u.name ?? u.title ?? "University";
-          const counts = u.counts || {};
-          const mcq = Number(counts.mcq||0);
-          const written = Number(counts.written||0);
-          const mt = uniMtCountMap.get(u.id) ?? 0;
-
-          const card = document.createElement("div");
-          card.className = "mtCardMini";
-          card.innerHTML = `
-            <h4 title="${esc(name)}">${esc(name)}</h4>
-            <div class="mtMetaMini">
-              <span>MCQ: ${esc(mcq)}</span>
-              <span>Written: ${esc(written)}</span>
-              <span>Model: ${esc(mt)}</span>
-            </div>
-            <div class="mtActionsMini">
-              <button class="btn primary" onclick="selectUniversityFromRight('${esc(u.id)}')">Open</button>
-            </div>
-          `;
-          wrap.appendChild(card);
-        });
+        latestUniCache = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        renderLatestUniversitiesFromCache();
       }, (err)=>console.error(err));
   }
 
@@ -1811,7 +1815,7 @@
   attachUniversities();
   attachLatestUniversities();
   attachUniversityModelTestCounts();  // ✅ this enables model test qty everywhere
-
 </script>
+
 </body>
 </html>
