@@ -262,7 +262,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 10px;
+      gap: 8px; /* Reduced gap */
       flex-wrap:wrap;
       line-height:1.2;
       max-width: 100%;
@@ -283,7 +283,7 @@
       text-underline-offset: 6px;
     }
     .sepDot{
-      width: 5px;height: 5px;border-radius:999px;
+      width: 4px;height: 4px;border-radius:999px; /* Smaller dot */
       background: rgba(18,28,55,.25);
       transform: translateY(1px);
       flex:0 0 auto;
@@ -294,6 +294,7 @@
       .subName{font-size:13.5px;}
       .tab{font-size:12.8px;}
       .subjectDockInner{gap:10px;}
+      .tabsLine{gap: 6px;}
     }
 
     /* ===== Layout ===== */
@@ -567,13 +568,37 @@
       overflow:hidden;
     }
     .mtCardMini h4{
-      margin:0 0 8px;font-size:13px;font-weight:1000;line-height:1.25;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      margin:0 0 4px;font-size:13px;font-weight:1000;line-height:1.3;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 0;
     }
-    .mtMetaMini{display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;margin-bottom:10px;}
-    .mtMetaMini span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
-    .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
-    .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
+    .mtMetaMini{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:11.5px; /* Smaller font */
+      margin-bottom:10px;
+    }
+    .mtMetaMini span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius:999px;
+      padding:5px 9px; /* Reduced padding */
+      white-space:nowrap;
+    }
+    .mtActionsMini{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .mtActionsMini .btn{
+      height:32px; /* Smaller button */
+      padding:6px 10px;
+      border-radius:12px;
+      font-size:11.5px;
+    }
 
     .seeMoreRow{display:flex;justify-content:flex-end;margin-top:10px;}
     .seeMoreRow .btn{height:34px;border-radius:999px;}
@@ -772,6 +797,70 @@
     .toast.success .ico{ background: rgba(22,163,74,.92); }
     .toast.warn .ico{ background: rgba(245,158,11,.92); }
     .toast.error .ico{ background: rgba(220,38,38,.92); }
+
+    /* ✅ Job Tests Grid (2 columns) */
+    .jobTestsGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    @media (max-width: 560px) {
+      .jobTestsGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .jobTestCard {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow: hidden;
+    }
+    
+    .jobTestCard h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 1000;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .jobTestMeta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+    
+    .jobTestMeta span {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius: 999px;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+    
+    .jobTestActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .jobTestActions .btn {
+      height: 32px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 11.5px;
+    }
   </style>
 </head>
 
@@ -780,7 +869,7 @@
   <div class="topbar">
     <div class="brand">
       <div class="name">eProstutiBD Jobs</div>
-      <div class="tag" id="headerTag">Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে</div>
+      <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div> <!-- ✅ Always show slogan -->
     </div>
 
     <nav class="nav" aria-label="Main navigation">
@@ -919,7 +1008,7 @@
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
 
-        <!-- ✅ Organization section (above ads) -->
+        <!-- ✅ Organizations section (above ads) -->
         <div class="latestBoxTitle" style="margin-top:2px;">Organizations</div>
         <div class="latestMT" id="orgList"></div>
         <div class="empty" id="orgEmpty">কোনো Organization পাওয়া যায়নি।</div>
@@ -1412,9 +1501,8 @@
     selectedSubjectName = found?.name || "";
 
     $("subName").textContent = selectedSubjectName || "Jobs Assistant";
-    $("headerTag").textContent = selectedSubjectName
-      ? `Jobs Assistant • ${selectedSubjectName}`
-      : "Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
+    // ✅ Always show slogan, not subject name
+    $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
 
     renderSubjectList();
     renderSubjectSheet();
@@ -1636,30 +1724,32 @@
     $("rightTitle").textContent =
       mode==="mcq" ? "MCQ প্রশ্ন" :
       mode==="written" ? "Written প্রশ্ন" :
-      "Job Subject Tests";
+      "Job Tests";
 
     if(!currentItems.length) return;
 
     if(mode === "model"){
+      // ✅ Job Tests Grid (2 columns)
       const grid = document.createElement("div");
-      grid.className = "latestMT";
+      grid.className = "jobTestsGrid";
+      
       currentItems.forEach((mt)=>{
-        const title = mt.title ?? mt.name ?? "Job Subject Test";
+        const title = mt.title ?? mt.name ?? "Job Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
         const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
         const counts = mt.counts || {};
         const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
         const card = document.createElement("div");
-        card.className = "mtCardMini";
+        card.className = "jobTestCard";
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
-          <div class="mtMetaMini">
+          <div class="jobTestMeta">
             <span>⏱ ${esc(time)} min</span>
             <span>🧮 Mark: ${esc(marks)}</span>
             <span>📌 Q: ${esc(qCount)}</span>
           </div>
-          <div class="mtActionsMini">
+          <div class="jobTestActions">
             <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
             <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
           </div>
@@ -1769,7 +1859,7 @@
 
     unsubLatest = db.collection(COL_JOBS_SUBJECT_TESTS)
       .orderBy("createdAt","desc")
-      .limit(10)
+      .limit(8) // Show 8 items max
       .onSnapshot((snap)=>{
         const wrap = $("latestJobTests");
         const empty = $("latestEmpty");
@@ -1779,7 +1869,7 @@
         empty.style.display = docs.length ? "none" : "block";
 
         docs.forEach((mt)=>{
-          const title = mt.title ?? mt.name ?? "Job Subject Test";
+          const title = mt.title ?? mt.name ?? "Job Test";
           const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
           const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
           const counts = mt.counts || {};
@@ -1791,8 +1881,8 @@
             <h4 title="${esc(title)}">${esc(title)}</h4>
             <div class="mtMetaMini">
               <span>⏱ ${esc(time)} min</span>
-              <span>🧮 Mark: ${esc(marks)}</span>
-              <span>📌 Q: ${esc(qCount)}</span>
+              <span>🧮 ${esc(marks)}</span>
+              <span>📌 ${esc(qCount)}</span>
             </div>
             <div class="mtActionsMini">
               <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
@@ -1853,7 +1943,7 @@
           <div class="mtMetaMini">
             <span>MCQ: ${esc(mcq)}</span>
             <span>Written: ${esc(written)}</span>
-            <span>Job Tests: ${esc(model)}</span>
+            <span>Tests: ${esc(model)}</span>
           </div>
           <div class="mtActionsMini">
             <button class="btn primary" onclick="location.href='organization-details.html?organizationId=${encodeURIComponent(u.id)}'">Open</button>
@@ -1905,9 +1995,8 @@
         const found = JOB_SUBJECTS.find(s=>s.id===selectedSubjectId);
         selectedSubjectName = found?.name || "";
         $("subName").textContent = selectedSubjectName || "Jobs Assistant";
-        $("headerTag").textContent = selectedSubjectName
-          ? `Jobs Assistant • ${selectedSubjectName}`
-          : "Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
+        // ✅ Always show slogan, not subject name
+        $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
 
         setUrlState();
         saveState();
