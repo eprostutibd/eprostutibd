@@ -33,13 +33,16 @@
       /* Ans bar */
       --ansBarH: 56px;
       --liftFromFooter: 0px;
+
+      /* ✅ NO SIDE GAP */
+      --pagePad: 0px;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
 
     /* ✅ Scrollbar hide (but scroll works) */
-    body, .nav, .sList, .subjectSheet .body, .panelBody, .kbd, .drawer, #content{
+    body, .nav, .sList, .subjectSheet .body, .panelBody, .kbd, .drawer, #content, .modelTestStrip{
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -50,7 +53,8 @@
     .panelBody::-webkit-scrollbar,
     .kbd::-webkit-scrollbar,
     .drawer::-webkit-scrollbar,
-    #content::-webkit-scrollbar{
+    #content::-webkit-scrollbar,
+    .modelTestStrip::-webkit-scrollbar{
       width: 0; height: 0; display:none;
     }
 
@@ -64,6 +68,7 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
       padding-bottom: 0;
+      overflow-x:hidden;
     }
     a{color:inherit}
 
@@ -75,10 +80,10 @@
       box-shadow: 0 14px 34px rgba(16,185,129,.18);
     }
     .topbar{
-      max-width: 1320px;
+      max-width: none; /* ✅ no side gap */
       margin:0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
+      padding-left: var(--pagePad);
+      padding-right: var(--pagePad);
       padding-top: 10px;
       padding-bottom: 10px;
       display:flex;
@@ -109,31 +114,11 @@
       .brand .tag{max-width: 55vw;}
     }
 
-    /* ===== Mobile Menu ===== */
-    .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
-    .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
-    .mobileMenu .drawer{
-      position:absolute;top:64px;right:12px;width:min(320px, calc(100vw - 24px));
-      border-radius:16px;padding:10px;border:1px solid rgba(255,255,255,.28);
-      background: rgba(6, 78, 59, .78);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 18px 38px rgba(0,0,0,.35);
-      overflow:auto;
-      max-height: calc(100vh - 76px);
-    }
-    .mobileMenu a{
-      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
-      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);margin-bottom:8px;
-    }
-    .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
-
     /* ===== Header Ad ===== */
     .adBox{
       border:1px dashed rgba(18,28,55,.22);border-radius:16px;
       background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
-      margin: 10px clamp(12px, 4vw, 48px) 0;
+      margin: 10px var(--pagePad) 0; /* ✅ no side gap */
     }
     .adHead{
       padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
@@ -199,9 +184,9 @@
       margin: 0;
     }
     .subjectDockInner{
-      max-width: 1320px;
+      max-width: none; /* ✅ no side gap */
       margin:0 auto;
-      padding: 10px clamp(12px, 4vw, 48px);
+      padding: 10px var(--pagePad);
       display:flex;
       align-items:center;
       gap:12px;
@@ -284,9 +269,9 @@
 
     /* ===== Layout ===== */
     .mainContainer {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 clamp(12px, 4vw, 48px);
+      max-width: none;       /* ✅ no side gap */
+      margin: 0;
+      padding: 0;            /* ✅ no side gap */
     }
     .grid{
       display:grid;
@@ -294,6 +279,7 @@
       gap: 12px;
       align-items:start;
       margin-top: 10px;
+      padding: 0;            /* ✅ no side gap */
     }
     @media (max-width: 1100px){
       .grid{grid-template-columns: 340px 1fr;}
@@ -442,13 +428,7 @@
                   radial-gradient(900px 260px at 80% 0%, rgba(34,197,94,.04), transparent 60%);
       pointer-events:none;
     }
-    .qList{
-      display:flex;
-      flex-direction:column;
-      gap: 0;
-      position: relative;
-      z-index: 1;
-    }
+    .qList{display:flex;flex-direction:column;gap: 0;position: relative;z-index: 1;}
 
     @media (min-width: 981px){
       body[data-mode="mcq"] .qList,
@@ -546,7 +526,7 @@
       font-size:12px;
     }
 
-    /* Latest MT + Job Tests cards - FIXED: এক লাইনে দেখাবে */
+    /* Latest MT + Job Tests cards */
     .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
     .latestMT{display:flex;flex-direction:column;gap:10px;}
     .mtCardMini{
@@ -561,26 +541,17 @@
       margin:0 0 8px;font-size:13px;font-weight:1000;line-height:1.25;
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
     }
-    /* ✅ FIXED: এক লাইনে সব তথ্য (flex-wrap: nowrap) */
     .mtMetaMini{
       display:flex;
       gap:8px;
-      flex-wrap: nowrap; /* এখানে nowrap করেছি */
+      flex-wrap: nowrap;
       color: var(--muted);
       font-size:12px;
       margin-bottom:10px;
       align-items:center;
       line-height:1.4;
-      overflow-x: auto; /* যদি বেশি হয় স্ক্রল হবে */
+      overflow-x: auto;
       padding-bottom: 4px;
-    }
-    /* Hide scrollbar but keep functionality */
-    .mtMetaMini::-webkit-scrollbar {
-      height: 3px;
-    }
-    .mtMetaMini::-webkit-scrollbar-thumb {
-      background: rgba(18,28,55,.15);
-      border-radius: 10px;
     }
     .mtMetaMini span{
       border:1px solid rgba(18,28,55,.10);
@@ -588,12 +559,12 @@
       border-radius:999px;
       padding:6px 10px;
       white-space:nowrap;
-      flex-shrink: 0; /* Prevent shrinking */
+      flex-shrink: 0;
     }
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
-    /* ✅ Organizations card styling - FIXED */
+    /* Organizations card styling */
     .orgCardMini{
       border: 1px solid rgba(18,28,55,.10);
       background: rgba(255,255,255,.94);
@@ -607,24 +578,16 @@
       white-space:normal;
       word-break: break-word;
     }
-    /* ✅ FIXED: Organizations একইভাবে এক লাইনে */
     .orgMetaMini{
       display:flex;
       gap:8px;
-      flex-wrap: nowrap; /* এখানে nowrap করেছি */
+      flex-wrap: nowrap;
       color: var(--muted);
       font-size:12px;
       margin-bottom:10px;
       align-items:center;
       overflow-x: auto;
       padding-bottom: 4px;
-    }
-    .orgMetaMini::-webkit-scrollbar {
-      height: 3px;
-    }
-    .orgMetaMini::-webkit-scrollbar-thumb {
-      background: rgba(18,28,55,.15);
-      border-radius: 10px;
     }
     .orgMetaMini span{
       border:1px solid rgba(18,28,55,.10);
@@ -716,6 +679,78 @@
       user-select:none;
     }
 
+    /* =========================
+       ✅ Model Test: 1 line (3 cards) with horizontal scroll
+       ========================= */
+    .modelTestStrip{
+      display:flex;
+      gap: 16px;
+      overflow-x:auto;
+      padding-bottom: 6px;
+      scroll-snap-type: x mandatory;
+    }
+    .modelTestCard{
+      flex: 0 0 calc((100% - 32px) / 3); /* ✅ always 3 in one line */
+      min-width: 260px;                 /* ✅ small screen-এও usable */
+      scroll-snap-align: start;
+
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.97);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .modelTestCard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(15,23,48,.08);
+    }
+    .modelTestCard h4 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 1000;
+      line-height: 1.3;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 36px;
+    }
+    .modelTestMeta{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .modelTestStat{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(18,28,55,.08);
+      background: rgba(255,255,255,.82);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .modelTestStat .label{font-weight:700;}
+    .modelTestStat .value{font-weight:1000;color: var(--text);}
+    .modelTestActions{
+      display:flex;
+      gap:8px;
+      margin-top:auto;
+    }
+    .modelTestActions .btn{
+      flex: 1;
+      text-align:center;
+      justify-content:center;
+    }
+
     /* ===== Footer ===== */
     footer{
       margin-top: 14px;
@@ -728,9 +763,9 @@
       color: var(--footText);
     }
     .footGrid{
-      max-width: 1320px;
+      max-width: none; /* ✅ no side gap */
       margin:0 auto;
-      padding: 18px clamp(12px, 4vw, 48px) 10px;
+      padding: 18px var(--pagePad) 10px;
       display:grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px 18px;
@@ -742,7 +777,6 @@
     .footLinks a{text-decoration:none;color: var(--footMuted);font-size:12px;}
     .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
 
-    /* ✅ Social icons only */
     .socialRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
     .socialIcon{
       width: 36px; height: 36px;
@@ -762,9 +796,9 @@
     }
 
     .copy{
-      max-width: 1320px;
+      max-width: none; /* ✅ no side gap */
       margin:0 auto;
-      padding: 12px clamp(12px, 4vw, 48px) 14px;
+      padding: 12px var(--pagePad) 14px;
       border-top: 1px solid rgba(255,255,255,.12);
       color: rgba(255,255,255,.68);
       font-size:12px;
@@ -773,98 +807,7 @@
       white-space:normal;
     }
 
-    /* =========================
-       ✅ Model Test Grid (3 columns)
-       ========================= */
-    .modelTestGrid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 12px;
-    }
-    
-    @media (max-width: 1100px) {
-      .modelTestGrid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .modelTestGrid {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    .modelTestCard {
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.97);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition: transform 0.15s, box-shadow 0.15s;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    
-    .modelTestCard:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(15,23,48,.08);
-    }
-    
-    .modelTestCard h4 {
-      margin: 0 0 12px;
-      font-size: 14px;
-      font-weight: 1000;
-      line-height: 1.3;
-      color: var(--text);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 36px;
-    }
-    
-    .modelTestMeta {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-grow: 1;
-    }
-    
-    .modelTestStat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    
-    .modelTestStat .label {
-      font-weight: 600;
-    }
-    
-    .modelTestStat .value {
-      font-weight: 1000;
-      color: var(--text);
-    }
-    
-    .modelTestActions {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-    }
-    
-    .modelTestActions .btn {
-      flex: 1;
-      text-align: center;
-      justify-content: center;
-    }
-
-    /* =========================
-       ✅ Stylish Popups (Toast)
-       ========================= */
+    /* ===== Stylish Popups (Toast) ===== */
     .toastHost{
       position: fixed;
       top: calc(var(--headerH, 64px) + 12px);
@@ -948,7 +891,6 @@
   </div>
 </header>
 
-<!-- ✅ Header Ad Section (Unchanged) -->
 <div class="adBox">
   <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
   <div class="adBody">Paste ad code here</div>
@@ -990,7 +932,6 @@
   </div>
 </div>
 
-<!-- ✅ Main Container (No Side Gaps) -->
 <div class="mainContainer">
   <main class="grid">
     <!-- LEFT DESKTOP ONLY -->
@@ -1047,7 +988,6 @@
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
-        <!-- ✅ 1st: Latest Job Tests -->
         <div class="latestBoxTitle" style="margin-top:2px;">Latest Job Tests</div>
         <div class="latestMT" id="jobTestsList"></div>
         <div class="empty" id="jobTestsEmpty">কোনো Job Test পাওয়া যায়নি।</div>
@@ -1057,7 +997,6 @@
 
         <div class="divider"></div>
 
-        <!-- ✅ 2nd: Sidebar Ad 1 -->
         <div class="inlineAd" style="min-height:240px;">
           <div>
             <div class="tag">Sidebar Ad 1</div>
@@ -1065,14 +1004,12 @@
           </div>
         </div>
 
-        <!-- ✅ 3rd: Organizations -->
         <div class="latestBoxTitle">Organizations</div>
         <div class="latestMT" id="orgList"></div>
         <div class="empty" id="orgEmpty">কোনো Organization পাওয়া যায়নি।</div>
 
         <div class="divider"></div>
 
-        <!-- ✅ 4th: Sidebar Ad 2 -->
         <div class="inlineAd" style="min-height:180px;">
           <div>
             <div class="tag">Sidebar Ad 2</div>
@@ -1157,12 +1094,10 @@
     measurementId: "G-T2G55NMDQT"
   };
 
-  /* ✅ Admin Panel Collections (jobs_ prefix) */
   const COL_JOBS_SUBJECTS = "jobs_subjects";
   const COL_JOBS_SUBJECT_QUESTIONS = "jobs_subject_questions";
   const COL_JOBS_SUBJECT_TESTS = "jobs_subject_tests";
 
-  /* ✅ Job Tests and Organizations */
   const COL_JOBS_TESTS = "jobs_tests";
   const COL_JOBS_UNIVERSITIES = "jobs_universities";
 
@@ -1170,9 +1105,6 @@
   const db = firebase.firestore();
   const $ = (id)=>document.getElementById(id);
 
-  /* =========================
-     ✅ Toast
-     ========================= */
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
@@ -1213,25 +1145,25 @@
   }
   window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
 
-  function openMenu(){ 
+  function openMenu(){
     const mobileMenu = $("mobileMenu");
     if(mobileMenu) {
-      mobileMenu.style.display="block"; 
+      mobileMenu.style.display="block";
       $("menuBtn").setAttribute("aria-expanded","true");
     }
   }
-  function closeMenu(){ 
+  function closeMenu(){
     const mobileMenu = $("mobileMenu");
     if(mobileMenu) {
-      mobileMenu.style.display="none"; 
+      mobileMenu.style.display="none";
       $("menuBtn").setAttribute("aria-expanded","false");
     }
   }
-  function toggleMenu(){ 
-    const m=$("mobileMenu"); 
-    (m.style.display==="block")?closeMenu():openMenu(); 
+  function toggleMenu(){
+    const m=$("mobileMenu");
+    (m && m.style.display==="block")?closeMenu():openMenu();
   }
-  window.toggleMenu=toggleMenu; 
+  window.toggleMenu=toggleMenu;
   window.closeMenu=closeMenu;
 
   function openSubjectSheet(){
@@ -1270,7 +1202,6 @@
     }
   }
 
-  // debounce search
   let searchTimer = null;
   function debouncedSearch(){
     clearTimeout(searchTimer);
@@ -1759,18 +1690,18 @@
     if(!currentItems.length) return;
 
     if(mode === "model"){
-      // ✅ Model Test Grid (3 columns)
-      const grid = document.createElement("div");
-      grid.className = "modelTestGrid";
-      
+      // ✅ 1 line strip, 3 cards visible (scrollable)
+      const strip = document.createElement("div");
+      strip.className = "modelTestStrip";
+
       currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Job Model Test";
         const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "0";
         const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "0";
         const counts = mt.counts || {};
-        const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
-        const mcqCount = Number(counts.mcq||0);
-        const writtenCount = Number(counts.written||0);
+        const qCount =
+          (Number(counts.mcq||0) + Number(counts.written||0)) ||
+          (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
         const card = document.createElement("div");
         card.className = "modelTestCard";
@@ -1778,24 +1709,16 @@
           <h4 title="${esc(title)}">${esc(title)}</h4>
           <div class="modelTestMeta">
             <div class="modelTestStat">
-              <span class="label">⏱ Total Time:</span>
+              <span class="label">⏱ Total Time</span>
               <span class="value">${esc(time)} min</span>
             </div>
             <div class="modelTestStat">
-              <span class="label">📌 Total Questions:</span>
+              <span class="label">📌 Total Question</span>
               <span class="value">${esc(qCount)}</span>
             </div>
             <div class="modelTestStat">
-              <span class="label">🧮 Total Marks:</span>
+              <span class="label">🧮 Total Mark</span>
               <span class="value">${esc(marks)}</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">📝 MCQ:</span>
-              <span class="value">${esc(mcqCount)}</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">✍️ Written:</span>
-              <span class="value">${esc(writtenCount)}</span>
             </div>
           </div>
           <div class="modelTestActions">
@@ -1803,9 +1726,10 @@
             <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">View Results</button>
           </div>
         `;
-        grid.appendChild(card);
+        strip.appendChild(card);
       });
-      wrap.appendChild(grid);
+
+      wrap.appendChild(strip);
       return;
     }
 
@@ -1904,7 +1828,6 @@
     wrap.appendChild(paper);
   }
 
-  /* ✅ Latest Job Tests (Sidebar) */
   function attachJobTests(){
     if(unsubJobTests){ try{unsubJobTests();}catch(e){} unsubJobTests=null; }
 
@@ -1942,44 +1865,11 @@
           `;
           wrap.appendChild(card);
         });
-        
-        if(docs.length === 0) {
-          const testData = [
-            {
-              id: "test1",
-              title: "Bank Job Model Test 2024",
-              totalTimeMin: 60,
-              totalMarks: 100,
-              counts: { mcq: 50, written: 10 },
-              totalQuestions: 60
-            }
-          ];
-          
-          testData.forEach((mt)=>{
-            const card = document.createElement("div");
-            card.className = "mtCardMini";
-            card.innerHTML = `
-              <h4 title="${esc(mt.title)}">${esc(mt.title)}</h4>
-              <div class="mtMetaMini">
-                <span>⏱ ${esc(mt.totalTimeMin)} min</span>
-                <span>📌 Q: ${esc(mt.totalQuestions)}</span>
-                <span>🧮 Mark: ${esc(mt.totalMarks)}</span>
-              </div>
-              <div class="mtActionsMini">
-                <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
-                <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
-              </div>
-            `;
-            wrap.appendChild(card);
-          });
-          empty.style.display = "none";
-        }
       }, (err)=>{
         console.error("Error loading Job Tests:", err);
       });
   }
 
-  /* ✅ Organizations (Sidebar) */
   function attachOrganizations(){
     if(unsubOrganizations){ try{unsubOrganizations();}catch(e){} unsubOrganizations=null; }
 
@@ -2017,39 +1907,6 @@
           `;
           wrap.appendChild(card);
         });
-        
-        if(docs.length === 0) {
-          const testData = [
-            {
-              id: "org1",
-              name: "Bangladesh Bank",
-              counts: { mcq: 200, written: 50 }
-            }
-          ];
-          
-          testData.forEach((u)=>{
-            const mcq = Number(u.counts.mcq||0);
-            const written = Number(u.counts.written||0);
-            const totalTests = mcq + written;
-            
-            const card = document.createElement("div");
-            card.className = "orgCardMini";
-            card.innerHTML = `
-              <h4 title="${esc(u.name)}">${esc(u.name)}</h4>
-              <div class="orgMetaMini">
-                <span>MCQ: ${esc(mcq)}</span>
-                <span>Written: ${esc(written)}</span>
-                <span>Total Test: ${esc(totalTests)}</span>
-              </div>
-              <div class="orgActionsMini">
-                <button class="btn primary" onclick="location.href='organization-details.html?organizationId=${encodeURIComponent(u.id)}'">Open</button>
-                <button class="btn" onclick="location.href='jobs-assistant.html'">All</button>
-              </div>
-            `;
-            wrap.appendChild(card);
-          });
-          empty.style.display = "none";
-        }
       }, (err)=>{
         console.error("Error loading Organizations:", err);
       });
