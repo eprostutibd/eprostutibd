@@ -67,15 +67,6 @@
     }
     a{color:inherit}
 
-    .container{
-      max-width: 1320px;
-      margin: 0 auto;
-      padding-left: clamp(12px, 4vw, 48px);
-      padding-right: clamp(12px, 4vw, 48px);
-      padding-top: 10px;
-      padding-bottom: 18px;
-    }
-
     /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
@@ -140,8 +131,9 @@
 
     /* ===== Header Ad ===== */
     .adBox{
-      margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
+      border:1px dashed rgba(18,28,55,.22);border-radius:16px;
       background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
+      margin: 10px clamp(12px, 4vw, 48px) 0;
     }
     .adHead{
       padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
@@ -198,13 +190,13 @@
       position: sticky;
       top: var(--headerH, 64px);
       z-index: 58;
-      margin-top: 10px;
       background: rgba(240,253,244,.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(18,28,55,.08);
-      border-radius: 16px;
+      border-radius: 0 0 16px 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
+      margin: 0;
     }
     .subjectDockInner{
       max-width: 1320px;
@@ -291,6 +283,11 @@
     }
 
     /* ===== Layout ===== */
+    .mainContainer {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 clamp(12px, 4vw, 48px);
+    }
     .grid{
       display:grid;
       grid-template-columns: 340px minmax(0, 1fr) 280px;
@@ -776,8 +773,93 @@
       white-space:normal;
     }
 
-    @media (min-width: 981px){
-      .container{padding-left:16px;padding-right:16px;}
+    /* =========================
+       ✅ Model Test Grid (3 columns)
+       ========================= */
+    .modelTestGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 12px;
+    }
+    
+    @media (max-width: 1100px) {
+      .modelTestGrid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .modelTestGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .modelTestCard {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.97);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .modelTestCard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(15,23,48,.08);
+    }
+    
+    .modelTestCard h4 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 1000;
+      line-height: 1.3;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 36px;
+    }
+    
+    .modelTestMeta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+    
+    .modelTestStat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    .modelTestStat .label {
+      font-weight: 600;
+    }
+    
+    .modelTestStat .value {
+      font-weight: 1000;
+      color: var(--text);
+    }
+    
+    .modelTestActions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+    
+    .modelTestActions .btn {
+      flex: 1;
+      text-align: center;
+      justify-content: center;
     }
 
     /* =========================
@@ -864,33 +946,15 @@
 
     <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
   </div>
-
-  <div class="mobileMenu" id="mobileMenu">
-    <div class="overlay" onclick="closeMenu()"></div>
-    <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
-      <a href="#">একাডেমী</a>
-      <a href="#">প্রশ্ন ব্যাঙ্ক</a>
-      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
-      <a class="active" href="jobs-assistant.html">জব অ্যাসিস্ট্যান্ট</a>
-      <a href="#">মডেল টেস্ট</a>
-      <a href="#">কারেন্ট এফেয়ার্স</a>
-      <a href="#">IELTS</a>
-      <a href="#">BCS</a>
-      <a href="#">নোটিশ</a>
-      <a href="#">ব্লগ</a>
-      <a href="#">ক্যারিয়ার</a>
-    </div>
-  </div>
 </header>
 
-<div class="toastHost" id="toastHost" aria-live="polite" aria-atomic="true"></div>
-
-<div class="container">
-  <div class="adBox">
-    <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
-    <div class="adBody">Paste ad code here</div>
-  </div>
+<!-- ✅ Header Ad Section (Unchanged) -->
+<div class="adBox">
+  <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
+  <div class="adBody">Paste ad code here</div>
 </div>
+
+<div class="toastHost" id="toastHost" aria-live="polite" aria-atomic="true"></div>
 
 <!-- Mobile Subject Sheet -->
 <div class="subjectSheet" id="subjectSheet" aria-hidden="true">
@@ -926,7 +990,8 @@
   </div>
 </div>
 
-<div class="container">
+<!-- ✅ Main Container (No Side Gaps) -->
+<div class="mainContainer">
   <main class="grid">
     <!-- LEFT DESKTOP ONLY -->
     <aside class="panel leftDesktop">
@@ -947,7 +1012,7 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <section class="panel">
       <div class="panelHead">
         <b id="rightTitle">Job Questions</b>
@@ -978,7 +1043,7 @@
       </div>
     </section>
 
-    <!-- RIGHT -->
+    <!-- RIGHT SIDEBAR -->
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
@@ -1148,10 +1213,26 @@
   }
   window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
 
-  function openMenu(){ $("mobileMenu").style.display="block"; $("menuBtn").setAttribute("aria-expanded","true"); }
-  function closeMenu(){ $("mobileMenu").style.display="none"; $("menuBtn").setAttribute("aria-expanded","false"); }
-  function toggleMenu(){ const m=$("mobileMenu"); (m.style.display==="block")?closeMenu():openMenu(); }
-  window.toggleMenu=toggleMenu; window.closeMenu=closeMenu;
+  function openMenu(){ 
+    const mobileMenu = $("mobileMenu");
+    if(mobileMenu) {
+      mobileMenu.style.display="block"; 
+      $("menuBtn").setAttribute("aria-expanded","true");
+    }
+  }
+  function closeMenu(){ 
+    const mobileMenu = $("mobileMenu");
+    if(mobileMenu) {
+      mobileMenu.style.display="none"; 
+      $("menuBtn").setAttribute("aria-expanded","false");
+    }
+  }
+  function toggleMenu(){ 
+    const m=$("mobileMenu"); 
+    (m.style.display==="block")?closeMenu():openMenu(); 
+  }
+  window.toggleMenu=toggleMenu; 
+  window.closeMenu=closeMenu;
 
   function openSubjectSheet(){
     const ss = $("subjectSheet");
@@ -1678,27 +1759,48 @@
     if(!currentItems.length) return;
 
     if(mode === "model"){
+      // ✅ Model Test Grid (3 columns)
       const grid = document.createElement("div");
-      grid.className = "latestMT";
+      grid.className = "modelTestGrid";
+      
       currentItems.forEach((mt)=>{
         const title = mt.title ?? mt.name ?? "Job Model Test";
-        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
-        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "0";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "0";
         const counts = mt.counts || {};
         const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+        const mcqCount = Number(counts.mcq||0);
+        const writtenCount = Number(counts.written||0);
 
         const card = document.createElement("div");
-        card.className = "mtCardMini";
+        card.className = "modelTestCard";
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
-          <div class="mtMetaMini">
-            <span>⏱ ${esc(time)} min</span>
-            <span>📌 Q: ${esc(qCount)}</span>
-            <span>🧮 Mark: ${esc(marks)}</span>
+          <div class="modelTestMeta">
+            <div class="modelTestStat">
+              <span class="label">⏱ Total Time:</span>
+              <span class="value">${esc(time)} min</span>
+            </div>
+            <div class="modelTestStat">
+              <span class="label">📌 Total Questions:</span>
+              <span class="value">${esc(qCount)}</span>
+            </div>
+            <div class="modelTestStat">
+              <span class="label">🧮 Total Marks:</span>
+              <span class="value">${esc(marks)}</span>
+            </div>
+            <div class="modelTestStat">
+              <span class="label">📝 MCQ:</span>
+              <span class="value">${esc(mcqCount)}</span>
+            </div>
+            <div class="modelTestStat">
+              <span class="label">✍️ Written:</span>
+              <span class="value">${esc(writtenCount)}</span>
+            </div>
           </div>
-          <div class="mtActionsMini">
-            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
-            <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
+          <div class="modelTestActions">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start Test</button>
+            <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">View Results</button>
           </div>
         `;
         grid.appendChild(card);
@@ -1707,6 +1809,7 @@
       return;
     }
 
+    // ✅ MCQ এবং Written view (unchanged)
     const paper = document.createElement("div");
     paper.className = "paper";
     const list = document.createElement("div");
@@ -1801,7 +1904,7 @@
     wrap.appendChild(paper);
   }
 
-  /* ✅ Latest Job Tests (Sidebar) - FIXED: এক লাইনে Total Question, Total Time, Total Mark */
+  /* ✅ Latest Job Tests (Sidebar) */
   function attachJobTests(){
     if(unsubJobTests){ try{unsubJobTests();}catch(e){} unsubJobTests=null; }
 
@@ -1840,7 +1943,6 @@
           wrap.appendChild(card);
         });
         
-        // যদি কোনো ডাটা না থাকে, test data দেখানোর জন্য
         if(docs.length === 0) {
           const testData = [
             {
@@ -1850,22 +1952,6 @@
               totalMarks: 100,
               counts: { mcq: 50, written: 10 },
               totalQuestions: 60
-            },
-            {
-              id: "test2",
-              title: "Government Job Test",
-              totalTimeMin: 45,
-              totalMarks: 80,
-              counts: { mcq: 40, written: 5 },
-              totalQuestions: 45
-            },
-            {
-              id: "test3",
-              title: "BCS Preliminary Test",
-              totalTimeMin: 90,
-              totalMarks: 200,
-              counts: { mcq: 100, written: 20 },
-              totalQuestions: 120
             }
           ];
           
@@ -1893,7 +1979,7 @@
       });
   }
 
-  /* ✅ Organizations (Sidebar) - FIXED: "Organizations" এর বদলে Total Test দেখাবে */
+  /* ✅ Organizations (Sidebar) */
   function attachOrganizations(){
     if(unsubOrganizations){ try{unsubOrganizations();}catch(e){} unsubOrganizations=null; }
 
@@ -1932,23 +2018,12 @@
           wrap.appendChild(card);
         });
         
-        // যদি কোনো ডাটা না থাকে, test data দেখানোর জন্য
         if(docs.length === 0) {
           const testData = [
             {
               id: "org1",
               name: "Bangladesh Bank",
               counts: { mcq: 200, written: 50 }
-            },
-            {
-              id: "org2",
-              name: "Government University",
-              counts: { mcq: 150, written: 30 }
-            },
-            {
-              id: "org3",
-              name: "Private Bank",
-              counts: { mcq: 180, written: 40 }
             }
           ];
           
