@@ -1095,6 +1095,11 @@
    - PDF:
       * Question Paper: 25 Q per page (2-column same design)
       * Answer Sheet: 50 per page (3-column)
+
+   ✅ CUSTOM UPDATE (As per request)
+   - Page entry tei Name+District modal auto show
+   - Submit confirm modal e "Yes" click korlei reset flag set
+   - Result page e giye Back asle => state reset => again Name submit + timer fresh start
 =========================== */
 
 (() => {
@@ -1133,6 +1138,7 @@
 
   // ===== Confirm modal (custom Yes/No) =====
   let _confirmResolver = null;
+
   function openConfirm(title, text) {
     $("confirmTitle").textContent = title || "Confirm";
     $("confirmText").textContent = text || "";
@@ -1140,10 +1146,6 @@
     return new Promise((resolve) => { _confirmResolver = resolve; });
   }
   function closeConfirm() { $("confirmModal").classList.remove("show"); }
-  function confirmYes() { closeConfirm(); if (_confirmResolver) _confirmResolver(true); _confirmResolver = null; }
-  function confirmNo() { closeConfirm(); if (_confirmResolver) _confirmResolver(false); _confirmResolver = null; }
-  window.confirmYes = confirmYes;
-  window.confirmNo = confirmNo;
 
   // ===== utils =====
   function getParam(name) {
@@ -1186,6 +1188,51 @@
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
   const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
+
+  // =========================================================
+  // ✅ RESET-ON-BACK FLAG (only after "Yes" click)
+  // =========================================================
+  const KEY_PREFIX = `epbd_mt_${modelTestId || "unknown"}_`;
+  const KEY_RESET_FLAG = KEY_PREFIX + "reset_on_back";
+
+  // (optional cleanup keys যদি আগে কোথাও save করে থাকো)
+  const KEY_SESSION = KEY_PREFIX + "session";
+  const KEY_ANSWERS = KEY_PREFIX + "answers";
+
+  function clearTestState() {
+    try {
+      localStorage.removeItem(KEY_SESSION);
+      localStorage.removeItem(KEY_ANSWERS);
+      sessionStorage.removeItem(KEY_SESSION);
+      sessionStorage.removeItem(KEY_ANSWERS);
+    } catch (_) {}
+  }
+
+  // ✅ Back হয়ে এলে (Browser back) যদি flag থাকে => reset
+  (function resetIfNeeded() {
+    try {
+      if (sessionStorage.getItem(KEY_RESET_FLAG) === "1") {
+        sessionStorage.removeItem(KEY_RESET_FLAG);
+        clearTestState();
+      }
+    } catch (_) {}
+  })();
+
+  // confirmYes / confirmNo must be after keys available
+  function confirmYes() {
+    // ✅ User pressed Yes (submit confirm) -> set flag
+    try { sessionStorage.setItem(KEY_RESET_FLAG, "1"); } catch (_) {}
+    closeConfirm();
+    if (_confirmResolver) _confirmResolver(true);
+    _confirmResolver = null;
+  }
+  function confirmNo() {
+    closeConfirm();
+    if (_confirmResolver) _confirmResolver(false);
+    _confirmResolver = null;
+  }
+  window.confirmYes = confirmYes;
+  window.confirmNo = confirmNo;
 
   // ===== state =====
   let mtDoc = null;
@@ -1496,7 +1543,6 @@
         ta.style.fontFamily = "inherit";
         ta.style.fontSize = "13px";
         ta.placeholder = "আপনার উত্তর লিখুন…";
-        ta.value = (writtenAns.get(qid) ?? "").toString();
 
         ta.addEventListener("input", () => {
           if (!guardAnswering()) return;
@@ -2075,7 +2121,9 @@
       renderAllOnce();
       attachAnswerHandlers();
 
-      showToast("Test প্রস্তুত", "উত্তর দিতে হলে নাম/জেলা Submit করুন");
+      // ✅ Page entry tei modal auto show
+      openNameModal();
+      showToast("নাম ও জেলা দিন", "তারপর Test শুরু হবে");
     } catch (err) {
       console.error(err);
       $("content").innerHTML = `<div class="err">লোড করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন।</div>`;
@@ -2084,6 +2132,7 @@
 
   loadAll();
 })();
+
 </script>
 
 
