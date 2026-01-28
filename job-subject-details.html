@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eProstutiBD — Job Subject Details</title>
+  <title>eProstutiBD — Jobs Assistant</title>
 
-  <meta name="description" content="Job Subject Details • Job Subject MCQ, Written এবং Job Subject Model Test — eProstutiBD" />
-  <meta name="keywords" content="Job Subject, MCQ, Written, Model Test, Jobs, eProstutiBD" />
+  <meta name="description" content="Jobs Assistant • Job Subject ভিত্তিক MCQ, Written এবং Job Subject Model Test • Organization ভিত্তিক প্রশ্ন — eProstutiBD" />
+  <meta name="keywords" content="Jobs, Assistant, Job Subject, প্রশ্নব্যাংক, MCQ, Written, Model Test, Organization, eProstutiBD" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#10b981" />
 
@@ -14,12 +14,18 @@
     :root{
       --bg1:#f0fdf4; --bg2:#e6f7ed;
       --line: rgba(18, 28, 55, .10);
-      --line2: rgba(18,28,55,.08);
+      --line2: rgba(18, 28, 55, .08);
       --text:#0f1730; --muted:#5a6685;
       --primary:#10b981; --primary-light:#a7f3d0;
 
       --shadow: 0 16px 44px rgba(15,23,48,.12);
       --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --brandA:#10b981;
+      --brandB:#34d399;
+
+      --ok:#16a34a;
+      --danger:#dc2626;
 
       --safeBottom: env(safe-area-inset-bottom, 0px);
       --headerH: 64px;
@@ -60,17 +66,26 @@
       color:var(--text);
       background:
         radial-gradient(900px 600px at 10% 10%, rgba(16,185,129,.12), transparent 55%),
-        radial-gradient(800px 560px at 92% 14%, rgba(34,197,94,.10), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(52,211,153,.10), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
       padding-bottom: 0;
     }
     a{color:inherit}
 
+    .container{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 18px;
+    }
+
     /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:60;
-      background: linear-gradient(135deg, rgba(16,185,129,.96), rgba(34,197,94,.92));
+      background: linear-gradient(135deg, rgba(16,185,129,.96), rgba(52,211,153,.92));
       border-bottom: 1px solid rgba(255,255,255,.22);
       box-shadow: 0 14px 34px rgba(16,185,129,.18);
     }
@@ -131,9 +146,8 @@
 
     /* ===== Header Ad ===== */
     .adBox{
-      border:1px dashed rgba(18,28,55,.22);border-radius:16px;
+      margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
       background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
-      margin: 10px clamp(12px, 4vw, 48px) 0;
     }
     .adHead{
       padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
@@ -145,7 +159,7 @@
 
     /* ===== Mobile Subject Sheet ===== */
     .subjectSheet{display:none;position:fixed;inset:0;z-index:99999;}
-    .subjectSheet .backdrop{position:absolute;inset:0;background: rgba(8, 18, 45, .35);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);}
+    .subjectSheet .backdrop{position:absolute;inset:0;background: rgba(6, 78, 59, .35);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);}
     .subjectSheet .sheet{
       position:absolute;left:12px;right:12px;
       top: calc(var(--headerH, 64px) + 12px);
@@ -190,13 +204,13 @@
       position: sticky;
       top: var(--headerH, 64px);
       z-index: 58;
+      margin-top: 10px;
       background: rgba(240,253,244,.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(18,28,55,.08);
-      border-radius: 0 0 16px 16px;
+      border-radius: 16px;
       box-shadow: 0 14px 34px rgba(15,23,48,.08);
-      margin: 0;
     }
     .subjectDockInner{
       max-width: 1320px;
@@ -264,7 +278,7 @@
       white-space:nowrap;
     }
     .tab.active{
-      color: var(--primary);
+      color: var(--brandA);
       text-decoration: underline;
       text-underline-offset: 6px;
     }
@@ -283,11 +297,6 @@
     }
 
     /* ===== Layout ===== */
-    .mainContainer {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 clamp(12px, 4vw, 48px);
-    }
     .grid{
       display:grid;
       grid-template-columns: 340px minmax(0, 1fr) 280px;
@@ -439,7 +448,7 @@
       content:"";
       position:absolute; inset:0;
       background: radial-gradient(900px 260px at 20% 0%, rgba(16,185,129,.05), transparent 60%),
-                  radial-gradient(900px 260px at 80% 0%, rgba(34,197,94,.04), transparent 60%);
+                  radial-gradient(900px 260px at 80% 0%, rgba(52,211,153,.04), transparent 60%);
       pointer-events:none;
     }
     .qList{
@@ -512,8 +521,8 @@
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
       min-height: calc(2 * 1.5em);
     }
-    .optLine.correct .optTxt{color: #16a34a;font-weight:900;}
-    .optLine.wrong .optTxt{color: #dc2626;font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
+    .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
+    .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
     .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
     .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);}
 
@@ -546,7 +555,7 @@
       font-size:12px;
     }
 
-    /* Latest MT + Job Tests cards - FIXED: এক লাইনে দেখাবে */
+    /* Latest MT + Organization cards */
     .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
     .latestMT{display:flex;flex-direction:column;gap:10px;}
     .mtCardMini{
@@ -561,81 +570,10 @@
       margin:0 0 8px;font-size:13px;font-weight:1000;line-height:1.25;
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
     }
-    /* ✅ FIXED: এক লাইনে সব তথ্য (flex-wrap: nowrap) */
-    .mtMetaMini{
-      display:flex;
-      gap:8px;
-      flex-wrap: nowrap; /* এখানে nowrap করেছি */
-      color: var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
-      align-items:center;
-      line-height:1.4;
-      overflow-x: auto; /* যদি বেশি হয় স্ক্রল হবে */
-      padding-bottom: 4px;
-    }
-    /* Hide scrollbar but keep functionality */
-    .mtMetaMini::-webkit-scrollbar {
-      height: 3px;
-    }
-    .mtMetaMini::-webkit-scrollbar-thumb {
-      background: rgba(18,28,55,.15);
-      border-radius: 10px;
-    }
-    .mtMetaMini span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.80);
-      border-radius:999px;
-      padding:6px 10px;
-      white-space:nowrap;
-      flex-shrink: 0; /* Prevent shrinking */
-    }
+    .mtMetaMini{display:flex;gap:8px;flex-wrap:wrap;color: var(--muted);font-size:12px;margin-bottom:10px;}
+    .mtMetaMini span{border:1px solid rgba(18,28,55,.10);background: rgba(255,255,255,.80);border-radius:999px;padding:6px 10px;}
     .mtActionsMini{display:flex;gap:8px;flex-wrap:wrap}
     .mtActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
-
-    /* ✅ Organizations card styling - FIXED */
-    .orgCardMini{
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.94);
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      overflow:hidden;
-    }
-    .orgCardMini h4{
-      margin:0 0 8px;font-size:13px;font-weight:1000;line-height:1.25;
-      white-space:normal;
-      word-break: break-word;
-    }
-    /* ✅ FIXED: Organizations একইভাবে এক লাইনে */
-    .orgMetaMini{
-      display:flex;
-      gap:8px;
-      flex-wrap: nowrap; /* এখানে nowrap করেছি */
-      color: var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
-      align-items:center;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-    .orgMetaMini::-webkit-scrollbar {
-      height: 3px;
-    }
-    .orgMetaMini::-webkit-scrollbar-thumb {
-      background: rgba(18,28,55,.15);
-      border-radius: 10px;
-    }
-    .orgMetaMini span{
-      border:1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.80);
-      border-radius:999px;
-      padding:6px 10px;
-      white-space:nowrap;
-      flex-shrink: 0;
-    }
-    .orgActionsMini{display:flex;gap:8px;flex-wrap:wrap}
-    .orgActionsMini .btn{height:34px;padding:7px 10px;border-radius:12px}
 
     .seeMoreRow{display:flex;justify-content:flex-end;margin-top:10px;}
     .seeMoreRow .btn{height:34px;border-radius:999px;}
@@ -773,93 +711,8 @@
       white-space:normal;
     }
 
-    /* =========================
-       ✅ Model Test Grid (3 columns)
-       ========================= */
-    .modelTestGrid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 12px;
-    }
-    
-    @media (max-width: 1100px) {
-      .modelTestGrid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .modelTestGrid {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    .modelTestCard {
-      border: 1px solid rgba(18,28,55,.10);
-      background: rgba(255,255,255,.97);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 10px 22px rgba(15,23,48,.05);
-      transition: transform 0.15s, box-shadow 0.15s;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    
-    .modelTestCard:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(15,23,48,.08);
-    }
-    
-    .modelTestCard h4 {
-      margin: 0 0 12px;
-      font-size: 14px;
-      font-weight: 1000;
-      line-height: 1.3;
-      color: var(--text);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 36px;
-    }
-    
-    .modelTestMeta {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-grow: 1;
-    }
-    
-    .modelTestStat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    
-    .modelTestStat .label {
-      font-weight: 600;
-    }
-    
-    .modelTestStat .value {
-      font-weight: 1000;
-      color: var(--text);
-    }
-    
-    .modelTestActions {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-    }
-    
-    .modelTestActions .btn {
-      flex: 1;
-      text-align: center;
-      justify-content: center;
+    @media (min-width: 981px){
+      .container{padding-left:16px;padding-right:16px;}
     }
 
     /* =========================
@@ -927,7 +780,7 @@
   <div class="topbar">
     <div class="brand">
       <div class="name">eProstutiBD Jobs</div>
-      <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+      <div class="tag" id="headerTag">Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে</div>
     </div>
 
     <nav class="nav" aria-label="Main navigation">
@@ -946,15 +799,34 @@
 
     <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
   </div>
+
+  <div class="mobileMenu" id="mobileMenu">
+    <div class="overlay" onclick="closeMenu()"></div>
+    <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+      <a href="#">একাডেমী</a>
+      <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+      <a class="active" href="jobs-assistant.html">জব অ্যাসিস্ট্যান্ট</a>
+      <a href="#">মডেল টেস্ট</a>
+      <a href="#">কারেন্ট এফেয়ার্স</a>
+      <a href="#">IELTS</a>
+      <a href="#">BCS</a>
+      <a href="#">নোটিশ</a>
+      <a href="#">ব্লগ</a>
+      <a href="#">ক্যারিয়ার</a>
+    </div>
+  </div>
 </header>
 
-<!-- ✅ Header Ad Section (Unchanged) -->
-<div class="adBox">
-  <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
-  <div class="adBody">Paste ad code here</div>
-</div>
-
+<!-- ✅ Stylish Toast Container -->
 <div class="toastHost" id="toastHost" aria-live="polite" aria-atomic="true"></div>
+
+<div class="container">
+  <div class="adBox">
+    <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
+    <div class="adBody">Paste ad code here</div>
+  </div>
+</div>
 
 <!-- Mobile Subject Sheet -->
 <div class="subjectSheet" id="subjectSheet" aria-hidden="true">
@@ -976,13 +848,13 @@
     <button class="subBtnMobile" id="subBtnMobile" onclick="openSubjectSheet()">☰ Job Subjects</button>
 
     <div class="centerGroup" aria-label="Selected job subject and tabs">
-      <div class="subName" id="subName">Job Subject Details</div>
+      <div class="subName" id="subName">Jobs Assistant</div>
       <div class="tabsLine" aria-label="Tabs">
         <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
         <span class="sepDot" aria-hidden="true"></span>
         <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
         <span class="sepDot" aria-hidden="true"></span>
-        <button class="tab" id="tabModel" onclick="setMode('model')">জব মডেল টেস্ট</button>
+        <button class="tab" id="tabModel" onclick="setMode('model')">জব টেস্ট</button>
       </div>
     </div>
 
@@ -990,8 +862,7 @@
   </div>
 </div>
 
-<!-- ✅ Main Container (No Side Gaps) -->
-<div class="mainContainer">
+<div class="container">
   <main class="grid">
     <!-- LEFT DESKTOP ONLY -->
     <aside class="panel leftDesktop">
@@ -1012,10 +883,10 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <section class="panel">
       <div class="panelHead">
-        <b id="rightTitle">Job Questions</b>
+        <b id="rightTitle">Questions</b>
         <span class="muted" id="pageHint"></span>
       </div>
 
@@ -1043,42 +914,38 @@
       </div>
     </section>
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- RIGHT -->
     <aside class="panel rightAd">
       <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
       <div class="panelBody">
-        <!-- ✅ 1st: Latest Job Tests -->
-        <div class="latestBoxTitle" style="margin-top:2px;">Latest Job Tests</div>
-        <div class="latestMT" id="jobTestsList"></div>
-        <div class="empty" id="jobTestsEmpty">কোনো Job Test পাওয়া যায়নি।</div>
-        <div class="seeMoreRow">
-          <button class="btn linky" onclick="location.href='jobs-assistant.html'">See more</button>
-        </div>
 
-        <div class="divider"></div>
-
-        <!-- ✅ 2nd: Sidebar Ad 1 -->
-        <div class="inlineAd" style="min-height:240px;">
-          <div>
-            <div class="tag">Sidebar Ad 1</div>
-            <div style="font-size:12px;">Paste ad code here</div>
-          </div>
-        </div>
-
-        <!-- ✅ 3rd: Organizations -->
-        <div class="latestBoxTitle">Organizations</div>
+        <!-- ✅ Organization section (above ads) -->
+        <div class="latestBoxTitle" style="margin-top:2px;">Organizations</div>
         <div class="latestMT" id="orgList"></div>
         <div class="empty" id="orgEmpty">কোনো Organization পাওয়া যায়নি।</div>
+        <div class="seeMoreRow">
+          <button class="btn linky" onclick="location.href='organization-details.html'">See more</button>
+        </div>
 
         <div class="divider"></div>
 
-        <!-- ✅ 4th: Sidebar Ad 2 -->
-        <div class="inlineAd" style="min-height:180px;">
+        <div class="inlineAd" style="min-height:240px;">
           <div>
-            <div class="tag">Sidebar Ad 2</div>
-            <div style="font-size:12px;">Paste ad code here</div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 1</div>
           </div>
         </div>
+
+        <div class="inlineAd" style="min-height:180px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 2</div>
+          </div>
+        </div>
+
+        <div class="latestBoxTitle">Latest Job Tests</div>
+        <div class="latestMT" id="latestJobTests"></div>
+        <div class="empty" id="latestEmpty">কোনো Job Test পাওয়া যায়নি।</div>
       </div>
     </aside>
   </main>
@@ -1126,7 +993,7 @@
           <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
         </a>
         <a class="socialIcon" href="#" aria-label="YouTube">
-          <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2a31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
         </a>
         <a class="socialIcon" href="#" aria-label="Telegram">
           <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
@@ -1139,7 +1006,7 @@
   </div>
 
   <div class="copy">
-    © <span id="year"></span> eProstutiBD Jobs — All rights reserved
+    © <span id="year"></span> eProstutiBD — All rights reserved
   </div>
 </footer>
 
@@ -1149,7 +1016,7 @@
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
-    authDomain: "eprostutibd-webapp.firebaseapp.com",
+    authDomain: "eprostutibd-webapp.firebasestorage.app",
     projectId: "eprostutibd-webapp",
     storageBucket: "eprostutibd-webapp.firebasestorage.app",
     messagingSenderId: "1044069942330",
@@ -1162,9 +1029,9 @@
   const COL_JOBS_SUBJECT_QUESTIONS = "jobs_subject_questions";
   const COL_JOBS_SUBJECT_TESTS = "jobs_subject_tests";
 
-  /* ✅ Job Tests and Organizations */
-  const COL_JOBS_TESTS = "jobs_tests";
-  const COL_JOBS_UNIVERSITIES = "jobs_universities";
+  /* ✅ Organizations collections (jobs_ prefix) */
+  const COL_JOBS_UNIVERSITIES = "jobs_universities"; // Organizations
+  const COL_JOBS_TESTS = "jobs_tests"; // Job Tests (Organization wise)
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
@@ -1176,6 +1043,7 @@
   function esc(str){
     return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
   }
+  
   function toast(message, type="info", title){
     const host = $("toastHost");
     if(!host) return;
@@ -1211,26 +1079,24 @@
     host.appendChild(t);
     setTimeout(close, 2600);
   }
+  
   window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
 
   function openMenu(){ 
-    const mobileMenu = $("mobileMenu");
-    if(mobileMenu) {
-      mobileMenu.style.display="block"; 
-      $("menuBtn").setAttribute("aria-expanded","true");
-    }
+    $("mobileMenu").style.display="block"; 
+    $("menuBtn").setAttribute("aria-expanded","true"); 
   }
+  
   function closeMenu(){ 
-    const mobileMenu = $("mobileMenu");
-    if(mobileMenu) {
-      mobileMenu.style.display="none"; 
-      $("menuBtn").setAttribute("aria-expanded","false");
-    }
+    $("mobileMenu").style.display="none"; 
+    $("menuBtn").setAttribute("aria-expanded","false"); 
   }
+  
   function toggleMenu(){ 
     const m=$("mobileMenu"); 
     (m.style.display==="block")?closeMenu():openMenu(); 
   }
+  
   window.toggleMenu=toggleMenu; 
   window.closeMenu=closeMenu;
 
@@ -1239,16 +1105,21 @@
     ss.style.display = "block";
     ss.setAttribute("aria-hidden","false");
   }
+  
   function closeSubjectSheet(){
     const ss = $("subjectSheet");
     ss.style.display = "none";
     ss.setAttribute("aria-hidden","true");
   }
+  
   window.openSubjectSheet = openSubjectSheet;
   window.closeSubjectSheet = closeSubjectSheet;
 
   document.addEventListener("keydown",(e)=>{
-    if(e.key==="Escape"){ closeMenu(); closeSubjectSheet(); }
+    if(e.key==="Escape"){ 
+      closeMenu(); 
+      closeSubjectSheet(); 
+    }
   });
 
   $("year").textContent = new Date().getFullYear();
@@ -1257,6 +1128,7 @@
     const h = document.querySelector("header")?.offsetHeight || 64;
     document.documentElement.style.setProperty("--headerH", h + "px");
   }
+  
   window.addEventListener("resize", syncStickyOffsets);
   window.addEventListener("load", syncStickyOffsets);
   syncStickyOffsets();
@@ -1276,12 +1148,14 @@
     clearTimeout(searchTimer);
     searchTimer = setTimeout(()=>resetAndReload(true), 350);
   }
+  
   window.debouncedSearch = debouncedSearch;
 
   function getOptions(doc){
     if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
     return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
   }
+  
   function getCorrectIndex(doc, opts){
     if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
     const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
@@ -1298,7 +1172,7 @@
     return -1;
   }
 
-  let SUBJECTS = [];
+  let JOB_SUBJECTS = [];
   let selectedSubjectId = "";
   let selectedSubjectName = "";
 
@@ -1319,10 +1193,10 @@
 
   let unsubSubjects = null;
   let unsubRight = null;
-  let unsubJobTests = null;
-  let unsubOrganizations = null;
+  let unsubLatest = null;
+  let unsubOrgs = null;
 
-  const LS_KEY = "epbd_job_subject_details_state_v1";
+  const LS_KEY = "epbd_jobs_assistant_state_v1";
 
   function getParam(name){
     const u = new URL(location.href);
@@ -1414,6 +1288,7 @@
     saveState();
     loadRight();
   }
+  
   window.setMode = setMode;
 
   function setAnsMode(m){
@@ -1423,6 +1298,7 @@
     saveState();
     renderContent();
   }
+  
   window.setAnsMode = setAnsMode;
 
   function relatedMatch(query, text){
@@ -1438,7 +1314,7 @@
   }
 
   function syncModelTestListeners(){
-    const alive = new Set(SUBJECTS.map(s=>s.id));
+    const alive = new Set(JOB_SUBJECTS.map(s=>s.id));
     for(const [sid, unsub] of mtUnsubMap.entries()){
       if(!alive.has(sid)){
         try{unsub();}catch(e){}
@@ -1446,7 +1322,8 @@
         mtCountMap.delete(sid);
       }
     }
-    SUBJECTS.forEach(s=>{
+    
+    JOB_SUBJECTS.forEach(s=>{
       if(mtUnsubMap.has(s.id)) return;
       const unsub = db.collection(COL_JOBS_SUBJECT_TESTS)
         .where("subjectId","==", s.id)
@@ -1464,12 +1341,12 @@
     if(!list) return;
 
     const q = $("sSearch").value || "";
-    const filtered = SUBJECTS
+    const filtered = JOB_SUBJECTS
       .map(s => ({...s, _score: relatedMatch(q, s.name||"")}))
       .filter(s => !q ? true : s._score >= 0.25)
       .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
 
-    $("leftHint").textContent = `Total: ${SUBJECTS.length}`;
+    $("leftHint").textContent = `Total: ${JOB_SUBJECTS.length}`;
     $("sEmpty").style.display = filtered.length ? "none" : "block";
 
     list.innerHTML = "";
@@ -1486,12 +1363,13 @@
         <div class="chips">
           <span class="chip">MCQ <b>${mcq}</b></span>
           <span class="chip">Written <b>${written}</b></span>
-          <span class="chip">Model <b>${mt}</b></span>
+          <span class="chip">Tests <b>${mt}</b></span>
         </div>
       `;
       list.appendChild(el);
     });
   }
+  
   window.renderSubjectList = renderSubjectList;
 
   function renderSubjectSheet(){
@@ -1499,7 +1377,7 @@
     if(!grid) return;
 
     grid.innerHTML = "";
-    const sorted = SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+    const sorted = JOB_SUBJECTS.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||""));
 
     sorted.forEach(s=>{
       const mcq = s.counts?.mcq || 0;
@@ -1517,7 +1395,7 @@
         <div class="mini">
           <span>MCQ: ${mcq}</span>
           <span>W: ${written}</span>
-          <span>M: ${mt}</span>
+          <span>T: ${mt}</span>
         </div>
       `;
       grid.appendChild(it);
@@ -1530,11 +1408,13 @@
     cursorByPage = { 1: null };
     selectedOptionMap.clear();
 
-    const found = SUBJECTS.find(s=>s.id===id);
+    const found = JOB_SUBJECTS.find(s=>s.id===id);
     selectedSubjectName = found?.name || "";
 
-    $("subName").textContent = selectedSubjectName || "Job Subject Details";
-    $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
+    $("subName").textContent = selectedSubjectName || "Jobs Assistant";
+    $("headerTag").textContent = selectedSubjectName
+      ? `Jobs Assistant • ${selectedSubjectName}`
+      : "Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
 
     renderSubjectList();
     renderSubjectSheet();
@@ -1596,6 +1476,7 @@
     }
     loadRight();
   }
+  
   window.resetAndReload = resetAndReload;
 
   function renderPager(){
@@ -1744,6 +1625,7 @@
     saveState();
     loadRight();
   }
+  
   window.prevPage = prevPage;
   window.nextPage = nextPage;
 
@@ -1752,55 +1634,34 @@
     wrap.innerHTML = "";
 
     $("rightTitle").textContent =
-      mode==="mcq" ? "Job MCQ প্রশ্ন" :
-      mode==="written" ? "Job Written প্রশ্ন" :
-      "Job Subject Model Tests";
+      mode==="mcq" ? "MCQ প্রশ্ন" :
+      mode==="written" ? "Written প্রশ্ন" :
+      "Job Subject Tests";
 
     if(!currentItems.length) return;
 
     if(mode === "model"){
-      // ✅ Model Test Grid (3 columns)
       const grid = document.createElement("div");
-      grid.className = "modelTestGrid";
-      
+      grid.className = "latestMT";
       currentItems.forEach((mt)=>{
-        const title = mt.title ?? mt.name ?? "Job Model Test";
-        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "0";
-        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "0";
+        const title = mt.title ?? mt.name ?? "Job Subject Test";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
         const counts = mt.counts || {};
         const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
-        const mcqCount = Number(counts.mcq||0);
-        const writtenCount = Number(counts.written||0);
 
         const card = document.createElement("div");
-        card.className = "modelTestCard";
+        card.className = "mtCardMini";
         card.innerHTML = `
           <h4 title="${esc(title)}">${esc(title)}</h4>
-          <div class="modelTestMeta">
-            <div class="modelTestStat">
-              <span class="label">⏱ Total Time:</span>
-              <span class="value">${esc(time)} min</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">📌 Total Questions:</span>
-              <span class="value">${esc(qCount)}</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">🧮 Total Marks:</span>
-              <span class="value">${esc(marks)}</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">📝 MCQ:</span>
-              <span class="value">${esc(mcqCount)}</span>
-            </div>
-            <div class="modelTestStat">
-              <span class="label">✍️ Written:</span>
-              <span class="value">${esc(writtenCount)}</span>
-            </div>
+          <div class="mtMetaMini">
+            <span>⏱ ${esc(time)} min</span>
+            <span>🧮 Mark: ${esc(marks)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
           </div>
-          <div class="modelTestActions">
-            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start Test</button>
-            <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">View Results</button>
+          <div class="mtActionsMini">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
+            <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
           </div>
         `;
         grid.appendChild(card);
@@ -1809,7 +1670,6 @@
       return;
     }
 
-    // ✅ MCQ এবং Written view (unchanged)
     const paper = document.createElement("div");
     paper.className = "paper";
     const list = document.createElement("div");
@@ -1904,25 +1764,24 @@
     wrap.appendChild(paper);
   }
 
-  /* ✅ Latest Job Tests (Sidebar) */
-  function attachJobTests(){
-    if(unsubJobTests){ try{unsubJobTests();}catch(e){} unsubJobTests=null; }
+  function attachLatestJobTests(){
+    if(unsubLatest){ try{unsubLatest();}catch(e){} unsubLatest=null; }
 
-    unsubJobTests = db.collection(COL_JOBS_TESTS)
+    unsubLatest = db.collection(COL_JOBS_SUBJECT_TESTS)
       .orderBy("createdAt","desc")
-      .limit(5)
+      .limit(10)
       .onSnapshot((snap)=>{
-        const wrap = $("jobTestsList");
-        const empty = $("jobTestsEmpty");
+        const wrap = $("latestJobTests");
+        const empty = $("latestEmpty");
         wrap.innerHTML = "";
 
         const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
         empty.style.display = docs.length ? "none" : "block";
 
         docs.forEach((mt)=>{
-          const title = mt.title ?? mt.name ?? "Job Test";
-          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "0";
-          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "0";
+          const title = mt.title ?? mt.name ?? "Job Subject Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
           const counts = mt.counts || {};
           const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
 
@@ -1932,8 +1791,8 @@
             <h4 title="${esc(title)}">${esc(title)}</h4>
             <div class="mtMetaMini">
               <span>⏱ ${esc(time)} min</span>
-              <span>📌 Q: ${esc(qCount)}</span>
               <span>🧮 Mark: ${esc(marks)}</span>
+              <span>📌 Q: ${esc(qCount)}</span>
             </div>
             <div class="mtActionsMini">
               <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
@@ -1942,131 +1801,93 @@
           `;
           wrap.appendChild(card);
         });
-        
-        if(docs.length === 0) {
-          const testData = [
-            {
-              id: "test1",
-              title: "Bank Job Model Test 2024",
-              totalTimeMin: 60,
-              totalMarks: 100,
-              counts: { mcq: 50, written: 10 },
-              totalQuestions: 60
-            }
-          ];
-          
-          testData.forEach((mt)=>{
-            const card = document.createElement("div");
-            card.className = "mtCardMini";
-            card.innerHTML = `
-              <h4 title="${esc(mt.title)}">${esc(mt.title)}</h4>
-              <div class="mtMetaMini">
-                <span>⏱ ${esc(mt.totalTimeMin)} min</span>
-                <span>📌 Q: ${esc(mt.totalQuestions)}</span>
-                <span>🧮 Mark: ${esc(mt.totalMarks)}</span>
-              </div>
-              <div class="mtActionsMini">
-                <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
-                <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
-              </div>
-            `;
-            wrap.appendChild(card);
-          });
-          empty.style.display = "none";
-        }
-      }, (err)=>{
-        console.error("Error loading Job Tests:", err);
-      });
+      }, (err)=>console.error(err));
   }
 
-  /* ✅ Organizations (Sidebar) */
   function attachOrganizations(){
-    if(unsubOrganizations){ try{unsubOrganizations();}catch(e){} unsubOrganizations=null; }
+    if(unsubOrgs){ try{unsubOrgs();}catch(e){} unsubOrgs=null; }
 
-    unsubOrganizations = db.collection(COL_JOBS_UNIVERSITIES)
+    const orgMTCount = new Map();
+    const orgMTUnsub = new Map();
+    let latestOrganizations = [];
+
+    function cleanupMTListeners(activeIds){
+      for(const [uid, unsub] of orgMTUnsub.entries()){
+        if(!activeIds.has(uid)){
+          try{unsub();}catch(e){}
+          orgMTUnsub.delete(uid);
+          orgMTCount.delete(uid);
+        }
+      }
+    }
+
+    function ensureMTListener(organizationId){
+      if(orgMTUnsub.has(organizationId)) return;
+      const unsub = db.collection(COL_JOBS_TESTS)
+        .where("universityId","==", organizationId)
+        .onSnapshot((snap)=>{
+          orgMTCount.set(organizationId, snap.size || 0);
+          renderOrgCards();
+        });
+      orgMTUnsub.set(organizationId, unsub);
+    }
+
+    function renderOrgCards(){
+      const wrap = $("orgList");
+      const empty = $("orgEmpty");
+      wrap.innerHTML = "";
+
+      empty.style.display = latestOrganizations.length ? "none" : "block";
+
+      latestOrganizations.forEach((u)=>{
+        const name = u.name ?? u.title ?? "Organization";
+        const counts = u.counts || {};
+        const mcq = Number(counts.mcq||0);
+        const written = Number(counts.written||0);
+        const model = Number(orgMTCount.get(u.id) ?? 0);
+
+        const card = document.createElement("div");
+        card.className = "mtCardMini";
+        card.innerHTML = `
+          <h4 title="${esc(name)}">${esc(name)}</h4>
+          <div class="mtMetaMini">
+            <span>MCQ: ${esc(mcq)}</span>
+            <span>Written: ${esc(written)}</span>
+            <span>Job Tests: ${esc(model)}</span>
+          </div>
+          <div class="mtActionsMini">
+            <button class="btn primary" onclick="location.href='organization-details.html?organizationId=${encodeURIComponent(u.id)}'">Open</button>
+            <button class="btn" onclick="location.href='organization-details.html'">All</button>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    unsubOrgs = db.collection(COL_JOBS_UNIVERSITIES)
       .orderBy("createdAt","desc")
       .limit(5)
       .onSnapshot((snap)=>{
-        const wrap = $("orgList");
-        const empty = $("orgEmpty");
-        wrap.innerHTML = "";
+        latestOrganizations = snap.docs.map(d=>({ id:d.id, ...d.data() }));
 
-        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        empty.style.display = docs.length ? "none" : "block";
+        const activeIds = new Set(latestOrganizations.map(x=>x.id));
+        cleanupMTListeners(activeIds);
 
-        docs.forEach((u)=>{
-          const name = u.name ?? u.title ?? "Organization";
-          const counts = u.counts || {};
-          const mcq = Number(counts.mcq||0);
-          const written = Number(counts.written||0);
-          const totalTests = mcq + written;
+        latestOrganizations.forEach(u => ensureMTListener(u.id));
 
-          const card = document.createElement("div");
-          card.className = "orgCardMini";
-          card.innerHTML = `
-            <h4 title="${esc(name)}">${esc(name)}</h4>
-            <div class="orgMetaMini">
-              <span>MCQ: ${esc(mcq)}</span>
-              <span>Written: ${esc(written)}</span>
-              <span>Total Test: ${esc(totalTests)}</span>
-            </div>
-            <div class="orgActionsMini">
-              <button class="btn primary" onclick="location.href='organization-details.html?organizationId=${encodeURIComponent(u.id)}'">Open</button>
-              <button class="btn" onclick="location.href='jobs-assistant.html'">All</button>
-            </div>
-          `;
-          wrap.appendChild(card);
-        });
-        
-        if(docs.length === 0) {
-          const testData = [
-            {
-              id: "org1",
-              name: "Bangladesh Bank",
-              counts: { mcq: 200, written: 50 }
-            }
-          ];
-          
-          testData.forEach((u)=>{
-            const mcq = Number(u.counts.mcq||0);
-            const written = Number(u.counts.written||0);
-            const totalTests = mcq + written;
-            
-            const card = document.createElement("div");
-            card.className = "orgCardMini";
-            card.innerHTML = `
-              <h4 title="${esc(u.name)}">${esc(u.name)}</h4>
-              <div class="orgMetaMini">
-                <span>MCQ: ${esc(mcq)}</span>
-                <span>Written: ${esc(written)}</span>
-                <span>Total Test: ${esc(totalTests)}</span>
-              </div>
-              <div class="orgActionsMini">
-                <button class="btn primary" onclick="location.href='organization-details.html?organizationId=${encodeURIComponent(u.id)}'">Open</button>
-                <button class="btn" onclick="location.href='jobs-assistant.html'">All</button>
-              </div>
-            `;
-            wrap.appendChild(card);
-          });
-          empty.style.display = "none";
-        }
-      }, (err)=>{
-        console.error("Error loading Organizations:", err);
-      });
+        renderOrgCards();
+      }, (err)=>console.error(err));
   }
 
   function attachSubjects(){
     if(unsubSubjects){ try{unsubSubjects();}catch(e){} unsubSubjects=null; }
 
     unsubSubjects = db.collection(COL_JOBS_SUBJECTS).onSnapshot((snap)=>{
-      SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      JOB_SUBJECTS = snap.docs.map(d=>({id:d.id, ...d.data()}));
       syncModelTestListeners();
 
-      const urlSubjectId = getParam("subjectId");
-      if(urlSubjectId){
-        selectedSubjectId = urlSubjectId;
-      }else if(!selectedSubjectId && SUBJECTS.length){
-        selectedSubjectId = SUBJECTS[0].id;
+      if(!selectedSubjectId && JOB_SUBJECTS.length){
+        selectedSubjectId = JOB_SUBJECTS[0].id;
       }
 
       $("tabMcq").classList.toggle("active", mode==="mcq");
@@ -2081,10 +1902,12 @@
       renderSubjectSheet();
 
       if(selectedSubjectId){
-        const found = SUBJECTS.find(s=>s.id===selectedSubjectId);
+        const found = JOB_SUBJECTS.find(s=>s.id===selectedSubjectId);
         selectedSubjectName = found?.name || "";
-        $("subName").textContent = selectedSubjectName || "Job Subject Details";
-        $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
+        $("subName").textContent = selectedSubjectName || "Jobs Assistant";
+        $("headerTag").textContent = selectedSubjectName
+          ? `Jobs Assistant • ${selectedSubjectName}`
+          : "Jobs Assistant • সকল প্রস্তুতি হোক গভীর থেকে";
 
         setUrlState();
         saveState();
@@ -2128,8 +1951,9 @@
   })();
 
   attachSubjects();
-  attachJobTests();
+  attachLatestJobTests();
   attachOrganizations();
 </script>
+
 </body>
 </html>
