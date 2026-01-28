@@ -856,6 +856,7 @@
     const COL_JOBS_UNIVERSITIES = "jobs_universities"; // Organizations
     const COL_JOBS_SUBJECT_TESTS = "jobs_subject_tests";
     const COL_JOBS_TESTS = "jobs_tests"; // Job Tests
+    const COL_JOBS_TEST_QUESTIONS = "jobs_test_questions";
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
@@ -1018,6 +1019,9 @@
 
     // organizationId -> job test count
     const orgJobTestCountMap = new Map();
+
+    // testId -> total questions count
+    const testQuestionCountMap = new Map();
 
     // ===== Render: Job Subjects =====
     let rafSubjects = 0;
@@ -1227,6 +1231,25 @@
       return data?.title ?? data?.name ?? "Job Test";
     }
 
+    function getTotalQuestions(data){
+      // First try counts field
+      if(data?.counts){
+        const mcq = data.counts.mcq || 0;
+        const written = data.counts.written || 0;
+        if(mcq + written > 0) return mcq + written;
+      }
+      
+      // Then try totalMarks
+      const marks = getMarkField(data);
+      if(marks !== "-" && marks !== ""){
+        const num = Number(marks);
+        if(!Number.isNaN(num) && num > 0) return num;
+      }
+      
+      // Finally use testQuestionCountMap
+      return "-";
+    }
+
     function renderLatestJobTests(list){
       const wrap = $("latestJobTests");
       wrap.innerHTML = "";
@@ -1246,6 +1269,8 @@
         const title = getTitleField(data);
         const timeVal = formatTimeMin(getTimeField(data));
         const markVal = getMarkField(data);
+        const questionCount = getTotalQuestions(data);
+        const actualQuestionCount = testQuestionCountMap.get(id) || questionCount;
 
         const card = document.createElement("div");
         card.className = "mtCard";
@@ -1254,16 +1279,16 @@
           <h4 title="${esc(title)}">${esc(title)}</h4>
           <div class="mtMeta">
             <span>⏱ ${esc(timeVal)}</span>
+            <span>📊 Q: ${esc(actualQuestionCount)}</span>
             <span>🧮 Mark: ${esc(markVal)}</span>
-            <span>📌 Job Test</span>
           </div>
           <div class="mtActions">
             <button class="btn primary"
-              onclick="event.stopPropagation(); window.open('start-job-test.html?testId=${encodeURIComponent(id)}', '_blank', 'noopener')">
+              onclick="event.stopPropagation(); window.open('Start-model-test.html?modelTestId=${encodeURIComponent(id)}&type=job', '_blank', 'noopener')">
               Start Test
             </button>
             <button class="btn"
-              onclick="event.stopPropagation(); window.open('job-test-result.html?testId=${encodeURIComponent(id)}', '_blank', 'noopener')">
+              onclick="event.stopPropagation(); window.open('model-test-result.html?modelTestId=${encodeURIComponent(id)}&type=job', '_blank', 'noopener')">
               See Result
             </button>
           </div>
@@ -1322,7 +1347,7 @@
           tempTests.push({ id, data });
         });
 
-        // Sort by creation time
+        // Sort by creation time (newest first)
         tempTests.sort((a,b)=>{
           const ta = getDocSortTime(a.data);
           const tb = getDocSortTime(b.data);
@@ -1330,6 +1355,10 @@
         });
 
         latestJobTestsCache = tempTests.slice(0, 6);
+        
+        // Load question counts for these tests
+        loadQuestionCountsForTests(latestJobTestsCache.map(t => t.id));
+        
         renderLatestJobTests(latestJobTestsCache);
         scheduleRenderOrganizations();
 
@@ -1337,6 +1366,27 @@
         console.error("Job Tests load error:", err);
         $("mtHint").textContent = "Failed";
       });
+    }
+
+    // ✅ Load question counts for specific tests
+    async function loadQuestionCountsForTests(testIds){
+      if(!testIds.length) return;
+      
+      for(const testId of testIds){
+        try{
+          const snap = await db.collection(COL_JOBS_TEST_QUESTIONS)
+            .where("testId", "==", testId)
+            .get();
+          
+          testQuestionCountMap.set(testId, snap.size);
+        }catch(err){
+          console.error(`Error loading questions for test ${testId}:`, err);
+          testQuestionCountMap.set(testId, 0);
+        }
+      }
+      
+      // Re-render with updated counts
+      renderLatestJobTests(latestJobTestsCache);
     }
 
     // ✅ Load Subject Tests Count
@@ -1362,6 +1412,7 @@
     function init(){
       renderSkeleton("subjects");
       renderSkeleton("organizations", 4);
+      $("latestJobTests").innerHTML = '<div class="skeleton"><div class="shimmer"></div></div>'.repeat(3);
       
       watchJobSubjects();
       watchOrganizations();
