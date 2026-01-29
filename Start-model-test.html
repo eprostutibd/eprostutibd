@@ -1,7 +1,3 @@
-
-
-
-
 <!doctype html>
 <html lang="bn">
 <head>
@@ -424,21 +420,32 @@
     }
     .btnPdf svg{width:18px;height:18px;fill: rgba(29,78,216,1);}
 
-    .recentBox{
+    /* ✅ Left Sidebar: Model Tests by Collection */
+    .collectionBox{
       border:1px dashed rgba(18,28,55,.22);
       border-radius:16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
       flex: 0 0 auto;
+      margin-bottom: 10px;
     }
-    .recentList{
+    .collectionHead{
+      padding:10px 12px;
+      border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
+      background: rgba(255,255,255,.78);
+      flex: 0 0 auto;
+    }
+    .collectionHead b{color: var(--text)}
+    .collectionList{
       padding: 10px;
       display:flex;
       flex-direction:column;
       gap: 8px;
     }
-    .recentItem{
+    .collectionItem{
       text-decoration:none;
       display:flex;
       gap: 10px;
@@ -449,16 +456,16 @@
       padding: 10px;
       transition: .12s;
     }
-    .recentItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
-    .recentDot{
+    .collectionItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
+    .collectionDot{
       width:10px;height:10px;border-radius:999px;
       background: rgba(29,78,216,.28);
       border:1px solid rgba(29,78,216,.20);
       flex:0 0 auto;
       margin-top: 5px;
     }
-    .recentTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
-    .recentMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
+    .collectionTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
+    .collectionMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
 
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
     .btnDanger{
@@ -864,14 +871,48 @@
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
 
+          <!-- Ad Slot -->
           <div class="adBox">
             <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
             <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
           </div>
 
-          <div class="recentBox" aria-label="Recent model tests">
-            <div class="adHead"><b>Recent Model Test</b><span>Latest</span></div>
-            <div class="recentList" id="recentList">
+          <!-- ✅ Subject Model Tests -->
+          <div class="collectionBox" aria-label="Subject Model Tests">
+            <div class="collectionHead"><b>Subject Model Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectModelTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <!-- ✅ Subject Tests -->
+          <div class="collectionBox" aria-label="Subject Tests">
+            <div class="collectionHead"><b>Subject Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <!-- ✅ Admission Tests -->
+          <div class="collectionBox" aria-label="Admission Tests">
+            <div class="collectionHead"><b>Admission Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="admissionTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <!-- ✅ Subjects -->
+          <div class="collectionBox" aria-label="Subjects">
+            <div class="collectionHead"><b>Subjects</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <!-- ✅ Universities -->
+          <div class="collectionBox" aria-label="Universities">
+            <div class="collectionHead"><b>Organizations</b><span>Latest</span></div>
+            <div class="collectionList" id="universitiesList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
           </div>
@@ -1013,7 +1054,7 @@
           <div class="statLabel">সময়</div>
           <div class="statVal" id="resTimeTaken">--:--</div>
         </div>
-</div>
+      </div>
 
       <div class="resultActions">
         <button class="btnGhost" type="button" onclick="closeResultModal()">Ok</button>
@@ -1088,20 +1129,12 @@
 
 <script>
 /* ===========================
-   eProstutiBD Model Test JS (Optimized + PDF Layout Update)
-   - Faster Firestore loading
-   - No full rerender on MCQ click
-   - Defer recent list
-   - Lazy-load PDF libs if missing
-   - PDF:
-      * Question Paper: 25 Q per page (2-column same design)
-      * Answer Sheet: 50 per page (3-column)
-
-   ✅ CUSTOM UPDATE (As per request)
-   - Page entry tei Name+District modal auto show
-   - Submit confirm modal e "Yes" click korlei reset flag set
-   - Result page e giye Back asle => state reset => again Name submit + timer fresh start
+   eProstutiBD Model Test JS
+   ✅ Left Sidebar: প্রতিটি কালেকশন থেকে ৫টি করে Model Test
+   ✅ একই Design
+   ✅ সকল কালেকশন Support
 =========================== */
+
 (() => {
   // year
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -1167,8 +1200,9 @@
   const db = firebase.firestore();
 
   // =========================================
-  // ✅ ORIGINAL MODEL TEST COLLECTIONS
+  // ✅ ALL COLLECTIONS
   // =========================================
+  // Original Model Test Collections
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
   const COL_MODEL_TEST_RESULT = "model_test_result";
 
@@ -1185,9 +1219,7 @@
   const COL_ADMISSION_TESTS = "admission_tests";
   const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";
 
-  // =========================================
-  // ✅ ADMIN PAGE COLLECTIONS (ADDED)
-  // =========================================
+  // Admin Page Collections
   const PREFIX = "jobs_";
   
   // Subject related (Admin)
@@ -1197,7 +1229,7 @@
   const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
 
   // Admission/Jobs related (Admin)
-  const COL_ADMISSION_TESTS_ADMIN = PREFIX + "tests";  // Different name to avoid conflict
+  const COL_ADMISSION_TESTS_ADMIN = PREFIX + "tests";
   const COL_ADMISSION_TEST_QUESTIONS_ADMIN = PREFIX + "test_questions";
 
   // University/Organization related (Admin)
@@ -1348,177 +1380,152 @@
   }
 
   // =======================================
-  // ✅ LOAD FROM ALL COLLECTIONS (ORIGINAL + ADMIN)
+  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION
+  // =======================================
+  async function loadCollectionTests(collectionId, containerId, title) {
+    try {
+      const container = $(containerId);
+      if (!container) return;
+      
+      container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
+      
+      let snap;
+      try {
+        snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
+      } catch (e) {
+        snap = await db.collection(collectionId).limit(5).get();
+      }
+      
+      if (snap.empty) {
+        container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
+        return;
+      }
+      
+      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      container.innerHTML = "";
+      
+      docs.forEach(doc => {
+        const testTitle = getTitleField(doc);
+        const mins = getTimeMinFromDoc(doc) || "--";
+        const mark = getMarkFromDoc(doc);
+        
+        const a = document.createElement("a");
+        a.className = "collectionItem";
+        a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+        a.innerHTML = `
+          <span class="collectionDot"></span>
+          <div>
+            <div class="collectionTitle">${esc(testTitle)}</div>
+            <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+          </div>
+        `;
+        container.appendChild(a);
+      });
+      
+    } catch (err) {
+      console.error(`Error loading ${collectionId}:`, err);
+      $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+    }
+  }
+
+  // Load all collections for sidebar
+  async function loadAllSidebarCollections() {
+    // ✅ Subject Model Tests
+    await loadCollectionTests(COL_SUBJECT_MODEL_TESTS, "subjectModelTestsList", "Subject Model Tests");
+    
+    // ✅ Subject Tests (Admin)
+    await loadCollectionTests(COL_SUBJECT_TESTS, "subjectTestsList", "Subject Tests");
+    
+    // ✅ Admission Tests (Original)
+    await loadCollectionTests(COL_ADMISSION_TESTS, "admissionTestsList", "Admission Tests");
+    
+    // ✅ Subjects (Admin)
+    await loadCollectionTests(COL_SUBJECTS, "subjectsList", "Subjects");
+    
+    // ✅ Universities (Admin)
+    await loadCollectionTests(COL_UNIVERSITIES, "universitiesList", "Organizations");
+  }
+
+  // =======================================
+  // MAIN TEST LOADING (SAME AS BEFORE)
   // =======================================
   async function loadTestMetaFromAllCollections(testId) {
-    // Try ORIGINAL collections first
-    const originalCollections = [
+    const collections = [
       COL_SUBJECT_MODEL_TESTS,
       COL_ADMISSION_SUBJECT_TESTS,
-      COL_ADMISSION_TESTS
+      COL_ADMISSION_TESTS,
+      COL_SUBJECT_TESTS,
+      COL_ADMISSION_TESTS_ADMIN,
+      COL_SUBJECTS,
+      COL_UNIVERSITIES
     ];
 
-    for (const col of originalCollections) {
+    for (const col of collections) {
       try {
         const doc = await db.collection(col).doc(testId).get();
         if (doc.exists) {
           return { source: col, doc: { id: doc.id, ...doc.data() } };
         }
-      } catch (e) {
-        console.warn(`Failed to load from ${col}:`, e.message);
-      }
-    }
-
-    // Try ADMIN collections
-    const adminCollections = [
-      COL_SUBJECT_TESTS,      // jobs_subject_tests
-      COL_ADMISSION_TESTS_ADMIN,    // jobs_tests
-      COL_SUBJECTS,           // jobs_subjects
-      COL_UNIVERSITIES        // jobs_universities
-    ];
-
-    for (const col of adminCollections) {
-      try {
-        const doc = await db.collection(col).doc(testId).get();
-        if (doc.exists) {
-          return { source: col, doc: { id: doc.id, ...doc.data() } };
-        }
-      } catch (e) {
-        console.warn(`Failed to load from ${col}:`, e.message);
-      }
-    }
-    
-    // Not found in main collections, try with "testId" field
-    const queryCollections = [
-      // Original
-      { col: COL_ADMISSION_SUBJECT_TESTS, field: "subjectId" },
-      { col: COL_ADMISSION_TESTS, field: "universityId" },
-      // Admin
-      { col: COL_SUBJECT_TESTS, field: "subjectId" },
-      { col: COL_ADMISSION_TESTS_ADMIN, field: "universityId" }
-    ];
-    
-    for (const { col, field } of queryCollections) {
-      try {
-        const query = await db.collection(col).where(field, "==", testId).limit(1).get();
-        if (!query.empty) {
-          const doc = query.docs[0];
-          return { source: col, doc: { id: doc.id, ...doc.data() } };
-        }
-      } catch (e) {
-        console.warn(`Failed to query ${col} with ${field}:`, e.message);
-      }
+      } catch (e) {}
     }
     
     return { source: "", doc: null };
   }
 
   async function loadQuestionsForTest(testId, source) {
-    // Based on source, determine which question collection to use
     let questionCollections = [];
     
     if (source === COL_SUBJECT_MODEL_TESTS) {
-      // Original: Subject Model Tests -> subcollection
       try {
         const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(testId).collection("questions");
         const snap = await ref.get();
         if (!snap.empty) return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       } catch (e) {}
       
-      // Fallback to other collections
       questionCollections = [
         ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
         { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" }
       ];
     } 
-    else if (source === COL_ADMISSION_SUBJECT_TESTS) {
-      // Original: Admission Subject Tests
-      questionCollections = [
-        { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" }
-      ];
-    }
-    else if (source === COL_ADMISSION_TESTS) {
-      // Original: Admission Tests
-      questionCollections = [
-        { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" }
-      ];
-    }
     else if (source === COL_SUBJECT_TESTS) {
-      // Admin: Subject Tests
       questionCollections = [
         { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
         { col: COL_SUBJECT_QUESTIONS, field: "subjectId" }
       ];
     }
-    else if (source === COL_ADMISSION_TESTS_ADMIN) {
-      // Admin: Admission Tests
+    else if (source === COL_ADMISSION_TESTS || source === COL_ADMISSION_TESTS_ADMIN) {
       questionCollections = [
+        { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" },
         { col: COL_ADMISSION_TEST_QUESTIONS_ADMIN, field: "testId" }
       ];
     }
     else if (source === COL_SUBJECTS) {
-      // Admin: Subjects
       questionCollections = [
         { col: COL_SUBJECT_QUESTIONS, field: "subjectId" }
       ];
     }
     else if (source === COL_UNIVERSITIES) {
-      // Admin: Universities
       questionCollections = [
         { col: COL_UNIVERSITY_QUESTIONS, field: "universityId" }
       ];
     }
     else {
-      // Unknown source, try ALL collections
-      return await tryAllQuestionCollections(testId);
+      // Try all
+      questionCollections = [
+        ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
+        { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
+        { col: COL_SUBJECT_QUESTIONS, field: "subjectId" },
+        { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" },
+        { col: COL_ADMISSION_TEST_QUESTIONS_ADMIN, field: "testId" },
+        { col: COL_UNIVERSITY_QUESTIONS, field: "universityId" }
+      ];
     }
     
-    // Try each collection in order
     for (const { col, field } of questionCollections) {
       try {
         const query = await db.collection(col).where(field, "==", testId).get();
-        if (!query.empty) {
-          console.log(`Found questions in ${col} with field ${field}`);
-          return query.docs.map(d => ({ id: d.id, ...d.data() }));
-        }
-      } catch (e) {
-        // Silently continue
-      }
-    }
-    
-    return [];
-  }
-
-  async function tryAllQuestionCollections(testId) {
-    // ORIGINAL collections
-    const originalCollections = [
-      ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
-      { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" },
-      { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" }
-    ];
-    
-    // ADMIN collections
-    const adminCollections = [
-      { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
-      { col: COL_SUBJECT_QUESTIONS, field: "subjectId" },
-      { col: COL_ADMISSION_TEST_QUESTIONS_ADMIN, field: "testId" },
-      { col: COL_UNIVERSITY_QUESTIONS, field: "universityId" },
-      { col: COL_SUBJECT_QUESTIONS, field: "testId" },
-      { col: COL_SUBJECT_TEST_QUESTIONS, field: "subjectId" }
-    ];
-    
-    const allCollections = [...originalCollections, ...adminCollections];
-    
-    for (const { col, field } of allCollections) {
-      try {
-        const query = await db.collection(col).where(field, "==", testId).get();
-        if (!query.empty) {
-          console.log(`Found questions in ${col} with field ${field}`);
-          return query.docs.map(d => ({ id: d.id, ...d.data() }));
-        }
-      } catch (e) {
-        // Silently continue
-      }
+        if (!query.empty) return query.docs.map(d => ({ id: d.id, ...d.data() }));
+      } catch (e) {}
     }
     
     return [];
@@ -1546,7 +1553,7 @@
   }
 
   // =======================================
-  // Render (single time) + Event Delegation
+  // Render Questions
   // =======================================
   function renderAllOnce() {
     const wrap = $("content");
@@ -1728,7 +1735,7 @@
     }
   }
 
-  // ===== Result compute (MCQ based) =====
+  // ===== Result compute =====
   function toNumberMaybe(v) {
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
@@ -1898,7 +1905,7 @@
   window.submitTest = submitTest;
 
   // =======================================
-  // PDF lazy-load helpers + PDF build
+  // PDF Functions
   // =======================================
   function loadScriptOnce(src) {
     return new Promise((resolve, reject) => {
@@ -1952,7 +1959,6 @@
     return canvas;
   }
 
-  // ✅ Question Paper: 25 per page (same 2-column design)
   async function buildQuestionPaperCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -2009,7 +2015,6 @@
     return canvases;
   }
 
-  // ✅ Answer Sheet: 50 per page, 3-column
   async function buildAnswerSheetCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -2109,131 +2114,6 @@
   }
   window.downloadCombinedPDF = downloadCombinedPDF;
 
-  // ===== Recent Tests from ALL Collections =====
-  async function loadRecentTests() {
-    const wrap = $("recentList");
-    try {
-      // Try ORIGINAL collections first
-      const originalCollections = [
-        COL_SUBJECT_MODEL_TESTS,
-        COL_ADMISSION_SUBJECT_TESTS,
-        COL_ADMISSION_TESTS
-      ];
-      
-      // Try ADMIN collections
-      const adminCollections = [
-        COL_SUBJECT_TESTS,
-        COL_ADMISSION_TESTS_ADMIN,
-        COL_SUBJECTS,
-        COL_UNIVERSITIES
-      ];
-      
-      let allDocs = [];
-      
-      // Load from original collections
-      for (const col of originalCollections) {
-        try {
-          const snap = await db.collection(col).orderBy("createdAt", "desc").limit(2).get();
-          const docs = snap.docs.map(d => ({ 
-            id: d.id, 
-            ...d.data(),
-            collection: col 
-          }));
-          allDocs = [...allDocs, ...docs];
-        } catch (e) {
-          try {
-            const snap = await db.collection(col).limit(2).get();
-            const docs = snap.docs.map(d => ({ 
-              id: d.id, 
-              ...d.data(),
-              collection: col 
-            }));
-            allDocs = [...allDocs, ...docs];
-          } catch (e2) {}
-        }
-      }
-      
-      // Load from admin collections
-      for (const col of adminCollections) {
-        try {
-          const snap = await db.collection(col).orderBy("createdAt", "desc").limit(2).get();
-          const docs = snap.docs.map(d => ({ 
-            id: d.id, 
-            ...d.data(),
-            collection: col 
-          }));
-          allDocs = [...allDocs, ...docs];
-        } catch (e) {
-          try {
-            const snap = await db.collection(col).limit(2).get();
-            const docs = snap.docs.map(d => ({ 
-              id: d.id, 
-              ...d.data(),
-              collection: col 
-            }));
-            allDocs = [...allDocs, ...docs];
-          } catch (e2) {}
-        }
-      }
-      
-      // Sort by createdAt if available
-      allDocs.sort((a, b) => {
-        const aTime = a.createdAt?.toMillis?.() || 0;
-        const bTime = b.createdAt?.toMillis?.() || 0;
-        return bTime - aTime;
-      });
-      
-      // Take first 5
-      allDocs = allDocs.slice(0, 5);
-      
-      wrap.innerHTML = "";
-      
-      if (!allDocs.length) {
-        wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
-        return;
-      }
-
-      allDocs.forEach(doc => {
-        const title = getTitleField(doc);
-        const mins = getTimeMinFromDoc(doc) || "--";
-        const mark = getMarkFromDoc(doc);
-        const type = doc.collection === COL_SUBJECT_MODEL_TESTS ? "Model Test" :
-                     doc.collection === COL_SUBJECT_TESTS ? "Subject Test" :
-                     doc.collection === COL_ADMISSION_TESTS_ADMIN ? "Admission Test" :
-                     doc.collection === COL_SUBJECTS ? "Subject" :
-                     doc.collection === COL_UNIVERSITIES ? "Organization" : "Test";
-        
-        const a = document.createElement("a");
-        a.className = "recentItem";
-        a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
-        a.innerHTML = `
-          <span class="recentDot"></span>
-          <div>
-            <div class="recentTitle">${esc(title)}</div>
-            <div class="recentMeta">${type} • সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
-          </div>
-        `;
-        wrap.appendChild(a);
-      });
-
-      const more = document.createElement("a");
-      more.className = "recentItem";
-      more.href = "premium-model-test.html";
-      more.innerHTML = `
-        <span class="recentDot"></span>
-        <div>
-          <div class="recentTitle">See more</div>
-          <div class="recentMeta">Premium model tests দেখুন</div>
-        </div>
-      `;
-      wrap.appendChild(more);
-
-    } catch (err) {
-      console.error(err);
-      wrap.innerHTML = `<div class="err">Recent লোড করতে সমস্যা হচ্ছে।</div>`;
-    }
-  }
-
   // ===== confirmYes/No functions =====
   function confirmYes() {
     closeConfirm();
@@ -2259,11 +2139,11 @@
     $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    // Defer recent list
-    setTimeout(() => loadRecentTests(), 250);
+    // ✅ Load sidebar collections (5 from each)
+    setTimeout(() => loadAllSidebarCollections(), 250);
 
     try {
-      // Load test metadata
+      // Load main test
       const meta = await loadTestMetaFromAllCollections(modelTestId);
       if (!meta.doc) {
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -2278,7 +2158,7 @@
 
       setMetaHeader();
 
-      // Set timer display (not started yet)
+      // Set timer display
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if (__mins) $("timeLeft").textContent = formatMMSS(__mins * 60);
 
@@ -2298,7 +2178,6 @@
 })();
 
 </script>
-
 
 </body>
 </html>
