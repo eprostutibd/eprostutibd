@@ -172,7 +172,7 @@
     main.grid{
       display:grid;
       grid-template-columns: var(--sideW) minmax(0, 1fr) var(--sideW);
-      gap: 0; /* ✅ গ্যাপ দূর করা হয়েছে */
+      gap: 0; /* ✅ No gap between columns */
       align-items:start;
       margin-top: 12px;
     }
@@ -256,7 +256,7 @@
 
     /* ===== Paper body ===== */
     .paper{
-      margin-top: 0;
+      margin-top: 0; /* ✅ No top margin */
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
@@ -360,14 +360,13 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
-    /* ✅ Left Sidebar - Plain Design */
     .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
     .sideStack{
       height: 100%;
       display:flex;
       flex-direction:column;
       gap: 10px;
-      overflow-y: auto;
+      overflow-y: auto; /* ✅ Enable vertical scroll */
       overflow-x: hidden;
       padding-right: 4px;
     }
@@ -375,113 +374,25 @@
     .sideStack::-webkit-scrollbar-track{background:transparent}
     .sideStack::-webkit-scrollbar-thumb{background:rgba(18,28,55,.14);border-radius:2px}
 
-    /* ✅ Left Sidebar Collection Items - Plain Design */
-    .collectionSection{
-      margin-bottom: 14px;
-    }
-    
-    .collectionTitle{
-      font-weight:1000;
-      font-size:12.5px;
-      color: var(--text);
-      padding: 6px 0 8px;
-      border-bottom: 1px solid rgba(18,28,55,.10);
-      margin-bottom: 8px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-    
-    .collectionTitle span{
-      font-size:10px;
-      color: var(--muted);
-      font-weight:900;
-      background: rgba(18,28,55,.06);
-      padding: 2px 8px;
-      border-radius: 999px;
-    }
-    
-    .collectionList{
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-    }
-    
-    .collectionItem{
-      text-decoration:none;
-      display:block;
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size:12.5px;
-      font-weight: 900;
-      line-height:1.4;
-      color: var(--text);
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
-    
-    .collectionItem:hover{
-      background: rgba(29,78,216,.08);
-      color: var(--brandA);
-      border-color: rgba(29,78,216,.15);
-      transform: translateX(2px);
-    }
-    
-    .collectionItem::before{
-      content:"•";
-      color: var(--brandA);
-      margin-right: 8px;
-      font-weight:1000;
-    }
-    
-    .seeMoreBtn{
-      display:inline-block;
-      margin-top: 8px;
-      padding: 6px 12px;
-      border: 1px solid rgba(29,78,216,.18);
-      background: rgba(29,78,216,.08);
-      color: rgba(29,78,216,1);
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 1000;
-      text-decoration:none;
-      transition: all 0.2s ease;
-      width: 100%;
-      text-align:center;
-    }
-    
-    .seeMoreBtn:hover{
-      background: rgba(29,78,216,.12);
-      border-color: rgba(29,78,216,.25);
-      transform: translateY(-1px);
-    }
-
-    /* ✅ Right Sidebar - 2 Ads */
-    .adBox, .adBody, .pdfBox{
+    .adBox, .adBody, .pdfBox, .collectionBox{
       overflow: hidden;
     }
 
     .adBox{
       border:1px dashed rgba(18,28,55,.22);
-      border-radius:12px;
+      border-radius:16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       display:flex;
       flex-direction:column;
-      min-height: 120px;
+      min-height: 140px;
       flex: 0 0 auto;
-      margin-bottom: 10px;
     }
-    
-    .adBox:last-child{
-      margin-bottom: 0;
-    }
-    
     .adHead{
-      padding:8px 10px;
+      padding:10px 12px;
       border-bottom:1px solid rgba(18,28,55,.10);
       display:flex;align-items:center;justify-content:space-between;gap:10px;
-      font-size:11px;color: var(--muted);
+      font-size:12px;color: var(--muted);
       background: rgba(255,255,255,.78);
       flex: 0 0 auto;
     }
@@ -493,36 +404,117 @@
       padding: 10px;
       text-align:center;
       color: var(--muted);
-      font-size: 11.5px;
     }
 
     .pdfBox{
       border:1px dashed rgba(18,28,55,.22);
-      border-radius:12px;
+      border-radius:16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .btnPdf{
+      width: calc(100% - 20px);
+      margin: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(29,78,216,.25);
+      background: linear-gradient(135deg, rgba(29,78,216,.18), rgba(14,165,233,.16));
+      color: rgba(29,78,216,1);
+      font-weight: 1000;
+      font-size: 12.6px;
+      cursor:pointer;
+      box-shadow: 0 14px 34px rgba(29,78,216,.12);
+    }
+    .btnPdf svg{width:18px;height:18px;fill: rgba(29,78,216,1);}
+
+    /* ✅ Left Sidebar: Model Tests by Collection */
+    .collectionBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:16px;
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
       flex: 0 0 auto;
       margin-bottom: 10px;
     }
-    .btnPdf{
-      width: calc(100% - 16px);
-      margin: 8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(29,78,216,.25);
-      background: linear-gradient(135deg, rgba(29,78,216,.18), rgba(14,165,233,.16));
-      color: rgba(29,78,216,1);
-      font-weight: 1000;
-      font-size: 12px;
-      cursor:pointer;
-      box-shadow: 0 14px 34px rgba(29,78,216,.12);
+    .collectionHead{
+      padding:10px 12px;
+      border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
+      background: rgba(255,255,255,.78);
+      flex: 0 0 auto;
     }
-    .btnPdf svg{width:16px;height:16px;fill: rgba(29,78,216,1);}
+    .collectionHead b{color: var(--text)}
+    .collectionList{
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      max-height: 300px; /* ✅ Fixed height for scroll */
+      overflow-y: auto;
+    }
+    .collectionList::-webkit-scrollbar{width:4px}
+    .collectionList::-webkit-scrollbar-track{background:transparent}
+    .collectionList::-webkit-scrollbar-thumb{background:rgba(18,28,55,.10);border-radius:2px}
+    
+    .collectionItem{
+      text-decoration:none;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.78);
+      border-radius: 14px;
+      padding: 10px;
+      transition: .12s;
+    }
+    .collectionItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
+    .collectionDot{
+      width:10px;height:10px;border-radius:999px;
+      background: rgba(29,78,216,.28);
+      border:1px solid rgba(29,78,216,.20);
+      flex:0 0 auto;
+      margin-top: 5px;
+    }
+    .collectionTitle{
+      font-weight:1000;
+      font-size:12.5px;
+      line-height:1.35;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .seeMoreBtn{
+      display:block;
+      width: calc(100% - 20px);
+      margin: 0 10px 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(29,78,216,.18);
+      background: rgba(29,78,216,.10);
+      color: rgba(29,78,216,1);
+      border-radius: 12px;
+      font-size: 11.5px;
+      font-weight: 1000;
+      text-align:center;
+      text-decoration:none;
+      cursor:pointer;
+      transition: .15s;
+    }
+    .seeMoreBtn:hover{
+      background: rgba(29,78,216,.15);
+      border-color: rgba(29,78,216,.25);
+    }
 
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
     .btnDanger{
@@ -871,7 +863,7 @@
 <body>
   <h1 class="srOnly">eProstutiBD মডেল টেস্ট</h1>
 
-  <!-- ✅ 1. Header -->
+  <!-- ✅ 1. Header (No Change) -->
   <header>
     <div class="topbar">
       <div class="brand">
@@ -914,7 +906,7 @@
     </div>
   </header>
 
-  <!-- ✅ 2. Notice Bar -->
+  <!-- ✅ 2. Notice Bar (No Change) -->
   <div class="container">
     <div class="noticeBar" role="region" aria-label="Notice">
       <div class="noticeRow">
@@ -926,49 +918,56 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
-      <!-- ✅ LEFT SIDEBAR (Plain Design, No Gap) -->
+      <!-- ✅ LEFT SIDEBAR (With Scroll) -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
 
-          <!-- ✅ Subject Model Tests - Plain Design -->
-          <div class="collectionSection">
-            <div class="collectionTitle">Subject Model Tests <span>Latest</span></div>
+          <!-- Ad Slot -->
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot</b><span>Left Sidebar</span></div>
+            <div class="adBody" id="ad_left">Paste AdSense / Ad code here</div>
+          </div>
+
+          <!-- ✅ Subject Model Tests -->
+          <div class="collectionBox" aria-label="Subject Model Tests">
+            <div class="collectionHead"><b>Subject Model Tests</b><span>Latest</span></div>
             <div class="collectionList" id="subjectModelTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <!-- ✅ See More Button (Change # to your link later) -->
             <a class="seeMoreBtn" href="#" id="seeMoreSubjectModelTests">See More</a>
           </div>
 
-          <!-- ✅ Subject Tests - Plain Design -->
-          <div class="collectionSection">
-            <div class="collectionTitle">Subject Tests <span>Latest</span></div>
+          <!-- ✅ Subject Tests -->
+          <div class="collectionBox" aria-label="Subject Tests">
+            <div class="collectionHead"><b>Subject Tests</b><span>Latest</span></div>
             <div class="collectionList" id="subjectTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
             <a class="seeMoreBtn" href="#" id="seeMoreSubjectTests">See More</a>
           </div>
 
-          <!-- ✅ Admission Tests - Plain Design -->
-          <div class="collectionSection">
-            <div class="collectionTitle">Admission Tests <span>Latest</span></div>
+          <!-- ✅ Admission Tests -->
+          <div class="collectionBox" aria-label="Admission Tests">
+            <div class="collectionHead"><b>Admission Tests</b><span>Latest</span></div>
             <div class="collectionList" id="admissionTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
             <a class="seeMoreBtn" href="#" id="seeMoreAdmissionTests">See More</a>
           </div>
 
-          <!-- ✅ Subjects - Plain Design -->
-          <div class="collectionSection">
-            <div class="collectionTitle">Subjects <span>Latest</span></div>
+          <!-- ✅ Subjects -->
+          <div class="collectionBox" aria-label="Subjects">
+            <div class="collectionHead"><b>Subjects</b><span>Latest</span></div>
             <div class="collectionList" id="subjectsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
             <a class="seeMoreBtn" href="#" id="seeMoreSubjects">See More</a>
           </div>
 
-          <!-- ✅ Organizations - Plain Design -->
-          <div class="collectionSection">
-            <div class="collectionTitle">Organizations <span>Latest</span></div>
+          <!-- ✅ Universities -->
+          <div class="collectionBox" aria-label="Universities">
+            <div class="collectionHead"><b>Organizations</b><span>Latest</span></div>
             <div class="collectionList" id="universitiesList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
@@ -1013,11 +1012,10 @@
         </article>
       </section>
 
-      <!-- ✅ RIGHT SIDEBAR (No gap, 2 Ads) -->
+      <!-- ✅ RIGHT SIDEBAR (No gap) -->
       <aside class="sideAd" aria-label="Right sidebar">
         <div class="sideStack">
 
-          <!-- PDF Download -->
           <div class="pdfBox" aria-label="PDF download">
             <div class="adHead"><b>PDF</b><span>Download</span></div>
             <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
@@ -1028,16 +1026,9 @@
             </button>
           </div>
 
-          <!-- ✅ Ad Slot 1 -->
           <div class="adBox">
-            <div class="adHead"><b>Ad Slot 1</b><span>Top</span></div>
-            <div class="adBody" id="ad_right_1">Paste AdSense / Ad code here</div>
-          </div>
-
-          <!-- ✅ Ad Slot 2 -->
-          <div class="adBox">
-            <div class="adHead"><b>Ad Slot 2</b><span>Bottom</span></div>
-            <div class="adBody" id="ad_right_2">Paste AdSense / Ad code here</div>
+            <div class="adHead"><b>Ad Slot</b><span>Right Sidebar</span></div>
+            <div class="adBody" id="ad_right">Paste AdSense / Ad code here</div>
           </div>
 
         </div>
@@ -1202,6 +1193,7 @@
 /* ===========================
    eProstutiBD Model Test JS
    ✅ সব ইস্যু ঠিক করা
+   ✅ আগের কোডের কোনো ক্ষতি নেই
 =========================== */
 
 (() => {
@@ -1269,8 +1261,9 @@
   const db = firebase.firestore();
 
   // =========================================
-  // ✅ ALL COLLECTIONS
+  // ✅ ALL COLLECTIONS (NO CHANGE)
   // =========================================
+  // Original Model Test Collections
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
   const COL_MODEL_TEST_RESULT = "model_test_result";
 
@@ -1287,13 +1280,20 @@
   const COL_ADMISSION_TESTS = "admission_tests";
   const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";
 
+  // Admin Page Collections
   const PREFIX = "jobs_";
+  
+  // Subject related (Admin)
   const COL_SUBJECTS = PREFIX + "subjects";
   const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
   const COL_SUBJECT_TESTS = PREFIX + "subject_tests";
   const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
+
+  // Admission/Jobs related (Admin)
   const COL_ADMISSION_TESTS_ADMIN = PREFIX + "tests";
   const COL_ADMISSION_TEST_QUESTIONS_ADMIN = PREFIX + "test_questions";
+
+  // University/Organization related (Admin)
   const COL_UNIVERSITIES = PREFIX + "universities";
   const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
 
@@ -1441,7 +1441,9 @@
   }
 
   // =======================================
-  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION (Plain Design)
+  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION
+  // ✅ 3. শুধু নাম দেখাবে, মার্ক/টাইম দেখাবে না
+  // ✅ See More Button সহ
   // =======================================
   async function loadCollectionTests(collectionId, containerId, seeMoreBtnId) {
     try {
@@ -1473,11 +1475,17 @@
         const a = document.createElement("a");
         a.className = "collectionItem";
         a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
-        a.textContent = testTitle;
+        a.innerHTML = `
+          <span class="collectionDot"></span>
+          <div>
+            <div class="collectionTitle">${esc(testTitle)}</div>
+          </div>
+        `;
         container.appendChild(a);
       });
       
-      seeMoreBtn.href = "#";
+      // ✅ See More Button Link (আপনি পরে পরিবর্তন করবেন)
+      seeMoreBtn.href = "#"; // Change this to your actual link
       seeMoreBtn.style.display = "block";
       
     } catch (err) {
@@ -1525,12 +1533,13 @@
     );
   }
 
-  // ✅ MOBILE: Load collections for mobile view
+  // ✅ 4. MOBILE: Load collections for mobile view
   async function loadMobileCollections() {
     const mobileContainer = $("mobileCollections");
     if (!mobileContainer || window.innerWidth > 1100) return;
     
     try {
+      // All collections for mobile
       const collections = [
         { id: COL_SUBJECT_MODEL_TESTS, name: "Subject Model Tests" },
         { id: COL_SUBJECT_TESTS, name: "Subject Tests" },
@@ -1577,7 +1586,7 @@
   }
 
   // =======================================
-  // MAIN TEST LOADING
+  // MAIN TEST LOADING (SAME AS BEFORE - NO CHANGE)
   // =======================================
   async function loadTestMetaFromAllCollections(testId) {
     const collections = [
@@ -1640,6 +1649,7 @@
       ];
     }
     else {
+      // Try all
       questionCollections = [
         ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
         { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
@@ -1682,7 +1692,7 @@
   }
 
   // =======================================
-  // Render Questions
+  // Render Questions (SAME AS BEFORE - NO CHANGE)
   // =======================================
   function renderAllOnce() {
     const wrap = $("content");
@@ -2034,7 +2044,7 @@
   window.submitTest = submitTest;
 
   // =======================================
-  // PDF Functions
+  // PDF Functions (SAME AS BEFORE - NO CHANGE)
   // =======================================
   function loadScriptOnce(src) {
     return new Promise((resolve, reject) => {
@@ -2271,11 +2281,13 @@
     // ✅ Load sidebar collections (5 from each)
     setTimeout(() => {
       loadAllSidebarCollections();
+      // ✅ Check screen size and load mobile if needed
       if (window.innerWidth <= 1100) {
         loadMobileCollections();
       }
     }, 250);
 
+    // ✅ Resize listener for mobile collections
     window.addEventListener('resize', () => {
       if (window.innerWidth <= 1100) {
         loadMobileCollections();
@@ -2285,6 +2297,7 @@
     });
 
     try {
+      // Load main test
       const meta = await loadTestMetaFromAllCollections(modelTestId);
       if (!meta.doc) {
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -2294,16 +2307,19 @@
       mtSource = meta.source;
       mtDoc = meta.doc;
 
+      // Load questions
       questions = await loadQuestionsForTest(modelTestId, mtSource);
 
       setMetaHeader();
 
+      // Set timer display
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if (__mins) $("timeLeft").textContent = formatMMSS(__mins * 60);
 
       renderAllOnce();
       attachAnswerHandlers();
 
+      // ✅ Page entry tei modal auto show
       openNameModal();
       showToast("নাম ও জেলা দিন", "তারপর Test শুরু হবে");
     } catch (err) {
