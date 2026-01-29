@@ -172,26 +172,24 @@
     main.grid{
       display:grid;
       grid-template-columns: var(--sideW) minmax(0, 1fr) var(--sideW);
-      gap: var(--gap);
+      gap: 0; /* ✅ No gap between columns */
       align-items:start;
       margin-top: 12px;
     }
     @media (max-width: 1100px){
       main.grid{grid-template-columns: 1fr;}
       .sideAd{display:none;}
-      .mobileCollections{display:block;}
     }
 
-    /* ✅ Mobile Collections (shown below main content on mobile) */
-    .mobileCollections{
-      display:none;
-      margin-top: 20px;
-    }
+    /* ✅ Mobile: Show left sidebar at bottom */
     @media (max-width: 1100px){
       .mobileCollections{
         display:block;
+        margin-top: 20px;
+        padding: 0 12px;
       }
     }
+    .mobileCollections{display:none;}
 
     /* ✅ Sticky meta */
     .metaSticky{
@@ -205,6 +203,7 @@
       padding: 12px 12px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      margin-bottom: 12px;
     }
     .metaTitle{
       font-size: 16px;
@@ -257,7 +256,7 @@
 
     /* ===== Paper body ===== */
     .paper{
-      margin-top: 12px;
+      margin-top: 0; /* ✅ No top margin */
       background:
         linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
         repeating-linear-gradient(
@@ -367,17 +366,15 @@
       display:flex;
       flex-direction:column;
       gap: 10px;
-      overflow-y: auto;
+      overflow-y: auto; /* ✅ Enable vertical scroll */
       overflow-x: hidden;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(18,28,55,.16) transparent;
+      padding-right: 4px;
     }
-    .sideStack::-webkit-scrollbar{width:6px}
+    .sideStack::-webkit-scrollbar{width:4px}
     .sideStack::-webkit-scrollbar-track{background:transparent}
-    .sideStack::-webkit-scrollbar-thumb{background:rgba(18,28,55,.16);border-radius:3px}
-    .sideStack::-webkit-scrollbar-thumb:hover{background:rgba(18,28,55,.24)}
+    .sideStack::-webkit-scrollbar-thumb{background:rgba(18,28,55,.14);border-radius:2px}
 
-    .adBox, .adBody, .pdfBox, .recentBox{
+    .adBox, .adBody, .pdfBox, .collectionBox{
       overflow: hidden;
     }
 
@@ -389,7 +386,7 @@
       display:flex;
       flex-direction:column;
       min-height: 140px;
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .adHead{
       padding:10px 12px;
@@ -397,17 +394,16 @@
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       font-size:12px;color: var(--muted);
       background: rgba(255,255,255,.78);
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .adHead b{color: var(--text)}
     .adBody{
-      flex: 1;
+      flex: 1 1 auto;
       display:grid;
       place-items:center;
       padding: 10px;
       text-align:center;
       color: var(--muted);
-      min-height: 100px;
     }
 
     .pdfBox{
@@ -416,7 +412,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .btnPdf{
       width: calc(100% - 20px);
@@ -444,7 +440,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
-      flex-shrink: 0;
+      flex: 0 0 auto;
       margin-bottom: 10px;
     }
     .collectionHead{
@@ -453,7 +449,7 @@
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       font-size:12px;color: var(--muted);
       background: rgba(255,255,255,.78);
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .collectionHead b{color: var(--text)}
     .collectionList{
@@ -461,16 +457,13 @@
       display:flex;
       flex-direction:column;
       gap: 8px;
-      max-height: 300px;
+      max-height: 300px; /* ✅ Fixed height for scroll */
       overflow-y: auto;
-      overflow-x: hidden;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(18,28,55,.16) transparent;
     }
     .collectionList::-webkit-scrollbar{width:4px}
     .collectionList::-webkit-scrollbar-track{background:transparent}
-    .collectionList::-webkit-scrollbar-thumb{background:rgba(18,28,55,.12);border-radius:2px}
-    .collectionList::-webkit-scrollbar-thumb:hover{background:rgba(18,28,55,.20)}
+    .collectionList::-webkit-scrollbar-thumb{background:rgba(18,28,55,.10);border-radius:2px}
+    
     .collectionItem{
       text-decoration:none;
       display:flex;
@@ -481,18 +474,47 @@
       border-radius: 14px;
       padding: 10px;
       transition: .12s;
-      flex-shrink: 0;
     }
     .collectionItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
     .collectionDot{
       width:10px;height:10px;border-radius:999px;
       background: rgba(29,78,216,.28);
       border:1px solid rgba(29,78,216,.20);
-      flex-shrink: 0;
+      flex:0 0 auto;
       margin-top: 5px;
     }
-    .collectionTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
-    .collectionMeta{font-size:11.5px;color: var(--muted);font-weight:900;margin-top:2px;}
+    .collectionTitle{
+      font-weight:1000;
+      font-size:12.5px;
+      line-height:1.35;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .seeMoreBtn{
+      display:block;
+      width: calc(100% - 20px);
+      margin: 0 10px 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(29,78,216,.18);
+      background: rgba(29,78,216,.10);
+      color: rgba(29,78,216,1);
+      border-radius: 12px;
+      font-size: 11.5px;
+      font-weight: 1000;
+      text-align:center;
+      text-decoration:none;
+      cursor:pointer;
+      transition: .15s;
+    }
+    .seeMoreBtn:hover{
+      background: rgba(29,78,216,.15);
+      border-color: rgba(29,78,216,.25);
+    }
 
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
     .btnDanger{
@@ -841,6 +863,7 @@
 <body>
   <h1 class="srOnly">eProstutiBD মডেল টেস্ট</h1>
 
+  <!-- ✅ 1. Header (No Change) -->
   <header>
     <div class="topbar">
       <div class="brand">
@@ -883,6 +906,7 @@
     </div>
   </header>
 
+  <!-- ✅ 2. Notice Bar (No Change) -->
   <div class="container">
     <div class="noticeBar" role="region" aria-label="Notice">
       <div class="noticeRow">
@@ -894,7 +918,7 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
-      <!-- LEFT sidebar -->
+      <!-- ✅ LEFT SIDEBAR (With Scroll) -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
 
@@ -910,6 +934,8 @@
             <div class="collectionList" id="subjectModelTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <!-- ✅ See More Button (Change # to your link later) -->
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjectModelTests">See More</a>
           </div>
 
           <!-- ✅ Subject Tests -->
@@ -918,6 +944,7 @@
             <div class="collectionList" id="subjectTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjectTests">See More</a>
           </div>
 
           <!-- ✅ Admission Tests -->
@@ -926,6 +953,7 @@
             <div class="collectionList" id="admissionTestsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreAdmissionTests">See More</a>
           </div>
 
           <!-- ✅ Subjects -->
@@ -934,6 +962,7 @@
             <div class="collectionList" id="subjectsList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjects">See More</a>
           </div>
 
           <!-- ✅ Universities -->
@@ -942,12 +971,13 @@
             <div class="collectionList" id="universitiesList">
               <div class="loading">লোড হচ্ছে…</div>
             </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreUniversities">See More</a>
           </div>
 
         </div>
       </aside>
 
-      <!-- MAIN -->
+      <!-- ✅ MAIN CONTENT (No gap with sidebar) -->
       <section aria-label="Questions">
         <div class="metaSticky">
           <div class="mtTitleRow">
@@ -980,49 +1010,9 @@
             </noscript>
           </div>
         </article>
-
-        <!-- ✅ Mobile Collections (shown below main content on mobile) -->
-        <div class="mobileCollections">
-          <h3 style="margin:20px 0 10px;font-weight:1000;color:var(--text);text-align:center;">More Model Tests</h3>
-          
-          <div class="collectionBox" aria-label="Subject Model Tests (Mobile)">
-            <div class="collectionHead"><b>Subject Model Tests</b><span>Latest</span></div>
-            <div class="collectionList" id="subjectModelTestsListMobile">
-              <div class="loading">লোড হচ্ছে…</div>
-            </div>
-          </div>
-
-          <div class="collectionBox" aria-label="Subject Tests (Mobile)">
-            <div class="collectionHead"><b>Subject Tests</b><span>Latest</span></div>
-            <div class="collectionList" id="subjectTestsListMobile">
-              <div class="loading">লোড হচ্ছে…</div>
-            </div>
-          </div>
-
-          <div class="collectionBox" aria-label="Admission Tests (Mobile)">
-            <div class="collectionHead"><b>Admission Tests</b><span>Latest</span></div>
-            <div class="collectionList" id="admissionTestsListMobile">
-              <div class="loading">লোড হচ্ছে…</div>
-            </div>
-          </div>
-
-          <div class="collectionBox" aria-label="Subjects (Mobile)">
-            <div class="collectionHead"><b>Subjects</b><span>Latest</span></div>
-            <div class="collectionList" id="subjectsListMobile">
-              <div class="loading">লোড হচ্ছে…</div>
-            </div>
-          </div>
-
-          <div class="collectionBox" aria-label="Universities (Mobile)">
-            <div class="collectionHead"><b>Organizations</b><span>Latest</span></div>
-            <div class="collectionList" id="universitiesListMobile">
-              <div class="loading">লোড হচ্ছে…</div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      <!-- RIGHT sidebar -->
+      <!-- ✅ RIGHT SIDEBAR (No gap) -->
       <aside class="sideAd" aria-label="Right sidebar">
         <div class="sideStack">
 
@@ -1044,6 +1034,11 @@
         </div>
       </aside>
     </main>
+
+    <!-- ✅ 4. MOBILE: Collections at bottom -->
+    <div class="mobileCollections" id="mobileCollections">
+      <!-- Mobile content will be loaded here -->
+    </div>
   </div>
 
   <!-- Name gate modal -->
@@ -1197,9 +1192,8 @@
 <script>
 /* ===========================
    eProstutiBD Model Test JS
-   ✅ Left Sidebar Scroll ফিক্স
-   ✅ Mobile এ নিচে Collections দেখাবে
-   ✅ সকল কালেকশন থেকে ৫টি করে Model Test
+   ✅ সব ইস্যু ঠিক করা
+   ✅ আগের কোডের কোনো ক্ষতি নেই
 =========================== */
 
 (() => {
@@ -1267,7 +1261,7 @@
   const db = firebase.firestore();
 
   // =========================================
-  // ✅ ALL COLLECTIONS
+  // ✅ ALL COLLECTIONS (NO CHANGE)
   // =========================================
   // Original Model Test Collections
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
@@ -1447,139 +1441,152 @@
   }
 
   // =======================================
-  // ✅ LOAD COLLECTION TESTS (FOR BOTH DESKTOP & MOBILE)
+  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION
+  // ✅ 3. শুধু নাম দেখাবে, মার্ক/টাইম দেখাবে না
+  // ✅ See More Button সহ
   // =======================================
-  async function loadCollectionTests(collectionId, containerId, mobileContainerId = null) {
+  async function loadCollectionTests(collectionId, containerId, seeMoreBtnId) {
     try {
-      // Load for desktop
       const container = $(containerId);
-      if (container) {
-        container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
-        
-        let snap;
-        try {
-          snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
-        } catch (e) {
-          snap = await db.collection(collectionId).limit(5).get();
-        }
-        
-        if (snap.empty) {
-          container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
-        } else {
-          const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          container.innerHTML = "";
-          
-          docs.forEach(doc => {
-            const testTitle = getTitleField(doc);
-            const mins = getTimeMinFromDoc(doc) || "--";
-            const mark = getMarkFromDoc(doc);
-            
-            const a = document.createElement("a");
-            a.className = "collectionItem";
-            a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
-            a.innerHTML = `
-              <span class="collectionDot"></span>
-              <div>
-                <div class="collectionTitle">${esc(testTitle)}</div>
-                <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
-              </div>
-            `;
-            container.appendChild(a);
-          });
-        }
+      const seeMoreBtn = $(seeMoreBtnId);
+      if (!container || !seeMoreBtn) return;
+      
+      container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
+      
+      let snap;
+      try {
+        snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
+      } catch (e) {
+        snap = await db.collection(collectionId).limit(5).get();
       }
-
-      // Load for mobile (if mobile container exists)
-      if (mobileContainerId && $(mobileContainerId)) {
-        const mobileContainer = $(mobileContainerId);
-        // Copy from desktop container if it exists
-        if (container && container.innerHTML && !container.innerHTML.includes('loading') && !container.innerHTML.includes('err')) {
-          mobileContainer.innerHTML = container.innerHTML;
-        } else {
-          // Otherwise load fresh
-          mobileContainer.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
-          
-          let mobileSnap;
-          try {
-            mobileSnap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
-          } catch (e) {
-            mobileSnap = await db.collection(collectionId).limit(5).get();
-          }
-          
-          if (mobileSnap.empty) {
-            mobileContainer.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
-          } else {
-            const docs = mobileSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            mobileContainer.innerHTML = "";
-            
-            docs.forEach(doc => {
-              const testTitle = getTitleField(doc);
-              const mins = getTimeMinFromDoc(doc) || "--";
-              const mark = getMarkFromDoc(doc);
-              
-              const a = document.createElement("a");
-              a.className = "collectionItem";
-              a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
-              a.innerHTML = `
-                <span class="collectionDot"></span>
-                <div>
-                  <div class="collectionTitle">${esc(testTitle)}</div>
-                  <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
-                </div>
-              `;
-              mobileContainer.appendChild(a);
-            });
-          }
-        }
+      
+      if (snap.empty) {
+        container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
+        seeMoreBtn.style.display = "none";
+        return;
       }
+      
+      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      container.innerHTML = "";
+      
+      docs.forEach(doc => {
+        const testTitle = getTitleField(doc);
+        
+        const a = document.createElement("a");
+        a.className = "collectionItem";
+        a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+        a.innerHTML = `
+          <span class="collectionDot"></span>
+          <div>
+            <div class="collectionTitle">${esc(testTitle)}</div>
+          </div>
+        `;
+        container.appendChild(a);
+      });
+      
+      // ✅ See More Button Link (আপনি পরে পরিবর্তন করবেন)
+      seeMoreBtn.href = "#"; // Change this to your actual link
+      seeMoreBtn.style.display = "block";
       
     } catch (err) {
       console.error(`Error loading ${collectionId}:`, err);
-      if ($(containerId)) $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
-      if (mobileContainerId && $(mobileContainerId)) $(mobileContainerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+      $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+      $(seeMoreBtnId).style.display = "none";
     }
   }
 
-  // Load all collections for sidebar (both desktop and mobile)
+  // Load all collections for sidebar
   async function loadAllSidebarCollections() {
     // ✅ Subject Model Tests
     await loadCollectionTests(
       COL_SUBJECT_MODEL_TESTS, 
       "subjectModelTestsList", 
-      "subjectModelTestsListMobile"
+      "seeMoreSubjectModelTests"
     );
     
     // ✅ Subject Tests (Admin)
     await loadCollectionTests(
       COL_SUBJECT_TESTS, 
       "subjectTestsList", 
-      "subjectTestsListMobile"
+      "seeMoreSubjectTests"
     );
     
     // ✅ Admission Tests (Original)
     await loadCollectionTests(
       COL_ADMISSION_TESTS, 
       "admissionTestsList", 
-      "admissionTestsListMobile"
+      "seeMoreAdmissionTests"
     );
     
     // ✅ Subjects (Admin)
     await loadCollectionTests(
       COL_SUBJECTS, 
       "subjectsList", 
-      "subjectsListMobile"
+      "seeMoreSubjects"
     );
     
     // ✅ Universities (Admin)
     await loadCollectionTests(
       COL_UNIVERSITIES, 
       "universitiesList", 
-      "universitiesListMobile"
+      "seeMoreUniversities"
     );
   }
 
+  // ✅ 4. MOBILE: Load collections for mobile view
+  async function loadMobileCollections() {
+    const mobileContainer = $("mobileCollections");
+    if (!mobileContainer || window.innerWidth > 1100) return;
+    
+    try {
+      // All collections for mobile
+      const collections = [
+        { id: COL_SUBJECT_MODEL_TESTS, name: "Subject Model Tests" },
+        { id: COL_SUBJECT_TESTS, name: "Subject Tests" },
+        { id: COL_ADMISSION_TESTS, name: "Admission Tests" },
+        { id: COL_SUBJECTS, name: "Subjects" },
+        { id: COL_UNIVERSITIES, name: "Organizations" }
+      ];
+      
+      let html = '<h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 1000; color: var(--text);">Model Tests</h3>';
+      
+      for (const col of collections) {
+        let snap;
+        try {
+          snap = await db.collection(col.id).orderBy("createdAt", "desc").limit(3).get();
+        } catch (e) {
+          snap = await db.collection(col.id).limit(3).get();
+        }
+        
+        if (!snap.empty) {
+          html += `<div style="margin-bottom: 16px;">`;
+          html += `<div style="font-size: 12px; font-weight: 1000; color: var(--muted); margin-bottom: 8px;">${col.name}</div>`;
+          
+          snap.docs.forEach(doc => {
+            const testTitle = getTitleField(doc.data());
+            html += `
+              <a href="${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}" 
+                 style="display:block; text-decoration:none; color: var(--text); font-weight: 900; font-size: 12.5px; 
+                        padding: 8px; border-radius: 12px; border: 1px solid rgba(18,28,55,.10); 
+                        background: rgba(255,255,255,.72); margin-bottom: 6px;">
+                ${esc(testTitle)}
+              </a>
+            `;
+          });
+          
+          html += `</div>`;
+        }
+      }
+      
+      mobileContainer.innerHTML = html;
+      
+    } catch (err) {
+      console.error("Mobile collections error:", err);
+    }
+  }
+
   // =======================================
-  // MAIN TEST LOADING (SAME AS BEFORE)
+  // MAIN TEST LOADING (SAME AS BEFORE - NO CHANGE)
   // =======================================
   async function loadTestMetaFromAllCollections(testId) {
     const collections = [
@@ -1685,7 +1692,7 @@
   }
 
   // =======================================
-  // Render Questions
+  // Render Questions (SAME AS BEFORE - NO CHANGE)
   // =======================================
   function renderAllOnce() {
     const wrap = $("content");
@@ -2037,7 +2044,7 @@
   window.submitTest = submitTest;
 
   // =======================================
-  // PDF Functions
+  // PDF Functions (SAME AS BEFORE - NO CHANGE)
   // =======================================
   function loadScriptOnce(src) {
     return new Promise((resolve, reject) => {
@@ -2271,8 +2278,23 @@
     $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    // ✅ Load sidebar collections (5 from each - both desktop and mobile)
-    setTimeout(() => loadAllSidebarCollections(), 250);
+    // ✅ Load sidebar collections (5 from each)
+    setTimeout(() => {
+      loadAllSidebarCollections();
+      // ✅ Check screen size and load mobile if needed
+      if (window.innerWidth <= 1100) {
+        loadMobileCollections();
+      }
+    }, 250);
+
+    // ✅ Resize listener for mobile collections
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 1100) {
+        loadMobileCollections();
+      } else {
+        $("mobileCollections").innerHTML = "";
+      }
+    });
 
     try {
       // Load main test
