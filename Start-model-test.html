@@ -65,8 +65,8 @@
       --footText: rgba(255,255,255,.86);
       --footMuted: rgba(255,255,255,.70);
 
-      --sideW: 260px;
-      --gap: 0px;
+      --sideW: 240px;
+      --gap: 8px;
     }
 
     *{box-sizing:border-box}
@@ -172,7 +172,7 @@
     main.grid{
       display:grid;
       grid-template-columns: var(--sideW) minmax(0, 1fr) var(--sideW);
-      gap: 0;
+      gap: 0; /* ✅ গ্যাপ দূর করা হয়েছে */
       align-items:start;
       margin-top: 12px;
     }
@@ -360,343 +360,170 @@
       background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
     }
 
-    /* ===== Updated Sidebar Styles ===== */
-    .sideAd{
-      position: sticky;
-      top: calc(var(--headerH) + 10px);
-      height: calc(100vh - (var(--headerH) + 22px));
-    }
-    
+    /* ✅ Left Sidebar - Plain Design */
+    .sideAd{position: sticky; top: calc(var(--headerH) + 10px); height: calc(100vh - (var(--headerH) + 22px));}
     .sideStack{
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
       overflow-y: auto;
       overflow-x: hidden;
-      padding-right: 6px;
+      padding-right: 4px;
     }
-    .sideStack::-webkit-scrollbar{width:5px}
+    .sideStack::-webkit-scrollbar{width:4px}
     .sideStack::-webkit-scrollbar-track{background:transparent}
-    .sideStack::-webkit-scrollbar-thumb{
-      background:linear-gradient(to bottom, rgba(29,78,216,.3), rgba(14,165,233,.3));
-      border-radius:3px;
-    }
+    .sideStack::-webkit-scrollbar-thumb{background:rgba(18,28,55,.14);border-radius:2px}
 
-    /* ✅ Left Sidebar - Modern Test Cards */
-    .testCard{
-      border-radius: 16px;
-      overflow: hidden;
-      background: linear-gradient(145deg, rgba(255,255,255,.95), rgba(246,248,255,.92));
-      border: 1px solid rgba(29,78,216,.15);
-      box-shadow: var(--shadow2);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
+    /* ✅ Left Sidebar Collection Items - Plain Design */
+    .collectionSection{
+      margin-bottom: 14px;
     }
     
-    .testCard:hover{
-      transform: translateY(-3px);
-      box-shadow: 0 18px 36px rgba(29,78,216,.16);
-      border-color: rgba(29,78,216,.3);
-    }
-    
-    .testCard::before{
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(to right, var(--brandA), var(--brandB));
-      opacity: 0.8;
-    }
-    
-    .testHeader{
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid rgba(18,28,55,.08);
-      background: rgba(255,255,255,.7);
-    }
-    
-    .testTitle{
-      font-weight: 1000;
-      font-size: 13.5px;
-      line-height: 1.4;
+    .collectionTitle{
+      font-weight:1000;
+      font-size:12.5px;
       color: var(--text);
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      padding: 6px 0 8px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      margin-bottom: 8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
     }
     
-    .testMeta{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-      font-size: 11px;
+    .collectionTitle span{
+      font-size:10px;
       color: var(--muted);
+      font-weight:900;
+      background: rgba(18,28,55,.06);
+      padding: 2px 8px;
+      border-radius: 999px;
     }
     
-    .testMeta span{
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .testMeta svg{
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-      opacity: 0.8;
-    }
-    
-    .testContent{
-      padding: 12px 16px;
-    }
-    
-    .testStats{
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    
-    .statItem{
-      text-align: center;
-      padding: 8px;
-      background: rgba(255,255,255,.7);
-      border-radius: 10px;
-      border: 1px solid rgba(18,28,55,.06);
-    }
-    
-    .statValue{
-      font-weight: 1000;
-      font-size: 13px;
-      color: var(--brandA);
-      line-height: 1.2;
-    }
-    
-    .statLabel{
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    
-    .testButton{
-      display: block;
-      width: 100%;
-      padding: 10px;
-      text-align: center;
-      background: linear-gradient(to right, rgba(29,78,216,.12), rgba(14,165,233,.10));
-      color: var(--brandA);
-      border: 1px solid rgba(29,78,216,.2);
-      border-radius: 12px;
-      font-weight: 1000;
-      font-size: 12px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    
-    .testButton:hover{
-      background: linear-gradient(to right, rgba(29,78,216,.18), rgba(14,165,233,.16));
-      border-color: rgba(29,78,216,.3);
-    }
-    
-    .sectionTitle{
-      font-weight: 1000;
-      font-size: 13px;
-      color: var(--text);
-      margin: 0 0 12px;
-      padding: 8px 12px;
-      background: linear-gradient(to right, rgba(29,78,216,.08), transparent);
-      border-radius: 10px;
-      border-left: 3px solid var(--brandA);
-    }
-    
-    /* ✅ Right Sidebar - Enhanced Design */
-    .pdfCard{
-      border-radius: 16px;
-      overflow: hidden;
-      background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(240,245,255,.92));
-      border: 1px solid rgba(29,78,216,.2);
-      box-shadow: 0 12px 32px rgba(29,78,216,.1);
-    }
-    
-    .pdfHeader{
-      padding: 14px 16px;
-      background: linear-gradient(to right, rgba(29,78,216,.08), rgba(14,165,233,.06));
-      border-bottom: 1px solid rgba(29,78,216,.1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .pdfIcon{
-      width: 20px;
-      height: 20px;
-      fill: var(--brandA);
-    }
-    
-    .pdfTitle{
-      font-weight: 1000;
-      font-size: 13px;
-      color: var(--text);
-      flex: 1;
-    }
-    
-    .pdfTag{
-      font-size: 10px;
-      font-weight: 1000;
-      padding: 4px 8px;
-      background: rgba(29,78,216,.12);
-      color: var(--brandA);
-      border-radius: 20px;
-    }
-    
-    .pdfBody{
-      padding: 16px;
-    }
-    
-    .pdfInfo{
-      font-size: 11.5px;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    
-    .pdfButton{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, var(--brandA), var(--brandB));
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-weight: 1000;
-      font-size: 12.5px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 8px 24px rgba(29,78,216,.2);
-    }
-    
-    .pdfButton:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(29,78,216,.25);
-    }
-    
-    .pdfButton svg{
-      width: 16px;
-      height: 16px;
-      fill: white;
-    }
-    
-    /* ✅ Ad Box - Modern Design */
-    .adCard{
-      border-radius: 16px;
-      overflow: hidden;
-      background: linear-gradient(145deg, rgba(255,255,255,.95), rgba(250,252,255,.92));
-      border: 1px dashed rgba(29,78,216,.25);
-      box-shadow: 0 8px 24px rgba(15,23,48,.05);
-    }
-    
-    .adHeader{
-      padding: 12px 16px;
-      background: linear-gradient(to right, rgba(29,78,216,.06), rgba(14,165,233,.04));
-      border-bottom: 1px dashed rgba(29,78,216,.15);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .adLabel{
-      font-weight: 1000;
-      font-size: 11.5px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
+    .collectionList{
+      display:flex;
+      flex-direction:column;
       gap: 6px;
     }
     
-    .adLabel svg{
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-    }
-    
-    .adPosition{
-      font-size: 10px;
-      color: var(--muted);
-      font-weight: 900;
-    }
-    
-    .adContent{
-      padding: 20px 16px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      min-height: 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .adPlaceholder{
-      padding: 12px;
-      background: rgba(29,78,216,.04);
+    .collectionItem{
+      text-decoration:none;
+      display:block;
+      padding: 8px 10px;
       border-radius: 10px;
-      border: 1px dashed rgba(29,78,216,.2);
-      color: var(--brandA);
-      font-size: 11px;
+      font-size:12.5px;
       font-weight: 900;
+      line-height:1.4;
+      color: var(--text);
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
     }
     
-    /* Loading States */
-    .loadingCard{
-      padding: 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
+    .collectionItem:hover{
+      background: rgba(29,78,216,.08);
+      color: var(--brandA);
+      border-color: rgba(29,78,216,.15);
+      transform: translateX(2px);
     }
     
-    .loadingCard .spinner{
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(29,78,216,.1);
-      border-top-color: var(--brandA);
-      border-radius: 50%;
-      margin: 0 auto 10px;
-      animation: spin 1s linear infinite;
+    .collectionItem::before{
+      content:"•";
+      color: var(--brandA);
+      margin-right: 8px;
+      font-weight:1000;
     }
     
-    @keyframes spin{
-      to{transform: rotate(360deg)}
+    .seeMoreBtn{
+      display:inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      border: 1px solid rgba(29,78,216,.18);
+      background: rgba(29,78,216,.08);
+      color: rgba(29,78,216,1);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 1000;
+      text-decoration:none;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-align:center;
     }
     
-    /* Empty States */
-    .emptyCard{
-      padding: 20px;
-      text-align: center;
+    .seeMoreBtn:hover{
+      background: rgba(29,78,216,.12);
+      border-color: rgba(29,78,216,.25);
+      transform: translateY(-1px);
+    }
+
+    /* ✅ Right Sidebar - 2 Ads */
+    .adBox, .adBody, .pdfBox{
+      overflow: hidden;
+    }
+
+    .adBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:12px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      display:flex;
+      flex-direction:column;
+      min-height: 120px;
+      flex: 0 0 auto;
+      margin-bottom: 10px;
+    }
+    
+    .adBox:last-child{
+      margin-bottom: 0;
+    }
+    
+    .adHead{
+      padding:8px 10px;
+      border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:11px;color: var(--muted);
+      background: rgba(255,255,255,.78);
+      flex: 0 0 auto;
+    }
+    .adHead b{color: var(--text)}
+    .adBody{
+      flex: 1 1 auto;
+      display:grid;
+      place-items:center;
+      padding: 10px;
+      text-align:center;
       color: var(--muted);
       font-size: 11.5px;
     }
-    
-    .emptyCard svg{
-      width: 24px;
-      height: 24px;
-      fill: var(--muted);
-      opacity: 0.5;
-      margin-bottom: 8px;
-    }
 
-    /* Submit Wrap */
+    .pdfBox{
+      border:1px dashed rgba(18,28,55,.22);
+      border-radius:12px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      flex: 0 0 auto;
+      margin-bottom: 10px;
+    }
+    .btnPdf{
+      width: calc(100% - 16px);
+      margin: 8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(29,78,216,.25);
+      background: linear-gradient(135deg, rgba(29,78,216,.18), rgba(14,165,233,.16));
+      color: rgba(29,78,216,1);
+      font-weight: 1000;
+      font-size: 12px;
+      cursor:pointer;
+      box-shadow: 0 14px 34px rgba(29,78,216,.12);
+    }
+    .btnPdf svg{width:16px;height:16px;fill: rgba(29,78,216,1);}
+
     .submitWrap{margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
     .btnDanger{
       border:1px solid rgba(220,38,38,.28);
@@ -1044,7 +871,7 @@
 <body>
   <h1 class="srOnly">eProstutiBD মডেল টেস্ট</h1>
 
-  <!-- ✅ 1. Header (No Change) -->
+  <!-- ✅ 1. Header -->
   <header>
     <div class="topbar">
       <div class="brand">
@@ -1087,7 +914,7 @@
     </div>
   </header>
 
-  <!-- ✅ 2. Notice Bar (No Change) -->
+  <!-- ✅ 2. Notice Bar -->
   <div class="container">
     <div class="noticeBar" role="region" aria-label="Notice">
       <div class="noticeRow">
@@ -1099,162 +926,59 @@
     </div>
 
     <main class="grid" id="main" aria-label="Model test content">
-      <!-- ✅ LEFT SIDEBAR - Updated Design -->
+      <!-- ✅ LEFT SIDEBAR (Plain Design, No Gap) -->
       <aside class="sideAd" aria-label="Left sidebar">
         <div class="sideStack">
-          
-          <!-- ✅ Subject Model Tests Section -->
-          <div>
-            <div class="sectionTitle">Subject Model Tests</div>
-            <div class="testCard">
-              <div class="testHeader">
-                <div class="testTitle">বাংলাদেশের ইতিহাস মডেল টেস্ট</div>
-                <div class="testMeta">
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-1 15h-2v-6h2v6Zm0-8h-2V7h2v2Zm4 8h-2v-2h2v2Zm0-4h-2v-2h2v2Zm0-4h-2V7h2v2Z"/></svg>
-                    Subject
-                  </span>
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2ZM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    30 min
-                  </span>
-                </div>
-              </div>
-              <div class="testContent">
-                <div class="testStats">
-                  <div class="statItem">
-                    <div class="statValue">50</div>
-                    <div class="statLabel">Questions</div>
-                  </div>
-                  <div class="statItem">
-                    <div class="statValue">100</div>
-                    <div class="statLabel">Marks</div>
-                  </div>
-                </div>
-                <a href="#" class="testButton">Start Test</a>
-              </div>
+
+          <!-- ✅ Subject Model Tests - Plain Design -->
+          <div class="collectionSection">
+            <div class="collectionTitle">Subject Model Tests <span>Latest</span></div>
+            <div class="collectionList" id="subjectModelTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
             </div>
-          </div>
-          
-          <!-- ✅ Admission Tests Section -->
-          <div>
-            <div class="sectionTitle">Admission Tests</div>
-            <div class="testCard">
-              <div class="testHeader">
-                <div class="testTitle">DU Admission Test 2024 - Model A</div>
-                <div class="testMeta">
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>
-                    DU
-                  </span>
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2ZM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    60 min
-                  </span>
-                </div>
-              </div>
-              <div class="testContent">
-                <div class="testStats">
-                  <div class="statItem">
-                    <div class="statValue">100</div>
-                    <div class="statLabel">Questions</div>
-                  </div>
-                  <div class="statItem">
-                    <div class="statValue">200</div>
-                    <div class="statLabel">Marks</div>
-                  </div>
-                </div>
-                <a href="#" class="testButton">Start Test</a>
-              </div>
-            </div>
-          </div>
-          
-          <!-- ✅ Subject Tests Section -->
-          <div>
-            <div class="sectionTitle">Subject Tests</div>
-            <div class="testCard">
-              <div class="testHeader">
-                <div class="testTitle">Physics - Motion & Force</div>
-                <div class="testMeta">
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-1 15h-2v-6h2v6Zm0-8h-2V7h2v2Zm4 8h-2v-2h2v2Zm0-4h-2v-2h2v2Zm0-4h-2V7h2v2Z"/></svg>
-                    Physics
-                  </span>
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2ZM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    45 min
-                  </span>
-                </div>
-              </div>
-              <div class="testContent">
-                <div class="testStats">
-                  <div class="statItem">
-                    <div class="statValue">40</div>
-                    <div class="statLabel">Questions</div>
-                  </div>
-                  <div class="statItem">
-                    <div class="statValue">80</div>
-                    <div class="statLabel">Marks</div>
-                  </div>
-                </div>
-                <a href="#" class="testButton">Start Test</a>
-              </div>
-            </div>
-          </div>
-          
-          <!-- ✅ BCS Preparation -->
-          <div>
-            <div class="sectionTitle">BCS Preparation</div>
-            <div class="testCard">
-              <div class="testHeader">
-                <div class="testTitle">BCS Preliminary - English</div>
-                <div class="testMeta">
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-1 15h-2v-6h2v6Zm0-8h-2V7h2v2Zm4 8h-2v-2h2v2Zm0-4h-2v-2h2v2Zm0-4h-2V7h2v2Z"/></svg>
-                    BCS
-                  </span>
-                  <span>
-                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2ZM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    55 min
-                  </span>
-                </div>
-              </div>
-              <div class="testContent">
-                <div class="testStats">
-                  <div class="statItem">
-                    <div class="statValue">60</div>
-                    <div class="statLabel">Questions</div>
-                  </div>
-                  <div class="statItem">
-                    <div class="statValue">120</div>
-                    <div class="statLabel">Marks</div>
-                  </div>
-                </div>
-                <a href="#" class="testButton">Start Test</a>
-              </div>
-            </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjectModelTests">See More</a>
           </div>
 
-          <!-- Ad Slot -->
-          <div class="adCard">
-            <div class="adHeader">
-              <div class="adLabel">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-                Ad Slot
-              </div>
-              <div class="adPosition">Left Sidebar</div>
+          <!-- ✅ Subject Tests - Plain Design -->
+          <div class="collectionSection">
+            <div class="collectionTitle">Subject Tests <span>Latest</span></div>
+            <div class="collectionList" id="subjectTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
             </div>
-            <div class="adContent">
-              <div class="adPlaceholder">Paste AdSense Code Here</div>
-              <div>Advertisement Space</div>
-              <div style="font-size:10px;color:var(--muted);">300×250</div>
-            </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjectTests">See More</a>
           </div>
-          
+
+          <!-- ✅ Admission Tests - Plain Design -->
+          <div class="collectionSection">
+            <div class="collectionTitle">Admission Tests <span>Latest</span></div>
+            <div class="collectionList" id="admissionTestsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreAdmissionTests">See More</a>
+          </div>
+
+          <!-- ✅ Subjects - Plain Design -->
+          <div class="collectionSection">
+            <div class="collectionTitle">Subjects <span>Latest</span></div>
+            <div class="collectionList" id="subjectsList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreSubjects">See More</a>
+          </div>
+
+          <!-- ✅ Organizations - Plain Design -->
+          <div class="collectionSection">
+            <div class="collectionTitle">Organizations <span>Latest</span></div>
+            <div class="collectionList" id="universitiesList">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+            <a class="seeMoreBtn" href="#" id="seeMoreUniversities">See More</a>
+          </div>
+
         </div>
       </aside>
 
-      <!-- ✅ MAIN CONTENT -->
+      <!-- ✅ MAIN CONTENT (No gap with sidebar) -->
       <section aria-label="Questions">
         <div class="metaSticky">
           <div class="mtTitleRow">
@@ -1289,98 +1013,31 @@
         </article>
       </section>
 
-      <!-- ✅ RIGHT SIDEBAR - Updated Design -->
+      <!-- ✅ RIGHT SIDEBAR (No gap, 2 Ads) -->
       <aside class="sideAd" aria-label="Right sidebar">
         <div class="sideStack">
 
-          <!-- PDF Download Card -->
-          <div class="pdfCard">
-            <div class="pdfHeader">
-              <svg class="pdfIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <!-- PDF Download -->
+          <div class="pdfBox" aria-label="PDF download">
+            <div class="adHead"><b>PDF</b><span>Download</span></div>
+            <button class="btnPdf" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
               </svg>
-              <div class="pdfTitle">Download PDF</div>
-              <div class="pdfTag">Free</div>
-            </div>
-            <div class="pdfBody">
-              <div class="pdfInfo">
-                Download complete test with questions and answers in one PDF file.
-              </div>
-              <button class="pdfButton" id="btnPDFTop" type="button" onclick="downloadCombinedPDF()">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
-                </svg>
-                Download (Question + Answer)
-              </button>
-            </div>
+              Download (Question + Answer)
+            </button>
           </div>
 
-          <!-- Quick Stats Card -->
-          <div class="testCard">
-            <div class="testHeader">
-              <div class="testTitle">Test Statistics</div>
-            </div>
-            <div class="testContent">
-              <div class="testStats">
-                <div class="statItem">
-                  <div class="statValue" id="sidebarTotalQ">0</div>
-                  <div class="statLabel">Total Questions</div>
-                </div>
-                <div class="statItem">
-                  <div class="statValue" id="sidebarTime">--</div>
-                  <div class="statLabel">Minutes</div>
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;">
-                Complete all questions before time ends
-              </div>
-            </div>
+          <!-- ✅ Ad Slot 1 -->
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot 1</b><span>Top</span></div>
+            <div class="adBody" id="ad_right_1">Paste AdSense / Ad code here</div>
           </div>
 
-          <!-- Recent Tests -->
-          <div>
-            <div class="sectionTitle">Recent Tests</div>
-            <div class="testCard">
-              <div class="testHeader">
-                <div class="testTitle">Math Model Test - Set A</div>
-                <div class="testMeta">
-                  <span>Math</span>
-                  <span>40 min</span>
-                </div>
-              </div>
-              <div class="testContent">
-                <a href="#" class="testButton" style="background:linear-gradient(to right, #16a34a, #22c55e);">View Result</a>
-              </div>
-            </div>
-            
-            <div class="testCard" style="margin-top:10px;">
-              <div class="testHeader">
-                <div class="testTitle">English Grammar Test</div>
-                <div class="testMeta">
-                  <span>English</span>
-                  <span>35 min</span>
-                </div>
-              </div>
-              <div class="testContent">
-                <a href="#" class="testButton">Start Test</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ad Slot -->
-          <div class="adCard">
-            <div class="adHeader">
-              <div class="adLabel">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-                Ad Slot
-              </div>
-              <div class="adPosition">Right Sidebar</div>
-            </div>
-            <div class="adContent">
-              <div class="adPlaceholder">Paste AdSense Code Here</div>
-              <div>Advertisement Space</div>
-              <div style="font-size:10px;color:var(--muted);">300×600</div>
-            </div>
+          <!-- ✅ Ad Slot 2 -->
+          <div class="adBox">
+            <div class="adHead"><b>Ad Slot 2</b><span>Bottom</span></div>
+            <div class="adBody" id="ad_right_2">Paste AdSense / Ad code here</div>
           </div>
 
         </div>
@@ -1545,7 +1202,6 @@
 /* ===========================
    eProstutiBD Model Test JS
    ✅ সব ইস্যু ঠিক করা
-   ✅ নতুন Sidebar ডিজাইন সহ
 =========================== */
 
 (() => {
@@ -1613,9 +1269,8 @@
   const db = firebase.firestore();
 
   // =========================================
-  // ✅ ALL COLLECTIONS (NO CHANGE)
+  // ✅ ALL COLLECTIONS
   // =========================================
-  // Original Model Test Collections
   const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
   const COL_MODEL_TEST_RESULT = "model_test_result";
 
@@ -1632,20 +1287,13 @@
   const COL_ADMISSION_TESTS = "admission_tests";
   const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";
 
-  // Admin Page Collections
   const PREFIX = "jobs_";
-  
-  // Subject related (Admin)
   const COL_SUBJECTS = PREFIX + "subjects";
   const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
   const COL_SUBJECT_TESTS = PREFIX + "subject_tests";
   const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
-
-  // Admission/Jobs related (Admin)
   const COL_ADMISSION_TESTS_ADMIN = PREFIX + "tests";
   const COL_ADMISSION_TEST_QUESTIONS_ADMIN = PREFIX + "test_questions";
-
-  // University/Organization related (Admin)
   const COL_UNIVERSITIES = PREFIX + "universities";
   const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
 
@@ -1793,49 +1441,96 @@
   }
 
   // =======================================
-  // ✅ LEFT SIDEBAR: LOAD TESTS FROM FIREBASE
-  // ✅ নতুন ডিজাইন অনুযায়ী লোড করবে
+  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION (Plain Design)
   // =======================================
-  async function loadSidebarTests() {
+  async function loadCollectionTests(collectionId, containerId, seeMoreBtnId) {
     try {
-      // Load Subject Model Tests
-      const subjectModelTestsSnap = await db.collection(COL_SUBJECT_MODEL_TESTS)
-        .orderBy("createdAt", "desc")
-        .limit(4)
-        .get();
+      const container = $(containerId);
+      const seeMoreBtn = $(seeMoreBtnId);
+      if (!container || !seeMoreBtn) return;
       
-      // Load Admission Tests
-      const admissionTestsSnap = await db.collection(COL_ADMISSION_TESTS)
-        .orderBy("createdAt", "desc")
-        .limit(3)
-        .get();
+      container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
       
-      // Load Subject Tests
-      const subjectTestsSnap = await db.collection(COL_SUBJECT_TESTS)
-        .orderBy("createdAt", "desc")
-        .limit(3)
-        .get();
-      
-      // Update sidebar stats
-      if (mtDoc) {
-        const totalQ = questions.length || 0;
-        const time = getTimeMinFromDoc(mtDoc) || 0;
-        $("sidebarTotalQ").textContent = totalQ;
-        $("sidebarTime").textContent = time;
+      let snap;
+      try {
+        snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
+      } catch (e) {
+        snap = await db.collection(collectionId).limit(5).get();
       }
       
+      if (snap.empty) {
+        container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
+        seeMoreBtn.style.display = "none";
+        return;
+      }
+      
+      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      container.innerHTML = "";
+      
+      docs.forEach(doc => {
+        const testTitle = getTitleField(doc);
+        
+        const a = document.createElement("a");
+        a.className = "collectionItem";
+        a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+        a.textContent = testTitle;
+        container.appendChild(a);
+      });
+      
+      seeMoreBtn.href = "#";
+      seeMoreBtn.style.display = "block";
+      
     } catch (err) {
-      console.error("Sidebar load error:", err);
+      console.error(`Error loading ${collectionId}:`, err);
+      $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+      $(seeMoreBtnId).style.display = "none";
     }
   }
 
-  // ✅ Mobile: Load collections for mobile view
+  // Load all collections for sidebar
+  async function loadAllSidebarCollections() {
+    // ✅ Subject Model Tests
+    await loadCollectionTests(
+      COL_SUBJECT_MODEL_TESTS, 
+      "subjectModelTestsList", 
+      "seeMoreSubjectModelTests"
+    );
+    
+    // ✅ Subject Tests (Admin)
+    await loadCollectionTests(
+      COL_SUBJECT_TESTS, 
+      "subjectTestsList", 
+      "seeMoreSubjectTests"
+    );
+    
+    // ✅ Admission Tests (Original)
+    await loadCollectionTests(
+      COL_ADMISSION_TESTS, 
+      "admissionTestsList", 
+      "seeMoreAdmissionTests"
+    );
+    
+    // ✅ Subjects (Admin)
+    await loadCollectionTests(
+      COL_SUBJECTS, 
+      "subjectsList", 
+      "seeMoreSubjects"
+    );
+    
+    // ✅ Universities (Admin)
+    await loadCollectionTests(
+      COL_UNIVERSITIES, 
+      "universitiesList", 
+      "seeMoreUniversities"
+    );
+  }
+
+  // ✅ MOBILE: Load collections for mobile view
   async function loadMobileCollections() {
     const mobileContainer = $("mobileCollections");
     if (!mobileContainer || window.innerWidth > 1100) return;
     
     try {
-      // All collections for mobile
       const collections = [
         { id: COL_SUBJECT_MODEL_TESTS, name: "Subject Model Tests" },
         { id: COL_SUBJECT_TESTS, name: "Subject Tests" },
@@ -1945,7 +1640,6 @@
       ];
     }
     else {
-      // Try all
       questionCollections = [
         ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
         { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
@@ -1976,10 +1670,6 @@
     $("mtTime").textContent = mins ? String(mins) : "--";
     $("mtMark").textContent = String(getMarkFromDoc(mtDoc));
     $("mtTotalQ").textContent = String(questions.length || 0);
-
-    // Update sidebar stats
-    $("sidebarTotalQ").textContent = String(questions.length || 0);
-    $("sidebarTime").textContent = mins ? String(mins) : "--";
 
     document.title = `${title} — Model Test | eProstutiBD`;
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -2366,7 +2056,7 @@
     if (hasHtml2Canvas && hasJsPDF) return true;
 
     try {
-      if (!hasHtml2canvas) {
+      if (!hasHtml2Canvas) {
         await loadScriptOnce("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
       }
       if (!hasJsPDF) {
@@ -2578,16 +2268,14 @@
     $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    // ✅ Load sidebar data
+    // ✅ Load sidebar collections (5 from each)
     setTimeout(() => {
-      loadSidebarTests();
-      // ✅ Check screen size and load mobile if needed
+      loadAllSidebarCollections();
       if (window.innerWidth <= 1100) {
         loadMobileCollections();
       }
     }, 250);
 
-    // ✅ Resize listener for mobile collections
     window.addEventListener('resize', () => {
       if (window.innerWidth <= 1100) {
         loadMobileCollections();
@@ -2597,7 +2285,6 @@
     });
 
     try {
-      // Load main test
       const meta = await loadTestMetaFromAllCollections(modelTestId);
       if (!meta.doc) {
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
@@ -2607,19 +2294,16 @@
       mtSource = meta.source;
       mtDoc = meta.doc;
 
-      // Load questions
       questions = await loadQuestionsForTest(modelTestId, mtSource);
 
       setMetaHeader();
 
-      // Set timer display
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if (__mins) $("timeLeft").textContent = formatMMSS(__mins * 60);
 
       renderAllOnce();
       attachAnswerHandlers();
 
-      // ✅ Page entry tei modal auto show
       openNameModal();
       showToast("নাম ও জেলা দিন", "তারপর Test শুরু হবে");
     } catch (err) {
