@@ -1,6 +1,7 @@
 
 
 
+
 <!doctype html>
 <html lang="bn">
 <head>
@@ -1084,12 +1085,23 @@
   <!-- PDF libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <script>
 /* ===========================
    eProstutiBD Model Test JS (Optimized + PDF Layout Update)
-   ✅ Admin Dashboard-এর কালেকশন দিয়ে আপডেট করা
-=========================== */
+   - Faster Firestore loading
+   - No full rerender on MCQ click
+   - Defer recent list
+   - Lazy-load PDF libs if missing
+   - PDF:
+      * Question Paper: 25 Q per page (2-column same design)
+      * Answer Sheet: 50 per page (3-column)
 
+   ✅ CUSTOM UPDATE (As per request)
+   - Page entry tei Name+District modal auto show
+   - Submit confirm modal e "Yes" click korlei reset flag set
+   - Result page e giye Back asle => state reset => again Name submit + timer fresh start
+=========================== */
 (() => {
   // year
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -2286,8 +2298,6 @@
 })();
 
 </script>
-
-
 
 
 </body>
