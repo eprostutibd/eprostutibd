@@ -1084,22 +1084,10 @@
   <!-- PDF libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
 <script>
 /* ===========================
    eProstutiBD Model Test JS (Optimized + PDF Layout Update)
-   - Faster Firestore loading
-   - No full rerender on MCQ click
-   - Defer recent list
-   - Lazy-load PDF libs if missing
-   - PDF:
-      * Question Paper: 25 Q per page (2-column same design)
-      * Answer Sheet: 50 per page (3-column)
-
-   ✅ CUSTOM UPDATE (As per request)
-   - Page entry tei Name+District modal auto show
-   - Submit confirm modal e "Yes" click korlei reset flag set
-   - Result page e giye Back asle => state reset => again Name submit + timer fresh start
+   ✅ Admin Dashboard-এর কালেকশন দিয়ে আপডেট করা
 =========================== */
 
 (() => {
@@ -1167,23 +1155,32 @@
   const db = firebase.firestore();
 
   // =========================
-  // COLLECTIONS
+  // ✅ COLLECTIONS (Admin Dashboard-এর মতোই)
   // =========================
-  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+  const PREFIX = "jobs_";
+
+  const COL_SUBJECTS = PREFIX + "subjects";
+  const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
+  const COL_SUBJECT_TESTS = PREFIX + "subject_tests";
+  const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
+
+  const COL_ADMISSION_TESTS = PREFIX + "tests";
+  const COL_ADMISSION_TEST_QUESTIONS = PREFIX + "test_questions";
+
+  const COL_UNIVERSITIES = PREFIX + "universities";
+  const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
+
   const COL_MODEL_TEST_RESULT = "model_test_result";
 
+  // ✅ Admin Dashboard-এর কালেকশনগুলো দিয়েই Model Test fetch করব
   const QUESTION_COLLECTION_CANDIDATES = [
+    COL_SUBJECT_QUESTIONS,
+    COL_SUBJECT_TEST_QUESTIONS,
+    COL_ADMISSION_TEST_QUESTIONS,
+    COL_UNIVERSITY_QUESTIONS,
     "modeltest_questions",
-    "model_test_questions",
-    "modeltest_question",
-    "modelTest_questions",
-    "modeltestQuestions"
+    "model_test_questions"
   ];
-
-  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";
-  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions"; // field: testId
-  const COL_ADMISSION_TESTS = "admission_tests";
-  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions"; // field: testId
 
   // ===== modelTestId from URL =====
   const modelTestId = getParam("modelTestId");
@@ -1195,20 +1192,15 @@
   const KEY_PREFIX = `epbd_mt_${modelTestId || "unknown"}_`;
   const KEY_RESET_FLAG = KEY_PREFIX + "reset_on_back";
 
-  // (optional cleanup keys যদি আগে কোথাও save করে থাকো)
-  const KEY_SESSION = KEY_PREFIX + "session";
-  const KEY_ANSWERS = KEY_PREFIX + "answers";
-
   function clearTestState() {
     try {
-      localStorage.removeItem(KEY_SESSION);
-      localStorage.removeItem(KEY_ANSWERS);
-      sessionStorage.removeItem(KEY_SESSION);
-      sessionStorage.removeItem(KEY_ANSWERS);
+      localStorage.removeItem(KEY_PREFIX + "session");
+      localStorage.removeItem(KEY_PREFIX + "answers");
+      sessionStorage.removeItem(KEY_PREFIX + "session");
+      sessionStorage.removeItem(KEY_PREFIX + "answers");
     } catch (_) {}
   }
 
-  // ✅ Back হয়ে এলে (Browser back) যদি flag থাকে => reset
   (function resetIfNeeded() {
     try {
       if (sessionStorage.getItem(KEY_RESET_FLAG) === "1") {
@@ -1218,9 +1210,7 @@
     } catch (_) {}
   })();
 
-  // confirmYes / confirmNo must be after keys available
   function confirmYes() {
-    // ✅ User pressed Yes (submit confirm) -> set flag
     try { sessionStorage.setItem(KEY_RESET_FLAG, "1"); } catch (_) {}
     closeConfirm();
     if (_confirmResolver) _confirmResolver(true);
@@ -1384,48 +1374,47 @@
     }
   }
 
-  async function fetchQuestionsFromSubcollection(mtId) {
-    const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).collection("questions");
-    try {
-      const s = await ref.orderBy("createdAt", "asc").get();
-      return s.docs.map(d => ({ id: d.id, ...d.data() }));
-    } catch (e) {
-      const s = await ref.get();
-      return s.docs.map(d => ({ id: d.id, ...d.data() }));
-    }
-  }
-
   async function loadModelTestMeta(mtId) {
-    const snap1 = await db.collection(COL_SUBJECT_MODEL_TESTS).doc(mtId).get();
-    if (snap1.exists) return { source: COL_SUBJECT_MODEL_TESTS, doc: { id: snap1.id, ...snap1.data() } };
+    // ১. jobs_subject_tests তে খুঁজব
+    const snap1 = await db.collection(COL_SUBJECT_TESTS).doc(mtId).get();
+    if (snap1.exists) return { source: COL_SUBJECT_TESTS, doc: { id: snap1.id, ...snap1.data() } };
 
-    const snap2 = await db.collection(COL_ADMISSION_SUBJECT_TESTS).doc(mtId).get();
-    if (snap2.exists) return { source: COL_ADMISSION_SUBJECT_TESTS, doc: { id: snap2.id, ...snap2.data() } };
+    // ২. jobs_tests তে খুঁজব
+    const snap2 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
+    if (snap2.exists) return { source: COL_ADMISSION_TESTS, doc: { id: snap2.id, ...snap2.data() } };
 
-    const snap3 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
-    if (snap3.exists) return { source: COL_ADMISSION_TESTS, doc: { id: snap3.id, ...snap3.data() } };
+    // ৩. jobs_subjects তে খুঁজব
+    const snap3 = await db.collection(COL_SUBJECTS).doc(mtId).get();
+    if (snap3.exists) return { source: COL_SUBJECTS, doc: { id: snap3.id, ...snap3.data() } };
+
+    // ৪. jobs_universities তে খুঁজব
+    const snap4 = await db.collection(COL_UNIVERSITIES).doc(mtId).get();
+    if (snap4.exists) return { source: COL_UNIVERSITIES, doc: { id: snap4.id, ...snap4.data() } };
 
     return { source: "", doc: null };
   }
 
   async function loadQuestionsForTestFast(mtId, source) {
-    if (source === COL_SUBJECT_MODEL_TESTS) {
+    if (source === COL_SUBJECTS) {
+      // jobs_subjects → jobs_subject_questions
       try {
-        const sub = await fetchQuestionsFromSubcollection(mtId);
-        if (sub?.length) return sub;
+        const got = await safeQueryWhereOrder(COL_SUBJECT_QUESTIONS, "subjectId", mtId);
+        if (got?.length) return got;
       } catch (_) { }
-      // fallback below
+      return [];
     }
 
-    if (source === COL_ADMISSION_SUBJECT_TESTS) {
+    if (source === COL_SUBJECT_TESTS) {
+      // jobs_subject_tests → jobs_subject_test_questions
       try {
-        const got = await safeQueryWhereOrder(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId);
+        const got = await safeQueryWhereOrder(COL_SUBJECT_TEST_QUESTIONS, "testId", mtId);
         if (got?.length) return got;
       } catch (_) { }
       return [];
     }
 
     if (source === COL_ADMISSION_TESTS) {
+      // jobs_tests → jobs_test_questions
       try {
         const got = await safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
         if (got?.length) return got;
@@ -1433,11 +1422,20 @@
       return [];
     }
 
+    if (source === COL_UNIVERSITIES) {
+      // jobs_universities → jobs_university_questions
+      try {
+        const got = await safeQueryWhereOrder(COL_UNIVERSITY_QUESTIONS, "universityId", mtId);
+        if (got?.length) return got;
+      } catch (_) { }
+      return [];
+    }
+
+    // যদি source unknown হয়, সব কালেকশন খুঁজব
     const loaders = [
-      ...QUESTION_COLLECTION_CANDIDATES.map(col => () => safeQueryWhereOrder(col, "modelTestId", mtId)),
-      () => fetchQuestionsFromSubcollection(mtId),
-      () => safeQueryWhereOrder(COL_ADMISSION_SUBJECT_TEST_QUESTIONS, "testId", mtId),
-      () => safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId)
+      ...QUESTION_COLLECTION_CANDIDATES.map(col => () => safeQueryWhereOrder(col, "testId", mtId)),
+      () => safeQueryWhereOrder(COL_SUBJECT_QUESTIONS, "subjectId", mtId),
+      () => safeQueryWhereOrder(COL_UNIVERSITY_QUESTIONS, "universityId", mtId)
     ];
 
     const settled = await Promise.allSettled(loaders.map(fn => fn()));
@@ -1875,7 +1873,6 @@
     return canvas;
   }
 
-  // ✅ Question Paper: 25 per page (same 2-column design)
   async function buildQuestionPaperCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -1932,7 +1929,6 @@
     return canvases;
   }
 
-  // ✅ Answer Sheet: 50 per page, 3-column
   async function buildAnswerSheetCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -2038,9 +2034,9 @@
     try {
       let snap = null;
       try {
-        snap = await db.collection(COL_SUBJECT_MODEL_TESTS).orderBy("createdAt", "desc").limit(5).get();
+        snap = await db.collection(COL_SUBJECT_TESTS).orderBy("createdAt", "desc").limit(5).get();
       } catch (e) {
-        snap = await db.collection(COL_SUBJECT_MODEL_TESTS).limit(5).get();
+        snap = await db.collection(COL_SUBJECT_TESTS).limit(5).get();
       }
 
       const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -2132,8 +2128,8 @@
 
   loadAll();
 })();
-
 </script>
+
 
 
 </body>
