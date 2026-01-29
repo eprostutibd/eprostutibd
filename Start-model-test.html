@@ -1154,75 +1154,47 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // =========================
-  // ✅ COLLECTIONS (Admin Dashboard-এর মতোই)
-  // =========================
-  const PREFIX = "jobs_";
+  // =========================================
+  // ✅ ORIGINAL MODEL TEST COLLECTIONS
+  // =========================================
+  const COL_SUBJECT_MODEL_TESTS = "subject_model_tests";
+  const COL_MODEL_TEST_RESULT = "model_test_result";
 
+  const QUESTION_COLLECTION_CANDIDATES = [
+    "modeltest_questions",
+    "model_test_questions",
+    "modeltest_question",
+    "modelTest_questions",
+    "modeltestQuestions"
+  ];
+
+  const COL_ADMISSION_SUBJECT_TESTS = "admission_subject_tests";
+  const COL_ADMISSION_SUBJECT_TEST_QUESTIONS = "admission_subject_test_questions";
+  const COL_ADMISSION_TESTS = "admission_tests";
+  const COL_ADMISSION_TEST_QUESTIONS = "admission_test_questions";
+
+  // =========================================
+  // ✅ ADMIN PAGE COLLECTIONS (ADDED)
+  // =========================================
+  const PREFIX = "jobs_";
+  
+  // Subject related (Admin)
   const COL_SUBJECTS = PREFIX + "subjects";
   const COL_SUBJECT_QUESTIONS = PREFIX + "subject_questions";
   const COL_SUBJECT_TESTS = PREFIX + "subject_tests";
   const COL_SUBJECT_TEST_QUESTIONS = PREFIX + "subject_test_questions";
 
-  const COL_ADMISSION_TESTS = PREFIX + "tests";
-  const COL_ADMISSION_TEST_QUESTIONS = PREFIX + "test_questions";
+  // Admission/Jobs related (Admin)
+  const COL_ADMISSION_TESTS_ADMIN = PREFIX + "tests";  // Different name to avoid conflict
+  const COL_ADMISSION_TEST_QUESTIONS_ADMIN = PREFIX + "test_questions";
 
+  // University/Organization related (Admin)
   const COL_UNIVERSITIES = PREFIX + "universities";
   const COL_UNIVERSITY_QUESTIONS = PREFIX + "university_questions";
 
-  const COL_MODEL_TEST_RESULT = "model_test_result";
-
-  // ✅ Admin Dashboard-এর কালেকশনগুলো দিয়েই Model Test fetch করব
-  const QUESTION_COLLECTION_CANDIDATES = [
-    COL_SUBJECT_QUESTIONS,
-    COL_SUBJECT_TEST_QUESTIONS,
-    COL_ADMISSION_TEST_QUESTIONS,
-    COL_UNIVERSITY_QUESTIONS,
-    "modeltest_questions",
-    "model_test_questions"
-  ];
-
-  // ===== modelTestId from URL =====
-  const modelTestId = getParam("modelTestId");
+  // ===== Support both "modelTestId" and "testId" URL params =====
+  const modelTestId = getParam("modelTestId") || getParam("testId");
   const BASE_PAGE = (location.pathname.split("/").pop() || "Start-model-test.html");
-
-  // =========================================================
-  // ✅ RESET-ON-BACK FLAG (only after "Yes" click)
-  // =========================================================
-  const KEY_PREFIX = `epbd_mt_${modelTestId || "unknown"}_`;
-  const KEY_RESET_FLAG = KEY_PREFIX + "reset_on_back";
-
-  function clearTestState() {
-    try {
-      localStorage.removeItem(KEY_PREFIX + "session");
-      localStorage.removeItem(KEY_PREFIX + "answers");
-      sessionStorage.removeItem(KEY_PREFIX + "session");
-      sessionStorage.removeItem(KEY_PREFIX + "answers");
-    } catch (_) {}
-  }
-
-  (function resetIfNeeded() {
-    try {
-      if (sessionStorage.getItem(KEY_RESET_FLAG) === "1") {
-        sessionStorage.removeItem(KEY_RESET_FLAG);
-        clearTestState();
-      }
-    } catch (_) {}
-  })();
-
-  function confirmYes() {
-    try { sessionStorage.setItem(KEY_RESET_FLAG, "1"); } catch (_) {}
-    closeConfirm();
-    if (_confirmResolver) _confirmResolver(true);
-    _confirmResolver = null;
-  }
-  function confirmNo() {
-    closeConfirm();
-    if (_confirmResolver) _confirmResolver(false);
-    _confirmResolver = null;
-  }
-  window.confirmYes = confirmYes;
-  window.confirmNo = confirmNo;
 
   // ===== state =====
   let mtDoc = null;
@@ -1275,6 +1247,7 @@
   function getTitleField(data) {
     return data?.title ?? data?.name ?? data?.modelTestName ?? data?.modelTestTitle ?? "Model Test";
   }
+  
   function getTimeMinFromDoc(data) {
     const keys = ["totalTimeMin", "totalTime", "total_time", "duration", "time", "minutes", "min"];
     for (const k of keys) {
@@ -1285,6 +1258,7 @@
     }
     return 0;
   }
+  
   function getMarkFromDoc(data) {
     const keys = ["totalMarks", "totalMark", "total_mark", "mark", "marks"];
     for (const k of keys) {
@@ -1294,9 +1268,11 @@
     }
     return "-";
   }
+  
   function pickQuestionText(q) {
     return (q.question ?? q.questionText ?? q.q ?? q.title ?? q.name ?? q.ques ?? q.qus ?? q.question_title ?? "").toString();
   }
+  
   function getOptions(q) {
     if (Array.isArray(q.options) && q.options.length) return q.options.slice(0, 4).map(x => String(x ?? ""));
     if (Array.isArray(q.choices) && q.choices.length) return q.choices.slice(0, 4).map(x => String(x ?? ""));
@@ -1307,11 +1283,13 @@
     const o4 = q.option4 ?? q.opt4 ?? q.d ?? q.D ?? q.optionD ?? q.optD ?? q.choiceD;
     return [o1, o2, o3, o4].map(x => String(x ?? ""));
   }
+  
   function getCorrectIndex(q) {
     if (Number.isFinite(q.correctIndex)) return q.correctIndex;
     const v = Number(q.correctIndex);
     return Number.isFinite(v) ? v : -1;
   }
+  
   function isWrittenQuestion(q) {
     const t = (q.type ?? q.qType ?? q.questionType ?? q.kind ?? "").toString().toLowerCase();
     return t === "written" || t === "cq" || t === "short" || t === "essay";
@@ -1330,6 +1308,7 @@
     const s = sec % 60;
     return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
   }
+  
   function startTimer(minutes) {
     if (timerStarted) return;
     const totalSeconds = Math.max(0, Math.floor((minutes || 0) * 60));
@@ -1357,93 +1336,179 @@
   }
 
   // =======================================
-  // Firestore fetch helpers
+  // ✅ LOAD FROM ALL COLLECTIONS (ORIGINAL + ADMIN)
   // =======================================
-  async function safeQueryWhereOrder(colName, fieldName, fieldValue) {
-    try {
-      const s = await db.collection(colName)
-        .where(fieldName, "==", fieldValue)
-        .orderBy("createdAt", "asc")
-        .get();
-      return s.docs.map(d => ({ id: d.id, ...d.data() }));
-    } catch (e) {
-      const s = await db.collection(colName)
-        .where(fieldName, "==", fieldValue)
-        .get();
-      return s.docs.map(d => ({ id: d.id, ...d.data() }));
+  async function loadTestMetaFromAllCollections(testId) {
+    // Try ORIGINAL collections first
+    const originalCollections = [
+      COL_SUBJECT_MODEL_TESTS,
+      COL_ADMISSION_SUBJECT_TESTS,
+      COL_ADMISSION_TESTS
+    ];
+
+    for (const col of originalCollections) {
+      try {
+        const doc = await db.collection(col).doc(testId).get();
+        if (doc.exists) {
+          return { source: col, doc: { id: doc.id, ...doc.data() } };
+        }
+      } catch (e) {
+        console.warn(`Failed to load from ${col}:`, e.message);
+      }
     }
-  }
 
-  async function loadModelTestMeta(mtId) {
-    // ১. jobs_subject_tests তে খুঁজব
-    const snap1 = await db.collection(COL_SUBJECT_TESTS).doc(mtId).get();
-    if (snap1.exists) return { source: COL_SUBJECT_TESTS, doc: { id: snap1.id, ...snap1.data() } };
+    // Try ADMIN collections
+    const adminCollections = [
+      COL_SUBJECT_TESTS,      // jobs_subject_tests
+      COL_ADMISSION_TESTS_ADMIN,    // jobs_tests
+      COL_SUBJECTS,           // jobs_subjects
+      COL_UNIVERSITIES        // jobs_universities
+    ];
 
-    // ২. jobs_tests তে খুঁজব
-    const snap2 = await db.collection(COL_ADMISSION_TESTS).doc(mtId).get();
-    if (snap2.exists) return { source: COL_ADMISSION_TESTS, doc: { id: snap2.id, ...snap2.data() } };
-
-    // ৩. jobs_subjects তে খুঁজব
-    const snap3 = await db.collection(COL_SUBJECTS).doc(mtId).get();
-    if (snap3.exists) return { source: COL_SUBJECTS, doc: { id: snap3.id, ...snap3.data() } };
-
-    // ৪. jobs_universities তে খুঁজব
-    const snap4 = await db.collection(COL_UNIVERSITIES).doc(mtId).get();
-    if (snap4.exists) return { source: COL_UNIVERSITIES, doc: { id: snap4.id, ...snap4.data() } };
-
+    for (const col of adminCollections) {
+      try {
+        const doc = await db.collection(col).doc(testId).get();
+        if (doc.exists) {
+          return { source: col, doc: { id: doc.id, ...doc.data() } };
+        }
+      } catch (e) {
+        console.warn(`Failed to load from ${col}:`, e.message);
+      }
+    }
+    
+    // Not found in main collections, try with "testId" field
+    const queryCollections = [
+      // Original
+      { col: COL_ADMISSION_SUBJECT_TESTS, field: "subjectId" },
+      { col: COL_ADMISSION_TESTS, field: "universityId" },
+      // Admin
+      { col: COL_SUBJECT_TESTS, field: "subjectId" },
+      { col: COL_ADMISSION_TESTS_ADMIN, field: "universityId" }
+    ];
+    
+    for (const { col, field } of queryCollections) {
+      try {
+        const query = await db.collection(col).where(field, "==", testId).limit(1).get();
+        if (!query.empty) {
+          const doc = query.docs[0];
+          return { source: col, doc: { id: doc.id, ...doc.data() } };
+        }
+      } catch (e) {
+        console.warn(`Failed to query ${col} with ${field}:`, e.message);
+      }
+    }
+    
     return { source: "", doc: null };
   }
 
-  async function loadQuestionsForTestFast(mtId, source) {
-    if (source === COL_SUBJECTS) {
-      // jobs_subjects → jobs_subject_questions
+  async function loadQuestionsForTest(testId, source) {
+    // Based on source, determine which question collection to use
+    let questionCollections = [];
+    
+    if (source === COL_SUBJECT_MODEL_TESTS) {
+      // Original: Subject Model Tests -> subcollection
       try {
-        const got = await safeQueryWhereOrder(COL_SUBJECT_QUESTIONS, "subjectId", mtId);
-        if (got?.length) return got;
-      } catch (_) { }
-      return [];
+        const ref = db.collection(COL_SUBJECT_MODEL_TESTS).doc(testId).collection("questions");
+        const snap = await ref.get();
+        if (!snap.empty) return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      } catch (e) {}
+      
+      // Fallback to other collections
+      questionCollections = [
+        ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
+        { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" }
+      ];
+    } 
+    else if (source === COL_ADMISSION_SUBJECT_TESTS) {
+      // Original: Admission Subject Tests
+      questionCollections = [
+        { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" }
+      ];
     }
-
-    if (source === COL_SUBJECT_TESTS) {
-      // jobs_subject_tests → jobs_subject_test_questions
+    else if (source === COL_ADMISSION_TESTS) {
+      // Original: Admission Tests
+      questionCollections = [
+        { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" }
+      ];
+    }
+    else if (source === COL_SUBJECT_TESTS) {
+      // Admin: Subject Tests
+      questionCollections = [
+        { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
+        { col: COL_SUBJECT_QUESTIONS, field: "subjectId" }
+      ];
+    }
+    else if (source === COL_ADMISSION_TESTS_ADMIN) {
+      // Admin: Admission Tests
+      questionCollections = [
+        { col: COL_ADMISSION_TEST_QUESTIONS_ADMIN, field: "testId" }
+      ];
+    }
+    else if (source === COL_SUBJECTS) {
+      // Admin: Subjects
+      questionCollections = [
+        { col: COL_SUBJECT_QUESTIONS, field: "subjectId" }
+      ];
+    }
+    else if (source === COL_UNIVERSITIES) {
+      // Admin: Universities
+      questionCollections = [
+        { col: COL_UNIVERSITY_QUESTIONS, field: "universityId" }
+      ];
+    }
+    else {
+      // Unknown source, try ALL collections
+      return await tryAllQuestionCollections(testId);
+    }
+    
+    // Try each collection in order
+    for (const { col, field } of questionCollections) {
       try {
-        const got = await safeQueryWhereOrder(COL_SUBJECT_TEST_QUESTIONS, "testId", mtId);
-        if (got?.length) return got;
-      } catch (_) { }
-      return [];
+        const query = await db.collection(col).where(field, "==", testId).get();
+        if (!query.empty) {
+          console.log(`Found questions in ${col} with field ${field}`);
+          return query.docs.map(d => ({ id: d.id, ...d.data() }));
+        }
+      } catch (e) {
+        // Silently continue
+      }
     }
+    
+    return [];
+  }
 
-    if (source === COL_ADMISSION_TESTS) {
-      // jobs_tests → jobs_test_questions
-      try {
-        const got = await safeQueryWhereOrder(COL_ADMISSION_TEST_QUESTIONS, "testId", mtId);
-        if (got?.length) return got;
-      } catch (_) { }
-      return [];
-    }
-
-    if (source === COL_UNIVERSITIES) {
-      // jobs_universities → jobs_university_questions
-      try {
-        const got = await safeQueryWhereOrder(COL_UNIVERSITY_QUESTIONS, "universityId", mtId);
-        if (got?.length) return got;
-      } catch (_) { }
-      return [];
-    }
-
-    // যদি source unknown হয়, সব কালেকশন খুঁজব
-    const loaders = [
-      ...QUESTION_COLLECTION_CANDIDATES.map(col => () => safeQueryWhereOrder(col, "testId", mtId)),
-      () => safeQueryWhereOrder(COL_SUBJECT_QUESTIONS, "subjectId", mtId),
-      () => safeQueryWhereOrder(COL_UNIVERSITY_QUESTIONS, "universityId", mtId)
+  async function tryAllQuestionCollections(testId) {
+    // ORIGINAL collections
+    const originalCollections = [
+      ...QUESTION_COLLECTION_CANDIDATES.map(col => ({ col, field: "modelTestId" })),
+      { col: COL_ADMISSION_SUBJECT_TEST_QUESTIONS, field: "testId" },
+      { col: COL_ADMISSION_TEST_QUESTIONS, field: "testId" }
     ];
-
-    const settled = await Promise.allSettled(loaders.map(fn => fn()));
-    const results = settled.map(x => (x.status === "fulfilled" ? x.value : []));
-
-    for (const arr of results) {
-      if (Array.isArray(arr) && arr.length) return arr;
+    
+    // ADMIN collections
+    const adminCollections = [
+      { col: COL_SUBJECT_TEST_QUESTIONS, field: "testId" },
+      { col: COL_SUBJECT_QUESTIONS, field: "subjectId" },
+      { col: COL_ADMISSION_TEST_QUESTIONS_ADMIN, field: "testId" },
+      { col: COL_UNIVERSITY_QUESTIONS, field: "universityId" },
+      { col: COL_SUBJECT_QUESTIONS, field: "testId" },
+      { col: COL_SUBJECT_TEST_QUESTIONS, field: "subjectId" }
+    ];
+    
+    const allCollections = [...originalCollections, ...adminCollections];
+    
+    for (const { col, field } of allCollections) {
+      try {
+        const query = await db.collection(col).where(field, "==", testId).get();
+        if (!query.empty) {
+          console.log(`Found questions in ${col} with field ${field}`);
+          return query.docs.map(d => ({ id: d.id, ...d.data() }));
+        }
+      } catch (e) {
+        // Silently continue
+      }
     }
+    
     return [];
   }
 
@@ -1656,6 +1721,7 @@
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
   }
+  
   function computeResult() {
     const totalAllQ = questions.length || 0;
 
@@ -1723,6 +1789,7 @@
     $("resTimeTaken").textContent = String(_lastTimeTakenText || "--:--");
     $("resultModal").classList.add("show");
   }
+  
   function closeResultModal() { $("resultModal").classList.remove("show"); }
   window.closeResultModal = closeResultModal;
 
@@ -1873,6 +1940,7 @@
     return canvas;
   }
 
+  // ✅ Question Paper: 25 per page (same 2-column design)
   async function buildQuestionPaperCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -1929,6 +1997,7 @@
     return canvases;
   }
 
+  // ✅ Answer Sheet: 50 per page, 3-column
   async function buildAnswerSheetCanvases() {
     const title = getTitleField(mtDoc);
     const mins = getTimeMinFromDoc(mtDoc) || 0;
@@ -2028,29 +2097,100 @@
   }
   window.downloadCombinedPDF = downloadCombinedPDF;
 
-  // ===== Recent Model Tests (defer) =====
-  async function loadRecentModelTests() {
+  // ===== Recent Tests from ALL Collections =====
+  async function loadRecentTests() {
     const wrap = $("recentList");
     try {
-      let snap = null;
-      try {
-        snap = await db.collection(COL_SUBJECT_TESTS).orderBy("createdAt", "desc").limit(5).get();
-      } catch (e) {
-        snap = await db.collection(COL_SUBJECT_TESTS).limit(5).get();
+      // Try ORIGINAL collections first
+      const originalCollections = [
+        COL_SUBJECT_MODEL_TESTS,
+        COL_ADMISSION_SUBJECT_TESTS,
+        COL_ADMISSION_TESTS
+      ];
+      
+      // Try ADMIN collections
+      const adminCollections = [
+        COL_SUBJECT_TESTS,
+        COL_ADMISSION_TESTS_ADMIN,
+        COL_SUBJECTS,
+        COL_UNIVERSITIES
+      ];
+      
+      let allDocs = [];
+      
+      // Load from original collections
+      for (const col of originalCollections) {
+        try {
+          const snap = await db.collection(col).orderBy("createdAt", "desc").limit(2).get();
+          const docs = snap.docs.map(d => ({ 
+            id: d.id, 
+            ...d.data(),
+            collection: col 
+          }));
+          allDocs = [...allDocs, ...docs];
+        } catch (e) {
+          try {
+            const snap = await db.collection(col).limit(2).get();
+            const docs = snap.docs.map(d => ({ 
+              id: d.id, 
+              ...d.data(),
+              collection: col 
+            }));
+            allDocs = [...allDocs, ...docs];
+          } catch (e2) {}
+        }
       }
-
-      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      // Load from admin collections
+      for (const col of adminCollections) {
+        try {
+          const snap = await db.collection(col).orderBy("createdAt", "desc").limit(2).get();
+          const docs = snap.docs.map(d => ({ 
+            id: d.id, 
+            ...d.data(),
+            collection: col 
+          }));
+          allDocs = [...allDocs, ...docs];
+        } catch (e) {
+          try {
+            const snap = await db.collection(col).limit(2).get();
+            const docs = snap.docs.map(d => ({ 
+              id: d.id, 
+              ...d.data(),
+              collection: col 
+            }));
+            allDocs = [...allDocs, ...docs];
+          } catch (e2) {}
+        }
+      }
+      
+      // Sort by createdAt if available
+      allDocs.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() || 0;
+        const bTime = b.createdAt?.toMillis?.() || 0;
+        return bTime - aTime;
+      });
+      
+      // Take first 5
+      allDocs = allDocs.slice(0, 5);
+      
       wrap.innerHTML = "";
-
-      if (!docs.length) {
+      
+      if (!allDocs.length) {
         wrap.innerHTML = `<div class="err">কোনো টেস্ট পাওয়া যায়নি।</div>`;
         return;
       }
 
-      docs.forEach(doc => {
+      allDocs.forEach(doc => {
         const title = getTitleField(doc);
         const mins = getTimeMinFromDoc(doc) || "--";
         const mark = getMarkFromDoc(doc);
+        const type = doc.collection === COL_SUBJECT_MODEL_TESTS ? "Model Test" :
+                     doc.collection === COL_SUBJECT_TESTS ? "Subject Test" :
+                     doc.collection === COL_ADMISSION_TESTS_ADMIN ? "Admission Test" :
+                     doc.collection === COL_SUBJECTS ? "Subject" :
+                     doc.collection === COL_UNIVERSITIES ? "Organization" : "Test";
+        
         const a = document.createElement("a");
         a.className = "recentItem";
         a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
@@ -2058,7 +2198,7 @@
           <span class="recentDot"></span>
           <div>
             <div class="recentTitle">${esc(title)}</div>
-            <div class="recentMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+            <div class="recentMeta">${type} • সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
           </div>
         `;
         wrap.appendChild(a);
@@ -2082,6 +2222,21 @@
     }
   }
 
+  // ===== confirmYes/No functions =====
+  function confirmYes() {
+    closeConfirm();
+    if (_confirmResolver) _confirmResolver(true);
+    _confirmResolver = null;
+  }
+  
+  function confirmNo() {
+    closeConfirm();
+    if (_confirmResolver) _confirmResolver(false);
+    _confirmResolver = null;
+  }
+  window.confirmYes = confirmYes;
+  window.confirmNo = confirmNo;
+
   // ===== boot =====
   async function loadAll() {
     if (!modelTestId) {
@@ -2093,10 +2248,11 @@
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
     // Defer recent list
-    setTimeout(() => loadRecentModelTests(), 250);
+    setTimeout(() => loadRecentTests(), 250);
 
     try {
-      const meta = await loadModelTestMeta(modelTestId);
+      // Load test metadata
+      const meta = await loadTestMetaFromAllCollections(modelTestId);
       if (!meta.doc) {
         $("content").innerHTML = `<div class="err">এই Model Test পাওয়া যায়নি।</div>`;
         return;
@@ -2105,12 +2261,12 @@
       mtSource = meta.source;
       mtDoc = meta.doc;
 
-      // ✅ Faster questions load
-      questions = await loadQuestionsForTestFast(modelTestId, mtSource);
+      // Load questions
+      questions = await loadQuestionsForTest(modelTestId, mtSource);
 
       setMetaHeader();
 
-      // Do NOT start countdown before Name+District submit
+      // Set timer display (not started yet)
       const __mins = getTimeMinFromDoc(mtDoc) || 0;
       if (__mins) $("timeLeft").textContent = formatMMSS(__mins * 60);
 
@@ -2128,7 +2284,9 @@
 
   loadAll();
 })();
+
 </script>
+
 
 
 
