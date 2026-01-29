@@ -179,6 +179,18 @@
     @media (max-width: 1100px){
       main.grid{grid-template-columns: 1fr;}
       .sideAd{display:none;}
+      .mobileCollections{display:block;}
+    }
+
+    /* ✅ Mobile Collections (shown below main content on mobile) */
+    .mobileCollections{
+      display:none;
+      margin-top: 20px;
+    }
+    @media (max-width: 1100px){
+      .mobileCollections{
+        display:block;
+      }
     }
 
     /* ✅ Sticky meta */
@@ -355,14 +367,18 @@
       display:flex;
       flex-direction:column;
       gap: 10px;
-      overflow: hidden !important;
-      overscroll-behavior: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(18,28,55,.16) transparent;
     }
+    .sideStack::-webkit-scrollbar{width:6px}
+    .sideStack::-webkit-scrollbar-track{background:transparent}
+    .sideStack::-webkit-scrollbar-thumb{background:rgba(18,28,55,.16);border-radius:3px}
+    .sideStack::-webkit-scrollbar-thumb:hover{background:rgba(18,28,55,.24)}
 
     .adBox, .adBody, .pdfBox, .recentBox{
-      overflow: hidden !important;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: auto;
+      overflow: hidden;
     }
 
     .adBox{
@@ -373,7 +389,7 @@
       display:flex;
       flex-direction:column;
       min-height: 140px;
-      flex: 1 1 auto;
+      flex-shrink: 0;
     }
     .adHead{
       padding:10px 12px;
@@ -381,16 +397,17 @@
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       font-size:12px;color: var(--muted);
       background: rgba(255,255,255,.78);
-      flex: 0 0 auto;
+      flex-shrink: 0;
     }
     .adHead b{color: var(--text)}
     .adBody{
-      flex: 1 1 auto;
+      flex: 1;
       display:grid;
       place-items:center;
       padding: 10px;
       text-align:center;
       color: var(--muted);
+      min-height: 100px;
     }
 
     .pdfBox{
@@ -399,7 +416,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
-      flex: 0 0 auto;
+      flex-shrink: 0;
     }
     .btnPdf{
       width: calc(100% - 20px);
@@ -427,7 +444,7 @@
       background: rgba(255,255,255,.72);
       box-shadow: var(--shadow2);
       overflow:hidden;
-      flex: 0 0 auto;
+      flex-shrink: 0;
       margin-bottom: 10px;
     }
     .collectionHead{
@@ -436,7 +453,7 @@
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       font-size:12px;color: var(--muted);
       background: rgba(255,255,255,.78);
-      flex: 0 0 auto;
+      flex-shrink: 0;
     }
     .collectionHead b{color: var(--text)}
     .collectionList{
@@ -444,7 +461,16 @@
       display:flex;
       flex-direction:column;
       gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(18,28,55,.16) transparent;
     }
+    .collectionList::-webkit-scrollbar{width:4px}
+    .collectionList::-webkit-scrollbar-track{background:transparent}
+    .collectionList::-webkit-scrollbar-thumb{background:rgba(18,28,55,.12);border-radius:2px}
+    .collectionList::-webkit-scrollbar-thumb:hover{background:rgba(18,28,55,.20)}
     .collectionItem{
       text-decoration:none;
       display:flex;
@@ -455,13 +481,14 @@
       border-radius: 14px;
       padding: 10px;
       transition: .12s;
+      flex-shrink: 0;
     }
     .collectionItem:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,48,.06);}
     .collectionDot{
       width:10px;height:10px;border-radius:999px;
       background: rgba(29,78,216,.28);
       border:1px solid rgba(29,78,216,.20);
-      flex:0 0 auto;
+      flex-shrink: 0;
       margin-top: 5px;
     }
     .collectionTitle{font-weight:1000;font-size:12.5px;line-height:1.35;color: var(--text);}
@@ -953,6 +980,46 @@
             </noscript>
           </div>
         </article>
+
+        <!-- ✅ Mobile Collections (shown below main content on mobile) -->
+        <div class="mobileCollections">
+          <h3 style="margin:20px 0 10px;font-weight:1000;color:var(--text);text-align:center;">More Model Tests</h3>
+          
+          <div class="collectionBox" aria-label="Subject Model Tests (Mobile)">
+            <div class="collectionHead"><b>Subject Model Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectModelTestsListMobile">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <div class="collectionBox" aria-label="Subject Tests (Mobile)">
+            <div class="collectionHead"><b>Subject Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectTestsListMobile">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <div class="collectionBox" aria-label="Admission Tests (Mobile)">
+            <div class="collectionHead"><b>Admission Tests</b><span>Latest</span></div>
+            <div class="collectionList" id="admissionTestsListMobile">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <div class="collectionBox" aria-label="Subjects (Mobile)">
+            <div class="collectionHead"><b>Subjects</b><span>Latest</span></div>
+            <div class="collectionList" id="subjectsListMobile">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+
+          <div class="collectionBox" aria-label="Universities (Mobile)">
+            <div class="collectionHead"><b>Organizations</b><span>Latest</span></div>
+            <div class="collectionList" id="universitiesListMobile">
+              <div class="loading">লোড হচ্ছে…</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- RIGHT sidebar -->
@@ -1130,9 +1197,9 @@
 <script>
 /* ===========================
    eProstutiBD Model Test JS
-   ✅ Left Sidebar: প্রতিটি কালেকশন থেকে ৫টি করে Model Test
-   ✅ একই Design
-   ✅ সকল কালেকশন Support
+   ✅ Left Sidebar Scroll ফিক্স
+   ✅ Mobile এ নিচে Collections দেখাবে
+   ✅ সকল কালেকশন থেকে ৫টি করে Model Test
 =========================== */
 
 (() => {
@@ -1380,70 +1447,135 @@
   }
 
   // =======================================
-  // ✅ LEFT SIDEBAR: LOAD 5 TESTS FROM EACH COLLECTION
+  // ✅ LOAD COLLECTION TESTS (FOR BOTH DESKTOP & MOBILE)
   // =======================================
-  async function loadCollectionTests(collectionId, containerId, title) {
+  async function loadCollectionTests(collectionId, containerId, mobileContainerId = null) {
     try {
+      // Load for desktop
       const container = $(containerId);
-      if (!container) return;
-      
-      container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
-      
-      let snap;
-      try {
-        snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
-      } catch (e) {
-        snap = await db.collection(collectionId).limit(5).get();
-      }
-      
-      if (snap.empty) {
-        container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
-        return;
-      }
-      
-      const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      container.innerHTML = "";
-      
-      docs.forEach(doc => {
-        const testTitle = getTitleField(doc);
-        const mins = getTimeMinFromDoc(doc) || "--";
-        const mark = getMarkFromDoc(doc);
+      if (container) {
+        container.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
         
-        const a = document.createElement("a");
-        a.className = "collectionItem";
-        a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
-        a.innerHTML = `
-          <span class="collectionDot"></span>
-          <div>
-            <div class="collectionTitle">${esc(testTitle)}</div>
-            <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
-          </div>
-        `;
-        container.appendChild(a);
-      });
+        let snap;
+        try {
+          snap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
+        } catch (e) {
+          snap = await db.collection(collectionId).limit(5).get();
+        }
+        
+        if (snap.empty) {
+          container.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
+        } else {
+          const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          container.innerHTML = "";
+          
+          docs.forEach(doc => {
+            const testTitle = getTitleField(doc);
+            const mins = getTimeMinFromDoc(doc) || "--";
+            const mark = getMarkFromDoc(doc);
+            
+            const a = document.createElement("a");
+            a.className = "collectionItem";
+            a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+            a.innerHTML = `
+              <span class="collectionDot"></span>
+              <div>
+                <div class="collectionTitle">${esc(testTitle)}</div>
+                <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+              </div>
+            `;
+            container.appendChild(a);
+          });
+        }
+      }
+
+      // Load for mobile (if mobile container exists)
+      if (mobileContainerId && $(mobileContainerId)) {
+        const mobileContainer = $(mobileContainerId);
+        // Copy from desktop container if it exists
+        if (container && container.innerHTML && !container.innerHTML.includes('loading') && !container.innerHTML.includes('err')) {
+          mobileContainer.innerHTML = container.innerHTML;
+        } else {
+          // Otherwise load fresh
+          mobileContainer.innerHTML = '<div class="loading">লোড হচ্ছে…</div>';
+          
+          let mobileSnap;
+          try {
+            mobileSnap = await db.collection(collectionId).orderBy("createdAt", "desc").limit(5).get();
+          } catch (e) {
+            mobileSnap = await db.collection(collectionId).limit(5).get();
+          }
+          
+          if (mobileSnap.empty) {
+            mobileContainer.innerHTML = `<div class="err">কোনো টেস্ট নেই</div>`;
+          } else {
+            const docs = mobileSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            mobileContainer.innerHTML = "";
+            
+            docs.forEach(doc => {
+              const testTitle = getTitleField(doc);
+              const mins = getTimeMinFromDoc(doc) || "--";
+              const mark = getMarkFromDoc(doc);
+              
+              const a = document.createElement("a");
+              a.className = "collectionItem";
+              a.href = `${BASE_PAGE}?modelTestId=${encodeURIComponent(doc.id)}`;
+              a.innerHTML = `
+                <span class="collectionDot"></span>
+                <div>
+                  <div class="collectionTitle">${esc(testTitle)}</div>
+                  <div class="collectionMeta">সময়: ${esc(mins)} মিনিট • মার্ক: ${esc(mark)}</div>
+                </div>
+              `;
+              mobileContainer.appendChild(a);
+            });
+          }
+        }
+      }
       
     } catch (err) {
       console.error(`Error loading ${collectionId}:`, err);
-      $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+      if ($(containerId)) $(containerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
+      if (mobileContainerId && $(mobileContainerId)) $(mobileContainerId).innerHTML = `<div class="err">লোড করতে সমস্যা</div>`;
     }
   }
 
-  // Load all collections for sidebar
+  // Load all collections for sidebar (both desktop and mobile)
   async function loadAllSidebarCollections() {
     // ✅ Subject Model Tests
-    await loadCollectionTests(COL_SUBJECT_MODEL_TESTS, "subjectModelTestsList", "Subject Model Tests");
+    await loadCollectionTests(
+      COL_SUBJECT_MODEL_TESTS, 
+      "subjectModelTestsList", 
+      "subjectModelTestsListMobile"
+    );
     
     // ✅ Subject Tests (Admin)
-    await loadCollectionTests(COL_SUBJECT_TESTS, "subjectTestsList", "Subject Tests");
+    await loadCollectionTests(
+      COL_SUBJECT_TESTS, 
+      "subjectTestsList", 
+      "subjectTestsListMobile"
+    );
     
     // ✅ Admission Tests (Original)
-    await loadCollectionTests(COL_ADMISSION_TESTS, "admissionTestsList", "Admission Tests");
+    await loadCollectionTests(
+      COL_ADMISSION_TESTS, 
+      "admissionTestsList", 
+      "admissionTestsListMobile"
+    );
     
     // ✅ Subjects (Admin)
-    await loadCollectionTests(COL_SUBJECTS, "subjectsList", "Subjects");
+    await loadCollectionTests(
+      COL_SUBJECTS, 
+      "subjectsList", 
+      "subjectsListMobile"
+    );
     
     // ✅ Universities (Admin)
-    await loadCollectionTests(COL_UNIVERSITIES, "universitiesList", "Organizations");
+    await loadCollectionTests(
+      COL_UNIVERSITIES, 
+      "universitiesList", 
+      "universitiesListMobile"
+    );
   }
 
   // =======================================
@@ -2139,7 +2271,7 @@
     $("studentName").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
     $("studentDistrict").addEventListener("keydown", (e) => { if (e.key === "Enter") submitName(); });
 
-    // ✅ Load sidebar collections (5 from each)
+    // ✅ Load sidebar collections (5 from each - both desktop and mobile)
     setTimeout(() => loadAllSidebarCollections(), 250);
 
     try {
