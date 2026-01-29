@@ -1,0 +1,1976 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>eProstutiBD — Organization Details</title>
+
+  <meta name="description" content="Organization Details • Organization ভিত্তিক MCQ, Written এবং Job Tests — eProstutiBD Jobs Assistant" />
+  <meta name="keywords" content="Organization, Job Tests, প্রশ্নব্যাংক, MCQ, Written, eProstutiBD" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#8b5cf6" />
+
+  <style>
+    :root{
+      --bg1:#faf5ff; --bg2:#f5f0ff;
+      --line: rgba(18, 28, 55, .10);
+      --line2: rgba(18, 28, 55, .08);
+      --text:#0f1730; --muted:#5a6685;
+      --primary:#8b5cf6; --primary-light:#ddd6fe;
+
+      --shadow: 0 16px 44px rgba(15,23,48,.12);
+      --shadow2: 0 10px 26px rgba(15,23,48,.08);
+
+      --brandA:#8b5cf6;
+      --brandB:#a78bfa;
+
+      --ok:#16a34a;
+      --danger:#dc2626;
+
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+      --headerH: 64px;
+
+      --footTop:#5b21b6;
+      --footBottom:#4c1d95;
+      --footLine: rgba(255,255,255,.14);
+      --footText: rgba(255,255,255,.86);
+      --footMuted: rgba(255,255,255,.70);
+
+      /* Ans bar */
+      --ansBarH: 56px;
+      --liftFromFooter: 0px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    /* ✅ Scrollbar hide (but scroll works) */
+    body, .nav, .sList, .subjectSheet .body, .panelBody, .kbd, .drawer, #content{
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    body::-webkit-scrollbar,
+    .nav::-webkit-scrollbar,
+    .sList::-webkit-scrollbar,
+    .subjectSheet .body::-webkit-scrollbar,
+    .panelBody::-webkit-scrollbar,
+    .kbd::-webkit-scrollbar,
+    .drawer::-webkit-scrollbar,
+    #content::-webkit-scrollbar{
+      width: 0; height: 0; display:none;
+    }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans Bengali", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(139,92,246,.12), transparent 55%),
+        radial-gradient(800px 560px at 92% 14%, rgba(167,139,250,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      padding-bottom: 0;
+    }
+    a{color:inherit}
+
+    .container{
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 18px;
+    }
+
+    /* ===== Header ===== */
+    header{
+      position:sticky; top:0; z-index:60;
+      background: linear-gradient(135deg, rgba(139,92,246,.96), rgba(167,139,250,.92));
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 34px rgba(139,92,246,.18);
+    }
+    .topbar{
+      max-width: 1320px;
+      margin:0 auto;
+      padding-left: clamp(12px, 4vw, 48px);
+      padding-right: clamp(12px, 4vw, 48px);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;min-width:0;}
+    .brand .name{color:#fff;font-weight:1000;letter-spacing:.2px;font-size:15px;line-height:1;white-space:nowrap;}
+    .brand .tag{color:rgba(255,255,255,.88);font-size:12px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width: 260px;}
+
+    .nav{display:flex;gap:8px;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;flex:1;}
+    .nav a{
+      flex:0 0 auto;text-decoration:none;color:#fff;font-size:12px;font-weight:1000;
+      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);white-space:nowrap;transition:.15s;
+    }
+    .nav a:hover{background: rgba(255,255,255,.16)}
+    .nav a.active{background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.26)}
+
+    .menuBtn{
+      flex:0 0 auto;margin-left:auto;display:none;
+      border:1px solid rgba(255,255,255,.22);background: rgba(255,255,255,.14);color:#fff;
+      border-radius: 12px;padding: 8px 10px;font-weight:1000;font-size:12px;cursor:pointer;line-height:1;
+    }
+    @media (max-width: 860px){
+      .nav{display:none;}
+      .menuBtn{display:inline-flex;align-items:center;gap:8px;}
+      .brand .tag{max-width: 55vw;}
+    }
+
+    /* ===== Mobile Menu ===== */
+    .mobileMenu{display:none;position:fixed;inset:0;z-index:9999;}
+    .mobileMenu .overlay{position:absolute;inset:0;background:transparent;}
+    .mobileMenu .drawer{
+      position:absolute;top:64px;right:12px;width:min(320px, calc(100vw - 24px));
+      border-radius:16px;padding:10px;border:1px solid rgba(255,255,255,.28);
+      background: rgba(91, 33, 182, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 18px 38px rgba(0,0,0,.35);
+      overflow:auto;
+      max-height: calc(100vh - 76px);
+    }
+    .mobileMenu a{
+      display:block;text-decoration:none;color:#fff;font-weight:1000;font-size:13px;
+      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);margin-bottom:8px;
+    }
+    .mobileMenu a.active{border-color: rgba(255,255,255,.28);background: rgba(255,255,255,.12);}
+
+    /* ===== Header Ad ===== */
+    .adBox{
+      margin-top:10px;border:1px dashed rgba(18,28,55,.22);border-radius:16px;
+      background: rgba(255,255,255,.72);box-shadow: var(--shadow2);overflow:hidden;
+    }
+    .adHead{
+      padding:10px 12px;border-bottom:1px solid rgba(18,28,55,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:12px;color: var(--muted);
+    }
+    .adHead b{color: var(--text)}
+    .adBody{min-height: 92px;display:grid;place-items:center;padding: 10px;text-align:center;color: var(--muted);}
+
+    /* ===== Organization Dock ===== */
+    .orgDock{
+      position: sticky;
+      top: var(--headerH, 64px);
+      z-index: 58;
+      margin-top: 10px;
+      background: rgba(250,245,255,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(18,28,55,.08);
+      border-radius: 16px;
+      box-shadow: 0 14px 34px rgba(15,23,48,.08);
+    }
+    .orgDockInner{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 10px clamp(12px, 4vw, 48px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height: 52px;
+    }
+    .orgBtnMobile{
+      display:none;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(139,92,246,.10);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      flex:0 0 auto;
+    }
+    @media (max-width: 980px){
+      .orgBtnMobile{display:inline-flex;align-items:center;gap:8px;}
+    }
+
+    .centerGroup{
+      flex: 1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 6px;
+      min-width:0;
+      text-align:center;
+    }
+    .orgName{
+      font-size:14px;
+      font-weight:1000;
+      line-height:1.2;
+      max-width: 100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .tabsLine{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      flex-wrap:wrap;
+      line-height:1.2;
+      max-width: 100%;
+    }
+    .tab{
+      border:none;
+      background: transparent;
+      color: var(--text);
+      padding: 0;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .tab.active{
+      color: var(--brandA);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+    .sepDot{
+      width: 4px;height: 4px;border-radius:999px;
+      background: rgba(18,28,55,.25);
+      transform: translateY(1px);
+      flex:0 0 auto;
+    }
+    .dockSpacer{width: 42px;flex:0 0 auto;display:none;}
+    @media (max-width: 980px){
+      .dockSpacer{display:block;}
+      .orgName{font-size:13.5px;}
+      .tab{font-size:12.8px;}
+      .orgDockInner{gap:10px;}
+      .tabsLine{gap: 6px;}
+    }
+
+    /* ===== Layout ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 340px minmax(0, 1fr) 280px;
+      gap: 12px;
+      align-items:start;
+      margin-top: 10px;
+    }
+    @media (max-width: 1100px){
+      .grid{grid-template-columns: 340px 1fr;}
+      .rightAd{display:none;}
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+      .leftDesktop{display:none;}
+      .rightAd{display:block;}
+    }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(18,28,55,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead b{font-size:14px}
+    .panelHead .muted{font-size:12px;color:var(--muted)}
+    .panelBody{padding: 12px 14px}
+    .divider{height:1px;background: rgba(18,28,55,.10);margin: 12px 0;}
+
+    .btn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 8px 10px;
+      height: 36px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      transition:.15s;
+    }
+    .btn.primary{border-color: rgba(139,92,246,.22);background: rgba(139,92,246,.10);}
+    .btn.linky{border-color: rgba(18,28,55,.10); background: rgba(255,255,255,.92);}
+    .btn:hover{transform: translateY(-1px);}
+
+    .searchMini{display:flex;gap:8px;align-items:center;}
+    .searchMini input{
+      width: 100%;
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 14px;
+      outline:none;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      font-size: 13px;
+    }
+
+    /* ===== Desktop Sidebar Scroll ===== */
+    @media (min-width: 981px){
+      aside.panel.leftDesktop{
+        position: sticky;
+        top: calc(var(--headerH, 64px) + 12px);
+        height: calc(100vh - (var(--headerH, 64px) + 24px));
+        overflow: hidden;
+      }
+      aside.panel.leftDesktop .panelBody{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+      }
+      .sList{
+        flex:1;
+        min-height:0;
+        max-height: 520px;
+        overflow:auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        scroll-behavior:smooth;
+        padding-right:6px;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+      }
+    }
+
+    .sItem{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.97);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+      transition:.15s;
+    }
+    .sItem:hover{transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,48,.08);}
+    .sItem.active{border-color: rgba(139,92,246,.28);background: rgba(139,92,246,.08);}
+    .sItem b{
+      font-size:13.5px;
+      font-weight:1000;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      margin:0;
+    }
+    .chips{display:flex;gap:8px;flex-wrap:wrap;}
+    .chip{
+      font-size:11.5px;
+      padding: 6px 9px;
+      border-radius:999px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .chip b{font-size:11.5px;color: var(--text);}
+
+    /* ===== Paper feel ===== */
+    .paper{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0px,
+          rgba(0,0,0,0) 25px,
+          rgba(18,28,55,.055) 26px
+        );
+      border: 1px solid rgba(18,28,55,.10);
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(15,23,48,.10);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .paper::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 260px at 20% 0%, rgba(139,92,246,.05), transparent 60%),
+                  radial-gradient(900px 260px at 80% 0%, rgba(167,139,250,.04), transparent 60%);
+      pointer-events:none;
+    }
+    .qList{
+      display:flex;
+      flex-direction:column;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 981px){
+      body[data-mode="mcq"] .qList,
+      body[data-mode="written"] .qList{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 0;
+        row-gap: 0;
+      }
+      body[data-mode="mcq"] .qRow:nth-child(2n),
+      body[data-mode="written"] .qRow:nth-child(2n){
+        border-left: 1px solid var(--line2);
+      }
+      body[data-mode="mcq"] .qRow:nth-child(n+3),
+      body[data-mode="written"] .qRow:nth-child(n+3){
+        border-top: 1px solid var(--line2);
+      }
+    }
+    @media (max-width: 980px){
+      .qRow + .qRow{ border-top: 1px solid var(--line2); }
+    }
+
+    .qRow{padding: 12px 12px;background: transparent;border-radius: 0;}
+    .qHead{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start;}
+    .qNo{
+      flex:0 0 auto;font-size:11px;font-weight:1000;padding: 5px 8px;border-radius:999px;
+      border: 1px solid rgba(18,28,55,.12);background: rgba(255,255,255,.70);
+      color: var(--muted);white-space:nowrap;
+    }
+    .qText{margin:0;font-weight:800;font-size:12.6px;line-height:1.55;flex:1;letter-spacing:.1px;}
+    @media (min-width: 981px){
+      .qText{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    }
+
+    .noteInline{margin-top: 6px;color: var(--muted);font-size: 12px;line-height: 1.55;}
+    .noteInline b{color: var(--text);}
+
+    .opts{margin-top:10px;display:grid;grid-template-columns: 1fr 1fr;gap:6px 10px;}
+    @media (max-width: 560px){ .opts{grid-template-columns: 1fr 1fr;} }
+
+    .optLine{
+      display:grid;
+      grid-template-columns: 16px 22px 1fr;
+      column-gap: 4px;
+      align-items:start;
+      cursor:pointer;
+      user-select:none;
+      padding: 1px 0;
+    }
+    .optLine.locked{cursor:default;}
+    .optMark{
+      width: 16px;height: 16px;border-radius:999px;
+      display:grid;place-items:center;
+      font-weight:1000;font-size:11px;
+      opacity:0;
+      transform: translateY(1px);
+    }
+    .optKey{font-weight:1000;font-size:12px;color: var(--muted);line-height:1.5;}
+    .optTxt{
+      font-size:12.5px;line-height:1.5;color: var(--text);
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: calc(2 * 1.5em);
+    }
+    .optLine.correct .optTxt{color: var(--ok);font-weight:900;}
+    .optLine.wrong .optTxt{color: var(--danger);font-weight:900;text-decoration: line-through; text-decoration-thickness:2px; text-decoration-color: rgba(220,38,38,.55);}
+    .optLine.correct .optMark{opacity:1;color:#fff;background: rgba(22,163,74,.95);}
+    .optLine.wrong .optMark{opacity:1;color:#fff;background: rgba(220,38,38,.95);}
+
+    /* ===== Ads ===== */
+    .inlineAd{
+      border: 1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.78);
+      border-radius: 18px;
+      padding: 12px;
+      min-height: 86px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color: var(--muted);
+      box-shadow: 0 10px 22px rgba(15,23,48,.04);
+      margin: 12px 0;
+    }
+    .inlineAd .tag{
+      display:inline-block;font-weight:1000;color: var(--text);
+      padding: 6px 10px;border-radius:999px;border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);margin-bottom: 6px;font-size:12px;
+    }
+    .empty{
+      display:none;border:1px dashed rgba(18,28,55,.22);
+      background: rgba(255,255,255,.70);
+      border-radius: 16px;
+      padding: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-size:12px;
+    }
+
+    /* Latest Job Tests + Job Subjects cards */
+    .latestBoxTitle{font-weight:1000;font-size:13px;margin: 14px 0 10px;color: var(--text);}
+    .latestMT{display:flex;flex-direction:column;gap:10px;}
+    .mtCardMini{
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow:hidden;
+    }
+    .mtCardMini h4{
+      margin:0 0 4px;font-size:13px;font-weight:1000;line-height:1.3;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+      min-height: 0;
+    }
+    .mtMetaMini{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size:11.5px;
+      margin-bottom:10px;
+    }
+    .mtMetaMini span{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius:999px;
+      padding:5px 9px;
+      white-space:nowrap;
+    }
+    .mtActionsMini{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .mtActionsMini .btn{
+      height:32px;
+      padding:6px 10px;
+      border-radius:12px;
+      font-size:11.5px;
+    }
+
+    .seeMoreRow{display:flex;justify-content:flex-end;margin-top:10px;}
+    .seeMoreRow .btn{height:34px;border-radius:999px;}
+
+    /* ===== Fixed Ans Bar ===== */
+    .ansBarWrap{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: calc(12px + var(--safeBottom) + var(--liftFromFooter));
+      z-index: 99999;
+      pointer-events: none;
+    }
+    .ansBar{
+      pointer-events:auto;
+      max-width: 680px;
+      margin: 0 auto;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0 10px;
+    }
+    .toggle{
+      border:1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.20);
+      color: rgba(15,23,48,.75);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      height: 36px;
+      box-shadow: 0 14px 34px rgba(15,23,48,.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition:.15s;
+      white-space:nowrap;
+    }
+    .toggle:hover{background: rgba(255,255,255,.34); transform: translateY(-1px);}
+    .toggle.active{
+      background: rgba(139,92,246,.16);
+      border-color: rgba(139,92,246,.16);
+      color: rgba(15,23,48,.92);
+    }
+
+    /* ===== Pager ===== */
+    .pager{
+      display:flex;
+      gap:6px;
+      align-items:center;
+      justify-content:center;
+      flex: 1;
+      flex-wrap: wrap;
+      min-width: 180px;
+    }
+    .pBtn{
+      border:1px solid rgba(18,28,55,.12);
+      background: rgba(255,255,255,.86);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      height: 34px;
+      font-size:12px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+    }
+    .pBtn.active{
+      background: rgba(139,92,246,.18);
+      border-color: rgba(139,92,246,.22);
+    }
+    .pDots{
+      color: var(--muted);
+      font-weight:1000;
+      padding: 0 4px;
+      user-select:none;
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      margin-top: 14px;
+      margin-bottom: 0 !important;
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(196,181,253,.16), transparent 60%),
+        radial-gradient(900px 320px at 80% 0%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, var(--footTop), var(--footBottom));
+      border-top: 1px solid var(--footLine);
+      color: var(--footText);
+    }
+    .footGrid{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 18px clamp(12px, 4vw, 48px) 10px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 18px;
+      align-items:start;
+    }
+    .footTitle{font-weight:1000;color:#fff;font-size:13px;margin-bottom: 8px;}
+    .footText{color: var(--footMuted);font-size:12px;line-height:1.6;}
+    .footLinks{display:flex;flex-direction:column;gap: 8px;}
+    .footLinks a{text-decoration:none;color: var(--footMuted);font-size:12px;}
+    .footLinks a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px;}
+
+    /* ✅ Social icons only */
+    .socialRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .socialIcon{
+      width: 36px; height: 36px;
+      display:grid; place-items:center;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      transition:.15s;
+      text-decoration:none;
+    }
+    .socialIcon:hover{background: rgba(255,255,255,.16); transform: translateY(-1px);}
+    .socialIcon svg{width:18px;height:18px;fill:#fff;opacity:.95}
+
+    @media (max-width: 980px){
+      .footGrid{grid-template-columns: repeat(3, minmax(0, 1fr));gap: 10px 10px;}
+      .footBrandCol{display:none !important;}
+    }
+
+    .copy{
+      max-width: 1320px;
+      margin:0 auto;
+      padding: 12px clamp(12px, 4vw, 48px) 14px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      text-align:center;
+      line-height:1.6;
+      white-space:normal;
+    }
+
+    @media (min-width: 981px){
+      .container{padding-left:16px;padding-right:16px;}
+    }
+
+    /* =========================
+       ✅ Stylish Popups (Toast)
+       ========================= */
+    .toastHost{
+      position: fixed;
+      top: calc(var(--headerH, 64px) + 12px);
+      right: 12px;
+      left: 12px;
+      z-index: 999999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      pointer-events:none;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    @media (min-width: 720px){
+      .toastHost{left:auto; right: 16px; max-width: 360px; margin:0;}
+    }
+    .toast{
+      pointer-events:auto;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      border-radius: 16px;
+      padding: 12px 12px;
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 16px 44px rgba(15,23,48,.14);
+      transform: translateY(-6px);
+      opacity:0;
+      animation: toastIn .18s ease-out forwards;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    @keyframes toastIn{ to{ transform: translateY(0); opacity:1; } }
+    .toast.out{ animation: toastOut .16s ease-in forwards; }
+    @keyframes toastOut{ to{ transform: translateY(-6px); opacity:0; } }
+    .toast .ico{
+      width: 26px;height: 26px;border-radius: 999px;
+      display:grid;place-items:center;
+      font-weight:1000;
+      color:#fff;
+      flex:0 0 auto;
+      margin-top: 2px;
+    }
+    .toast .body{ flex:1; min-width:0; }
+    .toast .title{ font-weight:1000; font-size:12.5px; line-height:1.2; margin-bottom: 4px; }
+    .toast .msg{ font-size:12px; color: var(--muted); line-height: 1.45; word-break: break-word; }
+    .toast .x{
+      border:none;background: transparent;cursor:pointer;font-weight:1000;
+      color: rgba(15,23,48,.55);padding: 0 6px;font-size: 16px;line-height: 1;
+    }
+    .toast.info .ico{ background: rgba(139,92,246,.92); }
+    .toast.success .ico{ background: rgba(22,163,74,.92); }
+    .toast.warn .ico{ background: rgba(245,158,11,.92); }
+    .toast.error .ico{ background: rgba(220,38,38,.92); }
+
+    /* ✅ Job Tests Grid (2 columns) */
+    .jobTestsGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    @media (max-width: 560px) {
+      .jobTestsGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .jobTestCard {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow: hidden;
+    }
+    
+    .jobTestCard h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 1000;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .jobTestMeta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+    
+    .jobTestMeta span {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius: 999px;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+    
+    .jobTestActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .jobTestActions .btn {
+      height: 32px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 11.5px;
+    }
+    
+    /* ✅ Job Subjects Grid (2 columns) */
+    .jobSubjectsGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    @media (max-width: 560px) {
+      .jobSubjectsGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .jobSubjectCard {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.94);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,48,.05);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    
+    .jobSubjectCard:hover {
+      transform: translateY(-2px);
+    }
+    
+    .jobSubjectCard h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 1000;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .jobSubjectMeta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+    
+    .jobSubjectMeta span {
+      border: 1px solid rgba(18,28,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius: 999px;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+    
+    .jobSubjectActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .jobSubjectActions .btn {
+      height: 32px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 11.5px;
+    }
+  </style>
+</head>
+
+<body data-mode="mcq">
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="name">eProstutiBD Jobs</div>
+      <div class="tag" id="headerTag">সকল প্রস্তুতি হোক গভীর থেকে</div>
+    </div>
+
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#">একাডেমী</a>
+      <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+      <a class="active" href="jobs-assistant.html">জব অ্যাসিস্ট্যান্ট</a>
+      <a href="#">মডেল টেস্ট</a>
+      <a href="#">কারেন্ট এফেয়ার্স</a>
+      <a href="#">IELTS</a>
+      <a href="#">BCS</a>
+      <a href="#">নোটিশ</a>
+      <a href="#">ব্লগ</a>
+      <a href="#">ক্যারিয়ার</a>
+    </nav>
+
+    <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()">☰</button>
+  </div>
+
+  <div class="mobileMenu" id="mobileMenu">
+    <div class="overlay" onclick="closeMenu()"></div>
+    <div class="drawer" role="dialog" aria-label="Menu" onclick="event.stopPropagation()">
+      <a href="#">একাডেমী</a>
+      <a href="#">প্রশ্ন ব্যাঙ্ক</a>
+      <a href="#">এডমিশন অ্যাসিস্ট্যান্ট</a>
+      <a class="active" href="jobs-assistant.html">জব অ্যাসিস্ট্যান্ট</a>
+      <a href="#">মডেল টেস্ট</a>
+      <a href="#">কারেন্ট এফেয়ার্স</a>
+      <a href="#">IELTS</a>
+      <a href="#">BCS</a>
+      <a href="#">নোটিশ</a>
+      <a href="#">ব্লগ</a>
+      <a href="#">ক্যারিয়ার</a>
+    </div>
+  </div>
+</header>
+
+<!-- ✅ Stylish Toast Container -->
+<div class="toastHost" id="toastHost" aria-live="polite" aria-atomic="true"></div>
+
+<div class="container">
+  <div class="adBox">
+    <div class="adHead"><b>Ad Slot</b><span>Header নিচে</span></div>
+    <div class="adBody">Paste ad code here</div>
+  </div>
+</div>
+
+<!-- Organization Dock -->
+<div class="orgDock" aria-label="Organization navigation">
+  <div class="orgDockInner">
+    <button class="orgBtnMobile" id="orgBtnMobile" onclick="openOrganizationSheet()">☰ Organizations</button>
+
+    <div class="centerGroup" aria-label="Selected organization and tabs">
+      <div class="orgName" id="orgName">Organization Details</div>
+      <div class="tabsLine" aria-label="Tabs">
+        <button class="tab active" id="tabMcq" onclick="setMode('mcq')">MCQ</button>
+        <span class="sepDot" aria-hidden="true"></span>
+        <button class="tab" id="tabWritten" onclick="setMode('written')">Written</button>
+        <span class="sepDot" aria-hidden="true"></span>
+        <button class="tab" id="tabModel" onclick="setMode('model')">Job Tests</button>
+      </div>
+    </div>
+
+    <div class="dockSpacer" aria-hidden="true"></div>
+  </div>
+</div>
+
+<div class="container">
+  <main class="grid">
+    <!-- LEFT DESKTOP ONLY - Organizations List -->
+    <aside class="panel leftDesktop">
+      <div class="panelHead">
+        <b>সকল Organization</b>
+        <span class="muted" id="leftHint">Loading…</span>
+      </div>
+      <div class="panelBody">
+        <div class="searchMini">
+          <input id="sSearch" placeholder="Search organization…" oninput="renderOrganizationList()" />
+          <button class="btn" onclick="renderOrganizationList()">Search</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="sList" class="sList"></div>
+        <div id="sEmpty" class="empty">কোনো Organization পাওয়া যায়নি।</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <section class="panel">
+      <div class="panelHead">
+        <b id="rightTitle">Organization Questions</b>
+        <span class="muted" id="pageHint"></span>
+      </div>
+
+      <div class="panelBody">
+        <div class="searchMini" style="margin-bottom:12px;">
+          <input id="qSearch" placeholder="Search question…" oninput="debouncedSearch()" />
+          <button class="btn" onclick="resetAndReload(true)">Search</button>
+        </div>
+
+        <div class="inlineAd">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Mid Content Ad</div>
+          </div>
+        </div>
+
+        <div id="content"></div>
+        <div id="emptyRight" class="empty">কোনো ডাটা পাওয়া যায়নি।</div>
+
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn" id="prevBtn" onclick="prevPage()">Prev</button>
+          <div id="pager" class="pager" aria-label="Pagination"></div>
+          <button class="btn primary" id="nextBtn" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="panel rightAd">
+      <div class="panelHead"><b>Sponsored</b><span class="muted">Ads</span></div>
+      <div class="panelBody">
+        <!-- ✅ 1. Latest Job Tests (TOP) -->
+        <div class="latestBoxTitle">Latest Job Tests</div>
+        <div class="latestMT" id="latestJobTests"></div>
+        <div class="empty" id="latestEmpty">কোনো Job Test পাওয়া যায়নি।</div>
+        <div class="seeMoreRow">
+          <button class="btn linky" onclick="location.href='jobs-assistant.html'">All Tests</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ✅ 2. Sidebar Ad 1 -->
+        <div class="inlineAd" style="min-height:240px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 1</div>
+          </div>
+        </div>
+
+        <!-- ✅ 3. Job Subjects (BOTTOM) -->
+        <div class="latestBoxTitle">Job Subjects</div>
+        <div class="latestMT" id="jobSubjectsList"></div>
+        <div class="empty" id="subjectsEmpty">কোনো Job Subject পাওয়া যায়নি।</div>
+        <div class="seeMoreRow">
+          <button class="btn linky" onclick="location.href='jobs-assistant.html'">All Subjects</button>
+        </div>
+
+        <!-- ✅ 4. Sidebar Ad 2 -->
+        <div class="inlineAd" style="min-height:180px;">
+          <div>
+            <div class="tag">Ad Slot</div>
+            <div style="font-size:12px;">Sidebar Ad 2</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- Floating Ans Buttons -->
+<div class="ansBarWrap" id="ansBarWrap">
+  <div class="ansBar">
+    <button class="toggle active" id="ansHideBtn" onclick="setAnsMode('hide')">Ans Hide</button>
+    <button class="toggle" id="ansShowBtn" onclick="setAnsMode('show')">Ans Show</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footGrid">
+    <div class="footBrandCol">
+      <div class="footTitle">eProstutiBD Jobs</div>
+      <div class="footText">সকল প্রস্তুতি হোক গভীর থেকে</div>
+    </div>
+
+    <div>
+      <div class="footTitle">দরকারি পেজ</div>
+      <div class="footLinks">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footTitle">অন্যান্য</div>
+      <div class="footLinks">
+        <a href="#">Notice</a>
+        <a href="#">Blog</a>
+        <a href="#">Career</a>
+        <a href="#">Help</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footTitle">Social</div>
+      <div class="socialRow" aria-label="Social icons">
+        <a class="socialIcon" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.76 0-5 2.24-5 5v3H6v3h3v6h3v-6h3l1-3h-4v-3c0-.55.45-1 1-1Z"/></svg>
+        </a>
+        <a class="socialIcon" href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+        </a>
+        <a class="socialIcon" href="#" aria-label="Telegram">
+          <svg viewBox="0 0 24 24"><path d="M21.9 5.6 19 19.2c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2l-10.6 6.7-4.6-1.4c-1-.3-1 .2-1.5 0L20 4.6c.9-.4 1.7.2 1.9 1Z"/></svg>
+        </a>
+        <a class="socialIcon" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.8 6.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="copy">
+    © <span id="year"></span> eProstutiBD — All rights reserved
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUBwLuNDSJF1xrkUVTTOXs76f_o4YkBiI",
+    authDomain: "eprostutibd-webapp.firebasestorage.app",
+    projectId: "eprostutibd-webapp",
+    storageBucket: "eprostutibd-webapp.firebasestorage.app",
+    messagingSenderId: "1044069942330",
+    appId: "1:1044069942330:web:b3fc6c8b75d7b80686a103",
+    measurementId: "G-T2G55NMDQT"
+  };
+
+  /* ✅ Admin Panel Collections (jobs_ prefix) */
+  const COL_JOBS_UNIVERSITIES = "jobs_universities"; // Organizations
+  const COL_JOBS_UNIVERSITY_QUESTIONS = "jobs_university_questions";
+  const COL_JOBS_TESTS = "jobs_tests"; // Job Tests (Organization wise)
+  const COL_JOBS_SUBJECTS = "jobs_subjects"; // For right sidebar
+  const COL_JOBS_SUBJECT_TESTS = "jobs_subject_tests"; // For Latest Job Tests
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
+
+  /* =========================
+     ✅ Toast
+     ========================= */
+  function esc(str){
+    return String(str ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+  }
+  
+  function toast(message, type="info", title){
+    const host = $("toastHost");
+    if(!host) return;
+
+    const t = document.createElement("div");
+    t.className = "toast " + type;
+
+    const ico = type==="success" ? "✓" :
+                type==="warn" ? "!" :
+                type==="error" ? "×" : "i";
+
+    const ttl = title || (
+      type==="success" ? "Success" :
+      type==="warn" ? "Warning" :
+      type==="error" ? "Error" : "Info"
+    );
+
+    t.innerHTML = `
+      <div class="ico">${ico}</div>
+      <div class="body">
+        <div class="title">${ttl}</div>
+        <div class="msg">${esc(message)}</div>
+      </div>
+      <button class="x" aria-label="Close">×</button>
+    `;
+
+    const close = ()=>{
+      t.classList.add("out");
+      setTimeout(()=>t.remove(), 180);
+    };
+    t.querySelector(".x").onclick = close;
+
+    host.appendChild(t);
+    setTimeout(close, 2600);
+  }
+  
+  window.alert = (msg)=>toast(String(msg || ""), "info", "Message");
+
+  function openMenu(){ 
+    $("mobileMenu").style.display="block"; 
+    $("menuBtn").setAttribute("aria-expanded","true"); 
+  }
+  
+  function closeMenu(){ 
+    $("mobileMenu").style.display="none"; 
+    $("menuBtn").setAttribute("aria-expanded","false"); 
+  }
+  
+  function toggleMenu(){ 
+    const m=$("mobileMenu"); 
+    (m.style.display==="block")?closeMenu():openMenu(); 
+  }
+  
+  window.toggleMenu=toggleMenu; 
+  window.closeMenu=closeMenu;
+
+  $("year").textContent = new Date().getFullYear();
+
+  function syncStickyOffsets(){
+    const h = document.querySelector("header")?.offsetHeight || 64;
+    document.documentElement.style.setProperty("--headerH", h + "px");
+  }
+  
+  window.addEventListener("resize", syncStickyOffsets);
+  window.addEventListener("load", syncStickyOffsets);
+  syncStickyOffsets();
+
+  function normalize(s){
+    s = String(s||"").toLowerCase();
+    try{
+      return s.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+    }catch(e){
+      return s.replace(/[^a-z0-9\u0980-\u09FF\s]+/g, " ").replace(/\s+/g, " ").trim();
+    }
+  }
+
+  // debounce search
+  let searchTimer = null;
+  function debouncedSearch(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(()=>resetAndReload(true), 350);
+  }
+  
+  window.debouncedSearch = debouncedSearch;
+
+  function getOptions(doc){
+    if(Array.isArray(doc.options) && doc.options.length) return doc.options.slice(0,4);
+    return [doc.option1, doc.option2, doc.option3, doc.option4].map(x => (x ?? "").toString());
+  }
+  
+  function getCorrectIndex(doc, opts){
+    if(Number.isFinite(doc.correctIndex)) return doc.correctIndex;
+    const ra = (doc.rightAns ?? doc.right_ans ?? doc.answer ?? "").toString().trim();
+    if(!ra) return -1;
+
+    const map = { a:0, b:1, c:2, d:3, "ক":0, "খ":1, "গ":2, "ঘ":3 };
+    const low = ra.toLowerCase().replace(/[^a-z\u0980-\u09FF]/g,"").trim();
+    if(map[low] !== undefined) return map[low];
+
+    const nra = normalize(ra);
+    for(let i=0;i<opts.length;i++){
+      if(normalize(opts[i]) === nra) return i;
+    }
+    return -1;
+  }
+
+  let ORGANIZATIONS = [];
+  let selectedOrganizationId = "";
+  let selectedOrganizationName = "";
+
+  let mode = "mcq";
+  let ansMode = "hide";
+
+  const PAGE_SIZE = 30;
+  let page = 1;
+
+  let cursorByPage = { 1: null };
+  let lastDoc = null;
+  let hasNext = false;
+
+  let selectedOptionMap = new Map();
+
+  const testCountMap = new Map(); // Organization wise test count
+
+  let unsubOrganizations = null;
+  let unsubRight = null;
+  let unsubLatestTests = null;
+  let unsubJobSubjects = null;
+
+  const LS_KEY = "epbd_org_details_state_v1";
+
+  function getParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name) || "";
+  }
+
+  function saveState(){
+    const payload = {
+      organizationId: selectedOrganizationId,
+      mode,
+      ansMode,
+      page,
+      cursorByPage,
+      q: $("qSearch").value || "",
+      s: $("sSearch") ? ($("sSearch").value || "") : ""
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return;
+      const st = JSON.parse(raw);
+      if(st && typeof st === "object"){
+        selectedOrganizationId = st.organizationId || selectedOrganizationId;
+        mode = st.mode || mode;
+        ansMode = st.ansMode || ansMode;
+        page = Number(st.page || 1) || 1;
+
+        if(st.cursorByPage && typeof st.cursorByPage === "object"){
+          cursorByPage = st.cursorByPage;
+          if(!cursorByPage[1]) cursorByPage[1] = null;
+        }
+
+        if($("qSearch")) $("qSearch").value = st.q || "";
+        if($("sSearch")) $("sSearch").value = st.s || "";
+      }
+    }catch(e){}
+  }
+
+  function applyUrlOverrides(){
+    const urlOrganizationId = getParam("organizationId");
+    const urlMode = getParam("mode");
+    const urlPage = Number(getParam("page") || "1") || 1;
+
+    if(urlOrganizationId){
+      selectedOrganizationId = urlOrganizationId;
+      page = urlPage > 0 ? urlPage : 1;
+      cursorByPage = { 1: null };
+      selectedOptionMap.clear();
+    }else{
+      if(urlPage > 1) page = urlPage;
+    }
+
+    if(urlMode && ["mcq","written","model"].includes(urlMode)){
+      mode = urlMode;
+    }
+
+    document.body.setAttribute("data-mode", mode);
+  }
+
+  loadState();
+  applyUrlOverrides();
+
+  function setUrlState(){
+    const u = new URL(location.href);
+    if(selectedOrganizationId) u.searchParams.set("organizationId", selectedOrganizationId);
+    u.searchParams.set("page", String(page));
+    u.searchParams.set("mode", mode);
+    history.replaceState({}, "", u.toString());
+  }
+
+  function setMode(m){
+    mode = m;
+    document.body.setAttribute("data-mode", mode);
+
+    $("tabMcq").classList.toggle("active", mode==="mcq");
+    $("tabWritten").classList.toggle("active", mode==="written");
+    $("tabModel").classList.toggle("active", mode==="model");
+
+    $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  
+  window.setMode = setMode;
+
+  function setAnsMode(m){
+    ansMode = m;
+    $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+    $("ansShowBtn").classList.toggle("active", ansMode==="show");
+    saveState();
+    renderContent();
+  }
+  
+  window.setAnsMode = setAnsMode;
+
+  function relatedMatch(query, text){
+    const q = normalize(query);
+    const t = normalize(text);
+    if(!q) return 1;
+    if(t.includes(q)) return 10;
+    const qw = q.split(" ").filter(Boolean);
+    const tw = new Set(t.split(" ").filter(Boolean));
+    let hit = 0;
+    qw.forEach(w => { if(tw.has(w)) hit++; });
+    return hit / Math.max(1, qw.length);
+  }
+
+  function syncTestListeners(){
+    const alive = new Set(ORGANIZATIONS.map(o=>o.id));
+    for(const [oid, unsub] of Object.entries(testCountMap)){
+      if(!alive.has(oid)){
+        try{unsub();}catch(e){}
+        delete testCountMap[oid];
+      }
+    }
+    
+    ORGANIZATIONS.forEach(o=>{
+      if(testCountMap[o.id]) return;
+      
+      const unsub = db.collection(COL_JOBS_TESTS)
+        .where("universityId","==", o.id)
+        .onSnapshot((snap)=>{
+          testCountMap[o.id] = snap.size || 0;
+          renderOrganizationList();
+        });
+      testCountMap[o.id] = unsub;
+    });
+  }
+
+  function renderOrganizationList(){
+    const list = $("sList");
+    if(!list) return;
+
+    const q = $("sSearch").value || "";
+    const filtered = ORGANIZATIONS
+      .map(o => ({...o, _score: relatedMatch(q, o.name||"")}))
+      .filter(o => !q ? true : o._score >= 0.25)
+      .sort((a,b)=> (b._score - a._score) || (a.name||"").localeCompare(b.name||""));
+
+    $("leftHint").textContent = `Total: ${ORGANIZATIONS.length}`;
+    $("sEmpty").style.display = filtered.length ? "none" : "block";
+
+    list.innerHTML = "";
+    filtered.forEach(o=>{
+      const mcq = o.counts?.mcq || 0;
+      const written = o.counts?.written || 0;
+      const testCount = testCountMap[o.id] || 0;
+
+      const el = document.createElement("div");
+      el.className = "sItem" + (o.id === selectedOrganizationId ? " active" : "");
+      el.onclick = ()=> selectOrganization(o.id, true);
+      el.innerHTML = `
+        <b title="${esc(o.name||"")}">${esc(o.name||"(no name)")}</b>
+        <div class="chips">
+          <span class="chip">MCQ <b>${mcq}</b></span>
+          <span class="chip">Written <b>${written}</b></span>
+          <span class="chip">Job Tests <b>${testCount}</b></span>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  
+  window.renderOrganizationList = renderOrganizationList;
+
+  function selectOrganization(id, shouldScrollTop){
+    selectedOrganizationId = id;
+    page = 1;
+    cursorByPage = { 1: null };
+    selectedOptionMap.clear();
+
+    const found = ORGANIZATIONS.find(o=>o.id===id);
+    selectedOrganizationName = found?.name || "";
+
+    $("orgName").textContent = selectedOrganizationName || "Organization Details";
+    $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
+
+    renderOrganizationList();
+
+    setUrlState();
+    saveState();
+    loadRight();
+
+    if(shouldScrollTop){
+      try{ window.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch(e){ window.scrollTo(0,0); }
+    }
+  }
+
+  function detachRight(){
+    if(unsubRight){ try{unsubRight();}catch(e){} unsubRight=null; }
+  }
+
+  function buildQuery(){
+    const searchText = $("qSearch").value || "";
+    const cursor = cursorByPage[page] || null;
+
+    if(mode === "model"){
+      // Organization wise Job Tests
+      let q = db.collection(COL_JOBS_TESTS)
+        .where("universityId","==", selectedOrganizationId)
+        .orderBy("createdAt","desc")
+        .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+        .limit(PAGE_SIZE + 1);
+
+      if(cursor && cursor.t && cursor.id){
+        q = q.startAfter(new Date(cursor.t), cursor.id);
+      }
+      return { q, searchText, kind:"model" };
+    }
+
+    // Organization wise Questions
+    let q = db.collection(COL_JOBS_UNIVERSITY_QUESTIONS)
+      .where("universityId","==", selectedOrganizationId)
+      .where("type","==", mode)
+      .orderBy("createdAt","desc")
+      .orderBy(firebase.firestore.FieldPath.documentId(), "desc")
+      .limit(PAGE_SIZE + 1);
+
+    if(cursor && cursor.t && cursor.id){
+      q = q.startAfter(new Date(cursor.t), cursor.id);
+    }
+    return { q, searchText, kind:"q" };
+  }
+
+  let currentItems = [];
+
+  function resetAndReload(){
+    if(!selectedOrganizationId){
+      $("emptyRight").style.display = "block";
+      $("content").innerHTML = "";
+      $("pageHint").textContent = "";
+      renderPager();
+      toast("আগে Organization নির্বাচন করুন", "warn", "Select Organization");
+      return;
+    }
+    loadRight();
+  }
+  
+  window.resetAndReload = resetAndReload;
+
+  function renderPager(){
+    const wrap = $("pager");
+    if(!wrap) return;
+
+    const keys = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+    let maxVisited = keys.length ? Math.max(...keys) : 1;
+    if(maxVisited < 1) maxVisited = 1;
+
+    const canShowNextNum = hasNext === true;
+
+    const pages = [];
+    for(let i=1;i<=maxVisited;i++) pages.push(i);
+    if(canShowNextNum) pages.push(maxVisited + 1);
+
+    const out = [];
+    const total = pages.length;
+
+    if(total <= 9){
+      out.push(...pages);
+    }else{
+      const last = pages[pages.length-1];
+      out.push(1);
+      if(page > 4) out.push("dots1");
+      const start = Math.max(2, page - 2);
+      const end = Math.min(last - 1, page + 2);
+      for(let p=start; p<=end; p++) out.push(p);
+      if(page < last - 3) out.push("dots2");
+      out.push(last);
+    }
+
+    wrap.innerHTML = "";
+    out.forEach(item=>{
+      if(String(item).startsWith("dots")){
+        const s = document.createElement("span");
+        s.className = "pDots";
+        s.textContent = "…";
+        wrap.appendChild(s);
+        return;
+      }
+
+      const p = item;
+      const b = document.createElement("button");
+      b.className = "pBtn" + (p===page ? " active" : "");
+      b.textContent = String(p);
+
+      b.onclick = ()=>{
+        if(p===page) return;
+
+        const keys2 = Object.keys(cursorByPage || {}).map(n => Number(n)).filter(n => Number.isFinite(n));
+        let maxV = keys2.length ? Math.max(...keys2) : 1;
+        if(maxV < 1) maxV = 1;
+
+        if(p === maxV + 1){
+          nextPage();
+          return;
+        }
+
+        if(!cursorByPage[p] && p !== 1) return;
+
+        page = p;
+        selectedOptionMap.clear();
+        setUrlState();
+        saveState();
+        loadRight();
+      };
+
+      wrap.appendChild(b);
+    });
+  }
+
+  function loadRight(){
+    if(!selectedOrganizationId) return;
+
+    detachRight();
+    $("emptyRight").style.display = "none";
+    $("content").innerHTML = "";
+    $("pageHint").textContent = `Page ${page}`;
+
+    const built = buildQuery();
+    unsubRight = built.q.onSnapshot((snap)=>{
+      let docs = snap.docs;
+
+      hasNext = docs.length > PAGE_SIZE;
+      if(hasNext) docs = docs.slice(0, PAGE_SIZE);
+
+      lastDoc = docs.length ? docs[docs.length-1] : null;
+      currentItems = docs.map(d=>({id:d.id, ...d.data()}));
+
+      const qtxt = normalize(built.searchText);
+      if(qtxt){
+        currentItems = currentItems
+          .map(it => ({
+            ...it,
+            _score: relatedMatch(qtxt, built.kind==="model"
+              ? (it.title || it.name || "")
+              : (it.question || "")
+            )
+          }))
+          .filter(it => it._score >= 0.25)
+          .sort((a,b)=> (b._score - a._score));
+      }
+
+      renderContent();
+
+      $("emptyRight").style.display = currentItems.length ? "none" : "block";
+      $("prevBtn").disabled = page <= 1;
+      $("nextBtn").disabled = !hasNext;
+
+      renderPager();
+
+      setUrlState();
+      saveState();
+    }, (err)=>{
+      console.error(err);
+      $("content").innerHTML = "";
+      $("emptyRight").style.display = "block";
+      hasNext = false;
+      renderPager();
+      toast("ডাটা লোড করা যায়নি। Firestore rules/Index চেক করুন।", "error", "Load Failed");
+    });
+  }
+
+  function prevPage(){
+    if(page <= 1) return;
+    page -= 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+
+  function nextPage(){
+    if(!hasNext) return;
+    if(lastDoc){
+      const data = lastDoc.data() || {};
+      const ts = data.createdAt?.toDate ? data.createdAt.toDate().getTime() : null;
+      if(ts){
+        cursorByPage[page+1] = { t: ts, id: lastDoc.id };
+      }
+    }
+    page += 1;
+    selectedOptionMap.clear();
+    setUrlState();
+    saveState();
+    loadRight();
+  }
+  
+  window.prevPage = prevPage;
+  window.nextPage = nextPage;
+
+  function renderContent(){
+    const wrap = $("content");
+    wrap.innerHTML = "";
+
+    $("rightTitle").textContent =
+      mode==="mcq" ? "Organization MCQ প্রশ্ন" :
+      mode==="written" ? "Organization Written প্রশ্ন" :
+      "Organization Job Tests";
+
+    if(!currentItems.length) return;
+
+    if(mode === "model"){
+      // ✅ Job Tests Grid (2 columns)
+      const grid = document.createElement("div");
+      grid.className = "jobTestsGrid";
+      
+      currentItems.forEach((mt)=>{
+        const title = mt.title ?? mt.name ?? "Job Test";
+        const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+        const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+        const counts = mt.counts || {};
+        const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+        const card = document.createElement("div");
+        card.className = "jobTestCard";
+        card.innerHTML = `
+          <h4 title="${esc(title)}">${esc(title)}</h4>
+          <div class="jobTestMeta">
+            <span>⏱ ${esc(time)} min</span>
+            <span>🧮 Mark: ${esc(marks)}</span>
+            <span>📌 Q: ${esc(qCount)}</span>
+          </div>
+          <div class="jobTestActions">
+            <button class="btn primary" onclick="location.href='Start-model-test.html?testId=${encodeURIComponent(mt.id)}&type=org'">Start</button>
+            <button class="btn" onclick="location.href='model-test-result.html?testId=${encodeURIComponent(mt.id)}&type=org'">Result</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      wrap.appendChild(grid);
+      return;
+    }
+
+    const paper = document.createElement("div");
+    paper.className = "paper";
+    const list = document.createElement("div");
+    list.className = "qList";
+    const letters = ["A","B","C","D"];
+
+    currentItems.forEach((it, idx)=>{
+      const qno = ((page-1)*PAGE_SIZE) + (idx+1);
+      const note = (it.note ?? it.explain ?? "").toString().trim();
+
+      const row = document.createElement("div");
+      row.className = "qRow";
+
+      row.innerHTML = `
+        <div class="qHead">
+          <span class="qNo">Q${qno}</span>
+          <p class="qText">${esc(it.question || "")}</p>
+        </div>
+        ${note ? `<div class="noteInline"><b>Note:</b> ${esc(note)}</div>` : ``}
+      `;
+
+      if(mode === "mcq"){
+        const opts = getOptions(it);
+        const correctIndex = getCorrectIndex(it, opts);
+        const chosen = selectedOptionMap.get(it.id);
+
+        const optWrap = document.createElement("div");
+        optWrap.className = "opts";
+
+        opts.slice(0,4).forEach((op, oi)=>{
+          const opt = document.createElement("div");
+          opt.className = "optLine";
+
+          opt.innerHTML = `
+            <span class="optMark"></span>
+            <span class="optKey">${letters[oi]}.</span>
+            <span class="optTxt">${esc(op || "")}</span>
+          `;
+          const mark = opt.querySelector(".optMark");
+
+          if(ansMode === "show"){
+            opt.classList.add("locked");
+            if(oi === correctIndex){
+              opt.classList.add("correct");
+              mark.textContent = "✓";
+            }
+          }else{
+            if(chosen !== undefined){
+              opt.classList.add("locked");
+              if(oi === correctIndex){
+                opt.classList.add("correct");
+                mark.textContent = "✓";
+              }
+              if(oi === chosen && chosen !== correctIndex){
+                opt.classList.add("wrong");
+                mark.textContent = "✕";
+              }
+            }else{
+              opt.onclick = ()=>{
+                selectedOptionMap.set(it.id, oi);
+                renderContent();
+              };
+            }
+          }
+          optWrap.appendChild(opt);
+        });
+
+        row.appendChild(optWrap);
+      }
+
+      if(mode === "written"){
+        const ans = (it.rightAns ?? it.right_ans ?? it.answer ?? "").toString();
+        if(ansMode === "show"){
+          const box = document.createElement("div");
+          box.className = "noteInline";
+          box.innerHTML = `<b>Answer:</b> ${esc(ans || "-")}`;
+          row.appendChild(box);
+        }
+      }
+
+      list.appendChild(row);
+
+      if((idx+1)%10===0 && idx < currentItems.length-1){
+        const ad = document.createElement("div");
+        ad.className = "inlineAd";
+        ad.innerHTML = `<div><div class="tag">Ad Slot</div><div style="font-size:12px;">Inline Ad (Every 10)</div></div>`;
+        list.appendChild(ad);
+      }
+    });
+
+    paper.appendChild(list);
+    wrap.appendChild(paper);
+  }
+
+  // ===== RIGHT SIDEBAR FUNCTIONS =====
+
+  // ✅ 1. Latest Job Tests (TOP)
+  function attachLatestJobTests(){
+    if(unsubLatestTests){ try{unsubLatestTests();}catch(e){} unsubLatestTests=null; }
+
+    unsubLatestTests = db.collection(COL_JOBS_SUBJECT_TESTS)
+      .orderBy("createdAt","desc")
+      .limit(5) // Show 5 items max
+      .onSnapshot((snap)=>{
+        const wrap = $("latestJobTests");
+        const empty = $("latestEmpty");
+        wrap.innerHTML = "";
+
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((mt)=>{
+          const title = mt.title ?? mt.name ?? "Job Test";
+          const time = mt.totalTimeMin ?? mt.totalTime ?? mt.duration ?? mt.minutes ?? "-";
+          const marks = mt.totalMarks ?? mt.totalMark ?? mt.marks ?? mt.mark ?? "-";
+          const counts = mt.counts || {};
+          const qCount = (Number(counts.mcq||0) + Number(counts.written||0)) || (mt.totalQuestions ?? mt.totalQ ?? mt.questionCount ?? 0);
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(title)}">${esc(title)}</h4>
+            <div class="mtMetaMini">
+              <span>⏱ ${esc(time)} min</span>
+              <span>🧮 ${esc(marks)}</span>
+              <span>📌 ${esc(qCount)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary" onclick="location.href='Start-model-test.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Start</button>
+              <button class="btn" onclick="location.href='model-test-result.html?modelTestId=${encodeURIComponent(mt.id)}&type=job'">Result</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }, (err)=>console.error(err));
+  }
+
+  // ✅ 2. Job Subjects (BOTTOM)
+  function attachJobSubjects(){
+    if(unsubJobSubjects){ try{unsubJobSubjects();}catch(e){} unsubJobSubjects=null; }
+
+    unsubJobSubjects = db.collection(COL_JOBS_SUBJECTS)
+      .orderBy("createdAt","desc")
+      .limit(5) // Show 5 items max
+      .onSnapshot((snap)=>{
+        const wrap = $("jobSubjectsList");
+        const empty = $("subjectsEmpty");
+        wrap.innerHTML = "";
+
+        const docs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        empty.style.display = docs.length ? "none" : "block";
+
+        docs.forEach((s)=>{
+          const name = s.name ?? "Job Subject";
+          const mcq = s.counts?.mcq || 0;
+          const written = s.counts?.written || 0;
+
+          const card = document.createElement("div");
+          card.className = "mtCardMini";
+          card.innerHTML = `
+            <h4 title="${esc(name)}">${esc(name)}</h4>
+            <div class="mtMetaMini">
+              <span>MCQ: ${esc(mcq)}</span>
+              <span>Written: ${esc(written)}</span>
+            </div>
+            <div class="mtActionsMini">
+              <button class="btn primary" onclick="location.href='job-subject-details.html?subjectId=${encodeURIComponent(s.id)}'">Open</button>
+              <button class="btn" onclick="location.href='jobs-assistant.html'">All</button>
+            </div>
+          `;
+          wrap.appendChild(card);
+        });
+      }, (err)=>console.error(err));
+  }
+
+  function attachOrganizations(){
+    if(unsubOrganizations){ try{unsubOrganizations();}catch(e){} unsubOrganizations=null; }
+
+    unsubOrganizations = db.collection(COL_JOBS_UNIVERSITIES).onSnapshot((snap)=>{
+      ORGANIZATIONS = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      syncTestListeners();
+
+      if(!selectedOrganizationId && ORGANIZATIONS.length){
+        selectedOrganizationId = ORGANIZATIONS[0].id;
+      }
+
+      $("tabMcq").classList.toggle("active", mode==="mcq");
+      $("tabWritten").classList.toggle("active", mode==="written");
+      $("tabModel").classList.toggle("active", mode==="model");
+      $("ansHideBtn").classList.toggle("active", ansMode==="hide");
+      $("ansShowBtn").classList.toggle("active", ansMode==="show");
+      $("ansBarWrap").style.display = (mode==="model") ? "none" : "block";
+      document.body.setAttribute("data-mode", mode);
+
+      renderOrganizationList();
+
+      if(selectedOrganizationId){
+        const found = ORGANIZATIONS.find(o=>o.id===selectedOrganizationId);
+        selectedOrganizationName = found?.name || "";
+        $("orgName").textContent = selectedOrganizationName || "Organization Details";
+        $("headerTag").textContent = "সকল প্রস্তুতি হোক গভীর থেকে";
+
+        setUrlState();
+        saveState();
+        loadRight();
+      }else{
+        renderPager();
+      }
+    });
+  }
+
+  (function keepAnsBarAboveFooter(){
+    const footer = document.querySelector("footer");
+    const bar = document.getElementById("ansBarWrap");
+    if(!footer || !bar) return;
+
+    let ticking = false;
+
+    function update(){
+      ticking = false;
+
+      if(bar.style.display === "none"){
+        document.documentElement.style.setProperty("--liftFromFooter", "0px");
+        return;
+      }
+
+      const fr = footer.getBoundingClientRect();
+      const overlap = window.innerHeight - fr.top;
+      const lift = Math.max(0, overlap);
+      document.documentElement.style.setProperty("--liftFromFooter", (lift + 8) + "px");
+    }
+
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive:true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  })();
+
+  // Initialize Everything
+  attachOrganizations();
+  attachLatestJobTests();
+  attachJobSubjects();
+</script>
+
+</body>
+</html>
